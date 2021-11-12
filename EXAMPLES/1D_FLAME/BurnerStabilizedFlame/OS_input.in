@@ -1,0 +1,82 @@
+/-------------------------------------------------------------//
+//     ____            _  ______ __  __  ____  _  ________    //
+//    / __ \       _  (_)/  ____|  \/  |/ __ \| |/ /  ____|   //
+//   | |  | |_ __ | |_ _ | (___ | \  / | |  | | ' /| |__      //
+//   | |  | | '_ \|  _| |\___  \| |\/| | |  | |  < |  __|     //
+//   | |__| | |_) | |_| |____)  | |  | | |__| | . \| |____    //
+//    \____/| .__/\___|_|______/|_|  |_|\____/|_|\_\______|   //
+//          | |                                               //
+//          |_|                                               //
+//                                                            //
+//    Author: Magnus Fürst <magnus.furst@ulb.ac.be>           //
+//    Author: Andrea Bertolino <andrea.bertolino@ulb.ac.be>   //
+//------------------------------------------------------------//
+Dictionary OptimizationSetup
+{
+                @NominalKineticsPreProcessor    POLIMI;
+                @KineticsFolder                 ../../mechanisms/POLIMI_C1C3;
+		@NameOfOptimizedKineticsFolder  OPTIMAL_MECH;
+
+                @Debug false;
+                @DebugSim false;
+
+                @NumberOfBatchDatasets                  0;
+                @NumberOfPlugFlowDatasets               0;
+                @NumberOfPerfectlyStirredDatasets       0;
+		@NumberOfLaminarFlameDatasets           1;
+
+                @ParametersBoundaries           Furst;
+                @ObjectiveFunctionType          L2-norm;
+                @Parameters_Distribution        uniform ;
+		@AcceptedSigmaInKDistribution   3;
+		@SigmaExpDistribution           3;
+                @UseBootStrap                   true;
+                @NumberOfBootstrapVariations    1;
+                @PrintIndexes                   false;
+                @PrintSplines                   false;
+                @PrintBootstrap                 false;
+                
+		@CurveMatchingOptions           curve_matching_options;
+                @DakotaOptions                  dakota_options;
+
+                @PathDatasetInputFiles          Path_to_Input_Datasets.txt;
+                @PathExperimentalDataFiles      Path_to_Exp_Datasets.txt;
+
+                @ListOfTarget_lnA                 56	63	72	2563 ;
+                @ListOfTarget_Beta                56    63      72      2563 ;
+                @ListOfTarget_E_over_R            56    63      72      2563 ;
+
+                @ListOfTargetUncertaintyFactors         56      63      72      2563 ;
+                @ListOfUncertaintyFactors               1.0	0.6	0.2	1.10 ;
+}
+Dictionary POLIMI
+{
+                @Kinetics               ../../mechanisms/POLIMI_C1C3/Kinetics.CKI;
+                @Thermodynamics         ../../mechanisms/POLIMI_C1C3/Thermodynamics.therm;
+                @Transport              ../../mechanisms/POLIMI_C1C3/Transport.TRAN;
+		@Output 		kinetics;
+}
+Dictionary dakota_options
+{
+                @TabularDataFile                tabular_data.out;
+                @Method                         coliny_ea;
+                @FitnessType                    linear_rank;
+                @CrossoverType                  uniform;
+                @CrossoverRate                  0.65;
+                @MutationType                   offset_normal;
+                @MutationRate                   0.5;
+                @ReplacementType                chc=15 ;
+                @MaxIterations                  100;
+                @MaxFunctionEvaluations         3000;
+                @ConvergenceTolerance           1e-12;
+                @SolutionTarget                 1e-8;
+                @Seed                           1000;
+                @PopulationSize                 30;
+}
+Dictionary curve_matching_options
+{
+                //@numberOfBootstrapVariations 20;
+                @lineUpMaxima true;
+                @useSumOfIndexesForAlignment true;
+                @fractionOfExpRangeForModelExtrapolation 0.0;
+}

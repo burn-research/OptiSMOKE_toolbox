@@ -1,0 +1,67 @@
+//-----------------------------------------------------------------//
+//     ____                    ______ __  __  ____  _  ________    //
+//    / __ \                  /  ___ |  \/  |/ __ \| |/ /  ____|   //
+//   | |  | |_ __   ___ _ __ |  (___ | \  / | |  | | ' /| |__      //
+//   | |  | | '_ \ / _ \ '_ \ \___  \| |\/| | |  | |  < |  __|     //
+//   | |__| | |_) |  __/ | | |____)  | |  | | |__| | . \| |____    //
+//    \____/| .__/ \___|_| |_|______/|_|  |_|\____/|_|\_\______|   //
+//         | |                                                     //
+//         |_|                                                     //
+//                                                                 //
+//                http://www.opensmoke.polimi.it/                  //
+//             http://creckmodeling.chem.polimi.it/                //
+//-----------------------------------------------------------------//
+Dictionary PremixedLaminarFlame1D
+{
+	@Type			BurnerStabilized;
+	@KineticsFolder   	../../../mechanisms/POLIMI_C1C3_OPT/;
+	
+	@InletStream 		inlet-stream;
+	@OutletStream		outlet-stream;
+	
+	@InletVelocity		119.65 cm/s;
+	
+	@Grid			grid;
+	
+	@Output			Output_R1;
+	
+	@FixedTemperatureProfile T-Profile;
+
+	@UseDaeSolver		true;
+	@Soret        true;
+	@Radiation    true;
+	@EnvironmentTemperature  398 K;
+	@Backup    Output.xml;
+}
+Dictionary inlet-stream
+{
+	@MoleFractions		H2  0.1529 CH4 0.0564 CO  0.0133 O2  0.1633 N2   0.6141;
+	@Temperature	568.3928571 K;
+	@Pressure		0.075 bar;
+}
+Dictionary outlet-stream
+{
+	@Moles			H2O 1 
+				N2 1 ;
+	@Temperature	1658.666773 K;
+	@Pressure	    0.075 bar;
+}
+Dictionary grid
+{
+	@Length				50 mm;
+	@InitialPoints			20;
+	@Type				equispaced;
+	@MaxPoints		600;
+	@MaxAdaptivePoints	15;
+	@GradientCoefficient	0.05;
+	@CurvatureCoefficient	0.5;
+}
+Dictionary T-Profile
+{	
+	@XVariable length;
+	@YVariable temperature;
+	@XUnits mm;
+	@YUnits K;
+	@Profile 0	568.3928571 2.7	668.3928571 4.7	788.3928571 5.7	909.0504831 6.7	1302.53532 7.7	1633.29309 8.7	1787.394214 9.7	1819.366165 10.7	1819.186313 11.7	1813.188424 12.7	1806.282086 13.7	1799.352593 14.7	1793.598444 15.7	1788.417699 16.7	1783.34228 17.7	1779.107822 18.7	1774.85581 19.7	1770.869617 20.7	1767.72425 21.7	1763.634106 22.7	1760.049828 24.7	1753.144799 29.7	1735.867188 34.7	1718.269289 39.7	1699.944447 44.7	1680.212391 49.7	1659.886336 50	1658.666773 ;
+}
+

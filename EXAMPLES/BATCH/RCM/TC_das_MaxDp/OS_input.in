@@ -1,0 +1,86 @@
+//------------------------------------------------------------//
+//     ____            _  ______ __  __  ____  _  ________    //
+//    / __ \       _  (_)/  ____|  \/  |/ __ \| |/ /  ____|   //
+//   | |  | |_ __ | |_ _ | (___ | \  / | |  | | ' /| |__      //
+//   | |  | | '_ \|  _| |\___  \| |\/| | |  | |  < |  __|     //
+//   | |__| | |_) | |_| |____)  | |  | | |__| | . \| |____    //
+//    \____/| .__/\___|_|______/|_|  |_|\____/|_|\_\______|   //
+//          | |                                               //
+//          |_|                                               //
+//                                                            //
+//      Authors: Magnus Fürst     <magnus.furst@ulb.ac.be>    //
+//	 	 Andrea Bertolino <andrea.bertolino@ulb.be>   //
+//------------------------------------------------------------//
+Dictionary OptimizationSetup
+{
+                @NominalKineticsPreProcessor            KINPREPRO;
+                @KineticsFolder                         ../../../mechanisms/Aramco_2.0/;
+                @NameOfOptimizedKineticsFolder          OPTIMAL_MECH;
+
+                @Debug                                  false;
+                @DebugSim                               false;
+
+                @NumberOfBatchDatasets                  8 ;
+                @NumberOfPlugFlowDatasets               0 ;
+                @NumberOfPerfectlyStirredDatasets       0 ;
+                @NumberOfLaminarFlameDatasets           0 ;
+
+                @ParametersBoundaries           	Narrow;
+                @ObjectiveFunctionType          	CurveMatching;
+                @Parameters_Distribution        	uniform;
+                @AcceptedSigmaInKDistribution   	3;
+                @SigmaExpDistribution           	3;
+                @UseBootStrap                   	true;
+                @NumberOfBootstrapVariations    	1;
+                @PrintIndexes                   	false;
+                @PrintSplines                   	false;
+                @PrintBootstrap                 	false;
+		@CurveMatchingOptions           	curve_matching_options;
+
+                @DakotaOptions                  	dakota_options;
+                @PathDatasetInputFiles          	Path_to_Input_Datasets.txt;
+                @PathExperimentalDataFiles      	Path_to_Exp_Datasets.txt;
+
+                @ListOfTarget_lnA                      	5	21	23	32	33	34  ;
+                @ListOfTarget_Beta                      5       21      23      32      33      34  ;
+                @ListOfTarget_E_over_R                  5       21      23      32      33      34  ;
+
+                @ListOfTargetUncertaintyFactors         5       21      23      32      33      34  ;
+                @ListOfUncertaintyFactors               0.2	0.2	0.3	0.4	0.3	0.3 ;
+
+                @ListOfTarget_ThirdBody_Reactions       21	34	;
+                @ListOfTarget_ThirdBody_Species         H2O	H2O	;
+                @ListOfMaxAbs_ThirdBody_Eff             22	22	;
+                @ListOfMinAbs_ThirdBody_Eff             1	6	;
+}
+Dictionary KINPREPRO
+{
+                @Kinetics               		../../../mechanisms/Aramco_2.0/Kinetics.CKI;
+                @Thermodynamics         		../../../mechanisms/Aramco_2.0/TH.CKT;
+                @Transport              		../../../mechanisms/Aramco_2.0/TRAN.TRC;
+                @Output                 		kinetics;
+}
+Dictionary dakota_options
+{
+                @TabularDataFile                	tabular_data.dat;
+                @Method                         	coliny_ea;
+                @MaxIterations                  	1000;
+                @MaxFunctionEvaluations        		10000;
+                @ConvergenceTolerance           	1e-8;
+                @SolutionTarget                 	1e-6;
+                @Seed                           	1000;
+                @FitnessType                    	linear_rank;
+                @CrossoverType                  	uniform;
+                @MutationType                   	offset_normal;
+                @MutationRate                   	0.5;
+                @CrossoverRate                  	0.65;
+                @ReplacementType                	chc=50;
+                @PopulationSize                 	100;
+}
+Dictionary curve_matching_options
+{
+                //@numberOfBootstrapVariations 20;
+                @lineUpMaxima true;
+                @useSumOfIndexesForAlignment true;
+                @fractionOfExpRangeForModelExtrapolation 0.0;
+}

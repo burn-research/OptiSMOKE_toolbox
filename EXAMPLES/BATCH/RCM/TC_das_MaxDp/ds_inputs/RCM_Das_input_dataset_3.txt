@@ -1,0 +1,7 @@
+cases/Das_0_70_1010/input.dic
+cases/Das_0_70_996/input.dic
+cases/Das_0_70_974/input.dic
+cases/Das_0_70_962/input.dic
+cases/Das_0_70_946/input.dic
+cases/Das_0_70_933/input.dic
+cases/Das_0_70_915/input.dic

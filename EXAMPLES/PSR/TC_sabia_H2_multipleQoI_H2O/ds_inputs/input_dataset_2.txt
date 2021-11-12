@@ -1,0 +1,17 @@
+cases/N2_47_CO2_47_H2O_0_T_825/input.dic
+cases/N2_47_CO2_47_H2O_0_T_842/input.dic
+cases/N2_47_CO2_47_H2O_0_T_849/input.dic
+cases/N2_47_CO2_47_H2O_0_T_865/input.dic
+cases/N2_47_CO2_47_H2O_0_T_877/input.dic
+cases/N2_47_CO2_47_H2O_0_T_897/input.dic
+cases/N2_47_CO2_47_H2O_0_T_903/input.dic
+cases/N2_47_CO2_47_H2O_0_T_916/input.dic
+cases/N2_47_CO2_47_H2O_0_T_929/input.dic
+cases/N2_47_CO2_47_H2O_0_T_938/input.dic
+cases/N2_47_CO2_47_H2O_0_T_943/input.dic
+cases/N2_47_CO2_47_H2O_0_T_960/input.dic
+cases/N2_47_CO2_47_H2O_0_T_963/input.dic
+cases/N2_47_CO2_47_H2O_0_T_980/input.dic
+cases/N2_47_CO2_47_H2O_0_T_987/input.dic
+cases/N2_47_CO2_47_H2O_0_T_998/input.dic
+cases/N2_47_CO2_47_H2O_0_T_1007/input.dic

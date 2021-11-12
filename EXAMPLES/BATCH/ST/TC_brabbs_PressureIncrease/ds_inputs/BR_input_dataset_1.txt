@@ -1,0 +1,14 @@
+cases/BR_T_955.0/input.dic
+cases/BR_T_961.0/input.dic
+cases/BR_T_969.0/input.dic
+cases/BR_T_980.0/input.dic
+cases/BR_T_1026.0/input.dic
+cases/BR_T_1029.0/input.dic
+cases/BR_T_1067.0/input.dic
+cases/BR_T_1070.0/input.dic
+cases/BR_T_1073.0/input.dic
+cases/BR_T_1110.0/input.dic
+cases/BR_T_1146.0/input.dic
+cases/BR_T_1207.0/input.dic
+cases/BR_T_1243.0/input.dic
+cases/BR_T_1248.0/input.dic

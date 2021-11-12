@@ -1,0 +1,49 @@
+Dictionary BatchReactor
+{
+    @KineticsFolder            /Users/andrea/Dropbox/MyProjects/TB_PLOG/my_mechs/MECHS/cases;
+		@Type                   NonIsothermal-ConstantVolume;
+		@InitialStatus          initial-mixture;
+		@OdeParameters          ode-OpenSMOKE;
+		@EndTime                0.015 s;
+		@Volume                 1 m3;
+		@Options                Output-options;
+        @IgnitionDelayTimes        ignition-delay-times;  
+		@SensitivityAnalysis	sensitivity-options;  
+}		
+Dictionary initial-mixture
+{
+   @Temperature   1232 K       ;
+   @Pressure      4 bar     ;
+   @MoleFractions  H2      0.1275
+                   O2      0.1517
+                   N2      0.5708
+                   H2O     0.15;
+}
+Dictionary ode-OpenSMOKE
+{
+		@OdeSolver OpenSMOKE;
+		@AbsoluteTolerance 1e-14;    
+		@RelativeTolerance 1e-7;     
+}
+Dictionary ignition-delay-times
+{
+        @Temperature		true;
+        @Pressure           false;
+        @Species            OH;
+    	@SpeciesSlope   	true;
+} 
+Dictionary sensitivity-options
+{	
+		@Type                       arrhenius-parameters;
+		@DenseSolver 	            Eigen;
+		@DenseFullPivoting 	    false;
+		@SubSteps 		    5;
+		@Species                    H2;
+}
+Dictionary Output-options
+{
+   		@OutputFolder           Output;
+   		@StepsFile              1;
+   		@OutputSpecies          OH;
+   		@VerboseXMLFile         false;
+}

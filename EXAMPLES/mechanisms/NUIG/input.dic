@@ -1,0 +1,27 @@
+//-----------------------------------------------------------------//
+//     ____                    ______ __  __  ____  _  ________    //
+//    / __ \                  /  ___ |  \/  |/ __ \| |/ /  ____|   //
+//   | |  | |_ __   ___ _ __ |  (___ | \  / | |  | | ' /| |__      //
+//   | |  | | '_ \ / _ \ '_ \ \___  \| |\/| | |  | |  < |  __|     //
+//   | |__| | |_) |  __/ | | |____)  | |  | | |__| | . \| |____    //
+//    \____/| .__/ \___|_| |_|______/|_|  |_|\____/|_|\_\______|   //
+//         | |                                                     //
+//         |_|                                                     //
+//                                                                 //
+//                http://www.opensmoke.polimi.it/                  //
+//             http://creckmodeling.chem.polimi.it/                //
+//-----------------------------------------------------------------//
+Dictionary CHEMKIN_PreProcessor
+{
+		@Thermodynamics 	h2_co_nuig_therm.dat;
+		@Kinetics 		h2_co_nuig_chem.inp;
+		@Transport 		h2_co_nuig_tran.dat;
+		@Output			Aramco_FSA;
+		@Comments 		CRECK-Signature;
+}
+Dictionary CRECK-Signature
+{
+	@Author 	National University of Ireland Galway;
+	@Place  	Galway (Ireland);
+	@Comments	This kinetic mechanism can be downloaded at: c3.nuigalway.ie/aramco2/download.html   ;
+}

@@ -1,0 +1,24 @@
+Dictionary PerfectlyStirredReactor
+{
+    @KineticsFolder            /Users/andrea/Dropbox/KINETIC_MECHANISMS/PRE_PROCESSED/cases;
+		@Type			Isothermal-ConstantPressure;
+		@InletStatus            inlet-mixture;
+		@ResidenceTime		0.3191688890000000 s;
+		@Volume                	33510 mm3;
+		@Options		output-options;
+}
+Dictionary inlet-mixture
+{
+       @Temperature        1153.3333330000000387 K;
+		@Pressure      		101325. Pa ;
+       @MoleFractions  NO      	0.0008000000000000
+                       NH3      	0.0019200000000000
+                       O2          0.0160000000000000
+                       N2          0.9812800000000000;
+}
+Dictionary output-options
+{
+    		@OutputFolder     	Output  ;
+    		@StepsFile 		1;   	
+    		@OutputSpecies   	NO NH3 N2O; 	
+}

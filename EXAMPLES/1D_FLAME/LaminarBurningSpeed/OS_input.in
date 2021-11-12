@@ -1,0 +1,87 @@
+//------------------------------------------------------------//
+//     ____            _  ______ __  __  ____  _  ________    //
+//    / __ \       _  (_)/  ____|  \/  |/ __ \| |/ /  ____|   //
+//   | |  | |_ __ | |_ _ | (___ | \  / | |  | | ' /| |__      //
+//   | |  | | '_ \|  _| |\___  \| |\/| | |  | |  < |  __|     //
+//   | |__| | |_) | |_| |____)  | |  | | |__| | . \| |____    //
+//    \____/| .__/\___|_|______/|_|  |_|\____/|_|\_\______|   //
+//          | |                                               //
+//          |_|                                               //
+//                                                            //
+//    Author: Magnus Fürst     <magnus.furst@ulb.ac.be>       //
+//    Author: Andrea Bertolino <andrea.bertolino@ulb.ac.be>   //
+//------------------------------------------------------------//
+Dictionary OptimizationSetup
+{
+                @NominalKineticsPreProcessor    KINPREPRO;
+                @KineticsFolder                 ../../mechanisms/GLOBAL;
+		@NameOfOptimizedKineticsFolder  OPTIMAL_MECH;
+		
+		@Debug false;
+                @DebugSim false;	
+	
+                @NumberOfBatchDatasets                  0 ;
+                @NumberOfPlugFlowDatasets               0 ;
+                @NumberOfPerfectlyStirredDatasets       0 ;
+		@NumberOfLaminarFlameDatasets           3 ;
+
+                @ParametersBoundaries           Narrow;
+                @ObjectiveFunctionType          CurveMatching;
+                @Parameters_Distribution        uniform ;
+		@AcceptedSigmaInKDistribution   3;
+		@SigmaExpDistribution           3;
+                @UseBootStrap                   true;
+                @NumberOfBootstrapVariations    1;
+                @PrintIndexes                   false;
+                @PrintSplines                   false;
+                @PrintBootstrap                 false;
+
+                @DakotaOptions                  dakota_options;
+                @CurveMatchingOptions           curve_matching_options;
+
+                @PathDatasetInputFiles          Path_to_Input_Datasets.txt;
+                @PathExperimentalDataFiles      Path_to_Exp_Datasets.txt;
+
+                @ListOfTarget_lnA              	1	2	3	4 ;
+                @ListOfTarget_Beta            	3 ;
+                @ListOfTarget_E_over_R        	1 	2	3	4 ;
+                
+		//@ListOfTarget_classic_PLOG_Reactions    24      111     112	143;
+		//@ListOfUncertaintyFactors_classic_PLOG  0.3     0.5     0.5	0.3;                
+
+		@ListOfTargetUncertaintyFactors         1 	2 	3 	4 ;
+                @ListOfUncertaintyFactors               0.5 	0.5	0.5 	0.5;
+
+}
+Dictionary KINPREPRO
+{
+		@Thermodynamics         ../../mechanisms/GLOBAL/thermo30.dat;
+                @Kinetics               ../../mechanisms/GLOBAL/four_steps.inp;
+                @Transport              ../../mechanisms/GLOBAL/transport.dat;
+		@Output                 kinetics;
+}
+Dictionary dakota_options
+{
+                @TabularDataFile                        tabular_data.dat;
+                @Method                                 coliny_ea;
+                @MaxIterations                          100;
+                @MaxFunctionEvaluations                 10000;
+                @ConvergenceTolerance                   1e-8;
+                @SolutionTarget                         1e-6;
+                @Seed                                   1000;
+                @FitnessType                            linear_rank;
+                @CrossoverType                          uniform;
+                @MutationType                           offset_normal;
+                @MutationRate                           0.5;
+                @CrossoverRate                          0.65;
+                @ReplacementType                        chc=50;
+                @PopulationSize                         100;
+}
+Dictionary curve_matching_options
+{
+                //@numberOfBootstrapVariations 20;
+                @lineUpMaxima true;
+                @useSumOfIndexesForAlignment true;
+                @fractionOfExpRangeForModelExtrapolation 0.0;
+}
+ 

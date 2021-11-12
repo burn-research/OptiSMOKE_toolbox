@@ -1,0 +1,5 @@
+cases/Das_10_10_1048/input.dic
+cases/Das_10_10_1041/input.dic
+cases/Das_10_10_1023/input.dic
+cases/Das_10_10_1008/input.dic
+cases/Das_10_10_996/input.dic

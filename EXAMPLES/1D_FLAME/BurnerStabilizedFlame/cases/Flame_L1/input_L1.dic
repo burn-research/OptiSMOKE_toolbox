@@ -1,0 +1,66 @@
+//-----------------------------------------------------------------//
+//     ____                    ______ __  __  ____  _  ________    //
+//    / __ \                  /  ___ |  \/  |/ __ \| |/ /  ____|   //
+//   | |  | |_ __   ___ _ __ |  (___ | \  / | |  | | ' /| |__      //
+//   | |  | | '_ \ / _ \ '_ \ \___  \| |\/| | |  | |  < |  __|     //
+//   | |__| | |_) |  __/ | | |____)  | |  | | |__| | . \| |____    //
+//    \____/| .__/ \___|_| |_|______/|_|  |_|\____/|_|\_\______|   //
+//         | |                                                     //
+//         |_|                                                     //
+//                                                                 //
+//                http://www.opensmoke.polimi.it/                  //
+//             http://creckmodeling.chem.polimi.it/                //
+//-----------------------------------------------------------------//
+Dictionary PremixedLaminarFlame1D
+{
+	@Type			BurnerStabilized;
+	@KineticsFolder    	../mech_red/;
+	
+	@InletStream 		inlet-stream;
+	@OutletStream		outlet-stream;
+	
+	@InletVelocity		105.45 cm/s;
+	
+	@Grid			grid;
+	
+	@Output			Output_L1;
+	
+	@FixedTemperatureProfile T-Profile;
+
+	@UseDaeSolver		true;
+	@Soret        true;
+	@Radiation    true;
+	@EnvironmentTemperature  398 K;
+	@Backup    cases/Flame_L1/Output.xml;
+}
+Dictionary inlet-stream
+{
+	@MoleFractions		H2  0.1101 CH4 0.0406 CO  0.0096 O2  0.1763 N2  0.6634  ;
+	@Temperature	500.92 K;
+	@Pressure		0.075 bar;
+}
+Dictionary outlet-stream
+{
+	@Moles			H2O 1 
+					N2  2;
+	@Temperature   1746.654632 K;
+	@Pressure	    0.075 bar;
+}
+Dictionary grid
+{
+	@Length				50 mm;
+	@InitialPoints			20;
+	@Type				equispaced;
+	@MaxPoints		600;
+	@MaxAdaptivePoints	15;
+	@GradientCoefficient	0.05;
+	@CurvatureCoefficient	0.5;
+}
+Dictionary T-Profile
+{	
+	@XVariable length;
+	@YVariable temperature;
+	@XUnits mm;
+	@YUnits K;
+	@Profile 0 500.921486 2.3 580.9214286 3.3 650.92 4.3 740.92 5.1 851.8673223 6.1 1104.07246 7.1 1362.309473 8.1 1622.26049 9.1 1795.129896 10.1 1902.408373 11.1 1921.566117 12.1 1925.401619 13.1 1925.401619 14.1 1922.459818 15.1 1919.015 16.1 1915.818907 17.1 1911.991473 18.1 1907.52065 19.1 1903.446692 20.1 1899.223333 21.1 1895.252391 22.1 1890.39747 24.1 1879.675406 29.1 1854.744854 34.1 1828.800474 39.1 1803.715216 44.1 1777.550441 49.1 1751.367552 50 1746.654632 ; 
+}

@@ -1,0 +1,15 @@
+cases/Herbinet_H2O_308.1/input.dic
+cases/Herbinet_H2O_313.1/input.dic
+cases/Herbinet_H2O_318.1/input.dic
+cases/Herbinet_H2O_323.1/input.dic
+cases/Herbinet_H2O_328.1/input.dic
+cases/Herbinet_H2O_333.1/input.dic
+cases/Herbinet_H2O_337.6/input.dic
+cases/Herbinet_H2O_343.1/input.dic
+cases/Herbinet_H2O_348.1/input.dic
+cases/Herbinet_H2O_353.1/input.dic
+cases/Herbinet_H2O_372.1/input.dic
+cases/Herbinet_H2O_396.1/input.dic
+cases/Herbinet_H2O_421.1/input.dic
+cases/Herbinet_H2O_466.1/input.dic
+cases/Herbinet_H2O_514.1/input.dic

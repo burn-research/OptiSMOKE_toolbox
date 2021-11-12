@@ -1,0 +1,43 @@
+Dictionary PerfectlyStirredReactor
+{
+    @KineticsFolder            /Users/andrea/Dropbox/KINETIC_MECHANISMS/PRE_PROCESSED/cases;
+		@Type                   		NonIsothermal-ConstantPressure;		
+		@InletStatus            		Inlet-Composition;		   
+    	@ResidenceTime          		0.5 s ;    
+		@Volume                 		113 cm3 ;   
+		@ExchangeArea 				113 cm2 ;
+    @GlobalThermalExchangeCoefficient      75.3119999999999976         W/m2/K ;
+		@Options                		output-options;       
+	    @OdeParameters          		ode;
+		//@SensitivityAnalysis			sensitivity;
+}
+Dictionary Inlet-Composition
+{
+    @Temperature                           895.0000000000000000         K   ;
+		@Pressure      			1.2 atm;
+    @MoleFractions     H2                  0.0300000000000000
+                       O2                  0.0300000000000000
+                       N2                  0.0000000000000000
+                       CO2                 0.3008000000000000
+                       H2O                 0.0000000000000000
+                       AR                 0.6392000000000000;
+}
+Dictionary output-options
+{	
+		@OutputFolder    Output;
+		@StepsFile       5;
+}
+Dictionary ode
+{
+	@RelativeTolerance		1.e-8;
+	@AbsoluteTolerance		1.e-16;
+	@MaximumNumberOfSteps		10000;
+}
+Dictionary sensitivity
+{
+	@Species			H2 O2 CO;
+	@Type 				arrhenius-parameters; 	
+	@DenseSolver 			Eigen;
+	@DenseFullPivoting 		false;
+	@SubSteps 			5;
+}

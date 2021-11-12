@@ -1,0 +1,13 @@
+cases/T_373/input.dic
+cases/T_423/input.dic
+cases/T_473/input.dic
+cases/T_498/input.dic
+cases/T_503/input.dic
+cases/T_510/input.dic
+cases/T_523/input.dic
+cases/T_548/input.dic
+cases/T_573/input.dic
+cases/T_623/input.dic
+cases/T_673/input.dic
+cases/T_723/input.dic
+cases/T_773/input.dic
