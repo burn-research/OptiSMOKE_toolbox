@@ -1,0 +1,14 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # run from this directory
+set -x
+
+# fix permissions (NB: '+X' and not '+x'!)
+chmod a+rX ../doc doxygen
+
+# run the doxygen generator
+doxygen/Allwmake
+
+#create link
+rm -f index.html
+ln -s doxygen/html/index.html index.html
+
