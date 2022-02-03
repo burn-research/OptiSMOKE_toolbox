@@ -15,6 +15,7 @@ projects/Linux/missing
 projects/Linux/stamp-h?
 projects/*/.DS_Store
 .vs/
+projects/Windows/
 
 #Files
 projects/*/config.log
