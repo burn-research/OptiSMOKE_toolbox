@@ -1,0 +1,17 @@
+aclocal
+automake --add-missing
+autoconf
+./configure \
+CXX=g++ \
+--enable-openmp=no \
+--prefix=/home/chimica2/tdinelli/OptiSMOKE/src/OptiSMOKE_toolbox/projects/exe_BovisaCluster/linux/gnu64-serial-mkl/ \
+--with-opensmoke=/home/chimica2/tdinelli/OptiSMOKE/src/OptiSMOKE_toolbox/src/OpenSMOKEpp-master \
+--with-eigen=/software/chimica2/libraries/eigen/eigen-3.3.4 \
+--with-rapidxml=/software/chimica2/libraries/rapidxml/rapidxml-1.13 \
+--with-boost-include=/software/chimica2/libraries/boost/boost-1.72.0-gcc-9.2.0/include/ \
+--with-boost-lib=/software/chimica2/libraries/boost/boost-1.72.0-gcc-9.2.0/lib/ \
+--with-dakota=/software/chimica2/libraries/dakota/dakota-6.10 \
+--with-mkl=/software/chimica2/libraries/intel/xe_2019/ \
+--with-ceq=/software/chimica2/libraries/ceq/libceq-gcc-9.2.0.a \
+--with-bzzmath-include=/software/chimica2/libraries/bzzmath/bzzmath-6.0/hpp/release-9.2.0/ \
+--with-bzzmath-lib=/software/chimica2/libraries/bzzmath/bzzmath-6.0/lib/release-9.2.0/libBzzMath6_GNU.a \
