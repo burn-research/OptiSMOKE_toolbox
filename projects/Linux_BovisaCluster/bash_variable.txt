@@ -1,0 +1,7 @@
+
+#export LD_LIBRARY_PATH=/home/chimica2/tdinelli/NumericalLibraries/openblas/lib:$LD_LIBRARY_PATH
+#export LD_LIBRARY_PATH=/software/chimica2/libraries/intel/xe_2019/lib/intel64/:$LD_LIBRARY_PATH
+#export LD_LIBRARY_PATH=/software/chimica2/libraries/boost/boost-1.72.0-gcc-9.2.0/lib:$LD_LIBRARY_PATH
+#export LD_LIBRARY_PATH=/software/chimica2/libraries/dakota/dakota-6.10/lib:$LD_LIBRARY_PATH
+#export LD_LIBRARY_PATH=/software/chimica2/tools/gcc/gcc-9.2.0/lib64:$LD_LIBRARY_PATH
+

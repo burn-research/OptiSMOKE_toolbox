@@ -1,0 +1,38 @@
+
+export PATH=/software/chimica2/libraries/dakota/dakota-6.5/bin:/software/chimica2/libraries/dakota/dakota-6.5/test:$PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/software/chimica2/libraries/dakota/dakota-6.5/lib:/software/chimica2/libraries/dakota/dakota-6.5/bin
+set-dakota-6.5
+# OpenBLAS
+#export LD_LIBRARY_PATH=/software/chimica2/libraries/openblas/openblas-0.2.18/lib/:$LD_LIBRARY_PATH
+# Radu
+#export LD_LIBRARY_PATH=/software/chimica2/libraries/radau/radau-gcc-4.8.2/lib/:$LD_LIBRARY_PATH
+#Boost
+#export LD_LIBRARY_PATH=/software/chimica2/libraries/boost/boost-1.69.0-gcc-4.8.5/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/software/chimica2/libraries/boost/boost-1.64.0-gcc-6.3.0/lib/:$LD_LIBRARY_PATH
+# xe_2018
+export LD_LIBRARY_PATH=/software/chimica2/libraries/intel/xe_2018/lib/intel64:$LD_LIBRARY_PATH
+# Rapidxml 1.13
+export LD_LIBRARY_PATH=/software/chimica2/libraries/rapidxml/rapidxml-1.13:$LD_LIBRARY_PATH
+# Eigen 3.3.4
+export LD_LIBRARY_PATH=/software/chimica2/libraries/eigen/eigen-3.3.4:$LD_LIBRARY_PATH
+# Sundials
+export LD_LIBRARY_PATH=/software/chimica2/libraries/sundials/sundials-3.1.0-opensmoke++/serial-gcc-4.8.5/lib/:$LD_LIBRARY_PATH
+# Suitesparse
+export LD_LIBRARY_PATH=/software/chimica2/libraries/suitesparse/suitesparse-5.1.0-gcc-6.3.0/lib:$LD_LIBRARY_PATH
+#export EIGEN_LIBRARY_PATH=/software/chimica2/libraries/eigen/eigen-3.3.4
+#export BOOST_LIBRARY_PATH=/software/chimica2/libraries/boost/boost-1.65.1-gcc-6.3.0
+#export BOOST_LIBRARY_PATH=/software/chimica2/libraries/boost/boost-1.69.0-gcc-4.8.5
+#export RAPIDXML_LIBRARY_PATH=/software/chimica2/libraries/rapidxml/rapidxml-1.13
+export NLOPT_LIBRARY_PATH=/software/chimica2/libraries/nlopt/nlopt-2.4.2
+
+#OFdev
+#export PATH=/software/chimica2/tools/gcc/gcc-6.3.0/bin:$PATH; 
+#export LD_LIBRARY_PATH=/software/chimica2/tools/gcc/gcc-6.3.0/lib64:$LD_LIBRARY_PATH
+#set-gcc-5.4
+export PATH=/software/chimica2/tools/gcc/gcc-6.3.0/bin:$PATH
+export LD_LIBRARY_PATH=/software/chimica2/tools/gcc/gcc-6.3.0/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/software/chimica2/libraries/isl/isl-0.18/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/software/chimica2/libraries/mpc/mpc-1.0.3/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/software/chimica2/libraries/mpfr/mpfr-3.1.5/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/software/chimica2/libraries/gmp/gmp-6.1.2/lib:$LD_LIBRARY_PATH
+
