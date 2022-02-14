@@ -39,17 +39,17 @@ AC_CHECK_FILE([${with_opensmoke_include_path}/OpenSMOKEpp], [],
 OPENSMOKEPP_INCLUDE_DIR="-I$with_opensmoke_include_path -I../../src"
 
 # ---------------------------------------------------------------------------------------------------------------------------------------
-# Add OpenSMOKE++ solvers (compulsory)
+# Add OpenSMOKE++ solvers (compulsory) At the moment we are not sure that the solvers need to linked
 # ---------------------------------------------------------------------------------------------------------------------------------------
-AC_ARG_WITH([opensmokeppsolvers], [AS_HELP_STRING([--with-opensmokepp-solvers=DIR], 
-            [installation prefix for OpenSMOKE++ solvers])], 
-            [with_opensmokeppsolvers_include_path=$with_opensmokeppsolvers/src],
-	    AC_MSG_ERROR([Please use --with-opensmokepp-solvers to provide the path to OpenSMOKE++ solvers. Ask alberto.cuoci@polimi.it for the most recent version of OpenSMOKE++ solvers]))
+#AC_ARG_WITH([opensmokeppsolvers], [AS_HELP_STRING([--with-opensmokepp-solvers=DIR], 
+#            [installation prefix for OpenSMOKE++ solvers])], 
+#            [with_opensmokeppsolvers_include_path=$with_opensmokeppsolvers/src],
+#	    AC_MSG_ERROR([Please use --with-opensmokepp-solvers to provide the path to OpenSMOKE++ solvers. Ask alberto.cuoci@polimi.it for the most recent version of OpenSMOKE++ solvers]))
 
-AC_CHECK_FILE([${with_opensmokeppsolvers_include_path}/thermodynamicequilibrium/ThermodynamicEquilibrium.h], [], 
-              AC_MSG_ERROR([Include file ThermodynamicEquilibrium.h not found. Ask alberto.cuoci@polimi.it for the most recent version of OpenSMOKE++ solvers]))
+#AC_CHECK_FILE([${with_opensmokeppsolvers_include_path}/thermodynamicequilibrium/ThermodynamicEquilibrium.h], [], 
+#              AC_MSG_ERROR([Include file ThermodynamicEquilibrium.h not found. Ask alberto.cuoci@polimi.it for the most recent version of OpenSMOKE++ solvers]))
 
-OPENSMOKEPPSOLVERS_INCLUDE_DIR="-I$with_opensmokeppsolvers_include_path/thermodynamicequilibrium"
+#OPENSMOKEPPSOLVERS_INCLUDE_DIR="-I$with_opensmokeppsolvers_include_path/thermodynamicequilibrium"
 
 # ---------------------------------------------------------------------------------------------------------------------------------------
 # Add Eigen library (compulsory)
@@ -146,15 +146,15 @@ AS_IF([test "$SYSTEM_BOOST" = "no"], [
 # Add Intel MKL library (compulsory)
 # ---------------------------------------------------------------------------------------------------------------------------------------
 
-AC_ARG_WITH([eigen], [AS_HELP_STRING([--with-eigen=DIR], 
-            [installation prefix for Eigen libraries])], 
-            [with_eigen_include_path=$with_eigen],
-	    AC_MSG_ERROR([Please use --with-eigen to provide the path to Eigen. Try downloading the Eigen libraries from http://eigen.tuxfamily.org/index.php?title=Main_Page]))
+USE_MKL=" -DOPENSMOKE_USE_MKL=0 "
+MKL_INCLUDE_DIR=""
+MKL_LIBS=""
 
 AC_ARG_WITH([mkl], [AS_HELP_STRING([--with-mkl=DIR], 
             [installation prefix for Intel MKL libraries])], 
             [ with_mkl_include_path=$with_mkl/include; 
-	      with_mkl_lib_path=$with_mkl/lib/intel64; 
+	      with_mkl_lib_path=$with_mkl/lib/intel64;
+              USE_MKL=" -DOPENSMOKE_USE_MKL=1 "; 
 	      MKL_INCLUDE_DIR=" -I$with_mkl_include_path "; 
 	      MKL_LIBS=" -Wl,--no-as-needed -L$with_mkl_lib_path -lmkl_intel_lp64 -lmkl_core -lmkl_sequential "; ] ,
              AC_MSG_ERROR([Please use --with-mkl to provide the path to Intel MKL. Try downloading the Intel MKL libraries from https://software.intel.com/en-us/intel-mkl]) )
@@ -166,16 +166,20 @@ AC_CHECK_FILE([${with_mkl_include_path}/mkl.h], [],
 # Add BzzMath library (compulsory)
 # ---------------------------------------------------------------------------------------------------------------------------------------
 
+USE_BZZMATH=" -DOPENSMOKE_USE_BZZMATH=0 "
+BZZMATH_INCLUDE_DIR=""
+BZZMATH_LIBS=""
+
 AC_ARG_WITH([bzzmath-include], [AS_HELP_STRING([--with-bzzmath-include=DIR], 
             [installation prefix (include) for BzzMath libraries])], 
-            [ with_bzzmath_include_path=$with_bzzmath_include;BZZMATH_INCLUDE_DIR=" -I$with_bzzmath_include_path ";
+            [ with_bzzmath_include_path=$with_bzzmath_include;USE_BZZMATH=" -DOPENSMOKE_USE_BZZMATH=1 ";BZZMATH_INCLUDE_DIR=" -I$with_bzzmath_include_path ";
 
 AC_CHECK_FILE([${with_bzzmath_include_path}/BzzMath.hpp], [], 
               AC_MSG_ERROR([Include file BzzMath.hpp not found. Try downloading the BzzMath libraries from http://super.chem.polimi.it/download/bzzmath-download])) ])
 
 AC_ARG_WITH([bzzmath-lib], [AS_HELP_STRING([--with-bzzmath-lib=PATH], 
             [path to the BzzMath libraries])], 
-            [ with_bzzmath_lib_path=$with_bzzmath_lib; BZZMATH_LIBS=" $with_bzzmath_lib_path ";
+            [ with_bzzmath_lib_path=$with_bzzmath_lib; USE_BZZMATH=" -DOPENSMOKE_USE_BZZMATH=1 ";BZZMATH_LIBS=" $with_bzzmath_lib_path ";
 
 AC_CHECK_FILE([${with_bzzmath_lib_path}], [], 
 	      AC_MSG_ERROR([Library file ${with_bzzmath_lib_path} not found. Try downloading the BzzMath libraries from http://super.chem.polimi.it/download/bzzmath-download])) ])
@@ -211,11 +215,11 @@ AC_CHECK_FILE([${with_dakota_path}], [],
              AC_MSG_ERROR([Library path ${with_dakota_path} not found. Try downloading the Dakota library from https://dakota.sandia.gov/downloads]))
 
 DAKOTA_INCLUDE_DIR=" -I${with_dakota_path}/include "
-DAKOTA_LIBS=" -L${with_dakota_path}/lib -l3po -lamplsolver -lapproxnn -lcolin -lconmin -lcport -ldakota_dll_api -ldakota_src_fortran -ldakota_src -ldakota_surrogates -ldakota_util -lddace -ldfftpack -ldream -leutils -lfsudace -lhopspack -linterfaces -ljega_fe -ljega -llhs_mod -llhs_mods -llhs -lmoga -lncsuopt -lnidr -lnomad -loptpp -lpebbl -lpecos_src -lpecos_util -lpsuade -lscolib -lsoga -lsparsegrid -lsurfpack_c_interface -lsurfpack_fortran -lsurfpack_interpreter -lsurfpack -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosparser -lteuchoscore -lteuchosremainder -ltinyxml -lutilib -lutilities";
+DAKOTA_LIBS="-L${with_dakota_path}/lib -l3po -lamplsolver -lapproxnn -lcolin -lconmin -lcport -ldakota_dll_api -ldakota_src_fortran -ldakota_src -lddace -ldfftpack -ldream -leutils -lfsudace -lhopspack -linterfaces -ljega_fe -ljega -llhs_mod -llhs_mods -llhs -lmoga -lncsuopt -lnidr -lnomad -loptpp -lpebbl -lpecos_util -lpecos_src -lpsuade -lscolib -lsoga -lsurfpack_c_interface -lsurfpack_fortran -lsurfpack_interpreter -lsurfpack -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosparser -lteuchoscore -lteuchosremainder -ltinyxml -lutilib -lutilities";
 
 #Compulsory libraries
 AC_SUBST(OPENSMOKEPP_INCLUDE_DIR)
-AC_SUBST(OPENSMOKEPPSOLVERS_INCLUDE_DIR)
+# AC_SUBST(OPENSMOKEPPSOLVERS_INCLUDE_DIR)
 AC_SUBST(EIGEN_INCLUDE_DIR)
 AC_SUBST(RAPIDXML_INCLUDE_DIR)
 AC_SUBST(BOOST_INCLUDE_DIR)
@@ -238,7 +242,7 @@ AC_SUBST(CEQ_LIBS)
 USE_EXTERNAL_LIBRARIES=""
 AC_SUBST(USE_EXTERNAL_LIBRARIES)
 
-COMPULSORY_INCLUDE_DIRS="$OPENSMOKEPP_INCLUDE_DIR $OPENSMOKEPPSOLVERS_INCLUDE_DIR $EIGEN_INCLUDE_DIR $RAPIDXML_INCLUDE_DIR $BOOST_INCLUDE_DIR $DAKOTA_INCLUDE_DIR"
+COMPULSORY_INCLUDE_DIRS="$OPENSMOKEPP_INCLUDE_DIR $EIGEN_INCLUDE_DIR $RAPIDXML_INCLUDE_DIR $BOOST_INCLUDE_DIR $DAKOTA_INCLUDE_DIR"
 AC_SUBST(COMPULSORY_INCLUDE_DIRS)
 
 EXTERNAL_INCLUDE_DIRS="$BZZMATH_INCLUDE_DIR $UMFPACK_INCLUDE_DIR $SUPERLU_INCLUDE_DIR $SUNDIALS_INCLUDE_DIR"
