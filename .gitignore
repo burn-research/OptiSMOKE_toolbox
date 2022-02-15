@@ -14,8 +14,10 @@ projects/Linux/m4
 projects/Linux/missing
 projects/Linux/stamp-h?
 projects/*/.DS_Store
+projects/exe_BovisaCluster/
 
 #Files
 projects/*/config.log
 projects/*/NetSMOKEpp.sh
 .DS_Store
+src/OptiSMOKEpp.o
