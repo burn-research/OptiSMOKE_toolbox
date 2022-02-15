@@ -1264,6 +1264,8 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 						//std::shared_ptr<OpenSMOKE::Flame1D_Plugin> ciao_dario = std::make_shared<OpenSMOKE::Flame1D_Plugin>();
 						OpenSMOKE::Flame1D_Plugin* laminar_flames = new OpenSMOKE::Flame1D_Plugin;
 						std::vector<double> empty_vector;
+						
+						//std::cout << "\n Ci arrivo e forse crasho\n";
 
 						Sim_values[i][0][m]=laminar_flames->Setup_and_Solve(ObjectInput2.list_of_opensmoke_input_files[i][m], ObjectInput2.thermodynamicsMapXML, ObjectInput2.kineticsMapXML, ObjectInput2.transportMapXML, "LFS", empty_vector)[0];
 						

@@ -417,7 +417,7 @@ namespace OpenSMOKE
 		/**
 		*@brief Returns if the senstivity analysis was enabled or not
 		*/
-		bool sensitivity_analysis() const { }
+		bool sensitivity_analysis() const {return sensitivity_analysis_; }
 
 		/**
 		*@brief Prints the solution on a file

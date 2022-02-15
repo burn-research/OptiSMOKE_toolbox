@@ -3294,27 +3294,31 @@ namespace OpenSMOKE
 		std::ofstream fMonitoring;
 		fMonitoring.open((output_folder_ / "monitoring.out").string().c_str(), std::ios::out);
 		fMonitoring.setf(std::ios::scientific);
-
+		
 		// Initial solution
-		InitialSolutionFlameSpeed(dae_parameters, nls_parameters, false_transient_parameters);
 
+		InitialSolutionFlameSpeed(dae_parameters, nls_parameters, false_transient_parameters);
+				
 		// Monitoring
 		fMonitoring << grid_.Np() << "\t" << m_(0) / rho_(0)*100. << std::endl;
 
 		// Loop
 		unsigned int max_refinement_attempts_ = 1000;
 		for (unsigned int k = 1; k <= max_refinement_attempts_; k++)
-		{
+		{	
+			std::cout << "\n Sono in refinement status \n";
 			OpenSMOKE::Adapter_Grid1D_Status refinement_status;
 			refinement_status = RefineGrid(k);
 
 
 			if (refinement_status == OpenSMOKE::NO_ADDED_POINTS_BECAUSE_CRITERIA_SATISFIED)
 			{
+				std::cout << "\n criteria satisified \n";
 				break;
 			}
 			else
 			{
+				std::cout << "\n Sono dove fa Fixedtemp e CompleteSol \n";
 				// Without energy and mass flow rate
 				FixedTemperatureSolution(dae_parameters, nls_parameters, false_transient_parameters);
 
@@ -3323,7 +3327,7 @@ namespace OpenSMOKE
 			}
 
 			// Update statistics
-			//norm();
+			norm();
 
 			// Write current solution
 			{
@@ -3346,13 +3350,13 @@ namespace OpenSMOKE
 			if (refinement_status == OpenSMOKE::MAXIMUM_NUMBER_POINTS)
 				break;
 		}
-
+		
 		fMonitoring.close();
-
+		
 		// Print final solution
 		{
 			Print((output_folder_ / "Solution.final.out").string().c_str());
-
+			
 			// Polimi soot
 			if (is_polimi_soot_ == true)
 				PrintSoot(output_folder_);
@@ -3360,15 +3364,18 @@ namespace OpenSMOKE
 			// On the fly post-processing
 			if (is_on_the_fly_post_processing_ == true)
 				PrintOnTheFlyPostProcessing();
-
+			
 			PrintXMLFile((output_folder_ / "Output.xml").string().c_str());
+			
 		}
-
+		
 		// Sensitivity Analysis
-		if (sensitivity_analysis() == true)
+		//if (sensitivity_analysis() == true)
+			// Sarebbe da mettere un avviso o un errore per modificare l'input file!!! TODO
 			//SensitivityAnalysis();
-
+		
 		return 1;
+		
 	}
 
 	int OpenSMOKE_PremixedLaminarFlame1D::SolveFlameSpeedFromScratchForOptimization(DaeSMOKE::DaeSolver_Parameters& dae_parameters,
@@ -3471,7 +3478,8 @@ namespace OpenSMOKE
 
 		// Sensitivity Analysis (TODO)
 		if (sensitivity_analysis() == true)
-			SensitivityAnalysis();
+			// Sarebbe da mettere warning su errore o input come sopra TODO
+			//SensitivityAnalysis();
 		
 		std::cout<<"The address of wall T function "<< wall_heat_temperature_profile_ << std::endl;
 		return 1;
