@@ -138,6 +138,12 @@ namespace OpenSMOKE
                 OpenSMOKE::VECTOR_STRING,
                 "List of diverse inputs that can be given to other Dakota optimization methods.",
                 false));
+
+	    AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Gradient",
+                OpenSMOKE::SINGLE_BOOL,
+                "Activate gradient for the Optimization method (default: false)",
+                false));
+
 		}
 	};
 }

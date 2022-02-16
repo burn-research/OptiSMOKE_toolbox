@@ -175,17 +175,17 @@ namespace OpenSMOKE
                 OpenSMOKE::SINGLE_INT,
                 "Number of laminar flame datasets",
                 false,"none","none","@TypeOfReactor"));
-
+		// non si usa più Quantity
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@QuantityOfInterest",
                 OpenSMOKE::VECTOR_STRING,
                 "Specify Quantity of Interest. (tau | Species | LFS)",
                 false,"none","none","none"));
-
+		// non si usa più
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@CriteriaFortau",
                 OpenSMOKE::VECTOR_STRING,
                 "Criteria for calculating tau.",
                 false,"none","@QuantityOfInterest","none"));
-
+		//non si usa più
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@SpeciesOfInterest",
                 OpenSMOKE::VECTOR_STRING,
                 "Which species profile is used for the optimization.",
@@ -216,7 +216,7 @@ namespace OpenSMOKE
                 "File including the path for list of input files",
                 true,"@ListOfOpenSMOKEInputFiles @PathDatasetInputFiles","none","@ListOfOpenSMOKEInputFiles @PathDatasetInputFiles"));
 
-            // list of constraints
+            // list of constraints gli posso dare k max e k min con un file di testo  
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfConstraints",
                 OpenSMOKE::SINGLE_STRING,
                 "File including the path for list of input files",
@@ -241,7 +241,7 @@ namespace OpenSMOKE
 		        OpenSMOKE::VECTOR_DOUBLE,
 		        "List of uncertainty factors",
 		        false,"none","@ListOfTargetUncertaintyFactors","none"));
-            
+            // limite a pressione infinito TROE se metto inf prende il limite di pressione infinita 
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfTargetUncertaintyFactors_inf",
                 OpenSMOKE::VECTOR_INT,
                 "List of reaction indices (starting from 1) for which uncertainty factors are defined",
@@ -395,11 +395,12 @@ namespace OpenSMOKE
                  "List of target reactions for activation temperatures (inf) (indices starting from 1)",
                  false,"none","none","@ListOfTarget_E_inf"));
 
+		// H+O2 TROE limite di alta e bassa pressione con thirdbody (questa è per ottimizzare le efficienze di terzo corpo)
 	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfTarget_ThirdBody_Reactions",
 		 OpenSMOKE::VECTOR_INT,
 		 "List of target third body reactions",
 		 false,"none","@ListOfTarget_ThirdBody_Species","none"));
-
+		// qua nelle thirdbody gli dici quale specie voglio ottimizzare
 	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfTarget_ThirdBody_Species",
 		 OpenSMOKE::VECTOR_STRING,
 		 "List of target third body species",
