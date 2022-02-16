@@ -343,6 +343,7 @@ namespace OpenSMOKE
 	std::string string_division;
 	std::string max_boxsize_limit;
 	std::string min_boxsize_limit;
+	bool gradient_option;
 	// String containing diverse input given to dakota
 	std::vector<std::string> diverse_dakota_input;
 

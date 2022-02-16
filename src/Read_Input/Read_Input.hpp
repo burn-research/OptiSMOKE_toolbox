@@ -1296,6 +1296,10 @@ namespace OpenSMOKE
 
 			if (dictionaries(dakota_options_dictionary).CheckOption("@DiverseInput") == true)
 				dictionaries(dakota_options_dictionary).ReadOption("@DiverseInput", diverse_dakota_input);
+			
+			gradient_option = false;	
+ 			if (dictionaries(dakota_options_dictionary).CheckOption("@Gradient") == true)
+                                dictionaries(dakota_options_dictionary).ReadBool("@Gradient", gradient_option);
 		}
 
 
@@ -3091,7 +3095,19 @@ namespace OpenSMOKE
 			dakota_options_string.append( "\n		  analysis_driver = 'plugin_opensmoke'");
 			dakota_options_string.append( "\n	responses,");
 			dakota_options_string.append( "\n		num_objective_functions = 1");
-			dakota_options_string.append( "\n		no_gradients");
+			
+			// Options to use other optimization method (gradient-based)
+
+			if (gradient_option == true){
+				dakota_options_string.append( "\n               numerical_gradients");
+				dakota_options_string.append( "\n               	method_source dakota");
+				dakota_options_string.append( "\n               	interval_type forward");
+				dakota_options_string.append( "\n               	fd_step_size = 1.e-5");
+			}
+			else{
+				dakota_options_string.append( "\n		no_gradients");
+			}
+
 			dakota_options_string.append( "\n		no_hessians");
 	}
 
