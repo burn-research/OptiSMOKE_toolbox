@@ -4,7 +4,7 @@ autoconf
 ./configure \
 CXX=g++ \
 --enable-openmp=no \
---prefix=/home/chimica2/tdinelli/OptiSMOKE/src/OptiSMOKE_toolbox/projects/exeTD/linux/gnu64-serial-mkl/ \
+--prefix=/home/chimica2/tdinelli/OptiSMOKE/src/OptiSMOKE_toolbox/projects/exe_Linux/linux/gnu64-serial-mkl/ \
 --with-opensmoke=/home/chimica2/tdinelli/OptiSMOKE/src/OptiSMOKE_toolbox/src/OpenSMOKEpp-master \
 --with-eigen=/software/chimica2/libraries/eigen/eigen-3.3.4 \
 --with-rapidxml=/software/chimica2/libraries/rapidxml/rapidxml-1.13 \

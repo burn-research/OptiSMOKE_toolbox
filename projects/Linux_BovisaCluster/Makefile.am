@@ -14,5 +14,5 @@ AM_LDFLAGS  =   @MKL_LIBS@ @BOOST_LIBS@ @DAKOTA_LIBS@ -lgfortran
 #List of programs
 bin_PROGRAMS = 	OptiSMOKEpp.sh
 
-OptiSMOKEpp_sh_SOURCES = ../../src/OptiSMOKEpp.cpp
+OptiSMOKEpp_sh_SOURCES = ../../src/OptiSMOKEpp.cpp ../../src/DirectApplicInterface.cpp
 OptiSMOKEpp_sh_LDADD = @EXTERNAL_LIBS@
