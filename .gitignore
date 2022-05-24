@@ -15,6 +15,7 @@ projects/Linux/missing
 projects/Linux/stamp-h?
 projects/*/.DS_Store
 projects/exe_BovisaCluster/
+projects/exe_Linux/
 src/.deps/
 #Files
 projects/*/config.log
