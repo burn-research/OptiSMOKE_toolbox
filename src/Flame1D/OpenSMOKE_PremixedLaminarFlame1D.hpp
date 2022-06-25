@@ -3306,7 +3306,6 @@ namespace OpenSMOKE
 		unsigned int max_refinement_attempts_ = 1000;
 		for (unsigned int k = 1; k <= max_refinement_attempts_; k++)
 		{	
-			std::cout << "\n Sono in refinement status \n";
 			OpenSMOKE::Adapter_Grid1D_Status refinement_status;
 			refinement_status = RefineGrid(k);
 
@@ -3318,7 +3317,7 @@ namespace OpenSMOKE
 			}
 			else
 			{
-				std::cout << "\n Sono dove fa Fixedtemp e CompleteSol \n";
+			
 				// Without energy and mass flow rate
 				FixedTemperatureSolution(dae_parameters, nls_parameters, false_transient_parameters);
 
@@ -3327,7 +3326,7 @@ namespace OpenSMOKE
 			}
 
 			// Update statistics
-			norm();
+			//norm();
 
 			// Write current solution
 			{

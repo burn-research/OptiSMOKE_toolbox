@@ -360,6 +360,7 @@ namespace OpenSMOKE
 	}
 
 	// Initialize from backup
+	
 	std::cout.setstate(std::ios_base::failbit); // Disable video output
 	bool use_userdefined_grid_for_backup = false;
 	if (dictionaries(main_dictionary_name_).CheckOption("@Backup") == true)
@@ -522,7 +523,6 @@ namespace OpenSMOKE
 	
 	if (flame_premixed->solver_type() == OpenSMOKE::OpenSMOKE_PremixedLaminarFlame1D::SOLVER_TYPE_FLAMESPEED)
 	{       
-		//std::cout << "\n sono dentro quello stupido solver \n";
 		// Solve only for a single flame
 		if (inlet_omega.size() == 1)
 		{	
@@ -534,7 +534,6 @@ namespace OpenSMOKE
 			std::cout.setstate(std::ios_base::failbit); // Disable video output
 			
 			flame_premixed->SolveFlameSpeedFromScratch(*dae_parameters, *nls_parameters, *false_transient_parameters);
-			//std::cout << "Ho finito figlio di puttana \n";	
 			time(&timerEnd);
 
 			std::cout << "Total time: " << difftime(timerEnd, timerStart) << " s" << std::endl;
@@ -547,8 +546,7 @@ namespace OpenSMOKE
 		std::vector<double> flame_speed_return(2,0); 
 		flame_speed_return[0] = flame_premixed->flame_speed()*100.;
 		clean_up();
-		//std::cout << "Debug \n ";
-        	//std::cout << flame_speed_return[0]<< std::endl;
+	
 		return flame_speed_return;
 	}
 
