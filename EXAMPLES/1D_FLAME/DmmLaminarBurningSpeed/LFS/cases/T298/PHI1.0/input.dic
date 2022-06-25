@@ -1,0 +1,41 @@
+Dictionary PremixedLaminarFlame1D
+{
+	@KineticsFolder         /home/chimica2/tdinelli/OptiSMOKE/src/OptiSMOKE_toolbox/EXAMPLES/1D_FLAME/DmmLaminarBurningSpeed/DMM_ridotto/kinetics/;
+	@Type			FlameSpeed;
+	@InletStream 			inlet-stream;
+	@OutletStream			outlet-stream;
+	@InletVelocity          40 cm/s;
+	@Grid                   grid;
+	@Output                 Output;
+	@UseDaeSolver			true;
+	@Backup                 cases/T298/PHI1.0/Output/Output.xml;
+	@DontUseBackupGrid		false;
+}
+
+Dictionary inlet-stream
+{
+	@Temperature   	298.00   K ;
+	@Pressure      	1.00 atm ;
+
+	@EquivalenceRatio	 	1.0;
+	@FuelMoles              DMM 1.00;
+	@OxidizerMoles			O2  0.21 N2 0.79;
+}
+
+Dictionary outlet-stream
+{
+	@Moles                  H2O 1 N2  2;
+	@Temperature            2300 K;
+	@Pressure               1.00 atm;
+}
+
+Dictionary grid
+{
+	@Length                 3 cm;
+	@InitialPoints		12;
+	@Type                   database;
+	@MaxPoints              500;
+	@MaxAdaptivePoints	15;
+	@GradientCoefficient	0.03;
+	@CurvatureCoefficient	0.1;
+}

@@ -1,0 +1,13 @@
+cases/T298/PHI0.6/input.dic
+cases/T298/PHI0.7/input.dic
+cases/T298/PHI0.8/input.dic
+cases/T298/PHI0.9/input.dic
+cases/T298/PHI1.0/input.dic
+cases/T298/PHI1.1/input.dic
+cases/T298/PHI1.2/input.dic
+cases/T298/PHI1.3/input.dic
+cases/T298/PHI1.4/input.dic
+cases/T298/PHI1.5/input.dic
+cases/T298/PHI1.6/input.dic
+cases/T298/PHI1.7/input.dic
+cases/T298/PHI1.85/input.dic
