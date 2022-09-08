@@ -1,5 +1,6 @@
 #Folders
 exe/
+projects/exe_Linux
 projects/Linux/Makefile
 projects/Linux/Makefile.in
 projects/Linux/aclocal.m4
@@ -40,5 +41,7 @@ build/
 debug/
 cmake/
 src/.deps/
+src/.dirstamp
 src/.DirectApplicInterface.o
 CMakeLists.txt
+projects/clean.sh
