@@ -16,7 +16,7 @@ projects/Linux/stamp-h?
 projects/*/.DS_Store
 projects/exe_BovisaCluster/
 projects/exe_Linux/
-src/.deps/
+
 #Files
 projects/*/config.log
 projects/*/NetSMOKEpp.sh
@@ -32,3 +32,13 @@ projects/Linux_BovisaCluster/configure
 projects/Linux_BovisaCluster/depcomp
 projects/Linux_BovisaCluster/install-sh
 projects/Linux_BovisaCluster/missing
+src/.deps/
+.vscode/
+projects/myexe/
+projects/myLINUX/
+build/
+debug/
+cmake/
+src/.deps/
+src/.DirectApplicInterface.o
+CMakeLists.txt
