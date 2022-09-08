@@ -1,0 +1,329 @@
+-----------------------------------------------------------------------------
+
+          ___                   ____  __  __  ___  _  _______                 
+         / _ \ _ __   ___ _ __ / ___||  \/  |/ _ \| |/ / ____| _     _        
+        | | | | '_ \ / _ \ '_ \\___ \| |\/| | | | | ' /|  _| _| |_ _| |_      
+        | |_| | |_) |  __/ | | |___) | |  | | |_| | . \| |__|_   _|_   _|     
+         \___/| .__/ \___|_| |_|____/|_|  |_|\___/|_|\_\_____||_|   |_|       
+              |_|                                                             
+
+
+           Department of Chemistry, Materials and Chemical Engineering        
+                              Politecnico di Milano                           
+                         http://www.opensmoke.polimi.it/                      
+                      http://creckmodeling.chem.polimi.it/                    
+
+                      OpenSMOKEpp_PremixedLaminarFlame1D
+                                Version: 0.16.0
+                Author: Alberto Cuoci (alberto.cuoci@polimi.it)
+                   Compilation date: Nov 24 2021 at 15:01:18
+
+-----------------------------------------------------------------------------
+
+                                  WARNING                                    
+   This version of OpenSMOKE++ Suite can be used for educational purposes    
+              only and cannot be distributed to third parties.               
+       The software is and remains the sole property of Alberto Cuoci.       
+      Whenever the OpenSMOKE++ Suite is used to produce any publication,     
+       a detailed reference to the OpenSMOKE++ code should be reported       
+                            (see User's Guide).                              
+    Use for commercial purposes is not permitted. For any commercial issue   
+         please contact Alberto Cuoci (email: alberto.cuoci@polimi.it)       
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+
+                            LIMITED WARRANTY                                 
+     This software is provided "as is" and without warranties as to        
+  performance of merchantability or any other warranties whether expressed   
+    or implied. Because of the various hardware and software environments    
+   into which this library may be installed, no warranty of fitness for a    
+   particular purpose is offered. The user must assume the entire risk of    
+                          using  the library.                                
+-----------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------
+                                LICENSE SUMMARY                              
+ * Current date:      2022-Mar-16 09:16:26.923165
+ * Starting date:     2021-May-01
+ * Last used date:    2021-May-01
+ * Expiration date:   2022-May-01
+The file license is valid
+ * User name:         creck_lab
+ * User email:        alberto.cuoci(at)polimi.it
+ * User organization: Politecnico di Milano
+ * Type of license:   Academic
+ * Version:           0.16.0
+ * Max species:       100000
+ * Solvers:           All
+-----------------------------------------------------------------------------
+
+ * Reading thermodynamic coefficients of species from XML file...
+ * Reading kinetic parameters of reactions...
+ * Reading kinetic parameters of third body reactions...
+ * Reading kinetic parameters of pressure-dependent reactions...
+ * Reading kinetic parameters of additional reactions...
+ * Building stoichiometry...
+   non-zero stoichiometric coefficients: 1864 /28497 (6.54104%)
+ * Building reaction orders...
+   non-zero reaction-order coefficients: 1349 /28497 (4.73383%)
+ * Non elementary direct reactions:  0
+ * Non elementary reverse reactions: 0
+
+----------------------------------------------------------------------------
+ Kinetic Mechanism Summary
+----------------------------------------------------------------------------
+ Total number of species:        59
+ Total number of reactions:      483
+   Reversible reactions:         250 (51.7598%)
+    * by thermodynamics:         250 (100%)
+    * by Arrhenius' law:         0 (0%)
+   Pressure dependent reactions: 25 (5.17598%)
+    * fall-off reactions:        25 (100%)
+      ** lindemann form:         1 (4%)
+      ** troe form:              24 (96%)
+      ** sri form:               0 (0%)
+    * cabr reactions:            0 (0%)
+   Chebyshev reactions:          0 (0%)
+   Pressure-Log reactions:       48 (9.93789%)
+   Ext-Pressure-Log reactions:   0 (0%)
+   Ext-Falloff reactions:        0 (0%)
+   Fit1 reactions:               0 (0%)
+   Janev-Langer reactions:       0 (0%)
+   Landau-Teller reactions:      0 (0%)
+ Negative frequency factors:     0 (0%)
+
+----------------------------------------------------------------------------
+ Reversible reactions (by thermodynamics)    250
+----------------------------------------------------------------------------
+ Reactions without change of moles:        186 (74.4%)
+ Reactions with change of moles (+1):      33 (12.4%)
+ Reactions with change of moles (-1):      31 (13.2%)
+ Reactions with change of moles (other):   0 (0%)
+
+ * Reading transport properties from XML file...
+ * Reading transport properties from XML file...
+Time to read XML file: 0.0138328
+ * Number of species in the previous kinetic mechanism: 59
+ * Number of species in the current kinetic mechanism:  59
+ * Number of species which are available from backup:   59
+ * Building the new mesh from backup data...
+   Position of fixed point (mm): 15
+   Index of fixed point:         6/12
+ * Building the first-guess solution from backup data...
+
+----------------------------------------------------------
+                Initial Solution: Step 1 (Y)              
+----------------------------------------------------------
+Band DAE solution (OpenSMOKE++)...
+4.699483e-10    42.096        2184.132      
+6.889e-08       42.096        2184.132      
+8.238e-06       42.096        2184.132      
+1.370e-04       42.096        2184.132      
+1.416e-03       42.096        2184.132      
+OpenSMOKE++ Dae System successfully solved: INTEGRATION_STOPPED_WHEN_SUM_ABS_Y1_IS_LESS_THAN
+
+ * CPU time (s):                   7.703
+ * number of steps:                46
+ * number of functions:            46
+ * number of solutions:            46
+ * number of Jacobians:            1
+ * number of factorizations:       16
+ * number of functions (Jacobian): 235
+ * last order:                     1
+ * last step size:                 1.137e-03
+ * mean y':                        8.658e-08
+
+Band NLS solution (OpenSMOKE++)...
+1.623e-03     42.096        2184.132      
+NonLinearSolver<Kernel>: number of constraints violated in Newton's step = 111
+Nls System successfully solved: The Newton correction has reached the required precision
+
+NLS system solution
+---------------------------------------------------------------------------------------
+* Number of iterations:                     1
+* Number of system calls:                   236
+* Number of Newton's calls:                 1
+* Number of Quasi-Newton's calls:           0
+* Number of 1D searches:                    0
+* Number of gradient calls:                 0
+---------------------------------------------------------------------------------------
+
+
+Data for the Banded NLS solver Kernel
+---------------------------------------------------------------------------------------------------------
+Number of system calls (only to assemble Jacobian):     235 (235)
+Number of full Jacobian constructions (from scratch):   1
+Number of approximated Jacobian constructions:          0
+Number of Jacobian factorizations:                      1
+Number of linear system solutions:                      2
+Cumulative CPU for constructing the Jacobian (full):    4.033 (96.227%)
+Cumulative CPU for constructing the Jacobian (approx.): 0.000 (0.000%)
+Cumulative CPU for factorizing the Jacobian:            0.126 (3.003%)
+Cumulative CPU for solving the linear system:           0.032 (0.770%)
+CPU for constructing the Jacobian (full):               4.033 (96.553%)
+CPU for constructing the Jacobian (approx.):            0.000 (0.000%)
+CPU for factorizing the Jacobian:                       0.126 (3.013%)
+CPU for solving the linear system:                      0.018 (0.433%)
+---------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------
+              Initial Solution: Step 2 (T+M)              
+----------------------------------------------------------
+Band DAE solution (OpenSMOKE++)...
+2.911e-08       42.473        2184.132      
+1.595e-05       42.097        2184.132      
+6.325e-03       42.096        2184.132      
+7.463e-02       42.096        2184.132      
+OpenSMOKE++ Dae System successfully solved: INTEGRATION_STOPPED_WHEN_SUM_ABS_Y1_IS_LESS_THAN
+
+ * CPU time (s):                   0.840
+ * number of steps:                37
+ * number of functions:            43
+ * number of solutions:            43
+ * number of Jacobians:            1
+ * number of factorizations:       13
+ * number of functions (Jacobian): 7
+ * last order:                     1
+ * last step size:                 3.036e-02
+ * mean y':                        9.511e-08
+
+Band NLS solution (OpenSMOKE++)...
+5.500e-05     42.096        2184.132      
+Nls System successfully solved: The Newton correction has reached the required precision
+
+NLS system solution
+---------------------------------------------------------------------------------------
+* Number of iterations:                     1
+* Number of system calls:                   8
+* Number of Newton's calls:                 1
+* Number of Quasi-Newton's calls:           0
+* Number of 1D searches:                    0
+* Number of gradient calls:                 0
+---------------------------------------------------------------------------------------
+
+
+Data for the Banded NLS solver Kernel
+---------------------------------------------------------------------------------------------------------
+Number of system calls (only to assemble Jacobian):     7 (7)
+Number of full Jacobian constructions (from scratch):   1
+Number of approximated Jacobian constructions:          0
+Number of Jacobian factorizations:                      1
+Number of linear system solutions:                      2
+Cumulative CPU for constructing the Jacobian (full):    0.117 (99.837%)
+Cumulative CPU for constructing the Jacobian (approx.): 0.000 (0.000%)
+Cumulative CPU for factorizing the Jacobian:            0.000 (0.087%)
+Cumulative CPU for solving the linear system:           0.000 (0.077%)
+CPU for constructing the Jacobian (full):               0.117 (99.869%)
+CPU for constructing the Jacobian (approx.):            0.000 (0.000%)
+CPU for factorizing the Jacobian:                       0.000 (0.087%)
+CPU for solving the linear system:                      0.000 (0.045%)
+---------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------
+             Initial Solution: Step 3 (Y+T+M)             
+----------------------------------------------------------
+Band DAE solution (OpenSMOKE++)...
+2.422e-06       42.096        2184.132      
+9.408e-04       42.096        2184.132      
+OpenSMOKE++ Dae System successfully solved: INTEGRATION_STOPPED_WHEN_SUM_ABS_Y1_IS_LESS_THAN
+
+ * CPU time (s):                   6.769
+ * number of steps:                27
+ * number of functions:            27
+ * number of solutions:            27
+ * number of Jacobians:            1
+ * number of factorizations:       9
+ * number of functions (Jacobian): 243
+ * last order:                     1
+ * last step size:                 1.167e-02
+ * mean y':                        4.659e-08
+
+Band NLS solution (OpenSMOKE++)...
+1.677e-03     42.096        2184.132      
+NonLinearSolver<Kernel>: number of constraints violated in Newton's step = 71
+Nls System successfully solved: The Newton correction has reached the required precision
+
+NLS system solution
+---------------------------------------------------------------------------------------
+* Number of iterations:                     1
+* Number of system calls:                   244
+* Number of Newton's calls:                 1
+* Number of Quasi-Newton's calls:           0
+* Number of 1D searches:                    0
+* Number of gradient calls:                 0
+---------------------------------------------------------------------------------------
+
+
+Data for the Banded NLS solver Kernel
+---------------------------------------------------------------------------------------------------------
+Number of system calls (only to assemble Jacobian):     243 (243)
+Number of full Jacobian constructions (from scratch):   1
+Number of approximated Jacobian constructions:          0
+Number of Jacobian factorizations:                      1
+Number of linear system solutions:                      2
+Cumulative CPU for constructing the Jacobian (full):    4.152 (95.895%)
+Cumulative CPU for constructing the Jacobian (approx.): 0.000 (0.000%)
+Cumulative CPU for factorizing the Jacobian:            0.149 (3.441%)
+Cumulative CPU for solving the linear system:           0.029 (0.664%)
+CPU for constructing the Jacobian (full):               4.152 (96.218%)
+CPU for constructing the Jacobian (approx.):            0.000 (0.000%)
+CPU for factorizing the Jacobian:                       0.149 (3.453%)
+CPU for solving the linear system:                      0.014 (0.329%)
+---------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------
+                  Grid refinement: 1
+----------------------------------------------------------
+No need to refine the grid: the refinement conditions are satisfied!
+ * max grad. ratio (cur./id.): 0.0500/0.0500
+ * max curv. ratio (cur./id.): 0.0895/0.5000
+Total time: 24.0000 s
+-----------------------------------------------------------------------------
+
+          ___                   ____  __  __  ___  _  _______                 
+         / _ \ _ __   ___ _ __ / ___||  \/  |/ _ \| |/ / ____| _     _        
+        | | | | '_ \ / _ \ '_ \\___ \| |\/| | | | | ' /|  _| _| |_ _| |_      
+        | |_| | |_) |  __/ | | |___) | |  | | |_| | . \| |__|_   _|_   _|     
+         \___/| .__/ \___|_| |_|____/|_|  |_|\___/|_|\_\_____||_|   |_|       
+              |_|                                                             
+
+
+           Department of Chemistry, Materials and Chemical Engineering        
+                              Politecnico di Milano                           
+                         http://www.opensmoke.polimi.it/                      
+                      http://creckmodeling.chem.polimi.it/                    
+
+                      OpenSMOKEpp_PremixedLaminarFlame1D
+                                Version: 0.16.0
+                Author: Alberto Cuoci (alberto.cuoci@polimi.it)
+                   Compilation date: Nov 24 2021 at 15:01:18
+
+-----------------------------------------------------------------------------
+
+                                  WARNING                                    
+   This version of OpenSMOKE++ Suite can be used for educational purposes    
+              only and cannot be distributed to third parties.               
+       The software is and remains the sole property of Alberto Cuoci.       
+      Whenever the OpenSMOKE++ Suite is used to produce any publication,     
+       a detailed reference to the OpenSMOKE++ code should be reported       
+                            (see User's Guide).                              
+    Use for commercial purposes is not permitted. For any commercial issue   
+         please contact Alberto Cuoci (email: alberto.cuoci@polimi.it)       
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+
+                            LIMITED WARRANTY                                 
+     This software is provided "as is" and without warranties as to        
+  performance of merchantability or any other warranties whether expressed   
+    or implied. Because of the various hardware and software environments    
+   into which this library may be installed, no warranty of fitness for a    
+   particular purpose is offered. The user must assume the entire risk of    
+                          using  the library.                                
+-----------------------------------------------------------------------------
+
