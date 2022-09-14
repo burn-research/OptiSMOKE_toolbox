@@ -401,6 +401,13 @@ namespace OpenSMOKE
 
 	// initializes the vector of splines
 	
+	
+	///////////////////////////////////////REACTIONS CLASSES////////////////////////////////////////
+	
+ 	bool ReactionsClasses_print_out;
+	
+	boost::filesystem::path path_ReactionsClasses_output;
+		
 	};
 }
 #include "Read_Input.hpp"

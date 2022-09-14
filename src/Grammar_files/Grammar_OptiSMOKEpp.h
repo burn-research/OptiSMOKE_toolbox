@@ -746,6 +746,24 @@ namespace OpenSMOKE
 		OpenSMOKE::SINGLE_INT,
 		"Number of threads (in case OpenMP is enabled)",
 	   	false));
+		
+		
+	// Reaction Classes Dictionary
+	
+ 	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ReactionsClasses",
+                OpenSMOKE::SINGLE_BOOL,
+                "Enable the optimisation by reaction classes",
+                 false,
+		 "none",
+		"@ReactionsClassesDefinitions",
+		"none"));
+	    
+	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ReactionsClassesDefinitions",
+                OpenSMOKE::SINGLE_PATH,
+                "Path to the file containing the definitions of the reaction/s classes.",
+                 false));
+
+		
 		}
 	};
 }
