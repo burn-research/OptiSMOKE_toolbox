@@ -404,7 +404,8 @@ namespace OpenSMOKE
 	
 	///////////////////////////////////////REACTIONS CLASSES////////////////////////////////////////
 	
-	bool Optimization4Classes;
+	bool Optimization4Classes = false;
+	bool ScalingReactionClasses = false;
 	boost::filesystem::path ReactionClassesPath;
 	int numberOfReactionClasses;
 	std::vector<std::vector<int>> matrixOfReactionIndex; // matrice dove mi salvo gli indici

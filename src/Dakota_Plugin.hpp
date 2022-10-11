@@ -815,13 +815,45 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 				{
 					if(ObjectInput2.Optimization4Classes == true)
 					{
-						for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
+						if(ObjectInput2.ScalingReactionClasses == true)
 						{
-							for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
+							for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
 							{
-								ChangelnA(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+								double scaling_lnA = std::exp(c_vars[count]) / ObjectInput2.kineticsMapXML->A(ObjectInput2.matrixOfReactionIndex[k][0]-1);
+								for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
+								{
+									int targetreaction = ObjectInput2.matrixOfReactionIndex[k][z];
+									if(eval_nr == 1)
+									{
+										ChangelnA(targetreaction, std::log(ObjectInput2.kineticsMapXML->A(targetreaction-1)));
+									}
+									else 
+									{
+										if(z == 0)
+										{
+											ChangelnA(targetreaction, c_vars[count]);
+										}
+										else
+										{
+											ChangelnA(targetreaction, scaling_lnA * c_vars[count]);
+										}
+										std::cout << "Fattore di scala: " << scaling_lnA << std::endl;
+										
+									}
+								}
+								count = count + 1;
 							}
-							count = count + 1;
+						}
+						else
+						{
+							for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
+							{
+								for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
+								{
+									ChangelnA(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+								}
+								count = count + 1;
+							}
 						}
 					}
 					else
@@ -847,13 +879,43 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 				{
 					if(ObjectInput2.Optimization4Classes == true)
 					{
-						for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
+						if(ObjectInput2.ScalingReactionClasses == true)
 						{
-							for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
+							for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
 							{
-								ChangeBeta(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+								double scaling_Beta = c_vars[count] - ObjectInput2.kineticsMapXML->Beta(ObjectInput2.matrixOfReactionIndex[k][0]-1);
+								for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
+								{
+									int targetreaction = ObjectInput2.matrixOfReactionIndex[k][z];
+									if(eval_nr == 1)
+									{
+										ChangeBeta(targetreaction, ObjectInput2.kineticsMapXML->Beta(targetreaction-1));
+									}
+									else 
+									{
+										if(z==0)
+										{
+											ChangeBeta(targetreaction, c_vars[count]);
+										}
+										else
+										{
+											ChangeBeta(targetreaction, c_vars[count]+ scaling_Beta);
+										}
+									}
+								}
+								count = count + 1;
 							}
-							count = count + 1;
+						}
+						else
+						{
+							for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
+							{
+								for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
+								{
+									ChangeBeta(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+								}
+								count = count + 1;
+							}
 						}
 					}
 					else
@@ -879,13 +941,44 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 				{
 					if(ObjectInput2.Optimization4Classes == true)
 					{
-						for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
+						if(ObjectInput2.ScalingReactionClasses == true)
 						{
-							for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
+							for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
 							{
-								ChangeE_over_R(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+								double scaling_E_over_R = c_vars[count] - ObjectInput2.kineticsMapXML->E_over_R(ObjectInput2.matrixOfReactionIndex[k][0]-1);
+								for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
+								{
+									int targetreaction = ObjectInput2.matrixOfReactionIndex[k][z];
+									if(eval_nr == 1)
+									{
+										ChangeE_over_R(targetreaction, ObjectInput2.kineticsMapXML->E_over_R(targetreaction-1));
+									}
+									else 
+									{
+										if(z == 0)
+										{
+											ChangeE_over_R(targetreaction, c_vars[count]);
+										}
+										else
+										{
+											ChangeE_over_R(targetreaction, c_vars[count] + scaling_E_over_R);
+										}
+										
+									}
+								}
+								count = count + 1;
 							}
-							count = count + 1;
+						}
+						else
+						{
+							for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
+							{
+								for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
+								{
+									ChangeE_over_R(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+								}
+								count = count + 1;
+							}
 						}
 					}
 					else
@@ -2357,9 +2450,6 @@ double OpenSMOKEDirectApplicInterface::Calculate_ObjFunc(std::vector<std::vector
 		}
 		
 		return Obj_Func_val;
-
-
-		
 
 }
 

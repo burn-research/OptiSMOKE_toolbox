@@ -1056,10 +1056,11 @@ namespace OpenSMOKE
 		if (dictionaries(main_dictionary_name).CheckOption("@ReactionsClassesDefinitions") == true)
 		{
 			dictionaries(main_dictionary_name).ReadPath("@ReactionsClassesDefinitions", ReactionClassesPath);
-		}
-		if(Optimization4Classes == true)
-		{
 			ReadReactionClassesDefinition(ReactionClassesPath);
+		}
+		if (dictionaries(main_dictionary_name).CheckOption("@ScalingReactionClasses") == true)
+		{
+			dictionaries(main_dictionary_name).ReadBool("@ScalingReactionClasses", ScalingReactionClasses);
 		}
 		//std::cout << "Le classi finiscono qui!" << std::endl;
 		// CREATE THE NOMINAL LIST OF EXTENDED PLOG HERE
@@ -3560,7 +3561,7 @@ namespace OpenSMOKE
         	Devo prendere content e:
             	- La prima riga di ogni blocco corrisponde al nome della classe
             	- la seconda riga agli indici delle reazione
-            	- la terza riga bo ...
+            	- la terza riga bo scaling factor
             	- la quarta riga uncertainty
             	- la quinta riga quello che voglio ottimizzare ovvero che parametri dell'arrehnius 
 			Per ora solo le dirette dopo faccio la funzione per scegliere il tipo
@@ -3618,6 +3619,7 @@ namespace OpenSMOKE
         	
     	}
 		
+		// FORSE VA TOLTO PERCHE NON SERVE
 		for(int i = 0; i<matrixOfUnceratintyFactors.size(); i++){
         	// std::cout << "Unc factor della classe numero:  " << i << std::endl;
 			// NB Stai ottimizando una sola k di classe per volta

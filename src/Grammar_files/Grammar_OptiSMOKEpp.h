@@ -742,26 +742,34 @@ namespace OpenSMOKE
 		"List of maximum relative values fo third body efficiency",
 		false,"none","@ListOfTarget_ThirdBody_Reactions","@ListOfMaxAbs_ThirdBody_Eff"));
 
-	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@NumberOfThreads",
+	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@NumberOfThreads",
 		OpenSMOKE::SINGLE_INT,
 		"Number of threads (in case OpenMP is enabled)",
 	   	false));
 		
 		
-	// Reaction Classes Dictionary
+	    // Reaction Classes Dictionary
 	
- 	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ReactionsClasses",
-        OpenSMOKE::SINGLE_BOOL,
-        "Enable the optimisation by reaction classes",
-        false, 
-        "none",
-		"@ReactionsClassesDefinitions",
-		"none"));
+     	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ReactionsClasses",
+            OpenSMOKE::SINGLE_BOOL,
+            "Enable the optimisation by reaction classes",
+            false, 
+            "none",
+		    "@ReactionsClassesDefinitions",
+		    "none"));
 	    
-	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ReactionsClassesDefinitions",
-        OpenSMOKE::SINGLE_PATH,
-        "Path to the file containing the definitions of the reaction/s classes.",
-        false));
+	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ReactionsClassesDefinitions",
+            OpenSMOKE::SINGLE_PATH,
+            "Path to the file containing the definitions of the reaction/s classes.",
+            false));
+
+        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ScalingReactionClasses",
+            OpenSMOKE::SINGLE_BOOL,
+            "If the reaction class optimization has to be done with scaling or with substitution",
+            false,
+            "none",
+            "@ReactionsClasses",
+            "none"));
 	}
     };
 }
