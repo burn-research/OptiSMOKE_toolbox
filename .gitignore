@@ -40,3 +40,5 @@ CMakeLists.txt
 Interf_old
 *.o
 .dirstamp
+EXAMPLES/Prove_Batch
+EXAMPLES/Reaction_Classes
