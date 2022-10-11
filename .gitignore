@@ -32,3 +32,11 @@ projects/Linux_BovisaCluster/configure
 projects/Linux_BovisaCluster/depcomp
 projects/Linux_BovisaCluster/install-sh
 projects/Linux_BovisaCluster/missing
+projects/myexe/
+projects/myLINUX
+.vscode/
+cmake/
+CMakeLists.txt
+Interf_old
+*.o
+.dirstamp
