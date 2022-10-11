@@ -37,7 +37,7 @@ void OpenSMOKEDirectApplicInterface::Setup_Plugin()
 {
 	// Debug parameter: If true will print kinetic parameters before and after changing them / 
 	// Print out the simulation values (only first value if more than one species considered)
-	Debug_ChangeParam = false;
+	Debug_ChangeParam = true;
 
 	// Setup evaluation number
 	eval_nr=0;
@@ -196,7 +196,9 @@ void OpenSMOKEDirectApplicInterface::Setup_Plugin()
 				std::cout<< "The value of f for the constraint j:" << j << " i:" << i << " is	" << ObjectInput2.ud_constraints[j][i] <<std::endl;
 			}
 		}
-	} else{
+	}
+	else
+	{
 		for (int j=0; j < ObjectInput2.list_of_target_uncertainty_factors.size(); j++)
 		{
 			k_0[j].resize(T_span.size());
@@ -214,10 +216,10 @@ void OpenSMOKEDirectApplicInterface::Setup_Plugin()
 				std::cout<< "The value of f for the lower constraint j:" << j << " i:" << i << " is     " << k_lower[j][i] <<std::endl;
 			}
 
-                        for (int i=0; i < T_span.size(); i++)
-                        {
-                                std::cout<< "The value of f for the upper constraint j:" << j << " i:" << i << " is     " << k_upper[j][i] <<std::endl;
-                        }
+            for (int i=0; i < T_span.size(); i++)
+            {
+                std::cout<< "The value of f for the upper constraint j:" << j << " i:" << i << " is     " << k_upper[j][i] <<std::endl;
+            }
 		}
 	}
 
@@ -692,7 +694,8 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 					Change_ER_classic_PLOG(ObjectInput2.pca_plog_reactions[i], reconstructed_plog_parameters[i][2]);
 				}
 			
-	} else if (ObjectInput2.direct_reactions_indices_ica.size() > 0){
+	} 
+	else if (ObjectInput2.direct_reactions_indices_ica.size() > 0){
 
 				std::cout<<"The ICA mixing process is going to be performed"<<std::endl;
 
@@ -738,7 +741,8 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 					ChangeE_over_R(ObjectInput2.direct_reactions_indices_ica[i], mixed_direct_parameters[i][2]);
 				}
 			
-	} else if (ObjectInput2.boundaries_method == "Re-parametrization") {
+	} 
+	else if (ObjectInput2.boundaries_method == "Re-parametrization") {
 				std::cout<<"YOU ARE WITHING RE-PARAMETRIZATION"<<std::endl;
 				// STORE THE variables from c_vars first
 				std::vector<double> store_A_scaled(ObjectInput2.list_of_target_lnA.size());
@@ -803,15 +807,30 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 						ChangeE_over_R(ObjectInput2.list_of_target_E_over_R[k], store_E_over_R[k]);	
 					}
 				}
-	} else {
+	} 
+	else {
 
 				// lnA
 				if (ObjectInput2.list_of_target_lnA.size()!=0)
 				{
-					for (unsigned int k = 0; k < ObjectInput2.list_of_target_lnA.size(); k++)
+					if(ObjectInput2.Optimization4Classes == true)
 					{
-						ChangelnA(ObjectInput2.list_of_target_lnA[k], c_vars[count]);
-						count=count+1;
+						for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
+						{
+							for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
+							{
+								ChangelnA(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+							}
+							count = count + 1;
+						}
+					}
+					else
+					{
+						for (unsigned int k = 0; k < ObjectInput2.list_of_target_lnA.size(); k++)
+						{
+							ChangelnA(ObjectInput2.list_of_target_lnA[k], c_vars[count]);
+							count=count+1;
+						}
 					}
 				}
 				// lnA_inf
@@ -826,10 +845,24 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 				// Beta
 				if (ObjectInput2.list_of_target_Beta.size()!=0)
 				{
-					for (unsigned int k = 0; k < ObjectInput2.list_of_target_Beta.size(); k++)
+					if(ObjectInput2.Optimization4Classes == true)
 					{
-						ChangeBeta(ObjectInput2.list_of_target_Beta[k], c_vars[count]);
-						count=count+1;
+						for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
+						{
+							for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
+							{
+								ChangeBeta(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+							}
+							count = count + 1;
+						}
+					}
+					else
+					{
+						for (unsigned int k = 0; k < ObjectInput2.list_of_target_Beta.size(); k++)
+						{
+							ChangeBeta(ObjectInput2.list_of_target_Beta[k], c_vars[count]);
+							count=count+1;
+						}
 					}
 				}	
 				// Beta_inf
@@ -844,11 +877,24 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 				// E_over_R
 				if (ObjectInput2.list_of_target_E_over_R.size()!=0)
 				{
-					for (unsigned int k = 0; k < ObjectInput2.list_of_target_E_over_R.size(); k++)
+					if(ObjectInput2.Optimization4Classes == true)
 					{
-						ChangeE_over_R(ObjectInput2.list_of_target_E_over_R[k], c_vars[count]);
-						count=count+1;
-						
+						for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
+						{
+							for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
+							{
+								ChangeE_over_R(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+							}
+							count = count + 1;
+						}
+					}
+					else
+					{
+						for (unsigned int k = 0; k < ObjectInput2.list_of_target_E_over_R.size(); k++)
+						{
+							ChangeE_over_R(ObjectInput2.list_of_target_E_over_R[k], c_vars[count]);
+							count=count+1;
+						}
 					}
 				}
 				// E_over_R_inf

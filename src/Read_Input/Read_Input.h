@@ -406,9 +406,12 @@ namespace OpenSMOKE
 	
 	bool Optimization4Classes;
 	boost::filesystem::path ReactionClassesPath;
+	int numberOfReactionClasses;
+	std::vector<std::vector<int>> matrixOfReactionIndex; // matrice dove mi salvo gli indici
+    std::vector<std::vector<double>> matrixOfUnceratintyFactors; // matrice dove gli unc factor
+    std::vector<std::vector<std::string>> matrixOfQOI; // matrice delle QOI forse la tolgo poi vediamo
 
 	void ReadReactionClassesDefinition(boost::filesystem::path ReactionClassFile);
-		
 	};
 }
 #include "Read_Input.hpp"

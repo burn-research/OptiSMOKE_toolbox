@@ -3534,9 +3534,7 @@ namespace OpenSMOKE
 	{
 		boost::filesystem::ifstream fileHandler(ReactionClassFile.c_str());
     	std::string line;
-    
     	int numberOfLines = 0;
-    	int numberOfReactionClasses;
     	std::vector<std::string> content;
    		while (getline(fileHandler, line)) {
         	numberOfLines++;
@@ -3544,9 +3542,9 @@ namespace OpenSMOKE
     	}
 
     	numberOfReactionClasses = numberOfLines / 5;
-		std::cout << "Reading the reaction classes definition in: classi.txt" << std::endl;
+		/*std::cout << "Reading the reaction classes definition in: " << ReactionClassFile.c_str() << std::endl;
     	std::cout << " * Number of lines inside the file: " << numberOfLines << std::endl;
-    	std::cout << " * Number of  reaction classess defined: " << numberOfLines/5 << std::endl;
+    	std::cout << " * Number of  reaction classess defined: " << numberOfLines/5 << std::endl;*/
 
     	/* Se decommento posso stampare il contenuto del file
     	for(int i = 0; i <= numberOfLines; i++){
@@ -3557,10 +3555,6 @@ namespace OpenSMOKE
     	std::vector<std::string> str_reaction_index; // tmp vector dove mi salvo le stringhe 
     	std::vector<std::string> str_unc; // tmp vector dove mi salvo le incertezze
     	std::vector <std::string> str_QOI; // tmp vector dove mi salvo le stringhe delle QOI
-
-    	std::vector<std::vector<int>> matrixOfReactionIndex; // matrice dove mi salvo gli indici
-    	std::vector<std::vector<double>> matrixOfUnceratintyFactors; // matrice dove mi salvo gli indici
-    	std::vector<std::vector<std::string>> matrixOfQOI; // matrice degli unc factor
 
     	/*
         	Devo prendere content e:
@@ -3610,26 +3604,25 @@ namespace OpenSMOKE
    		}
 		
     	for(int i = 0; i<matrixOfReactionIndex.size(); i++){
-        	std::cout << "Indici delle reazioni della classe numero:  " << i << std::endl;
-			for(int j = 0; j<matrixOfReactionIndex[i].size(); j++){
-            	// std::cout << matrixOfReactionIndex[i][j] << std::endl;
-				list_of_target_lnA.push_back(matrixOfReactionIndex[i][j]);
-				list_of_target_Beta.push_back(matrixOfReactionIndex[i][j]);
-				list_of_target_E_over_R.push_back(matrixOfReactionIndex[i][j]);
-				list_of_target_uncertainty_factors.push_back(matrixOfReactionIndex[i][j]);
+        	//std::cout << "Indici delle reazioni della classe numero:  " << i << std::endl;
+			// NB Stai ottimizando una sola k di classe per volta 
+            // std::cout << matrixOfReactionIndex[i][j] << std::endl;
+			list_of_target_lnA.push_back(matrixOfReactionIndex[i][0]);
+			list_of_target_Beta.push_back(matrixOfReactionIndex[i][0]);
+			list_of_target_E_over_R.push_back(matrixOfReactionIndex[i][0]);
+			list_of_target_uncertainty_factors.push_back(matrixOfReactionIndex[i][0]);
 
-				list_of_initial_lnA.push_back(boost::lexical_cast<std::string>(std::log(kineticsMapXML->A(matrixOfReactionIndex[i][j]-1))));
-				list_of_initial_Beta.push_back(boost::lexical_cast<std::string>(kineticsMapXML->Beta(matrixOfReactionIndex[i][j]-1)));
-				list_of_initial_E_over_R.push_back(boost::lexical_cast<std::string>(kineticsMapXML->E_over_R(matrixOfReactionIndex[i][j]-1)));
-        	}
+			list_of_initial_lnA.push_back(boost::lexical_cast<std::string>(std::log(kineticsMapXML->A(matrixOfReactionIndex[i][0]-1))));
+			list_of_initial_Beta.push_back(boost::lexical_cast<std::string>(kineticsMapXML->Beta(matrixOfReactionIndex[i][0]-1)));
+			list_of_initial_E_over_R.push_back(boost::lexical_cast<std::string>(kineticsMapXML->E_over_R(matrixOfReactionIndex[i][0]-1)));
+        	
     	}
 		
 		for(int i = 0; i<matrixOfUnceratintyFactors.size(); i++){
-        	std::cout << "Unc factor della classe numero:  " << i << std::endl;
-			for(int j = 0; j<matrixOfUnceratintyFactors[i].size(); j++){
-            	//std::cout << matrixOfUnceratintyFactors[i][j] << std::endl;
-        		list_of_uncertainty_factors.push_back(matrixOfUnceratintyFactors[i][j]);
-			}
+        	// std::cout << "Unc factor della classe numero:  " << i << std::endl;
+			// NB Stai ottimizando una sola k di classe per volta
+            //std::cout << matrixOfUnceratintyFactors[i][j] << std::endl;
+        	list_of_uncertainty_factors.push_back(matrixOfUnceratintyFactors[i][0]);
     	}
 	}
 }
