@@ -216,8 +216,8 @@ namespace OpenSMOKE
 			dictionaries(main_dictionary_name).ReadOption("@SpeciesOfInterest", species_of_interest);
 		
 		if (dictionaries(main_dictionary_name).CheckOption("@ParametersBoundaries") == true)
-                {
-                        dictionaries(main_dictionary_name).ReadString("@ParametersBoundaries", boundaries_method);
+        {
+            dictionaries(main_dictionary_name).ReadString("@ParametersBoundaries", boundaries_method);
 		}
 		// Read Objective function type
 		if (dictionaries(main_dictionary_name).CheckOption("@ObjectiveFunctionType") == true)
@@ -1047,6 +1047,21 @@ namespace OpenSMOKE
 				list_of_initial_thirdbody_eff.push_back(boost::lexical_cast<std::string>(kineticsMapXML->ThirdBody(list_of_target_thirdbody_reactions[i]-1, iSpecies-1)));
 			}
 		}
+
+		//std::cout << "Le classi iniziano qui!" << std::endl;
+		if (dictionaries(main_dictionary_name).CheckOption("@ReactionsClasses") == true)
+		{
+			dictionaries(main_dictionary_name).ReadBool("@ReactionsClasses", Optimization4Classes);
+		}
+		if (dictionaries(main_dictionary_name).CheckOption("@ReactionsClassesDefinitions") == true)
+		{
+			dictionaries(main_dictionary_name).ReadPath("@ReactionsClassesDefinitions", ReactionClassesPath);
+		}
+		if(Optimization4Classes == true)
+		{
+			ReadReactionClassesDefinition(ReactionClassesPath);
+		}
+		//std::cout << "Le classi finiscono qui!" << std::endl;
 		// CREATE THE NOMINAL LIST OF EXTENDED PLOG HERE
 		// Caclulate limits for the kinetic parameters
 		ParameterLimits();
@@ -2513,6 +2528,8 @@ namespace OpenSMOKE
 			list_of_min_Beta_classic_plog_coefficients.push_back(boost::lexical_cast<std::string>(-std::log(std::pow(10,list_of_uncertainty_factors_classic_plog[i])) / std::log(T_high)));
 			list_of_max_Beta_classic_plog_coefficients.push_back(boost::lexical_cast<std::string>(+std::log(std::pow(10,list_of_uncertainty_factors_classic_plog[i])) / std::log(T_high)));
 		}
+	
+		// std::cout << "Questa è la fine di parameters limit" << std::endl;
 	}
 
 	// Function for preparing Dakota input in string format
@@ -2690,6 +2707,7 @@ namespace OpenSMOKE
 									initial_values_string+= list_of_initial_lnA[i] + " ";
 									if (list_of_min_rel_lnA.size()>0)
 									{
+										std::cout << "Forse entro qui!" << std::endl;
 										lower_bounds_string+= boost::lexical_cast<std::string>((std::log(kineticsMapXML->A(list_of_target_lnA[i]-1)))+std::log(list_of_min_rel_lnA[i])) + " ";
 									} else
 									{
@@ -2705,6 +2723,7 @@ namespace OpenSMOKE
 										upper_bounds_string+= list_of_max_abs_lnA[i] + " ";
 									}
 								}
+								// std::cout << "Sto ciclo for non lo passo!" << std::endl;
 					}
 
 					std::vector<std::string> name_vec_lnA_inf;
@@ -3023,7 +3042,12 @@ namespace OpenSMOKE
 		number_of_parameters = list_of_target_lnA.size() + list_of_target_Beta.size() + list_of_target_E_over_R.size() + list_of_target_lnA_inf.size() + list_of_target_Beta_inf.size() + list_of_target_E_over_R_inf.size() + list_of_target_thirdbody_reactions.size() + list_of_target_extended_plog_reactions.size() + list_of_target_extplog.size()*3 + list_of_target_classic_plog_reactions.size()*3 +list_of_target_EPLR.size()*3;
 
 		}					
-
+		//std::cout << "\nCiao tito questa è la roba che hai!" << std::endl;
+		//std::cout << "Num param: " << number_of_parameters << std::endl;
+		//std::cout << "Descriptors: " << param_name_string << std::endl;
+		//std::cout << "initial_point: " << initial_values_string << std::endl;
+		//std::cout << "LB: " << lower_bounds_string << std::endl;
+		//std::cout << "UB: " << upper_bounds_string << std::endl;
 		//
 		  if(!tabular_data_file.empty())
 		  {
@@ -3506,5 +3530,107 @@ namespace OpenSMOKE
 		
 	}
 	
+	void Read_Input::ReadReactionClassesDefinition(boost::filesystem::path ReactionClassFile)
+	{
+		boost::filesystem::ifstream fileHandler(ReactionClassFile.c_str());
+    	std::string line;
+    
+    	int numberOfLines = 0;
+    	int numberOfReactionClasses;
+    	std::vector<std::string> content;
+   		while (getline(fileHandler, line)) {
+        	numberOfLines++;
+        	content.push_back(line);
+    	}
+
+    	numberOfReactionClasses = numberOfLines / 5;
+		std::cout << "Reading the reaction classes definition in: classi.txt" << std::endl;
+    	std::cout << " * Number of lines inside the file: " << numberOfLines << std::endl;
+    	std::cout << " * Number of  reaction classess defined: " << numberOfLines/5 << std::endl;
+
+    	/* Se decommento posso stampare il contenuto del file
+    	for(int i = 0; i <= numberOfLines; i++){
+        	std::cout << content[i] << std::endl;
+   		}
+    	*/
+    	std::vector<std::string> reactionClassName;
+    	std::vector<std::string> str_reaction_index; // tmp vector dove mi salvo le stringhe 
+    	std::vector<std::string> str_unc; // tmp vector dove mi salvo le incertezze
+    	std::vector <std::string> str_QOI; // tmp vector dove mi salvo le stringhe delle QOI
+
+    	std::vector<std::vector<int>> matrixOfReactionIndex; // matrice dove mi salvo gli indici
+    	std::vector<std::vector<double>> matrixOfUnceratintyFactors; // matrice dove mi salvo gli indici
+    	std::vector<std::vector<std::string>> matrixOfQOI; // matrice degli unc factor
+
+    	/*
+        	Devo prendere content e:
+            	- La prima riga di ogni blocco corrisponde al nome della classe
+            	- la seconda riga agli indici delle reazione
+            	- la terza riga bo ...
+            	- la quarta riga uncertainty
+            	- la quinta riga quello che voglio ottimizzare ovvero che parametri dell'arrehnius 
+			Per ora solo le dirette dopo faccio la funzione per scegliere il tipo
+    	*/
+
+   		// Con questo ciclo for mi sono separato le cose e ora ci posso lavorare
+   		// però ho gia tutto quello che mi serve!
+    	for(int i = 0; i<numberOfReactionClasses; i++){
+        	reactionClassName.push_back(content[0 + i * 5]);
+        	str_reaction_index.push_back(content[1 + i * 5]);
+        	str_unc.push_back(content[3 + i * 5]);
+        	str_QOI.push_back(content[4 + i * 5]);
+    	}
+    
+    	for(int i = 0; i < numberOfReactionClasses; i++){
+        	std::vector<std::string> tmp_idx; // reaction index
+        	std::vector<int> tmp_int_idx;
+        	std::vector<std::string> tmp_unc; // uncertainty factors
+        	std::vector<double> tmp_double_unc;
+        	std::vector<std::string> tmp_QOI; // Quantity of interest
+
+        	boost::split(tmp_idx, str_reaction_index[i], boost::is_any_of(" "));
+        	boost::split(tmp_unc, str_unc[i], boost::is_any_of(" "));
+        	boost::split(tmp_QOI, str_QOI[i], boost::is_any_of(" "));
+        
+        	for(int j = 0; j < tmp_idx.size(); j++){
+            	tmp_int_idx.push_back(std::stoi(tmp_idx[j]));
+        	}
+        	for(int k = 0; k < tmp_unc.size(); k++){
+            	tmp_double_unc.push_back(std::stod(tmp_unc[k]));
+       		}
+        	matrixOfReactionIndex.push_back(tmp_int_idx);
+        	matrixOfUnceratintyFactors.push_back(tmp_double_unc);
+        	matrixOfQOI.push_back(tmp_QOI);
+
+        	tmp_idx.clear();
+        	tmp_int_idx.clear();
+        	tmp_unc.clear();
+        	tmp_double_unc.clear();
+        	tmp_QOI.clear();
+   		}
+		
+    	for(int i = 0; i<matrixOfReactionIndex.size(); i++){
+        	std::cout << "Indici delle reazioni della classe numero:  " << i << std::endl;
+			for(int j = 0; j<matrixOfReactionIndex[i].size(); j++){
+            	// std::cout << matrixOfReactionIndex[i][j] << std::endl;
+				list_of_target_lnA.push_back(matrixOfReactionIndex[i][j]);
+				list_of_target_Beta.push_back(matrixOfReactionIndex[i][j]);
+				list_of_target_E_over_R.push_back(matrixOfReactionIndex[i][j]);
+				list_of_target_uncertainty_factors.push_back(matrixOfReactionIndex[i][j]);
+
+				list_of_initial_lnA.push_back(boost::lexical_cast<std::string>(std::log(kineticsMapXML->A(matrixOfReactionIndex[i][j]-1))));
+				list_of_initial_Beta.push_back(boost::lexical_cast<std::string>(kineticsMapXML->Beta(matrixOfReactionIndex[i][j]-1)));
+				list_of_initial_E_over_R.push_back(boost::lexical_cast<std::string>(kineticsMapXML->E_over_R(matrixOfReactionIndex[i][j]-1)));
+        	}
+    	}
+		
+		for(int i = 0; i<matrixOfUnceratintyFactors.size(); i++){
+        	std::cout << "Unc factor della classe numero:  " << i << std::endl;
+			for(int j = 0; j<matrixOfUnceratintyFactors[i].size(); j++){
+            	//std::cout << matrixOfUnceratintyFactors[i][j] << std::endl;
+        		list_of_uncertainty_factors.push_back(matrixOfUnceratintyFactors[i][j]);
+			}
+    	}
+	}
 }
 

@@ -404,9 +404,10 @@ namespace OpenSMOKE
 	
 	///////////////////////////////////////REACTIONS CLASSES////////////////////////////////////////
 	
- 	bool ReactionsClasses_print_out;
-	
-	boost::filesystem::path path_ReactionsClasses_output;
+	bool Optimization4Classes;
+	boost::filesystem::path ReactionClassesPath;
+
+	void ReadReactionClassesDefinition(boost::filesystem::path ReactionClassFile);
 		
 	};
 }
