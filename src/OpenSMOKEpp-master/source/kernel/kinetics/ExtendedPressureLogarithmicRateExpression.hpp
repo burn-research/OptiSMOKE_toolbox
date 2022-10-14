@@ -252,11 +252,11 @@ namespace OpenSMOKE
 			
 		if (P <= p_[index][0])
 		{
-			return std::log(std::exp(lnA_[index][0])/conversion_A_) + Beta_[index][0] * std::log(T) - E_over_R_[index][0] / T;
+			return lnA_[index][0] + Beta_[index][0] * std::log(T) - E_over_R_[index][0] / T;
 		}
 		else if (P >= p_[index][N_[index] - 1])
 		{
-			return std::log(std::exp(lnA_[index][N_[index] - 1])/conversion_A_) + Beta_[index][N_[index] - 1] * std::log(T) - E_over_R_[index][N_[index] - 1] / T;
+			return lnA_[index][N_[index] - 1] + Beta_[index][N_[index] - 1] * std::log(T) - E_over_R_[index][N_[index] - 1] / T;
 		}
 		else
 		{
@@ -265,8 +265,8 @@ namespace OpenSMOKE
 				if (P<p_[index][i+1])
 					break;
 			
-			double ln_kA = std::log(std::exp(lnA_[index][i])/conversion_A_)+Beta_[index][i]*std::log(T)-E_over_R_[index][i]/T;
-			double ln_kB = std::log(std::exp(lnA_[index][i+1])/conversion_A_)+Beta_[index][i+1]*std::log(T)-E_over_R_[index][i+1]/T;
+			double ln_kA = lnA_[index][i]+Beta_[index][i]*std::log(T)-E_over_R_[index][i]/T;
+			double ln_kB = lnA_[index][i+1]+Beta_[index][i+1]*std::log(T)-E_over_R_[index][i+1]/T;
 			return	ln_kA+(ln_kB-ln_kA)*(std::log(P)-lnp_[index][i])/(lnp_[index][i+1]-lnp_[index][i]);
 		}
 	}

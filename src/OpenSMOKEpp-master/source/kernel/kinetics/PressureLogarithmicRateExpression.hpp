@@ -70,7 +70,7 @@ namespace OpenSMOKE
 
 	void PressureLogarithmicRateExpression::Setup(std::vector<double> coefficients_)
 	{
-		const double threshold = 1.e-32;
+		const double threshold = 1.e-256;
 
 		// number of Arrhenius expressions
 		N = (unsigned int)((coefficients_.size() - 2) / 4);
