@@ -4,14 +4,10 @@ autoconf
 ./configure \
 CXX=g++ \
 --enable-openmp=no \
---prefix=/home/chimica2/tdinelli/OptiSMOKE/src/OptiSMOKE_toolbox/projects/exe_Linux/linux/gnu64-serial-mkl/ \
---with-opensmoke=/home/chimica2/tdinelli/OptiSMOKE/src/OptiSMOKE_toolbox/src/OpenSMOKEpp-master \
---with-eigen=/software/chimica2/libraries/eigen/eigen-3.3.4 \
---with-rapidxml=/software/chimica2/libraries/rapidxml/rapidxml-1.13 \
---with-boost-include=/software/chimica2/libraries/boost/boost-1.72.0-gcc-9.2.0/include/ \
---with-boost-lib=/software/chimica2/libraries/boost/boost-1.72.0-gcc-9.2.0/lib/ \
---with-dakota=/software/chimica2/libraries/dakota/dakota-6.10 \
---with-mkl=/software/chimica2/libraries/intel/xe_2019/ \
---with-ceq=/software/chimica2/libraries/ceq/libceq-gcc-9.2.0.a \
---with-bzzmath-include=/software/chimica2/libraries/bzzmath/bzzmath-6.0/hpp/release-9.2.0/ \
---with-bzzmath-lib=/software/chimica2/libraries/bzzmath/bzzmath-6.0/lib/release-9.2.0/libBzzMath6_GNU.a \
+--prefix=/home/tdinelli/Documents/GitHub/OptiSMOKE_toolbox/projects/my_exe \
+--with-opensmoke=/home/tdinelli/Documents/GitHub/OpenSMOKEpp \
+--with-eigen=$HOME/libraries/eigen/eigen-3.4.0/include/eigen3 \
+--with-dakota=/home/tdinelli/libraries/dakota/dakota-6.15-gcc-9.4-debug \
+--with-boost-include=/home/tdinelli/libraries/boost/boost-1.71-gcc-9.4/include \
+--with-boost-lib=/home/tdinelli/libraries/boost/boost-1.71-gcc-9.4/lib \
+--with-ceq=$HOME/libraries/ceq/libceq-gcc-9.4.0.a 

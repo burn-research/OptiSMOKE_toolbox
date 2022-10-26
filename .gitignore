@@ -4,8 +4,8 @@
 .DS_Store
 EXAMPLES/Prove_Batch/
 EXAMPLES/Reaction_Classes/
-projects/myLINUX/
-projects/myexe/
+projects/my_linux/
+projects/my_exe/
 .deps
 .dirstamp
 *.o
