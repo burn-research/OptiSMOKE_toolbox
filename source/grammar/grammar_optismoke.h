@@ -761,11 +761,6 @@ namespace OptiSMOKE
                 "none",
                 "@ListOfTarget_ThirdBody_Reactions",
                 "@ListOfMaxAbs_ThirdBody_Eff"));
-
-	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@NumberOfThreads",
-		        OpenSMOKE::SINGLE_INT,
-		        "Number of threads (in case OpenMP is enabled)",
-	   	        false));
 		
 	}
     };

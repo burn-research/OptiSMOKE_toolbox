@@ -35,7 +35,7 @@
 #ifndef OPTISMOKE_GRAMMAR_H
 #define OPTISMOKE_GRAMMAR_H
 
-#include "grammar_OptiSMOKEpp.h"
+#include "grammar_optismoke.h"
 #include "grammar_dakota.h"
 #include "grammar_optimization_setup.h"
 #include "grammar_optimization_targets.h"

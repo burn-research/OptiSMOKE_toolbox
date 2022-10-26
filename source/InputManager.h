@@ -74,7 +74,7 @@ namespace OptiSMOKE{
         OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_;
 
         // Grammar Allocation
-        OptiSMOKE::grammar_OptiSMOKEpp main_grammar_;
+        OptiSMOKE::grammar_optismoke main_grammar_;
 
         // Options
         OptiSMOKE::options_kinetics kinetics_data_;
