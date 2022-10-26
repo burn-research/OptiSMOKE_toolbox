@@ -8,3 +8,5 @@ projects/myLINUX/
 projects/myexe/
 .deps
 .dirstamp
+*.o
+*.sh
