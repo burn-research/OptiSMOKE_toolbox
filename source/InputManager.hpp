@@ -47,7 +47,7 @@ namespace OptiSMOKE{
         iXml_ = false;
         iNominalXml_ = false;
         iTransport_ = false;
-        iReactionClassOptimization = false;
+        // iReactionClassOptimization = false; non serve a una sega qua
 
     }
     

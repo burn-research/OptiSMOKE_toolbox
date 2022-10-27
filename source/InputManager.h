@@ -100,11 +100,11 @@ namespace OptiSMOKE{
         fs::path path_experimental_data_files_;
         bool iDebug_;
         bool iDebugSimulations_;
-        bool iPenaltyFunction_;
+        // bool iPenaltyFunction_;
         bool iXml_; // Forse ne devo tenere solo uno tra iXml_ e iNominalXml_ sta roba da capire
         bool iNominalXml_;
         bool iTransport_;
-        bool iReactionClassOptimization; // non so se serve qua da vedere
+        // bool iReactionClassOptimization; // non so se serve qua da vedere
 
         // Functions
         void ReadMainDictionary();
