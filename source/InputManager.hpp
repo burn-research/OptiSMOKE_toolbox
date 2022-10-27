@@ -47,8 +47,6 @@ namespace OptiSMOKE{
         iXml_ = false;
         iNominalXml_ = false;
         iTransport_ = false;
-        // iReactionClassOptimization = false; non serve a una sega qua
-
     }
     
     InputManager::~InputManager(){}
@@ -91,14 +89,6 @@ namespace OptiSMOKE{
         dictionary_.ReadDictionariesFromFile(input_file_name_);
         dictionary_(main_dictionary_).SetGrammar(main_grammar_);
 
-        // kinetic pre-processor
-        dictionary_(main_dictionary_).ReadDictionary("@KineticsPreProcessor", preprocessor_dictionary_);
-        kinetics_data_.SetupFromDictionary(dictionary_, preprocessor_dictionary_, iTransport_);
-
-        // nominal kinetic pre-processor
-        dictionary_(main_dictionary_).ReadDictionary("@NominalKineticsPreProcessor", preprocessor_dictionary_);
-        kinetics_data_.SetupFromDictionary(dictionary_, preprocessor_dictionary_, iTransport_);
-
         // kinetics folder
         if(dictionary_(main_dictionary_).CheckOption("@KineticsFolder"))
         {
@@ -108,10 +98,13 @@ namespace OptiSMOKE{
             {
                 OptiSMOKE::FatalErrorMessage("The @KineticsFolder path does not exists!");
             }
+            OpenSMOKE::CheckKineticsFolder(kinetics_folder_);
+        
+            // nominal kinetic pre-processor
+            dictionary_(main_dictionary_).ReadDictionary("@NominalKineticsPreProcessor", preprocessor_dictionary_);
+            kinetics_data_.SetupFromDictionary(dictionary_, preprocessor_dictionary_, iTransport_);
         }
-
-        // nominal kinetics folder
-        if(dictionary_(main_dictionary_).CheckOption("@KineticsFolder"))
+        else if(dictionary_(main_dictionary_).CheckOption("@NominalKineticsFolder"))
         {
             iNominalXml_ = true;
             dictionary_(main_dictionary_).ReadPath("@NominalKineticsFolder", kinetics_folder_);
@@ -119,6 +112,15 @@ namespace OptiSMOKE{
             {
                 OptiSMOKE::FatalErrorMessage("The @NominalKineticsFolder path does not exists!");
             }
+            OpenSMOKE::CheckKineticsFolder(kinetics_folder_);
+            
+            // kinetic pre-processor
+            dictionary_(main_dictionary_).ReadDictionary("@KineticsPreProcessor", preprocessor_dictionary_);
+            kinetics_data_.SetupFromDictionary(dictionary_, preprocessor_dictionary_, iTransport_);
+        }
+        else
+        {
+            OptiSMOKE::FatalErrorMessage("Please provide a folder the kinetic mechanism available are: @NominalKineticsFolder | @KineticsFolder");
         }
 
         // name of optimized kinetic folder

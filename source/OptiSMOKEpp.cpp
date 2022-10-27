@@ -62,7 +62,6 @@ int main(int argc, char* argv[])
 
     // whether running in parallel
     bool parallel = Dakota::MPIManager::detect_parallel_launch(argc, argv);
-    //bool parallel = false;
     
     // Define MPI_DEBUG in dakota_global_defs.cpp to cause a hold here
     Dakota::mpi_debug_hold();
@@ -74,9 +73,20 @@ int main(int argc, char* argv[])
 
     // Allow MPI to extract its command line arguments first in detect above,
     // then detect "-mixed" and dakota_input_file
+    
+    #ifdef DAKOTA_HAVE_MPI
+    // Lo dovrebbe fare solo se rank = 0 come in DoctorSMOKEpp.cpp
+    OptiSMOKE::OptiSMOKE_logo("OptiSMOKE++ parallel", "M. Furst, A. Bertolino, T. Dinelli");
+    #endif // DAKOTA_HAVE_MPI
+    OptiSMOKE::OptiSMOKE_logo("OptiSMOKE++ serial", "M. Furst, A. Bertolino, T. Dinelli");
+    
     bool mixed_input = false;
     const char *plugin_input_file = NULL;
     plugin_input_file = argv[1];
+
+    OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
+    OptiSMOKE::InputManager input(dictionaries);
+    input.SetInputOptions(argc, argv);
 
     run_dakota_parse(plugin_input_file); // mode 1: parse
 
@@ -94,29 +104,14 @@ int main(int argc, char* argv[])
 
 void run_dakota_parse(const char* plugin_input_file)
 {
-    // Initialize the class to handle the input file
-    //OptiSMOKE::Read_Input ObjectInput1;
-    
-    // input_object = new OptiSMOKE
-    
-    // read everything into this object
-    //ObjectInput1.ReadInfo(plugin_input_file,false);
-
-    OptiSMOKE::OptiSMOKE_logo("OptiSMOKE++ serial", "M. Furst, A. Bertolino, T. Dinelli");
-
-    //std::cout << "Input file: " << plugin_input_file << std::endl;
-    //std::cout << "" << std::endl;
-
-    // Prepare Dakota input string
-    //ObjectInput1.DakotaInputString();
 
     // Parse input and construct Dakota LibraryEnvironment, performing
     // input data checks
     Dakota::ProgramOptions opts;
-    
-    //opts.input_string(ObjectInput1.dakota_options_string);
+    // opts.input_string(ObjectInput1.dakota_options_string);
 
     // Defaults constructs the MPIManager, which assumes COMM_WORLD
+    
     Dakota::LibraryEnvironment env(opts);
 
     if (env.mpi_manager().world_rank() == 0){
