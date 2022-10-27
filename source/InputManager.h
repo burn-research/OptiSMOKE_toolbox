@@ -67,7 +67,7 @@ namespace OptiSMOKE{
         inline const fs::path& path_experimental_data_files() const {return path_experimental_data_files_;};
         inline const bool iDebug() const {return iDebug_;};
         inline const bool iDebugSimulations() const {return iDebugSimulations_;};
-        inline const bool iPenaltyFunction() const {return iPenaltyFunction_;};
+        // inline const bool iPenaltyFunction() const {return iPenaltyFunction_;};
 
     private:
 
@@ -79,11 +79,13 @@ namespace OptiSMOKE{
         // Options
         OptiSMOKE::options_kinetics kinetics_data_;
         OptiSMOKE::options_optimization_target optimization_target_;
+        OptiSMOKE::options_optimization_setup optimization_setup_;
 
         // Dictionaries string
         std::string preprocessor_dictionary_;
         std::string optimization_target_dictionary_;
-
+        std::string optimization_setup_dictionary_;
+        
         // Variables of main dictionaries
         std::string input_file_name_;
         std::string main_dictionary_;

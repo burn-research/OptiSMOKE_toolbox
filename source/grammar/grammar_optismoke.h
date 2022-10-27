@@ -41,7 +41,7 @@
 
 namespace OptiSMOKE
 {
-	class grammar_OptiSMOKEpp : public OpenSMOKE::OpenSMOKE_DictionaryGrammar
+	class grammar_optismoke : public OpenSMOKE::OpenSMOKE_DictionaryGrammar
 	{
 	protected:
 

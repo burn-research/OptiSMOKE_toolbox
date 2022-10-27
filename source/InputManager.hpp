@@ -44,7 +44,6 @@ namespace OptiSMOKE{
 
         iDebug_ = false;
         iDebugSimulations_ = false;
-        iPenaltyFunction_ = true;
         iXml_ = false;
         iNominalXml_ = false;
         iTransport_ = false;
@@ -105,7 +104,7 @@ namespace OptiSMOKE{
         {
             iXml_ = true;
             dictionary_(main_dictionary_).ReadPath("@KineticsFolder", kinetics_folder_);
-            if(fs::exists(kinetics_folder_))
+            if(!fs::exists(kinetics_folder_))
             {
                 OptiSMOKE::FatalErrorMessage("The @KineticsFolder path does not exists!");
             }
@@ -116,7 +115,7 @@ namespace OptiSMOKE{
         {
             iNominalXml_ = true;
             dictionary_(main_dictionary_).ReadPath("@NominalKineticsFolder", kinetics_folder_);
-            if(fs::exists(kinetics_folder_))
+            if(!fs::exists(kinetics_folder_))
             {
                 OptiSMOKE::FatalErrorMessage("The @NominalKineticsFolder path does not exists!");
             }
@@ -126,11 +125,13 @@ namespace OptiSMOKE{
         dictionary_(main_dictionary_).ReadPath("@NameOfOptimizedKineticsFolder", optimized_kinetics_folder_);
         
         // penalty function
+        /* L'ho spostata in optimization setup
         if(dictionary_(main_dictionary_).CheckOption("@PenaltyFunction"))
         {
             dictionary_(main_dictionary_).ReadBool("@PenaltyFunction", iPenaltyFunction_);
         }
-
+        */
+       
         // debug
         if(dictionary_(main_dictionary_).CheckOption("@Debug"))
         {
@@ -153,7 +154,10 @@ namespace OptiSMOKE{
 
         // Dakota options
         // CM options
-        // Optimization setup 
+        // Optimization setup
+        dictionary_(main_dictionary_).ReadDictionary("@OptimizationSetup", optimization_setup_dictionary_);
+        optimization_setup_.SetupFromDictionary(dictionary_, optimization_setup_dictionary_);
+
         // Optimization target
         dictionary_(main_dictionary_).ReadDictionary("@OptimizationTargets", optimization_target_dictionary_);
         optimization_target_.SetupFromDictionary(dictionary_, optimization_target_dictionary_);

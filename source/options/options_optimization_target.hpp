@@ -165,6 +165,10 @@ namespace OptiSMOKE
         if(dictionary_manager(dictionary_name).CheckOption("@ReactionsClassesDefinitions"))
         {
             dictionary_manager(dictionary_name).ReadPath("@ReactionsClassesDefinitions", reactions_classes_definition_);
+			if(!fs::exists(reactions_classes_definition_))
+			{
+				OptiSMOKE::FatalErrorMessage("The @ReactionsClassesDefinitions path does not exists!");
+			}
 			ReadReactionClassesDefinition(reactions_classes_definition_);
         }
     }

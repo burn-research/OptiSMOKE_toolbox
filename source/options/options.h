@@ -37,6 +37,7 @@
 
 #include "options_kinetics.h"
 #include "options_optimization_target.h"
+#include "options_optimization_setup.h"
 //#include "options_dakota.h"
 
 #endif // OPTISMOKE_OPTIONS_H
