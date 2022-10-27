@@ -56,7 +56,7 @@ namespace OptiSMOKE
                 "none",
                 "none"));
 
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@lineUpMaxima",
+            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@LineUpMaxima",
                 OpenSMOKE::SINGLE_BOOL,
 	            "Number of Bootstraps variations",
                 false,
@@ -64,7 +64,7 @@ namespace OptiSMOKE
                 "none",
                 "none"));
 
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@useSumOfIndexesForAlignment",
+            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@UseSumOfIndexesForAlignment",
                 OpenSMOKE::SINGLE_BOOL,
 	            "Number of Bootstraps variations",
                 false,
@@ -72,7 +72,7 @@ namespace OptiSMOKE
                 "none",
                 "none"));
 
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@fractionOfExpRangeForModelExtrapolation",
+            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@FractionOfExpRangeForModelExtrapolation",
                 OpenSMOKE::VECTOR_DOUBLE,
 	            "Number of Bootstraps variations",
                 false,
@@ -85,16 +85,8 @@ namespace OptiSMOKE
                 OpenSMOKE::SINGLE_BOOL,
                 "Use Bootstrap technique in Curve Matching Index calculations (default: false)",
                 false) );
-	    
-            // Number of Variations - BS //	   
-	        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@NumberOfBootstrapVariations",
-                OpenSMOKE::SINGLE_INT,
-                "Number of Bootstrap Variations",
-                false,
-                "none",
-                "none",
-                "none"));
 
+            // Da vedere se metterli
             AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@PrintIndexes",
                 OpenSMOKE::SINGLE_BOOL,
                 "Decide wheter to print out the indexes (default: false)",

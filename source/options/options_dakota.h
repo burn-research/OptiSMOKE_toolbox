@@ -35,8 +35,6 @@
 #ifndef OPTIONS_DAKOTA_H
 #define OPTIONS_DAKOTA_H
 
-#include "grammar/grammar_DakotaOptions.h"
-
 namespace OptiSMOKE
 {
   class options_dakota
@@ -48,25 +46,27 @@ namespace OptiSMOKE
     void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
                             std::string dictionary_name);
     
-    void WriteDakotaInputString();
-
-    std::string dakota_input_string;
-    
     private:
 
-    grammar_DakotaOptions dakota_options_grammar_;
+    grammar_dakota dakota_options_grammar_;
 
     std::string method;
-		std::string string_population_size;
+		std::string population_size;
 		std::string fitness_type;
 		std::string mutation_type;
 		std::string mutation_rate;
 		std::string crossover_type;
 		std::string crossover_rate;
 		std::string replacement_type;
-		
+		std::string max_iterations;
+    std::string max_function_evaluations;
+    std::string convergence_tolerance;
+    std::string solution_target;
+    std::string seed;
+    std::vector<std::string> diverse_dakota_input;
+
     // Values for coliny_direct
-		std::string string_division;
+		std::string division;
 		std::string max_boxsize_limit;
 		std::string min_boxsize_limit;
 

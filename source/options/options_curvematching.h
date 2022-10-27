@@ -32,13 +32,37 @@
 |                                                                         |
 \*-----------------------------------------------------------------------*/
 
-#ifndef OPTISMOKE_OPTIONS_H
-#define OPTISMOKE_OPTIONS_H
+#ifndef OPTIONS_CURVEMATCHING_H
+#define OPTIONS_CURVEMATCHING_H
 
-#include "options_kinetics.h"
-#include "options_optimization_target.h"
-#include "options_optimization_setup.h"
-#include "options_curvematching.h"
-#include "options_dakota.h"
+namespace OptiSMOKE
+{
+    class options_curvematching
+    {  
+    public:
+        
+        options_curvematching();
+        ~options_curvematching();
+        void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
+                                std::string dictionary_name);
 
-#endif // OPTISMOKE_OPTIONS_H
+        inline const int& number_of_bootstrap() {return number_of_bootstrap_;};
+        inline const bool& line_up_maxima() {return line_up_maxima_;};
+        inline const bool& use_index_for_alignement() {return use_index_for_alignement_;};
+        inline const bool& use_bootstrap() {return use_bootstrap_;};
+        inline const double& fraction_of_exp_for_model_extrapolation() {return fraction_of_exp_for_model_extrapolation_;};
+
+    private:
+
+        grammar_curve_matching grammar_curve_matching_;
+        int number_of_bootstrap_;
+        bool line_up_maxima_;
+        bool use_index_for_alignement_;
+        bool use_bootstrap_;
+        double fraction_of_exp_for_model_extrapolation_;
+        
+    };
+} // namespace OptiSMOKE
+
+#include "options_curvematching.hpp"
+#endif // OPTIONS_CURVEMATCHING_H

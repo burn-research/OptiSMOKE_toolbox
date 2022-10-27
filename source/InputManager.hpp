@@ -153,7 +153,13 @@ namespace OptiSMOKE{
         // Dictionaries
 
         // Dakota options
+        dictionary_(main_dictionary_).ReadDictionary("@DakotaOptions", dakota_dictionary_);
+        dakota_options_.SetupFromDictionary(dictionary_, dakota_dictionary_);
+
         // CM options
+        dictionary_(main_dictionary_).ReadDictionary("@CurveMatchingOptions", curvematching_dictionary_);
+        curvematching_options_.SetupFromDictionary(dictionary_, curvematching_dictionary_);
+
         // Optimization setup
         dictionary_(main_dictionary_).ReadDictionary("@OptimizationSetup", optimization_setup_dictionary_);
         optimization_setup_.SetupFromDictionary(dictionary_, optimization_setup_dictionary_);

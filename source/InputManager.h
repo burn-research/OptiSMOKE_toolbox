@@ -80,11 +80,15 @@ namespace OptiSMOKE{
         OptiSMOKE::options_kinetics kinetics_data_;
         OptiSMOKE::options_optimization_target optimization_target_;
         OptiSMOKE::options_optimization_setup optimization_setup_;
+        OptiSMOKE::options_curvematching curvematching_options_;
+        OptiSMOKE::options_dakota dakota_options_;
 
         // Dictionaries string
         std::string preprocessor_dictionary_;
         std::string optimization_target_dictionary_;
         std::string optimization_setup_dictionary_;
+        std::string curvematching_dictionary_;
+        std::string dakota_dictionary_;
         
         // Variables of main dictionaries
         std::string input_file_name_;
@@ -97,10 +101,10 @@ namespace OptiSMOKE{
         bool iDebug_;
         bool iDebugSimulations_;
         bool iPenaltyFunction_;
-        bool iXml_; // Forse ne devo tenere solo uno tra iXml_ e iNominalXml_
+        bool iXml_; // Forse ne devo tenere solo uno tra iXml_ e iNominalXml_ sta roba da capire
         bool iNominalXml_;
         bool iTransport_;
-        bool iReactionClassOptimization;
+        bool iReactionClassOptimization; // non so se serve qua da vedere
 
         // Functions
         void ReadMainDictionary();

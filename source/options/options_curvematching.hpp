@@ -32,13 +32,34 @@
 |                                                                         |
 \*-----------------------------------------------------------------------*/
 
-#ifndef OPTISMOKE_OPTIONS_H
-#define OPTISMOKE_OPTIONS_H
+namespace OptiSMOKE
+{
+    options_curvematching::options_curvematching() {}
+    
+    options_curvematching::~options_curvematching() {}
 
-#include "options_kinetics.h"
-#include "options_optimization_target.h"
-#include "options_optimization_setup.h"
-#include "options_curvematching.h"
-#include "options_dakota.h"
+    void options_curvematching::SetupFromDictionary
+                                (OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, 
+                                std::string dictionary_name) 
+    {
+        dictionary_manager(dictionary_name).SetGrammar(grammar_curve_matching_);
 
-#endif // OPTISMOKE_OPTIONS_H
+        if (dictionary_manager(dictionary_name).CheckOption("@NumberOfBootstrapVariations"))
+			dictionary_manager(dictionary_name).ReadInt("@NumberOfBootstrapVariations", number_of_bootstrap_);
+
+        if (dictionary_manager(dictionary_name).CheckOption("@LineUpMaxima"))
+			dictionary_manager(dictionary_name).ReadBool("@LineUpMaxima", line_up_maxima_);
+
+        if (dictionary_manager(dictionary_name).CheckOption("@UseSumOfIndexesForAlignment"))
+			dictionary_manager(dictionary_name).ReadBool("@UseSumOfIndexesForAlignment", use_index_for_alignement_);
+        
+        // da fare check sul tipo
+        if (dictionary_manager(dictionary_name).CheckOption("@FractionOfExpRangeForModelExtrapolation"))
+			dictionary_manager(dictionary_name).ReadDouble("@FractionOfExpRangeForModelExtrapolation", fraction_of_exp_for_model_extrapolation_);
+
+        if (dictionary_manager(dictionary_name).CheckOption("@UseBootStrap"))
+			dictionary_manager(dictionary_name).ReadBool("@UseBootStrap", use_bootstrap_);
+
+    }
+
+} // namespace OptiSMOKE
