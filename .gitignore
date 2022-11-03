@@ -34,6 +34,7 @@ projects/Linux_BovisaCluster/install-sh
 projects/Linux_BovisaCluster/missing
 projects/myexe/
 projects/myLINUX
+projects/my_linux
 .vscode/
 cmake/
 CMakeLists.txt
