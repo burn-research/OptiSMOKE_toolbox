@@ -108,6 +108,8 @@ namespace OptiSMOKE{
 
         // Functions
         void ReadMainDictionary();
+
+        void DakotaInputString();
     };
 } // namespace OptiSMOKE
 

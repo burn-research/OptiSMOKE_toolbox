@@ -171,6 +171,11 @@ namespace OptiSMOKE{
         optimization_target_.SetupFromDictionary(dictionary_, optimization_target_dictionary_);
         
     }
+
+    void InputManager::DakotaInputString()
+    {
+        std::cout << "Ciao" << std::endl;
+    }
 } // namespace OptiSMOKE
 
 
