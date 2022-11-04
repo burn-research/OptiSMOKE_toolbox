@@ -166,7 +166,84 @@ namespace OptiSMOKE{
 
     void InputManager::DakotaInputString()
     {
-        std::cout << "Ciao" << std::endl;
+        
+		  
+		dakota_input_string_ = "     environment,"
+		                       "\n      tabular_data";
+		dakota_input_string_.append("\n 		tabular_data_file '" + dakota_options_.tabular_data_file() + "'");
+		
+        dakota_input_string_.append("\n	method,"); 
+		dakota_input_string_.append("\n 		" + dakota_options_.method());
+		dakota_input_string_.append("\n		  max_iterations = " + dakota_options_.max_iterations());
+		dakota_input_string_.append("\n 		  max_function_evaluations = " + dakota_options_.max_function_evaluations());
+        dakota_input_string_.append("\n		  convergence_tolerance = " + dakota_options_.convergence_tolerance());
+		dakota_input_string_.append("\n 		  solution_target = " + dakota_options_.solution_target());
+		dakota_input_string_.append("\n 		  seed = " + dakota_options_.seed());
+
+		if(dakota_options_.iDiverseInput())
+		{
+		    dakota_input_string_.append("\n");
+			for (int i = 0; i < dakota_options_.diverse_dakota_input().size(); i++)
+			{
+				dakota_input_string_.append( " " + dakota_options_.diverse_dakota_input()[i]);
+			}
+		} 
+        else if(dakota_options_.method() == "coliny_ea")
+	   	{
+		  	dakota_input_string_.append( "\n 		  population_size = " + dakota_options_.population_size());
+			dakota_input_string_.append( "\n		  fitness_type " + dakota_options_.fitness_type());
+			dakota_input_string_.append( "\n		  mutation_type " + dakota_options_.mutation_type());
+			dakota_input_string_.append( "\n		  mutation_rate " + dakota_options_.mutation_rate());
+			dakota_input_string_.append( "\n		  crossover_type " + dakota_options_.crossover_type());
+			dakota_input_string_.append( "\n		  crossover_rate " + dakota_options_.crossover_rate());
+			dakota_input_string_.append( "\n		  replacement_type " + dakota_options_.replacement_type());
+		} 
+        else if(dakota_options_.method() == "coliny_direct")
+		{
+			dakota_input_string_.append( "\n                 division " + dakota_options_.division());
+			dakota_input_string_.append( "\n                 max_boxsize_limit " + dakota_options_.max_boxsize_limit());
+			dakota_input_string_.append( "\n                 min_boxsize_limit " + dakota_options_.min_boxsize_limit());
+		}
+        else
+        {
+            OptiSMOKE::FatalErrorMessage("Available implemented methods are coliny_ea | coliny_direct");
+        }
+			
+        dakota_input_string_.append( "\n	variables,");
+        /*
+		if( distribution == "uniform"){
+				dakota_options_string.append( "\n		continuous_design = " + std::to_string(number_of_parameters));
+				dakota_options_string.append( "\n		  descriptors " + param_name_string);
+				dakota_options_string.append( "\n 		  initial_point " + initial_values_string);
+				dakota_options_string.append( "\n 	 	  lower_bounds " + lower_bounds_string);
+				dakota_options_string.append( "\n 		  upper_bounds " + upper_bounds_string);
+			} else if (distribution == "normal"){
+				dakota_options_string.append( "\n               active uncertain " );
+				dakota_options_string.append( "\n		normal_uncertain = " + std::to_string(number_of_parameters));
+				dakota_options_string.append( "\n		  descriptors " + param_name_string);
+				dakota_options_string.append( "\n 		  means " + initial_values_string);
+				dakota_options_string.append( "\n 		  std_deviations " + std_deviations_string);
+			}
+
+			dakota_options_string.append( "\n	interface,");
+			dakota_options_string.append( "\n		direct");
+			dakota_options_string.append( "\n		  analysis_driver = 'plugin_opensmoke'");
+			dakota_options_string.append( "\n	responses,");
+			dakota_options_string.append( "\n		num_objective_functions = 1");
+			
+			// Options to use other optimization method (gradient-based)
+
+			if (gradient_option == true){
+				dakota_options_string.append( "\n               numerical_gradients");
+				dakota_options_string.append( "\n               	method_source dakota");
+				dakota_options_string.append( "\n               	interval_type forward");
+				dakota_options_string.append( "\n               	fd_step_size = 1.e-5");
+			}
+			else{
+				dakota_options_string.append( "\n		no_gradients");
+			}
+
+			dakota_options_string.append( "\n		no_hessians");*/
     }
 } // namespace OptiSMOKE
 

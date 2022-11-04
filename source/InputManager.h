@@ -53,21 +53,23 @@ namespace OptiSMOKE{
         void SetInputOptions(int argc, char* argv[]);
 
         void ReadDictionary();
+        // Da privatizzare
+        void DakotaInputString();
 
         // Public access variables
         inline const OptiSMOKE::options_kinetics& kinetics_data() const {return kinetics_data_;};
-        inline const bool iXml() const {return iXml_;};
-        inline const bool iNominalXml() const {return iNominalXml_;};
-        inline const std::string input_file_name() const {return input_file_name_;};
-        inline const std::string main_dictionary() const {return main_dictionary_;};
+        inline const bool& iXml() const {return iXml_;};
+        inline const bool& iNominalXml() const {return iNominalXml_;};
+        inline const std::string& input_file_name() const {return input_file_name_;};
+        inline const std::string& main_dictionary() const {return main_dictionary_;};
         inline const fs::path& output_folder() const {return output_folder_;};
         inline const fs::path& kinetics_folder() const {return kinetics_folder_;};
         inline const fs::path& optimized_kinetics_folder() const {return optimized_kinetics_folder_;};
         inline const fs::path& path_opensmoke_input_files() const {return path_opensmoke_input_files_;};
         inline const fs::path& path_experimental_data_files() const {return path_experimental_data_files_;};
-        inline const bool iDebug() const {return iDebug_;};
-        inline const bool iDebugSimulations() const {return iDebugSimulations_;};
-        // inline const bool iPenaltyFunction() const {return iPenaltyFunction_;};
+        inline const bool& iDebug() const {return iDebug_;};
+        inline const bool& iDebugSimulations() const {return iDebugSimulations_;};
+        inline const std::string& dakota_input_string() const {return dakota_input_string_;};
 
     private:
 
@@ -100,16 +102,14 @@ namespace OptiSMOKE{
         fs::path path_experimental_data_files_;
         bool iDebug_;
         bool iDebugSimulations_;
-        // bool iPenaltyFunction_;
         bool iXml_; // Forse ne devo tenere solo uno tra iXml_ e iNominalXml_ sta roba da capire
         bool iNominalXml_;
         bool iTransport_;
-        // bool iReactionClassOptimization; // non so se serve qua da vedere
+        std::string dakota_input_string_;
 
         // Functions
         void ReadMainDictionary();
 
-        void DakotaInputString();
     };
 } // namespace OptiSMOKE
 

@@ -36,23 +36,24 @@ namespace OptiSMOKE
 {
     options_dakota::options_dakota(){
 
-        method = "coliny_ea";
-		population_size = "50";
-		fitness_type = "merit_function";
-		mutation_type = "offset_normal";
-		mutation_rate = "1.0";
-		crossover_type = "two_point";
-		crossover_rate = "0.0";
-		replacement_type = "chc = 10";
+        method_ = "coliny_ea";
+		population_size_ = "50";
+		fitness_type_ = "merit_function";
+		mutation_type_ = "offset_normal";
+		mutation_rate_ = "1.0";
+		crossover_type_ = "two_point";
+		crossover_rate_ = "0.0";
+		replacement_type_ = "chc = 10";
 
 		// Values for coliny_direct
-		division = "major_dimension";
-		max_boxsize_limit = "0.0";
-		min_boxsize_limit = "1.0e-4";
+		division_ = "major_dimension";
+		max_boxsize_limit_ = "0.0";
+		min_boxsize_limit_ = "1.0e-4";
 
-        gradient_option = false;
+        iGradient_ = false;
+		iDiverseInput_ = false;
 
-        tabular_data_file = "tabulara_data.dat";
+        tabular_data_file_ = "tabulara_data.dat";
     }
 
     void options_dakota::SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, 
@@ -62,60 +63,62 @@ namespace OptiSMOKE
         dictionary_manager(dictionary_name).SetGrammar(dakota_options_grammar_);
 
         if (dictionary_manager(dictionary_name).CheckOption("@TabularDataFile") == true)
-			dictionary_manager(dictionary_name).ReadString("@TabularDataFile", tabular_data_file);
+			dictionary_manager(dictionary_name).ReadString("@TabularDataFile", tabular_data_file_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@Method") == true)
-			dictionary_manager(dictionary_name).ReadString("@Method", method);
+			dictionary_manager(dictionary_name).ReadString("@Method", method_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@MaxIterations") == true)
-			dictionary_manager(dictionary_name).ReadString("@MaxIterations", max_iterations);
+			dictionary_manager(dictionary_name).ReadString("@MaxIterations", max_iterations_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@MaxFunctionEvaluations") == true)
-			dictionary_manager(dictionary_name).ReadString("@MaxFunctionEvaluations", max_function_evaluations);
+			dictionary_manager(dictionary_name).ReadString("@MaxFunctionEvaluations", max_function_evaluations_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ConvergenceTolerance") == true)
-			dictionary_manager(dictionary_name).ReadString("@ConvergenceTolerance", convergence_tolerance);
+			dictionary_manager(dictionary_name).ReadString("@ConvergenceTolerance", convergence_tolerance_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@SolutionTarget") == true)
-			dictionary_manager(dictionary_name).ReadString("@SolutionTarget", solution_target);
+			dictionary_manager(dictionary_name).ReadString("@SolutionTarget", solution_target_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@Seed") == true)
-			dictionary_manager(dictionary_name).ReadString("@Seed", seed);
+			dictionary_manager(dictionary_name).ReadString("@Seed", seed_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@PopulationSize") == true)
-			dictionary_manager(dictionary_name).ReadString("@PopulationSize", population_size);
+			dictionary_manager(dictionary_name).ReadString("@PopulationSize", population_size_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@FitnessType") == true)
-			dictionary_manager(dictionary_name).ReadString("@FitnessType", fitness_type);
+			dictionary_manager(dictionary_name).ReadString("@FitnessType", fitness_type_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@MutationType") == true)
-			dictionary_manager(dictionary_name).ReadString("@MutationType", mutation_type);
+			dictionary_manager(dictionary_name).ReadString("@MutationType", mutation_type_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@MutationRate") == true)
-			dictionary_manager(dictionary_name).ReadString("@MutationRate", mutation_rate);
+			dictionary_manager(dictionary_name).ReadString("@MutationRate", mutation_rate_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@CrossoverType") == true)
-			dictionary_manager(dictionary_name).ReadString("@CrossoverType", crossover_type);
+			dictionary_manager(dictionary_name).ReadString("@CrossoverType", crossover_type_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@CrossoverRate") == true)
-			dictionary_manager(dictionary_name).ReadString("@CrossoverRate", crossover_rate);
+			dictionary_manager(dictionary_name).ReadString("@CrossoverRate", crossover_rate_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ReplacementType") == true)
-			dictionary_manager(dictionary_name).ReadString("@ReplacementType", replacement_type);
+			dictionary_manager(dictionary_name).ReadString("@ReplacementType", replacement_type_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@Division") == true)
-			dictionary_manager(dictionary_name).ReadString("@Division", division);
+			dictionary_manager(dictionary_name).ReadString("@Division", division_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@MaxBoxsizeLimit") == true)
-			dictionary_manager(dictionary_name).ReadString("@MaxBoxsizeLimit", max_boxsize_limit);
+			dictionary_manager(dictionary_name).ReadString("@MaxBoxsizeLimit", max_boxsize_limit_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@MinBoxsizeLimit") == true)
-			dictionary_manager(dictionary_name).ReadString("@MinBoxsizeLimit", min_boxsize_limit);
+			dictionary_manager(dictionary_name).ReadString("@MinBoxsizeLimit", min_boxsize_limit_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@DiverseInput") == true)
-			dictionary_manager(dictionary_name).ReadOption("@DiverseInput", diverse_dakota_input);
+		if (dictionary_manager(dictionary_name).CheckOption("@DiverseInput") == true){
+			iDiverseInput_ = true;
+			dictionary_manager(dictionary_name).ReadOption("@DiverseInput", diverse_dakota_input_);
+		}
 			
  		if (dictionary_manager(dictionary_name).CheckOption("@Gradient") == true)
-            dictionary_manager(dictionary_name).ReadBool("@Gradient", gradient_option);
+            dictionary_manager(dictionary_name).ReadBool("@Gradient", iGradient_);
 	}
 }

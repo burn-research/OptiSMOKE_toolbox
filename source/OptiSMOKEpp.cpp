@@ -88,6 +88,8 @@ int main(int argc, char* argv[])
     OptiSMOKE::InputManager input(dictionaries);
     input.SetInputOptions(argc, argv);
     input.ReadDictionary();
+    input.DakotaInputString();
+    std::cout << input.dakota_input_string() << std::endl;
 
     run_dakota_parse(plugin_input_file); // mode 1: parse
 
