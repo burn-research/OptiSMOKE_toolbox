@@ -125,14 +125,6 @@ namespace OptiSMOKE{
 
         // name of optimized kinetic folder
         dictionary_(main_dictionary_).ReadPath("@NameOfOptimizedKineticsFolder", optimized_kinetics_folder_);
-        
-        // penalty function
-        /* L'ho spostata in optimization setup
-        if(dictionary_(main_dictionary_).CheckOption("@PenaltyFunction"))
-        {
-            dictionary_(main_dictionary_).ReadBool("@PenaltyFunction", iPenaltyFunction_);
-        }
-        */
        
         // debug
         if(dictionary_(main_dictionary_).CheckOption("@Debug"))
@@ -167,7 +159,7 @@ namespace OptiSMOKE{
         optimization_setup_.SetupFromDictionary(dictionary_, optimization_setup_dictionary_);
 
         // Optimization target
-        dictionary_(main_dictionary_).ReadDictionary("@OptimizationTargets", optimization_target_dictionary_);
+        dictionary_(main_dictionary_).ReadDictionary("@OptimizationTarget", optimization_target_dictionary_);
         optimization_target_.SetupFromDictionary(dictionary_, optimization_target_dictionary_);
         
     }

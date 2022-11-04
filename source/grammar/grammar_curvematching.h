@@ -73,7 +73,7 @@ namespace OptiSMOKE
                 "none"));
 
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@FractionOfExpRangeForModelExtrapolation",
-                OpenSMOKE::VECTOR_DOUBLE,
+                OpenSMOKE::SINGLE_DOUBLE,
 	            "Number of Bootstraps variations",
                 false,
                 "none",

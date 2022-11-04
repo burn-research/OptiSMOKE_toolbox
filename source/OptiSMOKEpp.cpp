@@ -87,6 +87,7 @@ int main(int argc, char* argv[])
     OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
     OptiSMOKE::InputManager input(dictionaries);
     input.SetInputOptions(argc, argv);
+    input.ReadDictionary();
 
     run_dakota_parse(plugin_input_file); // mode 1: parse
 

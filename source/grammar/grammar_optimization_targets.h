@@ -50,7 +50,7 @@ namespace OptiSMOKE
                 false,
                 "none",
                 "none",
-                "@NumberOfBatchDatasets @NumberOfPlugFlowDatasets @NumberOfPerfectlyStirredDatasets @NumberOfLaminarFlameDatasets"));
+                "@NumberOfBatchReactor @NumberOfPlugFlowReactor @NumberOfPerfectlyStirredReactor @NumberOfPremixedLaminarFlame @NumberOfCounterFlowFlame"));
 
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@NumberOfBatchReactor",
                 OpenSMOKE::SINGLE_INT,
@@ -325,12 +325,6 @@ namespace OptiSMOKE
                 "@ListOfTarget_classic_PLOG_Reactions",
                 "none"));
             // PLOG
-
-            // Reaction Classes Dictionary
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ReactionsClassesDefinitions",
-                OpenSMOKE::SINGLE_PATH,
-                "Path to the file containing the definitions of the reaction/s classes.",
-                false));
 
         }
     };

@@ -10,7 +10,7 @@
 |                                                                         |
 |            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
 |                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|                     Timoteo Dinelli <timoteo.dinelli@polimi.it          |
+|                     Timoteo Dinelli <timoteo.dinelli@polimi.it>         |
 |-------------------------------------------------------------------------|
 |   License                                                               |
 |                                                                         |
@@ -58,12 +58,12 @@ namespace OptiSMOKE
                 "Specify if debugging print outs should be used (default: false)",
                 false) );
 
-	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@DakotaOptions", 
+	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@DakotaOptions", 
                 OpenSMOKE::SINGLE_DICTIONARY,
                 "Name of the dictionary with options for Dakota", 
                 false));
             
-	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@IgnitionDelayTimes", 
+	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@IgnitionDelayTimes", 
                 OpenSMOKE::SINGLE_DICTIONARY,
                 "Name of the dictionary with options for ignition delay time calculations", 
                 false,
@@ -72,7 +72,7 @@ namespace OptiSMOKE
                 "none"));
 
         // AB  // dictionary for curve matching options
-	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@CurveMatchingOptions", 
+	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@CurveMatchingOptions", 
                 OpenSMOKE::SINGLE_DICTIONARY,
                 "Name of the dictionary with options for setting Curve Matching as the objective function", 
                 false,
@@ -130,7 +130,7 @@ namespace OptiSMOKE
                 "none"));
 
         AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@NameOfOptimizedKineticsFolder",
-                OpenSMOKE::SINGLE_STRING,
+                OpenSMOKE::SINGLE_PATH,
                 "Name of the folder where the optimized kinetics is printed at the end in CHEMKIN and XML format.",
                 false,
                 "none",
@@ -145,16 +145,16 @@ namespace OptiSMOKE
                 "none",
                 "@PathOpenSMOKEInputFiles @PathDatasetInputFiles"));
 
-	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfExperimentalDataFiles",
+	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfExperimentalDataFiles",
                 OpenSMOKE::VECTOR_STRING,
-		        "List of Experimental data files",
-		        true,
+		"List of Experimental data files",
+	        true,
                 "@PathExperimentalDataFiles",
                 "none",
                 "@PathExperimentalDataFiles"));
             
         AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@PathOpenSMOKEInputFiles",
-                OpenSMOKE::SINGLE_STRING,
+                OpenSMOKE::SINGLE_PATH,
                 "File including the path for list of input files",
                 true,
                 "@ListOfOpenSMOKEInputFiles @PathDatasetInputFiles",
@@ -162,21 +162,22 @@ namespace OptiSMOKE
                 "@ListOfOpenSMOKEInputFiles @PathDatasetInputFiles"));
 
         AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@PathDatasetInputFiles",
-                OpenSMOKE::SINGLE_STRING,
+                OpenSMOKE::SINGLE_PATH,
                 "File including the path for list of dataset specific input files",
                 true,
                 "@ListOfOpenSMOKEInputFiles @PathOpenSMOKEInputFiles",
                 "none",
                 "@ListOfOpenSMOKEInputFiles @PathOpenSMOKEInputFiles"));
 
-	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@PathExperimentalDataFiles",
-                OpenSMOKE::SINGLE_STRING,
-		        "File including the path for list of Experimental data files",
-		        true,
+	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@PathExperimentalDataFiles",
+                OpenSMOKE::SINGLE_PATH,
+		"File including the path for list of Experimental data files",
+		true,
                 "@ListOfExperimentalDataFiles",
                 "none",
                 "@ListOfExperimentalDataFiles"));
 
+        /*
         // ICA for direct reactions // //
         AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ICA_DirectReactionsIndices",
                 OpenSMOKE::VECTOR_INT,
@@ -761,7 +762,7 @@ namespace OptiSMOKE
                 "none",
                 "@ListOfTarget_ThirdBody_Reactions",
                 "@ListOfMaxAbs_ThirdBody_Eff"));
-		
+	*/
 	}
     };
 }

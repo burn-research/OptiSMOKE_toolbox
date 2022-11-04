@@ -98,6 +98,15 @@ namespace OptiSMOKE
                 "none",
 		        "@ReactionsClassesDefinitions",
 		        "none"));
+
+            // Reaction Classes Dictionary
+            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ReactionsClassesDefinitions",
+                OpenSMOKE::SINGLE_PATH,
+                "Path to the file containing the definitions of the reaction/s classes.",
+                false,
+                "none",
+                "@ReactionsClasses",
+                "none"));
         }
     };
 }

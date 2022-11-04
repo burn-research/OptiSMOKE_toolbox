@@ -56,7 +56,7 @@ namespace OptiSMOKE
 			dictionary_manager(dictionary_name).ReadInt("@SigmaExpDistribution", sigma_exp_ditribution_);
 
         if (dictionary_manager(dictionary_name).CheckOption("@AcceptedSigmaInKDistribution"))
-			dictionary_manager(dictionary_name).ReadString("@AcceptedSigmaInKDistribution", sigma_k_distribution_);
+			dictionary_manager(dictionary_name).ReadInt("@AcceptedSigmaInKDistribution", sigma_k_distribution_);
 
         if (dictionary_manager(dictionary_name).CheckOption("@Parameters_Distribution"))
 			dictionary_manager(dictionary_name).ReadString("@Parameters_Distribution", parameter_distribution_);

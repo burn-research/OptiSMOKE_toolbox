@@ -50,7 +50,7 @@ namespace OptiSMOKE
     
         inline const std::string& parameter_boundaries() {return parameter_boundaries_;};
         inline const int& sigma_exp_ditribution() {return sigma_exp_ditribution_;};
-        inline const std::string& sigma_k_distribution() {return sigma_k_distribution_;};
+        inline const int& sigma_k_distribution() {return sigma_k_distribution_;};
         inline const std::string& parameter_distribution() {return parameter_distribution_;};
         inline const bool& penalty_function() {return penalty_function_;};
         inline const std::string& objective_function_type() {return objective_function_type_;};
@@ -62,7 +62,7 @@ namespace OptiSMOKE
         grammar_optimization_setup optimization_setup_grammar_;
         std::string parameter_boundaries_;
         int sigma_exp_ditribution_;
-        std::string sigma_k_distribution_;
+        int sigma_k_distribution_;
         std::string parameter_distribution_;
         bool penalty_function_;
         std::string objective_function_type_;
