@@ -44,6 +44,7 @@ namespace OptiSMOKE
 
 		virtual void DefineRules()
 		{
+            // To be removed
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@TypeOfReactor",
                 OpenSMOKE::SINGLE_STRING,
                 "Type of ideal reactor",
@@ -325,6 +326,14 @@ namespace OptiSMOKE
                 "@ListOfTarget_classic_PLOG_Reactions",
                 "none"));
             // PLOG
+
+            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ReactionsClassesDefinitions",
+                OpenSMOKE::SINGLE_PATH,
+                "Path to the file containing the definitions of the reaction/s classes.",
+                false,
+                "none",
+                "none",
+                "none"));
 
         }
     };

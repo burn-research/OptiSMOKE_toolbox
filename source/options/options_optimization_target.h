@@ -103,6 +103,8 @@ namespace OptiSMOKE
 	        std::vector<double> list_of_uncertainty_factors_inf;
         };
 
+        // PENSIAMO ALLA CLASSE PIÙ GENERICA DELLA TERRA DOVREI
+        // USARE LA STRUTTURA DI SOPRA ALLO STESSO MODO NO? 
         struct reactions_classes_
         {
             std::string class_name;

@@ -175,6 +175,7 @@ namespace OptiSMOKE
 
     void options_optimization_target::ReadReactionClassesDefinition(fs::path classes_definition)
 	{
+		// FA CAGARE VA RISCRITTA A TUONO
 		fs::ifstream fileHandler(classes_definition.c_str());
     	std::string line;
     	int numberOfLines = 0;
@@ -250,10 +251,6 @@ namespace OptiSMOKE
 			target_optimization_.list_of_target_Beta.push_back(classes_structure_[i].list_of_target_reactions[0]);
 			target_optimization_.list_of_target_E_over_R.push_back(classes_structure_[i].list_of_target_reactions[0]);
 			target_optimization_.list_of_target_uncertainty_factors.push_back(classes_structure_[i].list_of_target_reactions[0]);
-
-			// list_of_initial_lnA.push_back(boost::lexical_cast<std::string>(std::log(kineticsMapXML->A(matrixOfReactionIndex[i][0]-1))));
-			// list_of_initial_Beta.push_back(boost::lexical_cast<std::string>(kineticsMapXML->Beta(matrixOfReactionIndex[i][0]-1)));
-			// list_of_initial_E_over_R.push_back(boost::lexical_cast<std::string>(kineticsMapXML->E_over_R(matrixOfReactionIndex[i][0]-1)));
         	
 		}
 		

@@ -62,7 +62,8 @@ namespace OptiSMOKE
                 OpenSMOKE::SINGLE_DICTIONARY,
                 "Name of the dictionary with options for Dakota", 
                 false));
-            
+        
+        // To be removed
 	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@IgnitionDelayTimes", 
                 OpenSMOKE::SINGLE_DICTIONARY,
                 "Name of the dictionary with options for ignition delay time calculations", 
@@ -136,7 +137,8 @@ namespace OptiSMOKE
                 "none",
                 "none",
                 "none"));
-		
+
+        // To be removed        
         AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfOpenSMOKEInputFiles",
                 OpenSMOKE::VECTOR_STRING,
                 "List of OpenSMOKE input files",
@@ -145,6 +147,7 @@ namespace OptiSMOKE
                 "none",
                 "@PathOpenSMOKEInputFiles @PathDatasetInputFiles"));
 
+        // To be removed
 	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfExperimentalDataFiles",
                 OpenSMOKE::VECTOR_STRING,
 		"List of Experimental data files",
@@ -152,7 +155,8 @@ namespace OptiSMOKE
                 "@PathExperimentalDataFiles",
                 "none",
                 "@PathExperimentalDataFiles"));
-            
+
+        // To be removed
         AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@PathOpenSMOKEInputFiles",
                 OpenSMOKE::SINGLE_PATH,
                 "File including the path for list of input files",
@@ -177,6 +181,10 @@ namespace OptiSMOKE
                 "none",
                 "@ListOfExperimentalDataFiles"));
 
+        
+        // List of MAX ABS and MIN ABS and MAX REL and MIN REL vanno tenute e messe in optimization target
+        // List initial li facciamo volare potenti e ce ne fottiamo
+        // ICA e PCA gli dedicherei un dizionario a parte
         /*
         // ICA for direct reactions // //
         AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ICA_DirectReactionsIndices",
@@ -405,64 +413,64 @@ namespace OptiSMOKE
 
 	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMinAbs_lnA",
                 OpenSMOKE::VECTOR_STRING,
-		        "List of minimum absolute values for frequency factors (units: kmol, m, s)",
+		"List of minimum absolute values for frequency factors (units: kmol, m, s)",
                 false,
                 "none",
                 "@ListOfTarget_lnA",
                 "@ListOfMinRel_lnA"));
 
 	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMaxAbs_lnA",
-		        OpenSMOKE::VECTOR_STRING,
-		        "List of maximum absolute values for frequency factors (units: kmol, m, s)",
+		OpenSMOKE::VECTOR_STRING,
+		"List of maximum absolute values for frequency factors (units: kmol, m, s)",
                 false,
                 "none",
                 "@ListOfTarget_lnA",
                 "@ListOfMaxRel_lnA"));
 
 	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMinRel_lnA",
-		        OpenSMOKE::VECTOR_DOUBLE,
-		        "List of minimum relative values for frequency factors",
+		OpenSMOKE::VECTOR_DOUBLE,
+		"List of minimum relative values for frequency factors",
                 false,
                 "none",
                 "@ListOfTarget_lnA",
                 "@ListOfMinAbs_lnA"));
 
 	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMaxRel_lnA",
-		        OpenSMOKE::VECTOR_DOUBLE,
-		        "List of maximum relative values for frequency factors",
+		OpenSMOKE::VECTOR_DOUBLE,
+		"List of maximum relative values for frequency factors",
                 false,
                 "none",
                 "@ListOfTarget_lnA",
                 "@ListOfMaxAbs_lnA"));
 
 	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMinAbs_Beta",
-		        OpenSMOKE::VECTOR_STRING,
-		        "List of minimum absolute values for temperature exponent",
-		        false,
+		OpenSMOKE::VECTOR_STRING,
+		"List of minimum absolute values for temperature exponent",
+		false,
                 "none",
                 "@ListOfTarget_Beta",
                 "@ListOfMinRel_Beta"));
 
 	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMaxAbs_Beta",
-		        OpenSMOKE::VECTOR_STRING,
-		        "List of maximum absolute values for temperature exponent",
-		        false,
+		OpenSMOKE::VECTOR_STRING,
+		"List of maximum absolute values for temperature exponent",
+		false,
                 "none",
                 "@ListOfTarget_Beta",
                 "@ListOfMaxRel_Beta"));
 
 	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMinRel_Beta",
-		        OpenSMOKE::VECTOR_DOUBLE,
-		        "List of minimum relative values for temperature exponent",
-		        false,
+		OpenSMOKE::VECTOR_DOUBLE,
+		"List of minimum relative values for temperature exponent",
+		false,
                 "none",
                 "@ListOfTarget_Beta",
                 "@ListOfMinAbs_Beta"));
 
 	    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMaxRel_Beta",
-		        OpenSMOKE::VECTOR_DOUBLE,
-		        "List of maximum relative values for temperature exponent",
-		        false,
+		OpenSMOKE::VECTOR_DOUBLE,
+		"List of maximum relative values for temperature exponent",
+		false,
                 "none",
                 "@ListOfTarget_Beta",
                 "@ListOfMaxAbs_Beta"));

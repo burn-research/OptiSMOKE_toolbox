@@ -102,7 +102,7 @@ namespace OptiSMOKE{
         fs::path path_experimental_data_files_;
         bool iDebug_;
         bool iDebugSimulations_;
-        bool iXml_; // Forse ne devo tenere solo uno tra iXml_ e iNominalXml_ sta roba da capire
+        bool iXml_;
         bool iNominalXml_;
         bool iTransport_;
         std::string dakota_input_string_;
