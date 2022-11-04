@@ -11,6 +11,7 @@
 //       Author: Magnus Fürst     <magnus.furst@ulb.ac.be>    //
 //       Author: Andrea Bertolino <andrea.bertolino@ulb.be>   //
 //------------------------------------------------------------//
+
 Dictionary OptiSMOKEpp
 {
         @NominalKineticsPreProcessor	        KINPREPRO;
