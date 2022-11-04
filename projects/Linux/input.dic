@@ -14,7 +14,7 @@
 Dictionary OptiSMOKEpp
 {
         @NominalKineticsPreProcessor	        KINPREPRO;
-        @KineticsFolder                 ../../mechanisms/ELTE;
+        @KineticsFolder                 ../../EXAMPLES/mechanisms/ELTE;
 	@NameOfOptimizedKineticsFolder  OPTIMAL_MECH;
 
         @Debug                          true;
@@ -27,7 +27,7 @@ Dictionary OptiSMOKEpp
 
         @OptimizationSetup              OptimizationSetup;
 
-        @OptimizationTargets            OptimizationTargets;
+        @OptimizationTarget            OptimizationTargets;
         
         @DakotaOptions                  dakota_options;
         
@@ -44,10 +44,10 @@ Dictionary OptimizationSetup
 }
 Dictionary OptimizationTargets
 {
-        @NumberOfBatchDatasets                  0 ;
-        @NumberOfPlugFlowDatasets               1 ;
-        @NumberOfPerfectlyStirredDatasets       0 ;
-        @NumberOfLaminarFlameDatasets           0 ;
+        @NumberOfBatchReactor                  0 ;
+        @NumberOfPlugFlowReactor               1 ;
+        @NumberOfPerfectlyStirredReactor       0 ;
+        @NumberOfPremixedLaminarFlame          0 ;
 		
 	@ListOfTarget_lnA                       1	2	3	9	10	11	16;
         @ListOfTarget_Beta                      1       2       3       9       10      11      16;
@@ -86,9 +86,9 @@ Dictionary dakota_options
 Dictionary curve_matching_options
 {
         //@numberOfBootstrapVariations 20;
-        @lineUpMaxima true;
-        @useSumOfIndexesForAlignment true;
-        @fractionOfExpRangeForModelExtrapolation 0.0;
+        @LineUpMaxima true;
+        @UseSumOfIndexesForAlignment true;
+        @FractionOfExpRangeForModelExtrapolation 0.0;
         @UseBootStrap                           true;
         @NumberOfBootstrapVariations            1;
         @PrintIndexes                           false;
