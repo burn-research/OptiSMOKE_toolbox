@@ -835,7 +835,7 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 										}
 										else
 										{
-											ChangelnA(targetreaction, scaling_lnA * ObjectInput2.kineticsMapXML->A(ObjectInput2.matrixOfReactionIndex[k][z]-1));
+											ChangelnA(targetreaction, std::log(scaling_lnA * ObjectInput2.kineticsMapXML->A(ObjectInput2.matrixOfReactionIndex[k][z]-1)));
 										}
 										std::cout << "Fattore di scala: " << scaling_lnA << std::endl;
 										
