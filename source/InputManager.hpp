@@ -234,6 +234,7 @@ namespace OptiSMOKE{
 			
 		// Options to use other optimization method (e.g. gradient-based)
 		if (dakota_options_.iGradient() == true)
+        // Qua forse va messa la possibilità di fare altri tipi di gradienti accordingly to dakota
         {
 			dakota_input_string_.append("\n               numerical_gradients");
 			dakota_input_string_.append("\n               	method_source dakota");
