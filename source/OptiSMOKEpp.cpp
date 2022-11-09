@@ -84,12 +84,12 @@ int main(int argc, char* argv[])
     const char *plugin_input_file = NULL;
     plugin_input_file = argv[1];
 
+    // Reading OptiSMOKE Input file
     OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
     OptiSMOKE::InputManager input(dictionaries);
+
     input.SetInputOptions(argc, argv);
     input.ReadDictionary();
-    input.DakotaInputString();
-    std::cout << input.dakota_input_string() << std::endl;
 
     run_dakota_parse(plugin_input_file); // mode 1: parse
 

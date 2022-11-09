@@ -53,11 +53,13 @@ namespace OptiSMOKE{
         void SetInputOptions(int argc, char* argv[]);
 
         void ReadDictionary();
+
         // Da privatizzare
         void DakotaInputString();
 
         // Public access variables
         inline const OptiSMOKE::options_kinetics& kinetics_data() const {return kinetics_data_;};
+        inline const OptiSMOKE::options_optimization_target& optimization_target() const {return optimization_target_;};
         inline const bool& iXml() const {return iXml_;};
         inline const bool& iNominalXml() const {return iNominalXml_;};
         inline const std::string& input_file_name() const {return input_file_name_;};
@@ -70,10 +72,29 @@ namespace OptiSMOKE{
         inline const bool& iDebug() const {return iDebug_;};
         inline const bool& iDebugSimulations() const {return iDebugSimulations_;};
         inline const std::string& dakota_input_string() const {return dakota_input_string_;};
+        inline const bool& iTransport() const {return iTransport_;};
+
+        // Da checcare
+        inline const OpenSMOKE::ThermodynamicsMap_CHEMKIN& thermodynamicsMapXML() const {return *thermodynamicsMapXML_;};
+        inline const OpenSMOKE::ThermodynamicsMap_CHEMKIN& nominalthermodynamicsMapXML() const {return *nominalthermodynamicsMapXML_;};
+        inline const OpenSMOKE::KineticsMap_CHEMKIN& kineticsMapXML() const {return *kineticsMapXML_;};
+        inline const OpenSMOKE::KineticsMap_CHEMKIN& nominalkineticsMapXML() const {return *nominalkineticsMapXML_;};
+        inline const OpenSMOKE::TransportPropertiesMap_CHEMKIN& transportMapXML() const {return *transportMapXML_;};
+        inline const OpenSMOKE::TransportPropertiesMap_CHEMKIN& nominaltransportMapXML() const {return *nominaltransportMapXML_;};
 
     private:
 
         OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_;
+
+        // Standard Map
+        OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML_;
+        OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML_;
+        OpenSMOKE::TransportPropertiesMap_CHEMKIN* transportMapXML_;
+
+        // Nominal Map
+        OpenSMOKE::ThermodynamicsMap_CHEMKIN* nominalthermodynamicsMapXML_;
+        OpenSMOKE::KineticsMap_CHEMKIN* nominalkineticsMapXML_;
+        OpenSMOKE::TransportPropertiesMap_CHEMKIN* nominaltransportMapXML_;
 
         // Grammar Allocation
         OptiSMOKE::grammar_optismoke main_grammar_;
@@ -109,6 +130,7 @@ namespace OptiSMOKE{
 
         // Functions
         void ReadMainDictionary();
+        void CreateMaps();
 
     };
 } // namespace OptiSMOKE

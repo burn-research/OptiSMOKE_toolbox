@@ -40,7 +40,7 @@ namespace OptiSMOKE{
         main_dictionary_ = "OptiSMOKEpp";
         output_folder_ = "Output";
         kinetics_folder_ = "kinetics";
-        optimized_kinetics_folder_ = "Optimal_kinetics";
+        optimized_kinetics_folder_ = "Optimized_kinetics";
 
         iDebug_ = false;
         iDebugSimulations_ = false;
@@ -81,7 +81,39 @@ namespace OptiSMOKE{
         // It can be trivial however this is for future 
         // parallelization with MPI see:
         // https://github.com/astagni/DoctorSMOKEpp/blob/main/src/DataManager.hpp
+        // Remember that this all goes under rank=0
         ReadMainDictionary();
+        
+        // This to process or not kinetics folder
+        if(!iXml_ || !iNominalXml_)
+        {
+            if(!iTransport_){
+                OpenSMOKE::RapidKineticMechanismWithoutTransport(
+                    kinetics_data_.chemkin_output(),
+                    kinetics_data_.chemkin_thermodynamics(),
+                    kinetics_data_.chemkin_kinetics());
+            }
+            else
+            {
+                OpenSMOKE::RapidKineticMechanismWithTransport(
+                    kinetics_data_.chemkin_output(),
+                    kinetics_data_.chemkin_transport(),
+                    kinetics_data_.chemkin_thermodynamics(),
+                    kinetics_data_.chemkin_kinetics());
+            }
+        }
+    
+        if(iXml_ || iNominalXml_)
+        {
+            if (!fs::exists(kinetics_folder_)) {
+                std::cerr << "Error: the Kinetics folder " << kinetics_folder_.string();
+                std::cerr << " does not exist. \n Please preprocess the mechanism before" << std::endl;
+                std::cerr << "Press a key to exit..." << std::endl;
+                exit(-1);
+            }
+        }
+
+        CreateMaps();
     }
 
     void InputManager::ReadMainDictionary()
@@ -209,6 +241,7 @@ namespace OptiSMOKE{
 			
         dakota_input_string_.append("\n	variables,");
 
+        /*
 		if(optimization_setup_.parameter_distribution() == "uniform")
         {
 			dakota_input_string_.append("\n		continuous_design = " + std::to_string(number_of_parameters));
@@ -246,8 +279,49 @@ namespace OptiSMOKE{
 			dakota_input_string_.append("\n		no_gradients");
 		}
 
-		dakota_input_string_.append("\n		no_hessians");
+		dakota_input_string_.append("\n		no_hessians");*/
     }
+
+    void InputManager::CreateMaps()
+    {
+        // This goes under kinetics map
+        fs::path path_kinetics_output;
+	
+        if (!iXml_) // To be interpreted on-the-fly
+            path_kinetics_output = kinetics_data_.chemkin_output();
+        else if (iXml_) // Already in XML format
+            path_kinetics_output = kinetics_folder_;
+
+        std::cout.setstate(std::ios_base::failbit); // Disable video output
+        boost::property_tree::ptree ptree;
+    	boost::property_tree::read_xml( (path_kinetics_output / "kinetics.xml").string(), ptree );
+
+        thermodynamicsMapXML_ = new OpenSMOKE::ThermodynamicsMap_CHEMKIN(ptree);
+        kineticsMapXML_ = new OpenSMOKE::KineticsMap_CHEMKIN(*thermodynamicsMapXML_, ptree);
+        if(iTransport_)
+            transportMapXML_ = new OpenSMOKE::TransportPropertiesMap_CHEMKIN(ptree);
+        std::cout.clear(); // Re-enable video output
+
+        // This goes under nominal kinetics map
+        fs::path path_nominal_kinetics_output;
+	
+        if (!iNominalXml_) // To be interpreted on-the-fly
+            path_nominal_kinetics_output = kinetics_data_.chemkin_output();
+        else if (iNominalXml_) // Already in XML format
+            path_nominal_kinetics_output = kinetics_folder_;
+
+        std::cout.setstate(std::ios_base::failbit); // Disable video output
+        boost::property_tree::ptree nominal_ptree;
+    	boost::property_tree::read_xml( (path_nominal_kinetics_output / "kinetics.xml").string(), nominal_ptree);
+
+        nominalthermodynamicsMapXML_ = new OpenSMOKE::ThermodynamicsMap_CHEMKIN(nominal_ptree);
+        nominalkineticsMapXML_ = new OpenSMOKE::KineticsMap_CHEMKIN(*nominalthermodynamicsMapXML_, nominal_ptree);
+        if(iTransport_)
+            nominaltransportMapXML_ = new OpenSMOKE::TransportPropertiesMap_CHEMKIN(nominal_ptree);
+        std::cout.clear(); // Re-enable video output
+
+    }
+    
 } // namespace OptiSMOKE
 
 

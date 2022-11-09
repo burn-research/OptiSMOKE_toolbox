@@ -35,8 +35,6 @@
 #ifndef OPTIONS_OPTIMIZATION_TARGET_H
 #define OPTIONS_OPTIMIZATION_TARGET_H
 
-//#include "grammar/grammar_optimization_targets.h"
-
 namespace OptiSMOKE
 {
     class options_optimization_target
@@ -129,8 +127,9 @@ namespace OptiSMOKE
         inline const int& number_of_premixed_laminar_flame_reactor() {return NumberOfPremixedLaminarFlame;};
         inline const int& number_of_counter_flow_flame_reactor() {return NumberOfCounterFlowFlame;};
 
-        inline const reactions_ reactions() {return target_optimization_;};
-        inline const std::vector<reactions_classes_> classes_structure() {return classes_structure_;};
+        inline const reactions_& optimization_target() const {return target_optimization_;};
+        inline const std::vector<reactions_classes_>& classes_structure() const {return classes_structure_;};
+
     };
     
 } // namespace OptiSMOKE
