@@ -15,8 +15,10 @@
 Dictionary OptiSMOKEpp
 {
         @NominalKineticsPreProcessor	        KINPREPRO;
+
         @KineticsFolder                 ../../EXAMPLES/mechanisms/ELTE;
-	@NameOfOptimizedKineticsFolder  OPTIMAL_MECH;
+	
+        @NameOfOptimizedKineticsFolder  OPTIMAL_MECH;
 
         @Debug                          true;
 
@@ -38,32 +40,46 @@ Dictionary OptiSMOKEpp
 Dictionary OptimizationSetup
 {
         @ParametersBoundaries                   Narrow;
+
         @ObjectiveFunctionType                  CurveMatching;
+        
         @Parameters_Distribution                uniform ;
+        
         @AcceptedSigmaInKDistribution           3;
+        
         @SigmaExpDistribution                   3;
 }
+
 Dictionary OptimizationTargets
 {
         @NumberOfBatchReactor                  0 ;
+
         @NumberOfPlugFlowReactor               1 ;
+        
         @NumberOfPerfectlyStirredReactor       0 ;
+        
         @NumberOfPremixedLaminarFlame          0 ;
 		
 	@ListOfTarget_lnA                       1	2	3	9	10	11	16;
+
         @ListOfTarget_Beta                      1       2       3       9       10      11      16;
+        
         @ListOfTarget_E_over_R                  1       2       3       9       10      11      16;
 
         @ListOfTargetUncertaintyFactors         1       2       3       9       10      11      16 ;
+        
         @ListOfUncertaintyFactors               0.2	0.2	0.3	0.3	0.3	0.15	0.2;
 }
 
 Dictionary KINPREPRO
 {
-        @Kinetics               ../../mechanisms/ELTE/Kinetics.CKI;
-        @Thermodynamics         ../../mechanisms/ELTE/Thermodynamics.CKT;
-        @Transport              ../../mechanisms/ELTE/Transport.TRC;
-	@Output                 kinetics;
+        @Kinetics               ../../EXAMPLES/mechanisms/ELTE/Kinetics.CKI;
+
+        @Thermodynamics         ../../EXAMPLES/mechanisms/ELTE/Thermodynamics.CKT;
+        
+        @Transport              ../../EXAMPLES/mechanisms/ELTE/Transport.TRC;
+	
+        @Output                 kinetics;
 }
 
 Dictionary dakota_options
