@@ -1328,6 +1328,20 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 					}		
 
 				}
+
+				if (ObjectInput2.QoI[i] == "X_in_T")
+				{
+					for(int m = 0; m < ObjectInput2.list_of_opensmoke_input_files[i].size(); m++)
+					{
+						plugflow_reactors[i-batch_reactors.size()][m].Setup(ObjectInput2.list_of_opensmoke_input_files[i][m], 
+																			ObjectInput2.thermodynamicsMapXML, 
+																			ObjectInput2.kineticsMapXML);
+						plugflow_reactors[i-batch_reactors.size()][m].Update_and_Solve_PFR(ObjectInput2.thermodynamicsMapXML, 
+																						ObjectInput2.kineticsMapXML);
+
+						std::cout << "SOKAAAAAA" << std::endl;
+					}
+				}
 			}
 				// SOLVING PerfectlyStirredReactors
 			if (ObjectInput2.type_of_reactor[i] == "PSR") {

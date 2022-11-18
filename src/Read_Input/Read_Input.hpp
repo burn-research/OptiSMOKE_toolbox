@@ -1471,23 +1471,29 @@ namespace OpenSMOKE
             int counter = 0;
             while (ss >> token)
             {
-			//std::cout<<"Token is " << token <<std::endl;
-                if(counter == 0){
+				// std::cout<<"Token is " << token <<std::endl;
+                if(counter == 0)
+				{
                     type_of_reactor[i] = token;
-                } else if (counter == 1){
-                    
+                } 
+				else if (counter == 1)
+				{    
 					QoI[i] = token;
 
 					if (type_of_reactor[i] == "KTP")
 					{
 						++N_of_direct_measurement_dataset;
 
-					} else {
+					} 
+					else 
+					{
 						type_KTP[i]   = "NULL";
 						value_KTP[i]  = 0;
 					}
-                } else if (counter == 2){
-				// here the new keyword is introduced
+                } 
+				else if (counter == 2)
+				{
+					// here the new keyword is introduced
 					if (QoI[i] == "m_SP" || QoI[i] == "m_SP_time" || QoI[i] == "m_SP_out")
 					{
 						n_of_target_species = std::stoi(token);
@@ -1496,33 +1502,36 @@ namespace OpenSMOKE
 						{
 							std::string temp_token;
 							ss >> temp_token;
-
 							what_2_calc[i][j] = temp_token;
-							//std::cout<<"temp token is " << temp_token <<std::endl;
+							// std::cout<<"temp token is " << temp_token <<std::endl;
 						}
-					} else
+					} 
+					else
 					{
 						what_2_calc[i].resize(1);
 						what_2_calc[i][0] = token;
 					}
-                } else if (counter == 3){
-
-					if (type_of_reactor[i] == "KTP"){
+                } 
+				else if (counter == 3)
+				{
+					if (type_of_reactor[i] == "KTP")
+					{
 						type_KTP[i]   = token;
-					} else{ 
+					} 
+					else
+					{ 
 						Sigma_vector[i] = token;
 					}
                     
-                } else if (counter == 4){
-
-					if (type_of_reactor[i] == "KTP"){
+                } 
+				else if (counter == 4)
+				{
+					if (type_of_reactor[i] == "KTP")
+					{
 						value_KTP[i]   = std::stod(token);
-					}
-                    
+					}  
                 }
-
-                
-                //Header_strings.push_back(token);
+                // Header_strings.push_back(token);
                 counter = counter +1;
             }
             
@@ -1562,35 +1571,49 @@ namespace OpenSMOKE
                 {
 					if (QoI[i] == "m_SP" || QoI[i] == "m_SP_time" || QoI[i] == "m_SP_out")
 					{
-							// assign the current 1,2,3 
-							if(counter == 1){
-								abscissa[counter_2].push_back(token_2);
-							} else if (counter == 2){
-								ordinate[counter_2].push_back(token_2);	
-							} else if (counter == 3){
-								uncertainty[counter_2].push_back(token_2);
-							}
-							// is counter a multiple of 3?
-							if (counter % 3 == 0)
-							{
-								counter = 1;
-								counter_2 = counter_2+1;
-							} else 
-							{	
-								//increase by one
-								counter = counter+1;
-							}
-					} else {
-								if(counter == 1){
-										abscissa[0].push_back(token_2);    
-								} else if (counter == 2){
-										ordinate[0].push_back(token_2);
-								} else if (counter == 3){
-										uncertainty[0].push_back(token_2); 
-								} else if (counter == 4){
-										t_eoc[0].push_back(token_2);
-								}
-								counter = counter +1;
+						// assign the current 1,2,3 
+						if(counter == 1)
+						{
+							abscissa[counter_2].push_back(token_2);
+						} 
+						else if (counter == 2)
+						{
+							ordinate[counter_2].push_back(token_2);	
+						} 
+						else if (counter == 3)
+						{
+							uncertainty[counter_2].push_back(token_2);
+						}
+						// is counter a multiple of 3?
+						if (counter % 3 == 0)
+						{
+							counter = 1;
+							counter_2 = counter_2+1;
+						} 
+						else 
+						{	
+							//increase by one
+							counter = counter+1;
+						}
+					} 
+					else 
+					{
+						if(counter == 1)
+						{
+							abscissa[0].push_back(token_2);    
+						} 
+						else if (counter == 2)
+						{
+							ordinate[0].push_back(token_2);
+						}
+						else if (counter == 3){
+							uncertainty[0].push_back(token_2); 
+						} 
+						else if (counter == 4)
+						{
+							t_eoc[0].push_back(token_2);
+						}
+						counter = counter +1;
 					}
             	}
 			}
@@ -1606,7 +1629,7 @@ namespace OpenSMOKE
 	    	{
 	    		for (int j = 0; j<abscissa[z].size(); j++)
 	    		{	
-								standard_deviations[i][z].push_back(std::stod(uncertainty[z][j])*std::stod(ordinate[z][j])/std::stod(Sigma_vector[i]));
+					standard_deviations[i][z].push_back(std::stod(uncertainty[z][j])*std::stod(ordinate[z][j])/std::stod(Sigma_vector[i]));
 
 					if (standard_deviations[i][z][j]<0)
 					{
