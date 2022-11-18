@@ -1300,8 +1300,6 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 				{
 					std::cout<<"Solving PFR with "<< ObjectInput2.what_2_calc[i].size()<<" species for dataset "<<i+1<<std::endl;
 
-					std::cout<<"Solving PFR with "<< ObjectInput2.what_2_calc[i].size()<<" species for dataset "<<i+1<<std::endl;
-
 					for (int m = 0; m < ObjectInput2.list_of_opensmoke_input_files[i].size(); m++)
 					{
 						// perform simulation for the single PFR!!!
@@ -1331,6 +1329,9 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 
 				if (ObjectInput2.QoI[i] == "X_in_T")
 				{
+					Sim_values[i][0].resize(ObjectInput2.list_of_opensmoke_input_files[i].size());
+					std::cout << "Solving PFR with conversion of: " << 
+						ObjectInput2.what_2_calc[i].size()<<" for dataset "<<i+1<<std::endl;
 					for(int m = 0; m < ObjectInput2.list_of_opensmoke_input_files[i].size(); m++)
 					{
 						plugflow_reactors[i-batch_reactors.size()][m].Setup(ObjectInput2.list_of_opensmoke_input_files[i][m], 
@@ -1338,8 +1339,7 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 																			ObjectInput2.kineticsMapXML);
 						plugflow_reactors[i-batch_reactors.size()][m].Update_and_Solve_PFR(ObjectInput2.thermodynamicsMapXML, 
 																						ObjectInput2.kineticsMapXML);
-
-						std::cout << "SOKAAAAAA" << std::endl;
+						Sim_values[i][0][m] = plugflow_reactors[i-batch_reactors.size()][m].Solve_Outlet_Conversion(ObjectInput2.what_2_calc[i])
 					}
 				}
 			}

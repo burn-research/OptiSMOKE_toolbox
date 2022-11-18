@@ -645,7 +645,6 @@ std::vector<double> PlugFlowReactor_Plugin::Solve_Multipl_Species_outlet(std::ve
 
 	MW_Final = thermodynamicsMapXML_->MolecularWeight_From_MassFractions(omega_Final.GetHandle());
 	thermodynamicsMapXML_->MoleFractions_From_MassFractions(x_Final.GetHandle(), MW_Final, omega_Final.GetHandle());
-	
 
 
 	if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_ISOTHERMAL)
@@ -669,6 +668,44 @@ std::vector<double> PlugFlowReactor_Plugin::Solve_Multipl_Species_outlet(std::ve
 
 		clean_up();
 		return Mole_frac_temp;
+	}
+
+}
+
+double PlugFlowReactor_Plugin::Solve_Outlet_Conversion(std::string specie)
+{
+	OpenSMOKE::OpenSMOKEVectorDouble omega_Final(thermodynamicsMapXML_->NumberOfSpecies());
+	OpenSMOKE::OpenSMOKEVectorDouble x_Final(thermodynamicsMapXML_->NumberOfSpecies());
+	
+	if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_ISOTHERMAL)
+	{
+		plugflow_isothermal_->GetFinalStatus(T_Final, P_Pa_Final, omega_Final);	
+	}
+	else if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_NONISOTHERMAL)
+	{
+		plugflow_non_isothermal_->GetFinalStatus(T_Final, P_Pa_Final, omega_Final);	
+	}
+	else
+	{
+		OpenSMOKE::ErrorMessage("Available Plug Flow reactors are ISOTHERMAL | NON-ISOTHERMAL");
+	}
+	
+	MW_Final = thermodynamicsMapXML_->MolecularWeight_From_MassFractions(omega_Final.GetHandle());
+	thermodynamicsMapXML_->MoleFractions_From_MassFractions(x_Final.GetHandle(), MW_Final, omega_Final.GetHandle());
+
+	if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_ISOTHERMAL)
+	{
+		double outlet_conversion = 1 - plugflow_isothermal_->species_matrix[plugflow_isothermal_->time_vector.size()](thermodynamicsMapXML_->IndexOfSpecies(specie))/plugflow_isothermal_->species_matrix[0](thermodynamicsMapXML_->IndexOfSpecies(specie));
+
+		clean_up();
+		return outlet_conversion;
+	}
+	else if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_NONISOTHERMAL)
+	{
+		// Alberto la calcola cosi(omega0_[i] - omega_[i]) / omega0_[i] * 100.
+		double outlet_conversion = 1 - plugflow_non_isothermal_->species_matrix[plugflow_non_isothermal_->time_vector.size()](thermodynamicsMapXML_->IndexOfSpecies(specie))/plugflow_non_isothermal_->species_matrix[0](thermodynamicsMapXML_->IndexOfSpecies(specie));
+		clean_up();
+		return outlet_conversion;
 	}
 
 }

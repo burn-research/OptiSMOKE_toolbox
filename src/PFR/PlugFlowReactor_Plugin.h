@@ -50,6 +50,7 @@ namespace OpenSMOKE
 		double Solve_Species(std::string Species);
 		std::vector<std::vector<double>> Solve_Multipl_Species_time_profile(std::vector<std::vector<std::vector<double>>> &Exp_data_temp, std::vector<std::string> Species_vec);
 		std::vector<double> Solve_Multipl_Species_outlet(std::vector<std::string> Species_vec);
+		double Solve_Outlet_Conversion(std::string specie);
 
 		double Interpolate(std::vector<double> Time_vec_temp, std::vector<OpenSMOKE::OpenSMOKEVectorDouble> Species_matrix_temp, double Abscissa_temp, std::string Species_name);
 		//std::vector<double> Solve_Species(std::vector<std::string> Species);
