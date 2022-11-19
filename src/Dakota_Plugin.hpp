@@ -1331,15 +1331,22 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 				{
 					Sim_values[i][0].resize(ObjectInput2.list_of_opensmoke_input_files[i].size());
 					std::cout << "Solving PFR with conversion of: " << 
-						ObjectInput2.what_2_calc[i].size()<<" for dataset "<<i+1<<std::endl;
+						ObjectInput2.what_2_calc[i][0].size()<<" for dataset "<<i+1<<std::endl;
 					for(int m = 0; m < ObjectInput2.list_of_opensmoke_input_files[i].size(); m++)
 					{
 						plugflow_reactors[i-batch_reactors.size()][m].Setup(ObjectInput2.list_of_opensmoke_input_files[i][m], 
 																			ObjectInput2.thermodynamicsMapXML, 
 																			ObjectInput2.kineticsMapXML);
+
 						plugflow_reactors[i-batch_reactors.size()][m].Update_and_Solve_PFR(ObjectInput2.thermodynamicsMapXML, 
 																						ObjectInput2.kineticsMapXML);
-						Sim_values[i][0][m] = plugflow_reactors[i-batch_reactors.size()][m].Solve_Outlet_Conversion(ObjectInput2.what_2_calc[i])
+
+						Sim_values[i][0][m] = plugflow_reactors[i-batch_reactors.size()][m].Solve_Outlet_Conversion(ObjectInput2.what_2_calc[i][0])
+						
+						if(ObjectInput2.Debug_Sim)
+						{
+							std::cout<<"x["<< i << "][0][" << m << "] = " << Sim_values[i][0][m]  << std::endl;		
+						}
 					}
 				}
 			}

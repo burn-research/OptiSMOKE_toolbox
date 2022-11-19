@@ -685,10 +685,6 @@ double PlugFlowReactor_Plugin::Solve_Outlet_Conversion(std::string specie)
 	{
 		plugflow_non_isothermal_->GetFinalStatus(T_Final, P_Pa_Final, omega_Final);	
 	}
-	else
-	{
-		OpenSMOKE::ErrorMessage("Available Plug Flow reactors are ISOTHERMAL | NON-ISOTHERMAL");
-	}
 	
 	MW_Final = thermodynamicsMapXML_->MolecularWeight_From_MassFractions(omega_Final.GetHandle());
 	thermodynamicsMapXML_->MoleFractions_From_MassFractions(x_Final.GetHandle(), MW_Final, omega_Final.GetHandle());
