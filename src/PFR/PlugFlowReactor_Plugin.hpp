@@ -685,21 +685,19 @@ double PlugFlowReactor_Plugin::Solve_Outlet_Conversion(std::string specie)
 	{
 		plugflow_non_isothermal_->GetFinalStatus(T_Final, P_Pa_Final, omega_Final);	
 	}
-	
 	MW_Final = thermodynamicsMapXML_->MolecularWeight_From_MassFractions(omega_Final.GetHandle());
 	thermodynamicsMapXML_->MoleFractions_From_MassFractions(x_Final.GetHandle(), MW_Final, omega_Final.GetHandle());
 
 	if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_ISOTHERMAL)
 	{
-		double outlet_conversion = 1 - plugflow_isothermal_->species_matrix[plugflow_isothermal_->time_vector.size()](thermodynamicsMapXML_->IndexOfSpecies(specie))/plugflow_isothermal_->species_matrix[0](thermodynamicsMapXML_->IndexOfSpecies(specie));
-
+		double outlet_conversion = 1 - plugflow_isothermal_->species_matrix[plugflow_isothermal_->time_vector.size()-1](thermodynamicsMapXML_->IndexOfSpecies(specie))/plugflow_isothermal_->species_matrix[0](thermodynamicsMapXML_->IndexOfSpecies(specie));
 		clean_up();
 		return outlet_conversion;
 	}
 	else if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_NONISOTHERMAL)
 	{
 		// Alberto la calcola cosi(omega0_[i] - omega_[i]) / omega0_[i] * 100.
-		double outlet_conversion = 1 - plugflow_non_isothermal_->species_matrix[plugflow_non_isothermal_->time_vector.size()](thermodynamicsMapXML_->IndexOfSpecies(specie))/plugflow_non_isothermal_->species_matrix[0](thermodynamicsMapXML_->IndexOfSpecies(specie));
+		double outlet_conversion = 1 - plugflow_non_isothermal_->species_matrix[plugflow_non_isothermal_->time_vector.size()-1](thermodynamicsMapXML_->IndexOfSpecies(specie))/plugflow_non_isothermal_->species_matrix[0](thermodynamicsMapXML_->IndexOfSpecies(specie));
 		clean_up();
 		return outlet_conversion;
 	}
