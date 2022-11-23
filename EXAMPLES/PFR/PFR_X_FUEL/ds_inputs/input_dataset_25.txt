@@ -1,0 +1,15 @@
+cases/Herbinet_N2_308.1/input.dic
+cases/Herbinet_N2_313.1/input.dic
+cases/Herbinet_N2_318.1/input.dic
+cases/Herbinet_N2_323.1/input.dic
+cases/Herbinet_N2_328.1/input.dic
+cases/Herbinet_N2_333.1/input.dic
+cases/Herbinet_N2_337.6/input.dic
+cases/Herbinet_N2_343.1/input.dic
+cases/Herbinet_N2_348.1/input.dic
+cases/Herbinet_N2_353.1/input.dic
+cases/Herbinet_N2_372.1/input.dic
+cases/Herbinet_N2_396.1/input.dic
+cases/Herbinet_N2_421.1/input.dic
+cases/Herbinet_N2_466.1/input.dic
+cases/Herbinet_N2_514.1/input.dic
