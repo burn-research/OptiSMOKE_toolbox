@@ -73,12 +73,7 @@ int main(int argc, char* argv[])
 
     // Allow MPI to extract its command line arguments first in detect above,
     // then detect "-mixed" and dakota_input_file
-    
-    #ifdef DAKOTA_HAVE_MPI
-    // Lo dovrebbe fare solo se rank = 0 come in DoctorSMOKEpp.cpp
-    OptiSMOKE::OptiSMOKE_logo("OptiSMOKE++ parallel", "M. Furst, A. Bertolino, T. Dinelli");
-    #endif // DAKOTA_HAVE_MPI
-    OptiSMOKE::OptiSMOKE_logo("OptiSMOKE++ serial", "M. Furst, A. Bertolino, T. Dinelli");
+    OptiSMOKE::OptiSMOKE_logo("OptiSMOKE++", "M. Furst, A. Bertolino, T. Dinelli");
     
     bool mixed_input = false;
     const char *plugin_input_file = NULL;

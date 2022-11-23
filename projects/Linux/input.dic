@@ -69,6 +69,10 @@ Dictionary OptimizationTargets
         @ListOfTargetUncertaintyFactors         1       2       3       9       10      11      16 ;
         
         @ListOfUncertaintyFactors               0.2	0.2	0.3	0.3	0.3	0.15	0.2;
+
+	@ListOfTarget_ThirdBody_Reactions	10;
+
+	@ListOfTarget_ThirdBody_Species		H2O;
 }
 
 Dictionary KINPREPRO

@@ -131,6 +131,8 @@ namespace OptiSMOKE{
         // Functions
         void ReadMainDictionary();
         void CreateMaps();
+        void InitialParameters();
+        void ComputeBoundaries();
 
     };
 } // namespace OptiSMOKE

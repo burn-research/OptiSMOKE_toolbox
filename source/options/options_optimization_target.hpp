@@ -36,11 +36,13 @@ namespace OptiSMOKE
 {
     options_optimization_target::options_optimization_target() 
     {
-        NumberOfBatchReactor = 0;
-        NumberOfPlugFlowReactor = 0;
-        NumberOfPerfectlyStirredReactor = 0;
-        NumberOfPremixedLaminarFlame = 0;
-        NumberOfCounterFlowFlame = 0;
+        numberOfBatchReactor = 0;
+        numberOfPlugFlowReactor = 0;
+        numberOfPerfectlyStirredReactor = 0;
+        numberOfPremixedLaminarFlame = 0;
+        numberOfCounterFlowFlame = 0;
+
+		numberOfParameters = 0;
     }
     
     options_optimization_target::~options_optimization_target() {}
@@ -52,26 +54,28 @@ namespace OptiSMOKE
         dictionary_manager(dictionary_name).SetGrammar(optimization_target_grammar_);
 
         if (dictionary_manager(dictionary_name).CheckOption("@NumberOfBatchReactor"))
-			dictionary_manager(dictionary_name).ReadInt("@NumberOfBatchReactor", NumberOfBatchReactor);
+			dictionary_manager(dictionary_name).ReadInt("@NumberOfBatchReactor", numberOfBatchReactor);
 
         if (dictionary_manager(dictionary_name).CheckOption("@NumberOfPlugFlowReactor"))
-			dictionary_manager(dictionary_name).ReadInt("@NumberOfPlugFlowReactor", NumberOfPlugFlowReactor);
+			dictionary_manager(dictionary_name).ReadInt("@NumberOfPlugFlowReactor", numberOfPlugFlowReactor);
 
         if (dictionary_manager(dictionary_name).CheckOption("@NumberOfPerfectlyStirredReactor"))
 			dictionary_manager(dictionary_name).ReadInt("@NumberOfPerfectlyStirredReactor", 
-														NumberOfPerfectlyStirredReactor);
+														numberOfPerfectlyStirredReactor);
 
         if (dictionary_manager(dictionary_name).CheckOption("@NumberOfPremixedLaminarFlame"))
 			dictionary_manager(dictionary_name).ReadInt("@NumberOfPremixedLaminarFlame", 
-														NumberOfPremixedLaminarFlame);
+														numberOfPremixedLaminarFlame);
 
         if(dictionary_manager(dictionary_name).CheckOption("@NumberOfCounterFlowFlame"))
-            dictionary_manager(dictionary_name).ReadInt("@NumberOfCounterFlowFlame", NumberOfCounterFlowFlame);
+            dictionary_manager(dictionary_name).ReadInt("@NumberOfCounterFlowFlame", numberOfCounterFlowFlame);
 
         // EPLR - Which reactions for Optimization of A, n, Ea
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_EPLR"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_EPLR", target_optimization_.list_of_target_EPLR);
 
+		numberOfParameters += target_optimization_.list_of_target_EPLR.size() * 3;
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_BathGases_EPLR"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_BathGases_EPLR", 
 															target_optimization_.list_of_bath_gases_EPLR);
@@ -85,6 +89,8 @@ namespace OptiSMOKE
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ExtPLOG_Reactions"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ExtPLOG_Reactions", 
 															target_optimization_.list_of_target_extplog);
+		
+		numberOfParameters += target_optimization_.list_of_target_extplog.size() * 3;
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfUncertaintyFactors_ExtPLOG"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfUncertaintyFactors_ExtPLOG", 
@@ -94,12 +100,17 @@ namespace OptiSMOKE
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ExtPLOG_Reactions_TB"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ExtPLOG_Reactions_TB", 
 															target_optimization_.list_of_target_extended_plog_reactions);
+
+		numberOfParameters += target_optimization_.list_of_target_extended_plog_reactions.size();
+
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ExtPLOG_Species"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ExtPLOG_Species", 
 															target_optimization_.list_of_target_extended_plog_species);
+
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMin_TBeff_ExtPLOG"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMin_TBeff_ExtPLOG", 
 															target_optimization_.list_of_min_tb_extplog);
+
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMax_TBeff_ExtPLOG"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMax_TBeff_ExtPLOG", 
 															target_optimization_.list_of_max_tb_extplog);
@@ -108,30 +119,46 @@ namespace OptiSMOKE
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_lnA"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_lnA", target_optimization_.list_of_target_lnA);
 
+		numberOfParameters += target_optimization_.list_of_target_lnA.size();
+
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_Beta"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_Beta", target_optimization_.list_of_target_Beta);
+
+		numberOfParameters += target_optimization_.list_of_target_Beta.size();
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_E_over_R"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_E_over_R", target_optimization_.list_of_target_E_over_R);
 
+		numberOfParameters += target_optimization_.list_of_target_E_over_R.size();
+
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_lnA_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_lnA_inf", target_optimization_.list_of_target_lnA_inf);
 
+		numberOfParameters += target_optimization_.list_of_target_lnA_inf.size();
+
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_Beta_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_Beta_inf", target_optimization_.list_of_target_Beta_inf);
+
+		numberOfParameters += target_optimization_.list_of_target_Beta_inf.size();
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_E_over_R_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_E_over_R_inf", 
 															target_optimization_.list_of_target_E_over_R_inf);
 
+		numberOfParameters += target_optimization_.list_of_target_E_over_R_inf.size();
+
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ThirdBody_Reactions"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ThirdBody_Reactions", 
 															target_optimization_.list_of_target_thirdbody_reactions);
+
+		numberOfParameters += target_optimization_.list_of_target_thirdbody_reactions.size();
 		
 		// Classic PLOG - which
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_classic_PLOG_Reactions"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_classic_PLOG_Reactions", 
 															target_optimization_.list_of_target_classic_plog_reactions);
+
+		numberOfParameters += target_optimization_.list_of_target_classic_plog_reactions.size() * 3;
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfUncertaintyFactors_classic_PLOG"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfUncertaintyFactors_classic_PLOG", 
@@ -141,7 +168,12 @@ namespace OptiSMOKE
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ThirdBody_Species"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ThirdBody_Species", 
 															target_optimization_.list_of_target_thirdbody_species);
-	
+
+		// number_of_parameters = list_of_target_lnA.size() + list_of_target_Beta.size() + list_of_target_E_over_R.size() + 
+		//                        list_of_target_lnA_inf.size() + list_of_target_Beta_inf.size() + list_of_target_E_over_R_inf.size() + 
+		//                        list_of_target_thirdbody_reactions.size() + list_of_target_extended_plog_reactions.size() + list_of_target_extplog.size()*3 + 
+		//                        list_of_target_classic_plog_reactions.size()*3 +list_of_target_EPLR.size()*3;
+		
 		// List of target reactions for uncertainty factors
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTargetUncertaintyFactors"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTargetUncertaintyFactors", 

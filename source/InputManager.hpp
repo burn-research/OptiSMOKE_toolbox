@@ -87,6 +87,7 @@ namespace OptiSMOKE{
         // This to process or not kinetics folder
         if(!iXml_ || !iNominalXml_)
         {
+
             if(!iTransport_){
                 OpenSMOKE::RapidKineticMechanismWithoutTransport(
                     kinetics_data_.chemkin_output(),
@@ -100,16 +101,6 @@ namespace OptiSMOKE{
                     kinetics_data_.chemkin_transport(),
                     kinetics_data_.chemkin_thermodynamics(),
                     kinetics_data_.chemkin_kinetics());
-            }
-        }
-    
-        if(iXml_ || iNominalXml_)
-        {
-            if (!fs::exists(kinetics_folder_)) {
-                std::cerr << "Error: the Kinetics folder " << kinetics_folder_.string();
-                std::cerr << " does not exist. \n Please preprocess the mechanism before" << std::endl;
-                std::cerr << "Press a key to exit..." << std::endl;
-                exit(-1);
             }
         }
 
@@ -240,11 +231,10 @@ namespace OptiSMOKE{
         }
 			
         dakota_input_string_.append("\n	variables,");
-
         /*
 		if(optimization_setup_.parameter_distribution() == "uniform")
         {
-			dakota_input_string_.append("\n		continuous_design = " + std::to_string(number_of_parameters));
+			dakota_input_string_.append("\n		continuous_design = " + std::to_string(optimization_target_.number_of_parameters()));
 			dakota_input_string_.append("\n		  descriptors " + param_name_string);
 			dakota_input_string_.append("\n 		  initial_point " + initial_values_string);
 			dakota_input_string_.append("\n 	 	  lower_bounds " + lower_bounds_string);
@@ -253,7 +243,7 @@ namespace OptiSMOKE{
         else if (optimization_setup_.parameter_distribution() == "normal")
         {
 			dakota_input_string_.append("\n               active uncertain " );
-			dakota_input_string_.append("\n		normal_uncertain = " + std::to_string(number_of_parameters));
+			dakota_input_string_.append("\n		normal_uncertain = " + std::to_string(optimization_target_.number_of_parameters()));
 			dakota_input_string_.append("\n		  descriptors " + param_name_string);
 			dakota_input_string_.append("\n 		  means " + initial_values_string);
 			dakota_input_string_.append("\n 		  std_deviations " + std_deviations_string);
@@ -266,8 +256,8 @@ namespace OptiSMOKE{
 		dakota_input_string_.append("\n		num_objective_functions = 1");
 			
 		// Options to use other optimization method (e.g. gradient-based)
-		if (dakota_options_.iGradient() == true)
         // Qua forse va messa la possibilità di fare altri tipi di gradienti accordingly to dakota
+		if (dakota_options_.iGradient() == true)
         {
 			dakota_input_string_.append("\n               numerical_gradients");
 			dakota_input_string_.append("\n               	method_source dakota");
@@ -321,7 +311,16 @@ namespace OptiSMOKE{
         std::cout.clear(); // Re-enable video output
 
     }
-    
+
+    void InputManager::InitialParameters()
+    {
+
+    }     
+
+    void InputManager::ComputeBoundaries()
+    {
+
+    }
 } // namespace OptiSMOKE
 
 

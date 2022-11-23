@@ -39,24 +39,21 @@ namespace OptiSMOKE
 {
     class options_optimization_target
     {
-        
-    private:
+    
+    public:
 
-        grammar_optimization_targets optimization_target_grammar_;
+        options_optimization_target();
+        ~options_optimization_target();
 
-        void ReadReactionClassesDefinition(fs::path reaction_classes);
+        void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
+                                std::string dictionary_name);
 
-        int NumberOfBatchReactor;
-        int NumberOfPlugFlowReactor;
-        int NumberOfPerfectlyStirredReactor;
-        int NumberOfPremixedLaminarFlame;
-        int NumberOfCounterFlowFlame;
-
-        bool iReactionClasses; // Per ora uno non deve sbagliare ma sarebbe meglio mettere un check
-                               // nel senso che in teoria è vero che uno puo ottimizzare sia classi 
-                               // che altro assieme
-
-        fs::path reactions_classes_definition_;
+        inline const int& number_of_batch_reactor() const {return numberOfBatchReactor;};
+        inline const int& number_of_plug_flow_reactor() const {return numberOfPlugFlowReactor;};
+        inline const int& number_of_perfectly_stirred_reactor() const {return numberOfPerfectlyStirredReactor;};
+        inline const int& number_of_premixed_laminar_flame_reactor() const {return numberOfPremixedLaminarFlame;};
+        inline const int& number_of_counter_flow_flame_reactor() const {return numberOfCounterFlowFlame;};
+        inline const int& number_of_parameters() const {return numberOfParameters;};
         
         struct reactions_
         {
@@ -109,27 +106,30 @@ namespace OptiSMOKE
             std::vector<int> list_of_target_reactions;
             std::vector<double> list_of_uncertainty_factor;
         };
-
-        std::vector<reactions_classes_> classes_structure_;
-        reactions_ target_optimization_;
-
-    public:
-
-        options_optimization_target();
-        ~options_optimization_target();
-
-        void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
-                                std::string dictionary_name);
-
-        inline const int& number_of_batch_reactor() {return NumberOfBatchReactor;};
-        inline const int& number_of_plug_flow_reactor() {return NumberOfPlugFlowReactor;};
-        inline const int& number_of_perfectly_stirred_reactor() {return NumberOfPerfectlyStirredReactor;};
-        inline const int& number_of_premixed_laminar_flame_reactor() {return NumberOfPremixedLaminarFlame;};
-        inline const int& number_of_counter_flow_flame_reactor() {return NumberOfCounterFlowFlame;};
-
+        
         inline const reactions_& optimization_target() const {return target_optimization_;};
         inline const std::vector<reactions_classes_>& classes_structure() const {return classes_structure_;};
+    
+    private:
 
+        grammar_optimization_targets optimization_target_grammar_;
+
+        void ReadReactionClassesDefinition(fs::path reaction_classes);
+
+        int numberOfBatchReactor;
+        int numberOfPlugFlowReactor;
+        int numberOfPerfectlyStirredReactor;
+        int numberOfPremixedLaminarFlame;
+        int numberOfCounterFlowFlame;
+        int numberOfParameters;
+
+        bool iReactionClasses; // Per ora uno non deve sbagliare ma sarebbe meglio mettere un check
+                               // nel senso che in teoria è vero che uno puo ottimizzare sia classi 
+                               // che altro assieme
+
+        fs::path reactions_classes_definition_;
+        std::vector<reactions_classes_> classes_structure_;
+        reactions_ target_optimization_;
     };
     
 } // namespace OptiSMOKE
