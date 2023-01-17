@@ -763,13 +763,6 @@ namespace OpenSMOKE
             "Path to the file containing the definitions of the reaction/s classes.",
             false));
 
-        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ScalingReactionClasses",
-            OpenSMOKE::SINGLE_BOOL,
-            "If the reaction class optimization has to be done with scaling or with substitution",
-            false,
-            "none",
-            "@ReactionsClasses",
-            "none"));
 	}
     };
 }

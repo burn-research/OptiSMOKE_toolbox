@@ -410,7 +410,13 @@ namespace OpenSMOKE
 	int numberOfReactionClasses;
 	std::vector<std::vector<int>> matrixOfReactionIndex; // matrice dove mi salvo gli indici
     std::vector<std::vector<double>> matrixOfUnceratintyFactors; // matrice dove gli unc factor
-    std::vector<std::vector<std::string>> matrixOfQOI; // matrice delle QOI forse la tolgo poi vediamo
+	std::vector<std::vector<int>> matrixOflnA;
+	std::vector<std::vector<int>> matrixOfBeta;
+	std::vector<std::vector<int>> matrixOfEoverR;
+
+	std::vector<std::vector<double>> matrixOfscalinglnA;
+	std::vector<std::vector<double>> matrixOfscalingBeta;
+	std::vector<std::vector<double>> matrixOfscalingEoverR;
 
 	void ReadReactionClassesDefinition(boost::filesystem::path ReactionClassFile);
 	};
