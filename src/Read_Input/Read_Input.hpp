@@ -3556,99 +3556,168 @@ namespace OpenSMOKE
 	
 	void Read_Input::ReadReactionClassesDefinition(boost::filesystem::path ReactionClassFile)
 	{
-		boost::filesystem::ifstream fileHandler(ReactionClassFile.c_str());
-    	std::string line;
-    	int numberOfLines = 0;
-    	std::vector<std::string> content;
-   		while (getline(fileHandler, line)) {
-        	numberOfLines++;
-        	content.push_back(line);
-    	}
+			/*
+	File classes defnition description:
+	- Riga 1: Nome della classe
+	- Riga 2: Indici delle reazioni da ottimizzare
+	- Riga 3: Uncertainty factors
+	- Riga 4: Target names è ridondante in realtà
+	- Riga 5: Scaling factor lnA
+	- Riga 6: Active or not 0 or 1
+	- Riga 7: Scaling factor Beta
+	- Riga 8: Active or not 0 or 1
+	- Riga 9: Scaling factor E_over_R
+	- Riga 10: Active or not 0 or 1
+	*/
 
-    	numberOfReactionClasses = numberOfLines / 5;
-		/*std::cout << "Reading the reaction classes definition in: " << ReactionClassFile.c_str() << std::endl;
-    	std::cout << " * Number of lines inside the file: " << numberOfLines << std::endl;
-    	std::cout << " * Number of  reaction classess defined: " << numberOfLines/5 << std::endl;*/
+	boost::filesystem::path ReactionClassFile = "/home/tdinelli/Documents/prove/prova_file/new-RC";
+	boost::filesystem::ifstream fileHandler(ReactionClassFile.c_str());
+	std::string line;
+	int numberOfLines = 0;
+	std::vector<std::string> content;
+	while (getline(fileHandler, line)) {
+		numberOfLines++;
+		content.push_back(line);
+	}
 
-    	/* Se decommento posso stampare il contenuto del file
-    	for(int i = 0; i <= numberOfLines; i++){
-        	std::cout << content[i] << std::endl;
-   		}
-    	*/
-    	std::vector<std::string> reactionClassName;
-    	std::vector<std::string> str_reaction_index; // tmp vector dove mi salvo le stringhe 
-    	std::vector<std::string> str_unc; // tmp vector dove mi salvo le incertezze
-    	std::vector <std::string> str_QOI; // tmp vector dove mi salvo le stringhe delle QOI
+	int numberOfReactionClasses = numberOfLines / 10;
 
-    	/*
-        	Devo prendere content e:
-            	- La prima riga di ogni blocco corrisponde al nome della classe
-            	- la seconda riga agli indici delle reazione
-            	- la terza riga bo scaling factor
-            	- la quarta riga uncertainty
-            	- la quinta riga quello che voglio ottimizzare ovvero che parametri dell'arrehnius 
-			Per ora solo le dirette dopo faccio la funzione per scegliere il tipo
-    	*/
+/*	std::cout << "Reading the reaction classes definition in: " << ReactionClassFile.c_str() << std::endl;
+	std::cout << " * Number of lines inside the file:         " << numberOfLines << std::endl;
+	std::cout << " * Number of reaction classess defined:     " << numberOfLines/10 << std::endl;*/
 
-   		// Con questo ciclo for mi sono separato le cose e ora ci posso lavorare
-   		// però ho gia tutto quello che mi serve!
-    	for(int i = 0; i<numberOfReactionClasses; i++){
-        	reactionClassName.push_back(content[0 + i * 5]);
-        	str_reaction_index.push_back(content[1 + i * 5]);
-        	str_unc.push_back(content[3 + i * 5]);
-        	str_QOI.push_back(content[4 + i * 5]);
-    	}
-    
-    	for(int i = 0; i < numberOfReactionClasses; i++){
-        	std::vector<std::string> tmp_idx; // reaction index
-        	std::vector<int> tmp_int_idx;
-        	std::vector<std::string> tmp_unc; // uncertainty factors
-        	std::vector<double> tmp_double_unc;
-        	std::vector<std::string> tmp_QOI; // Quantity of interest
+/*	for(int i = 0; i <= numberOfLines; i++){
+		std::cout << content[i] << std::endl;
+	}
+	*/
 
-        	boost::split(tmp_idx, str_reaction_index[i], boost::is_any_of(" "));
-        	boost::split(tmp_unc, str_unc[i], boost::is_any_of(" "));
-        	boost::split(tmp_QOI, str_QOI[i], boost::is_any_of(" "));
-        
-        	for(int j = 0; j < tmp_idx.size(); j++){
-            	tmp_int_idx.push_back(std::stoi(tmp_idx[j]));
-        	}
-        	for(int k = 0; k < tmp_unc.size(); k++){
-            	tmp_double_unc.push_back(std::stod(tmp_unc[k]));
-       		}
-        	matrixOfReactionIndex.push_back(tmp_int_idx);
-        	matrixOfUnceratintyFactors.push_back(tmp_double_unc);
-        	matrixOfQOI.push_back(tmp_QOI);
+	std::vector<std::string> reactionClassName;
+	std::vector<std::string> str_reaction_index;
+	std::vector<std::string> str_unc;
+	std::vector<std::string> str_target;
+	std::vector<std::string> str_scaling_lnA;
+	std::vector<std::string> str_which_lnA;
+	std::vector<std::string> str_scaling_Beta;
+	std::vector<std::string> str_which_Beta;
+	std::vector<std::string> str_scaling_E_over_R;
+	std::vector<std::string> str_which_E_over_R;
 
-        	tmp_idx.clear();
-        	tmp_int_idx.clear();
-        	tmp_unc.clear();
-        	tmp_double_unc.clear();
-        	tmp_QOI.clear();
-   		}
-		
-    	for(int i = 0; i<matrixOfReactionIndex.size(); i++){
-        	//std::cout << "Indici delle reazioni della classe numero:  " << i << std::endl;
-			// NB Stai ottimizando una sola k di classe per volta 
-            // std::cout << matrixOfReactionIndex[i][j] << std::endl;
-			list_of_target_lnA.push_back(matrixOfReactionIndex[i][0]);
-			list_of_target_Beta.push_back(matrixOfReactionIndex[i][0]);
-			list_of_target_E_over_R.push_back(matrixOfReactionIndex[i][0]);
-			list_of_target_uncertainty_factors.push_back(matrixOfReactionIndex[i][0]);
+	for(int i = 0; i<numberOfReactionClasses; i++){
+		reactionClassName.push_back(content[0 + i * 10]);
+		str_reaction_index.push_back(content[1 + i * 10]);
+		str_unc.push_back(content[2 + i * 10]);
+		str_target.push_back(content[3 + i * 10]);
+		str_scaling_lnA.push_back(content[4 + i * 10]);
+		str_which_lnA.push_back(content[5 + i * 10]);
+		str_scaling_Beta.push_back(content[6 + i * 10]);
+		str_which_Beta.push_back(content[7 + i * 10]);
+		str_scaling_E_over_R.push_back(content[8 + i * 10]);
+		str_which_E_over_R.push_back(content[9 + i * 10]);
+	}
 
-			list_of_initial_lnA.push_back(boost::lexical_cast<std::string>(std::log(kineticsMapXML->A(matrixOfReactionIndex[i][0]-1))));
-			list_of_initial_Beta.push_back(boost::lexical_cast<std::string>(kineticsMapXML->Beta(matrixOfReactionIndex[i][0]-1)));
-			list_of_initial_E_over_R.push_back(boost::lexical_cast<std::string>(kineticsMapXML->E_over_R(matrixOfReactionIndex[i][0]-1)));
-        	
-    	}
-		
-		// FORSE VA TOLTO PERCHE NON SERVE
-		for(int i = 0; i<matrixOfUnceratintyFactors.size(); i++){
-        	// std::cout << "Unc factor della classe numero:  " << i << std::endl;
-			// NB Stai ottimizando una sola k di classe per volta
-            //std::cout << matrixOfUnceratintyFactors[i][j] << std::endl;
-        	list_of_uncertainty_factors.push_back(matrixOfUnceratintyFactors[i][0]);
-    	}
+	for(int i = 0; i < numberOfReactionClasses; i++){
+		std::vector<std::string> tmp_idx; // reaction index
+		std::vector<int> tmp_int_idx;
+		std::vector<int> tmp_int_idx_lnA;
+		std::vector<int> tmp_int_idx_Beta;
+		std::vector<int> tmp_int_idx_E_over_R;
+
+		std::vector<std::string> tmp_unc; // uncertainty factors
+		std::vector<double> tmp_double_unc;
+
+		std::vector<std::string> tmp_scaling_lnA; // scaling_lnA
+		std::vector<double> tmp_double_scaling_lnA;
+
+		std::vector<std::string> tmp_scaling_Beta; // scaling_Beta
+		std::vector<double> tmp_double_scaling_Beta;
+
+		std::vector<std::string> tmp_scaling_E_over_R; // scaling_E_over_R
+		std::vector<double> tmp_double_scaling_E_over_R;
+
+		std::vector<std::string> tmp_which_lnA; // which_lnA
+		std::vector<int> tmp_int_which_lnA;
+
+		std::vector<std::string> tmp_which_Beta; // which_Beta
+		std::vector<int> tmp_int_which_Beta;
+
+		std::vector<std::string> tmp_which_E_over_R; // which E_over_R
+		std::vector<int> tmp_int_which_E_over_R;
+
+		boost::split(tmp_idx, str_reaction_index[i], boost::is_any_of(" "));
+		boost::split(tmp_unc, str_unc[i], boost::is_any_of(" "));
+		boost::split(tmp_scaling_lnA, str_scaling_lnA[i], boost::is_any_of(" "));
+		boost::split(tmp_scaling_Beta, str_scaling_Beta[i], boost::is_any_of(" "));
+		boost::split(tmp_scaling_E_over_R, str_scaling_E_over_R[i], boost::is_any_of(" "));
+		boost::split(tmp_which_lnA, str_which_lnA[i], boost::is_any_of(" "));
+		boost::split(tmp_which_Beta, str_which_Beta[i], boost::is_any_of(" "));
+		boost::split(tmp_which_E_over_R, str_which_E_over_R[i], boost::is_any_of(" "));
+
+		// They have all the same size so just one loop
+		for(int j = 0; j < tmp_idx.size(); j++){
+			tmp_double_unc.push_back(std::stod(tmp_unc[j]));
+			tmp_int_idx.push_back(std::stoi(tmp_idx[j]));
+			if(std::stoi(tmp_which_lnA[j]) != 0){
+				tmp_double_scaling_lnA.push_back(std::stod(tmp_scaling_lnA[j]));
+				tmp_int_idx_lnA.push_back(std::stoi(tmp_idx[j]));
+			}
+			if(std::stoi(tmp_which_Beta[j]) != 0){
+				tmp_double_scaling_Beta.push_back(std::stod(tmp_scaling_Beta[j]));
+				tmp_int_idx_Beta.push_back(std::stoi(tmp_idx[j]));
+			}
+			if(std::stoi(tmp_which_E_over_R[j]) != 0){
+				tmp_double_scaling_E_over_R.push_back(std::stod(tmp_scaling_E_over_R[j]));
+				tmp_int_idx_E_over_R.push_back(std::stoi(tmp_idx[j]));
+			}
+		}
+
+		matrixOfReactionIndex.push_back(tmp_int_idx);
+		matrixOflnA.push_back(tmp_int_idx_lnA);
+		matrixOfBeta.push_back(tmp_int_idx_Beta);
+		matrixOfEoverR.push_back(tmp_int_idx_E_over_R);
+		matrixOfUnceratintyFactors.push_back(tmp_double_unc);
+
+		tmp_idx.clear();
+		tmp_int_idx_lnA.clear();
+		tmp_int_idx_Beta.clear();
+		tmp_int_idx_E_over_R.clear();
+		tmp_unc.clear();
+		tmp_double_unc.clear();
+		tmp_scaling_lnA.clear();
+		tmp_double_scaling_lnA.clear();
+		tmp_scaling_Beta.clear();
+		tmp_double_scaling_Beta.clear();
+		tmp_scaling_E_over_R.clear();
+		tmp_double_scaling_E_over_R.clear();
+		tmp_which_lnA.clear();
+		tmp_which_Beta.clear();
+		tmp_which_E_over_R.clear();
+		tmp_int_which_lnA.clear();
+		tmp_int_which_Beta.clear();
+		tmp_int_which_E_over_R.clear();
+	}
+/*
+	for(int i = 0; i<matrixOfReactionIndex.size(); i++){
+		// std::cout << "Indici delle reazioni della classe numero:  " << i << std::endl;
+		// NB Stai ottimizando una sola k di classe per volta 
+		// std::cout << matrixOfReactionIndex[i][j] << std::endl;
+		list_of_target_lnA.push_back(matrixOfReactionIndex[i][0]);
+		list_of_target_Beta.push_back(matrixOfReactionIndex[i][0]);
+		list_of_target_E_over_R.push_back(matrixOfReactionIndex[i][0]);
+		list_of_target_uncertainty_factors.push_back(matrixOfReactionIndex[i][0]);
+
+		list_of_initial_lnA.push_back(boost::lexical_cast<std::string>(std::log(kineticsMapXML->A(matrixOfReactionIndex[i][0]-1))));
+		list_of_initial_Beta.push_back(boost::lexical_cast<std::string>(kineticsMapXML->Beta(matrixOfReactionIndex[i][0]-1)));
+		list_of_initial_E_over_R.push_back(boost::lexical_cast<std::string>(kineticsMapXML->E_over_R(matrixOfReactionIndex[i][0]-1)));
+	}
+
+	// FORSE VA TOLTO PERCHE NON SERVE
+	for(int i = 0; i<matrixOfUnceratintyFactors.size(); i++){
+		// std::cout << "Unc factor della classe numero:  " << i << std::endl;
+		// NB Stai ottimizando una sola k di classe per volta
+		//std::cout << matrixOfUnceratintyFactors[i][j] << std::endl;
+		list_of_uncertainty_factors.push_back(matrixOfUnceratintyFactors[i][0]);
+	} */
+
 	}
 }
 
