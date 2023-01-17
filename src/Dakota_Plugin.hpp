@@ -809,190 +809,141 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 				}
 	} 
 	else {
-
-				// lnA
-				if (ObjectInput2.list_of_target_lnA.size()!=0)
-				{
-					if(ObjectInput2.Optimization4Classes == true)
-					{
-						if(ObjectInput2.ScalingReactionClasses == true)
-						{
-							for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
-							{
-								double scaling_lnA = std::exp(c_vars[count]) / ObjectInput2.nominalkineticsMapXML->A(ObjectInput2.matrixOfReactionIndex[k][0]-1);
-                                std::cout << "Fattore di scala: " << scaling_lnA << std::endl;
-                                std::cout << "Nuovo: " << std::exp(c_vars[count]) << std::endl;
-                                std::cout << "Vecchio: " << ObjectInput2.nominalkineticsMapXML->A(ObjectInput2.matrixOfReactionIndex[k][0]-1) << std::endl;
-                                for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
-								{
-									int targetreaction = ObjectInput2.matrixOfReactionIndex[k][z];
-									if(eval_nr == 1)
-									{
-										ChangelnA(targetreaction, std::log(ObjectInput2.kineticsMapXML->A(targetreaction-1)));
-									}
-									else 
-									{
-										if(z == 0)
-										{
-											ChangelnA(targetreaction, c_vars[count]);
-										}
-										else
-										{
-											ChangelnA(targetreaction, std::log(scaling_lnA * ObjectInput2.nominalkineticsMapXML->A(ObjectInput2.matrixOfReactionIndex[k][z]-1)));
-										}
-										//std::cout << "Fattore di scala: " << scaling_lnA << std::endl;
-										
-									}
-								}
-								count = count + 1;
+		// lnA
+		if (ObjectInput2.list_of_target_lnA.size()!=0)
+		{
+			if(ObjectInput2.Optimization4Classes == true){
+				if(ObjectInput2.ScalingReactionClasses == true){
+					for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++){
+						double scaling_lnA = std::exp(c_vars[count]) / ObjectInput2.nominalkineticsMapXML->A(ObjectInput2.matrixOfReactionIndex[k][0]-1);
+						std::cout << "Fattore di scala: " << scaling_lnA << std::endl;
+						std::cout << "Nuovo: " << std::exp(c_vars[count]) << std::endl;
+						std::cout << "Vecchio: " << ObjectInput2.nominalkineticsMapXML->A(ObjectInput2.matrixOfReactionIndex[k][0]-1) << std::endl;
+						for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++){
+							int targetreaction = ObjectInput2.matrixOfReactionIndex[k][z];
+							if(eval_nr == 1){
+								ChangelnA(targetreaction, std::log(ObjectInput2.kineticsMapXML->A(targetreaction-1)));
 							}
-						}
-						else
-						{
-							for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
-							{
-								for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
-								{
-									ChangelnA(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+							else{
+								if(z == 0){
+									ChangelnA(targetreaction, c_vars[count]);
 								}
-								count = count + 1;
+								else{
+									ChangelnA(targetreaction, std::log(scaling_lnA * ObjectInput2.nominalkineticsMapXML->A(ObjectInput2.matrixOfReactionIndex[k][z]-1)));
+								}
 							}
-						}
-					}
-					else
-					{
-						for (unsigned int k = 0; k < ObjectInput2.list_of_target_lnA.size(); k++)
-						{
-							ChangelnA(ObjectInput2.list_of_target_lnA[k], c_vars[count]);
-							count=count+1;
+							count = count + 1;
 						}
 					}
 				}
-				// lnA_inf
-				if (ObjectInput2.list_of_target_lnA_inf.size()!=0)
-				{
-					for (unsigned int k = 0; k < ObjectInput2.list_of_target_lnA_inf.size(); k++)
-					{
-						ChangelnA_inf(ObjectInput2.list_of_target_lnA_inf[k], c_vars[count]);
-						count=count+1;
+				else{
+					for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++){
+						for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++){
+							ChangelnA(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+						}
+						count = count + 1;
 					}
 				}
-				// Beta
-				if (ObjectInput2.list_of_target_Beta.size()!=0)
-				{
-					if(ObjectInput2.Optimization4Classes == true)
-					{
-						if(ObjectInput2.ScalingReactionClasses == true)
-						{
-							for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
-							{
-								double scaling_Beta = c_vars[count] - ObjectInput2.nominalkineticsMapXML->Beta(ObjectInput2.matrixOfReactionIndex[k][0]-1);
-								for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
-								{
-									int targetreaction = ObjectInput2.matrixOfReactionIndex[k][z];
-									if(eval_nr == 1)
-									{
-										ChangeBeta(targetreaction, ObjectInput2.kineticsMapXML->Beta(targetreaction-1));
-									}
-									else 
-									{
-										if(z==0)
-										{
-											ChangeBeta(targetreaction, c_vars[count]);
-										}
-										else
-										{
-											ChangeBeta(targetreaction, scaling_Beta + ObjectInput2.nominalkineticsMapXML->Beta(ObjectInput2.matrixOfReactionIndex[k][z]-1));
-										}
-									}
+			}
+			else{
+				for (unsigned int k = 0; k < ObjectInput2.list_of_target_lnA.size(); k++){
+					ChangelnA(ObjectInput2.list_of_target_lnA[k], c_vars[count]);
+					count=count+1;
+				}
+			}
+		}
+		// lnA_inf
+		if (ObjectInput2.list_of_target_lnA_inf.size()!=0){
+			for (unsigned int k = 0; k < ObjectInput2.list_of_target_lnA_inf.size(); k++){
+				ChangelnA_inf(ObjectInput2.list_of_target_lnA_inf[k], c_vars[count]);
+				count=count+1;
+			}
+		}
+		// Beta
+		if (ObjectInput2.list_of_target_Beta.size()!=0){
+			if(ObjectInput2.Optimization4Classes == true){
+				if(ObjectInput2.ScalingReactionClasses == true){
+					for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k++){
+						double scaling_Beta = c_vars[count] - ObjectInput2.nominalkineticsMapXML->Beta(ObjectInput2.matrixOfReactionIndex[k][0]-1);
+						for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++){
+							int targetreaction = ObjectInput2.matrixOfReactionIndex[k][z];
+							if(eval_nr == 1){
+								ChangeBeta(targetreaction, ObjectInput2.kineticsMapXML->Beta(targetreaction-1));
+							}
+							else{
+								if(z==0){
+									ChangeBeta(targetreaction, c_vars[count]);
 								}
-								count = count + 1;
+								else{
+									ChangeBeta(targetreaction, scaling_Beta + ObjectInput2.nominalkineticsMapXML->Beta(ObjectInput2.matrixOfReactionIndex[k][z]-1));
+								}
 							}
 						}
-						else
-						{
-							for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
-							{
-								for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
-								{
-									ChangeBeta(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
-								}
-								count = count + 1;
-							}
-						}
-					}
-					else
-					{
-						for (unsigned int k = 0; k < ObjectInput2.list_of_target_Beta.size(); k++)
-						{
-							ChangeBeta(ObjectInput2.list_of_target_Beta[k], c_vars[count]);
-							count=count+1;
-						}
-					}
-				}	
-				// Beta_inf
-				if (ObjectInput2.list_of_target_Beta_inf.size()!=0)
-				{
-					for (unsigned int k = 0; k < ObjectInput2.list_of_target_Beta_inf.size(); k++)
-					{
-						ChangeBeta_inf(ObjectInput2.list_of_target_Beta_inf[k], c_vars[count]);
-						count=count+1;
-					}
-				}	
-				// E_over_R
-				if (ObjectInput2.list_of_target_E_over_R.size()!=0)
-				{
-					if(ObjectInput2.Optimization4Classes == true)
-					{
-						if(ObjectInput2.ScalingReactionClasses == true)
-						{
-							for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
-							{
-								double scaling_E_over_R = c_vars[count] - ObjectInput2.nominalkineticsMapXML->E_over_R(ObjectInput2.matrixOfReactionIndex[k][0]-1);
-								for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
-								{
-									int targetreaction = ObjectInput2.matrixOfReactionIndex[k][z];
-									if(eval_nr == 1)
-									{
-										ChangeE_over_R(targetreaction, ObjectInput2.kineticsMapXML->E_over_R(targetreaction-1));
-									}
-									else 
-									{
-										if(z == 0)
-										{
-											ChangeE_over_R(targetreaction, c_vars[count]);
-										}
-										else
-										{
-											ChangeE_over_R(targetreaction, scaling_E_over_R + ObjectInput2.nominalkineticsMapXML->E_over_R(ObjectInput2.matrixOfReactionIndex[k][z]-1));
-										}
-										
-									}
-								}
-								count = count + 1;
-							}
-						}
-						else
-						{
-							for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++)
-							{
-								for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++)
-								{
-									ChangeE_over_R(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
-								}
-								count = count + 1;
-							}
-						}
-					}
-					else
-					{
-						for (unsigned int k = 0; k < ObjectInput2.list_of_target_E_over_R.size(); k++)
-						{
-							ChangeE_over_R(ObjectInput2.list_of_target_E_over_R[k], c_vars[count]);
-							count=count+1;
-						}
+						count = count + 1;
 					}
 				}
+				else{
+					for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++){
+						for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++){
+							ChangeBeta(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+						}
+						count = count + 1;
+					}
+				}
+			}
+			else{
+				for (unsigned int k = 0; k < ObjectInput2.list_of_target_Beta.size(); k++){
+					ChangeBeta(ObjectInput2.list_of_target_Beta[k], c_vars[count]);
+					count=count+1;
+				}
+			}
+		}
+		// Beta_inf
+		if (ObjectInput2.list_of_target_Beta_inf.size()!=0){
+			for (unsigned int k = 0; k < ObjectInput2.list_of_target_Beta_inf.size(); k++){
+				ChangeBeta_inf(ObjectInput2.list_of_target_Beta_inf[k], c_vars[count]);
+				count=count+1;
+			}
+		}
+		// E_over_R
+		if (ObjectInput2.list_of_target_E_over_R.size()!=0){
+			if(ObjectInput2.Optimization4Classes == true){
+				if(ObjectInput2.ScalingReactionClasses == true){
+					for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++){
+						double scaling_E_over_R = c_vars[count] - ObjectInput2.nominalkineticsMapXML->E_over_R(ObjectInput2.matrixOfReactionIndex[k][0]-1);
+						for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++){
+							int targetreaction = ObjectInput2.matrixOfReactionIndex[k][z];
+							if(eval_nr == 1){
+								ChangeE_over_R(targetreaction, ObjectInput2.kineticsMapXML->E_over_R(targetreaction-1));
+							}
+							else{
+								if(z == 0){
+									ChangeE_over_R(targetreaction, c_vars[count]);
+								}
+								else{
+									ChangeE_over_R(targetreaction, scaling_E_over_R + ObjectInput2.nominalkineticsMapXML->E_over_R(ObjectInput2.matrixOfReactionIndex[k][z]-1));
+								}
+							}
+						}
+						count = count + 1;
+					}
+				}
+				else{
+					for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k ++){
+						for(unsigned int z = 0; z < ObjectInput2.matrixOfReactionIndex[k].size(); z++){
+							ChangeE_over_R(ObjectInput2.matrixOfReactionIndex[k][z], c_vars[count]);
+						}
+						count = count + 1;
+					}
+				}
+			}
+			else{
+				for (unsigned int k = 0; k < ObjectInput2.list_of_target_E_over_R.size(); k++){
+					ChangeE_over_R(ObjectInput2.list_of_target_E_over_R[k], c_vars[count]);
+					count=count+1;
+				}
+			}
+		}
 				// E_over_R_inf
 				if (ObjectInput2.list_of_target_E_over_R_inf.size()!=0)
 				{
