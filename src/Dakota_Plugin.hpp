@@ -814,7 +814,7 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 		{
 			if(ObjectInput2.Optimization4Classes == true){
 				for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k++){
-					for(unsigned int z = 0; z < ObjectInput2.matrixOflnA[z].size(); z++){
+					for(unsigned int z = 0; z < ObjectInput2.matrixOflnA[k].size(); z++){
 						int target_reaction = ObjectInput2.matrixOflnA[k][z];
 						if(eval_nr == 1){
 							ChangelnA(target_reaction, std::log(ObjectInput2.kineticsMapXML -> A(target_reaction - 1)));
@@ -850,7 +850,7 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 		if (ObjectInput2.list_of_target_Beta.size()!=0){
 			if(ObjectInput2.Optimization4Classes == true){
 				for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k++){
-					for(unsigned int z = 0; z < ObjectInput2.matrixOfBeta[z].size(); z++){
+					for(unsigned int z = 0; z < ObjectInput2.matrixOfBeta[k].size(); z++){
 						int target_reaction = ObjectInput2.matrixOfBeta[k][z];
 						if(eval_nr == 1){
 							ChangeBeta(target_reaction, ObjectInput2.kineticsMapXML -> Beta(target_reaction - 1));
@@ -886,7 +886,7 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 		if (ObjectInput2.list_of_target_E_over_R.size()!=0){
 			if(ObjectInput2.Optimization4Classes == true){
 				for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k++){
-					for(unsigned int z = 0; z < ObjectInput2.matrixOfEoverR[z].size(); z++){
+					for(unsigned int z = 0; z < ObjectInput2.matrixOfEoverR[k].size(); z++){
 						int target_reaction = ObjectInput2.matrixOfEoverR[k][z];
 						if(eval_nr == 1){
 							ChangeE_over_R(target_reaction, ObjectInput2.kineticsMapXML -> E_over_R(target_reaction - 1));
