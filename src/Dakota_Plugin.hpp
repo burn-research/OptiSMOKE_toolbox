@@ -37,7 +37,7 @@ void OpenSMOKEDirectApplicInterface::Setup_Plugin()
 {
 	// Debug parameter: If true will print kinetic parameters before and after changing them / 
 	// Print out the simulation values (only first value if more than one species considered)
-	Debug_ChangeParam = false;
+	Debug_ChangeParam = true;
 
 	// Setup evaluation number
 	eval_nr=0;
@@ -825,7 +825,7 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 							}
 							else{
 								double scaling_lnA = ObjectInput2.matrixOfscalinglnA[k][z];
-								ChangelnA(target_reaction, scaling_lnA * c_vars[count]); // check
+								ChangelnA(target_reaction, std::log(scaling_lnA * ObjectInput2.kineticsMapXML->A(ObjectInput2.matrixOflnA[k][0] - 1)) ); // check
 							}
 						}
 						count = count + 1;
@@ -861,7 +861,7 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 							}
 							else{
 								double scaling_Beta = ObjectInput2.matrixOfscalingBeta[k][z];
-								ChangeBeta(target_reaction, scaling_Beta + c_vars[count]); // check
+								ChangeBeta(target_reaction, scaling_Beta + ObjectInput2.kineticsMapXML->Beta(ObjectInput2.matrixOflnA[k][0] - 1)); // check
 							}
 						}
 						count = count + 1;
@@ -897,7 +897,7 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 							}
 							else{
 								double scaling_E_over_R = ObjectInput2.matrixOfscalingEoverR[k][z];
-								ChangeE_over_R(target_reaction, scaling_E_over_R + c_vars[count]); // check
+								ChangeE_over_R(target_reaction, scaling_E_over_R + ObjectInput2.kineticsMapXML->E_over_R(ObjectInput2.matrixOflnA[k][0] - 1)); // check
 							}
 						}
 						count = count + 1;
