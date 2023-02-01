@@ -825,7 +825,7 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 							}
 							else{
 								double scaling_lnA = ObjectInput2.matrixOfscalinglnA[k][z];
-								ChangelnA(target_reaction, std::log(scaling_lnA * ObjectInput2.nominalkineticsMapXML->A(ObjectInput2.matrixOfReactionIndex[k][z]-1))); // check
+								ChangelnA(target_reaction, scaling_lnA * c_vars[count]); // check
 							}
 						}
 						count = count + 1;
@@ -861,7 +861,7 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 							}
 							else{
 								double scaling_Beta = ObjectInput2.matrixOfscalingBeta[k][z];
-								ChangeBeta(target_reaction, scaling_Beta + ObjectInput2.nominalkineticsMapXML-> Beta(ObjectInput2.matrixOfReactionIndex[k][z]-1)); // check
+								ChangeBeta(target_reaction, scaling_Beta + c_vars[count]); // check
 							}
 						}
 						count = count + 1;
@@ -897,7 +897,7 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 							}
 							else{
 								double scaling_E_over_R = ObjectInput2.matrixOfscalingEoverR[k][z];
-								ChangeE_over_R(target_reaction, scaling_E_over_R + ObjectInput2.nominalkineticsMapXML-> E_over_R(ObjectInput2.matrixOfReactionIndex[k][z]-1)); // check
+								ChangeE_over_R(target_reaction, scaling_E_over_R + c_vars[count]); // check
 							}
 						}
 						count = count + 1;
