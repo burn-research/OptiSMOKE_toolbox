@@ -3700,45 +3700,6 @@ namespace OpenSMOKE
 		for(int i = 0; i<matrixOfUnceratintyFactors.size(); i++){
 			list_of_uncertainty_factors.push_back(matrixOfUnceratintyFactors[i][0]);
 		}
-		std::cout << "Target lnA" << std::endl;
-		for(int i = 0; i < list_of_target_lnA.size(); i++){
-			std::cout << list_of_target_lnA[i] << std::endl;
-		}
-
-		std::cout << "Target Beta" << std::endl;
-		for(int i = 0; i < list_of_target_Beta.size(); i++){
-			std::cout << list_of_target_Beta[i] << std::endl;
-		}
-
-		std::cout << "Target E_over_R" << std::endl;
-		for(int i = 0; i < list_of_target_E_over_R.size(); i++){
-			std::cout << list_of_target_E_over_R[i] << std::endl;
-		}
-
-		std::cout << "Matrix of lnA" << std::endl;
-		for(int i = 0; i < matrixOflnA[1].size(); i++){
-			std::cout << matrixOflnA[1][i] << std::endl;
-		}
-		std::cout << "Matrix Beta" << std::endl;
-		for(int i = 0; i < matrixOfBeta[1].size(); i++){
-			std::cout << matrixOfBeta[1][i] << std::endl;
-		}
-		std::cout << "Matrix of E over R" << std::endl;
-		for(int i = 0; i < matrixOfEoverR[1].size(); i++){
-			std::cout << matrixOfEoverR[1][i] << std::endl;
-		}
-		std::cout << "Matrix of scaling lnA" << std::endl;
-		for(int i = 0; i < matrixOfscalinglnA[1].size(); i++){
-			std::cout << matrixOfscalinglnA[1][i] << std::endl;
-		}
-		std::cout << "Matrix of scaling Beta" << std::endl;
-		for(int i = 0; i < matrixOfscalingBeta[1].size(); i++){
-			std::cout << matrixOfscalingBeta[1][i] << std::endl;
-		}
-		std::cout << "Matrix of scaling E over R" << std::endl;
-		for(int i = 0; i < matrixOfscalingEoverR[1].size(); i++){
-			std::cout << matrixOfscalingEoverR[1][i] << std::endl;
-		}
 	}
 }
 
