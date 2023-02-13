@@ -813,8 +813,8 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 		if (ObjectInput2.list_of_target_lnA.size()!=0)
 		{
 			if(ObjectInput2.Optimization4Classes == true){
-				for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k++){
-					for(unsigned int z = 0; z < ObjectInput2.matrixOflnA[k].size(); z++){
+				for(unsigned int k = 0; k < ObjectInput2.numberOfReactionClasses; k++){ // for each class
+					for(unsigned int z = 0; z < ObjectInput2.matrixOflnA[k].size(); z++){ // inside each class pick selected reaction
 						int target_reaction = ObjectInput2.matrixOflnA[k][z];
 						if(eval_nr == 1){
 							ChangelnA(target_reaction, std::log(ObjectInput2.kineticsMapXML -> A(target_reaction - 1)));
@@ -828,8 +828,8 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 								ChangelnA(target_reaction, std::log(scaling_lnA * ObjectInput2.kineticsMapXML->A(ObjectInput2.matrixOflnA[k][0] - 1)) ); // check
 							}
 						}
-						count = count + 1;
 					}
+					count = count + 1;
 				}
 			}
 			else{
@@ -861,11 +861,11 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 							}
 							else{
 								double scaling_Beta = ObjectInput2.matrixOfscalingBeta[k][z];
-								ChangeBeta(target_reaction, scaling_Beta + ObjectInput2.kineticsMapXML->Beta(ObjectInput2.matrixOflnA[k][0] - 1)); // check
+								ChangeBeta(target_reaction, scaling_Beta + ObjectInput2.kineticsMapXML->Beta(ObjectInput2.matrixOfBeta[k][0] - 1)); // check
 							}
 						}
-						count = count + 1;
 					}
+					count = count + 1;
 				}
 			}
 			else{
@@ -897,11 +897,11 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 							}
 							else{
 								double scaling_E_over_R = ObjectInput2.matrixOfscalingEoverR[k][z];
-								ChangeE_over_R(target_reaction, scaling_E_over_R + ObjectInput2.kineticsMapXML->E_over_R(ObjectInput2.matrixOflnA[k][0] - 1)); // check
+								ChangeE_over_R(target_reaction, scaling_E_over_R + ObjectInput2.kineticsMapXML->E_over_R(ObjectInput2.matrixOfEoverR[k][0] - 1)); // check
 							}
 						}
-						count = count + 1;
 					}
+					count = count + 1;
 				}
 			}
 			else{
@@ -911,7 +911,7 @@ int OpenSMOKEDirectApplicInterface::opensmoke_interface(const Dakota::RealVector
 				}
 			}
 		}
-				// E_over_R_inf
+		// E_over_R_inf
 				if (ObjectInput2.list_of_target_E_over_R_inf.size()!=0)
 				{
 					for (unsigned int k = 0; k < ObjectInput2.list_of_target_E_over_R_inf.size(); k++)
