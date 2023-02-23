@@ -1,12 +1,8 @@
 #Folders
 
-.vscode
 .DS_Store
-EXAMPLES/Prove_Batch/
-EXAMPLES/Reaction_Classes/
-projects/my_linux/
-projects/my_exe/
 .deps
 .dirstamp
 *.o
 *.sh
+test/
