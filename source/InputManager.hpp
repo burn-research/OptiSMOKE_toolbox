@@ -34,8 +34,7 @@
 
 namespace OptiSMOKE{
 
-    InputManager::InputManager(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary) : dictionary_(dictionary)
-    {
+    InputManager::InputManager(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary) : dictionary_(dictionary){
         input_file_name_ = "input.dic";
         main_dictionary_ = "OptiSMOKEpp";
         output_folder_ = "Output";
@@ -51,8 +50,7 @@ namespace OptiSMOKE{
     
     InputManager::~InputManager(){}
 
-    void InputManager::SetInputOptions(int argc, char* argv[])
-    {
+    void InputManager::SetInputOptions(int argc, char* argv[]){
         //Input Options
         {
             po::options_description desc("Allowed options");
@@ -64,20 +62,17 @@ namespace OptiSMOKE{
             po::store(po::parse_command_line(argc, argv, desc), vm);
             po::notify(vm);
 
-            if (vm.count("help"))
-            {
+            if (vm.count("help")){
                 std::cout << desc << std::endl;
             }
 
-            if (vm.count("input"))
-            {
+            if (vm.count("input")){
                 input_file_name_ = vm["input"].as<std::string>();
             }
         }
     }
 
-    void InputManager::ReadDictionary()
-    {
+    void InputManager::ReadDictionary(){
         // It can be trivial however this is for future 
         // parallelization with MPI see:
         // https://github.com/astagni/DoctorSMOKEpp/blob/main/src/DataManager.hpp
@@ -85,8 +80,7 @@ namespace OptiSMOKE{
         ReadMainDictionary();
         
         // This to process or not kinetics folder
-        if(!iXml_ || !iNominalXml_)
-        {
+        if(!iXml_ || !iNominalXml_){
 
             if(!iTransport_){
                 OpenSMOKE::RapidKineticMechanismWithoutTransport(
@@ -94,8 +88,7 @@ namespace OptiSMOKE{
                     kinetics_data_.chemkin_thermodynamics(),
                     kinetics_data_.chemkin_kinetics());
             }
-            else
-            {
+            else{
                 OpenSMOKE::RapidKineticMechanismWithTransport(
                     kinetics_data_.chemkin_output(),
                     kinetics_data_.chemkin_transport(),
@@ -113,12 +106,10 @@ namespace OptiSMOKE{
         dictionary_(main_dictionary_).SetGrammar(main_grammar_);
 
         // kinetics folder
-        if(dictionary_(main_dictionary_).CheckOption("@KineticsFolder"))
-        {
+        if(dictionary_(main_dictionary_).CheckOption("@KineticsFolder")){
             iXml_ = true;
             dictionary_(main_dictionary_).ReadPath("@KineticsFolder", kinetics_folder_);
-            if(!fs::exists(kinetics_folder_))
-            {
+            if(!fs::exists(kinetics_folder_)){
                 OptiSMOKE::FatalErrorMessage("The @KineticsFolder path does not exists!");
             }
             OpenSMOKE::CheckKineticsFolder(kinetics_folder_);
@@ -127,12 +118,10 @@ namespace OptiSMOKE{
             dictionary_(main_dictionary_).ReadDictionary("@NominalKineticsPreProcessor", preprocessor_dictionary_);
             kinetics_data_.SetupFromDictionary(dictionary_, preprocessor_dictionary_, iTransport_);
         }
-        else if(dictionary_(main_dictionary_).CheckOption("@NominalKineticsFolder"))
-        {
+        else if(dictionary_(main_dictionary_).CheckOption("@NominalKineticsFolder")){
             iNominalXml_ = true;
             dictionary_(main_dictionary_).ReadPath("@NominalKineticsFolder", kinetics_folder_);
-            if(!fs::exists(kinetics_folder_))
-            {
+            if(!fs::exists(kinetics_folder_)){
                 OptiSMOKE::FatalErrorMessage("The @NominalKineticsFolder path does not exists!");
             }
             OpenSMOKE::CheckKineticsFolder(kinetics_folder_);
@@ -141,8 +130,7 @@ namespace OptiSMOKE{
             dictionary_(main_dictionary_).ReadDictionary("@KineticsPreProcessor", preprocessor_dictionary_);
             kinetics_data_.SetupFromDictionary(dictionary_, preprocessor_dictionary_, iTransport_);
         }
-        else
-        {
+        else{
             OptiSMOKE::FatalErrorMessage("Please provide a folder the kinetic mechanism available are: @NominalKineticsFolder | @KineticsFolder");
         }
 
@@ -150,14 +138,12 @@ namespace OptiSMOKE{
         dictionary_(main_dictionary_).ReadPath("@NameOfOptimizedKineticsFolder", optimized_kinetics_folder_);
        
         // debug
-        if(dictionary_(main_dictionary_).CheckOption("@Debug"))
-        {
+        if(dictionary_(main_dictionary_).CheckOption("@Debug")){
             dictionary_(main_dictionary_).ReadBool("@Debug", iDebug_);
         }
 
         // debug simulations
-        if(dictionary_(main_dictionary_).CheckOption("@DebugSim"))
-        {
+        if(dictionary_(main_dictionary_).CheckOption("@DebugSim")){
             dictionary_(main_dictionary_).ReadBool("@DebugSim", iDebug_);
         }
 
@@ -187,11 +173,10 @@ namespace OptiSMOKE{
         
     }
 
-    void InputManager::DakotaInputString()
-    {
-		dakota_input_string_ = "     environment,"
-		                       "\n      tabular_data";
-		dakota_input_string_.append("\n 		tabular_data_file '" + dakota_options_.tabular_data_file() + "'");
+    void InputManager::DakotaInputString(){
+		dakota_input_string_ = "\tenvironment,"
+		                       "\n\t\ttabular_data";
+		dakota_input_string_.append("\n\t\t\ttabular_data_file '" + dakota_options_.tabular_data_file() + "'");
 		
         dakota_input_string_.append("\n	method,"); 
 		dakota_input_string_.append("\n 		" + dakota_options_.method());
@@ -201,16 +186,14 @@ namespace OptiSMOKE{
 		dakota_input_string_.append("\n 		  solution_target = " + dakota_options_.solution_target());
 		dakota_input_string_.append("\n 		  seed = " + dakota_options_.seed());
 
-		if(dakota_options_.iDiverseInput())
-		{
+		if(dakota_options_.iDiverseInput()){
 		    dakota_input_string_.append("\n");
 			for (int i = 0; i < dakota_options_.diverse_dakota_input().size(); i++)
 			{
 				dakota_input_string_.append( " " + dakota_options_.diverse_dakota_input()[i]);
 			}
 		} 
-        else if(dakota_options_.method() == "coliny_ea")
-	   	{
+        else if(dakota_options_.method() == "coliny_ea"){
 		  	dakota_input_string_.append("\n 		  population_size = " + dakota_options_.population_size());
 			dakota_input_string_.append("\n		  fitness_type " + dakota_options_.fitness_type());
 			dakota_input_string_.append("\n		  mutation_type " + dakota_options_.mutation_type());
@@ -219,14 +202,12 @@ namespace OptiSMOKE{
 			dakota_input_string_.append("\n		  crossover_rate " + dakota_options_.crossover_rate());
 			dakota_input_string_.append("\n		  replacement_type " + dakota_options_.replacement_type());
 		} 
-        else if(dakota_options_.method() == "coliny_direct")
-		{
+        else if(dakota_options_.method() == "coliny_direct"){
 			dakota_input_string_.append("\n                 division " + dakota_options_.division());
 			dakota_input_string_.append("\n                 max_boxsize_limit " + dakota_options_.max_boxsize_limit());
 			dakota_input_string_.append("\n                 min_boxsize_limit " + dakota_options_.min_boxsize_limit());
 		}
-        else
-        {
+        else{
             OptiSMOKE::FatalErrorMessage("Available implemented methods are coliny_ea | coliny_direct");
         }
 			
@@ -272,8 +253,7 @@ namespace OptiSMOKE{
 		dakota_input_string_.append("\n		no_hessians");*/
     }
 
-    void InputManager::CreateMaps()
-    {
+    void InputManager::CreateMaps(){
         // This goes under kinetics map
         fs::path path_kinetics_output;
 	
@@ -312,13 +292,11 @@ namespace OptiSMOKE{
 
     }
 
-    void InputManager::InitialParameters()
-    {
+    void InputManager::InitialParameters(){
 
     }     
 
-    void InputManager::ComputeBoundaries()
-    {
+    void InputManager::ComputeBoundaries(){
 
     }
 } // namespace OptiSMOKE
