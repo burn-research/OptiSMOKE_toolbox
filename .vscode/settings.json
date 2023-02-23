@@ -81,7 +81,19 @@
         "vector": "cpp",
         "algorithm": "cpp",
         "batchreactor": "cpp",
-        "dense": "cpp"
+        "dense": "cpp",
+        "codecvt": "cpp",
+        "csignal": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp",
+        "*.tcc": "cpp",
+        "functional": "cpp",
+        "iterator": "cpp",
+        "memory_resource": "cpp",
+        "source_location": "cpp",
+        "utility": "cpp",
+        "stop_token": "cpp",
+        "cinttypes": "cpp"
     },
     "cmake.configureEnvironment":{
         "Boost_ROOT":"/Users/tdinelli/NumericalLibraries/boost/boost-1.79-gcc-12",
