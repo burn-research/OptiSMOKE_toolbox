@@ -1,4 +1,0 @@
-cases/shao_T_1240.0_P_32.4/input.dic
-cases/shao_T_1249.0_P_32.5/input.dic
-cases/shao_T_1255.0_P_31.0/input.dic
-cases/shao_T_1262.0_P_31.5/input.dic

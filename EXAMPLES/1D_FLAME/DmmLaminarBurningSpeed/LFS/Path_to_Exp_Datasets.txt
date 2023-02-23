@@ -1,3 +1,0 @@
-ds_data/T298.txt
-ds_data/T328.txt
-ds_data/T358.txt

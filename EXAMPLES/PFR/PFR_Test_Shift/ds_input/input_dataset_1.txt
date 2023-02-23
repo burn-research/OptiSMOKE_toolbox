@@ -1,1 +1,0 @@
-cases/T_934_P_3.02/input.dic

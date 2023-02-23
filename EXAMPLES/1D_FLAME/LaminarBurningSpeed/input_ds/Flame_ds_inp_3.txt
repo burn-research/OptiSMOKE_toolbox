@@ -1,6 +1,0 @@
-cases/Flames_3_T_500_P_1.00_PHI_0.70/input.dic
-cases/Flames_3_T_500_P_1.00_PHI_0.80/input.dic
-cases/Flames_3_T_500_P_1.00_PHI_0.90/input.dic
-cases/Flames_3_T_500_P_1.00_PHI_1.00/input.dic
-cases/Flames_3_T_500_P_1.00_PHI_1.10/input.dic
-cases/Flames_3_T_500_P_1.00_PHI_1.20/input.dic

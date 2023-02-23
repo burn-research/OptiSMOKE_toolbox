@@ -1,8 +1,0 @@
-ds_inputs/RCM_Das_input_dataset_1.txt
-ds_inputs/RCM_Das_input_dataset_2.txt
-ds_inputs/RCM_Das_input_dataset_3.txt
-ds_inputs/RCM_Das_input_dataset_4.txt
-ds_inputs/RCM_Das_input_dataset_5.txt
-ds_inputs/RCM_Das_input_dataset_6.txt
-ds_inputs/RCM_Das_input_dataset_7.txt
-ds_inputs/RCM_Das_input_dataset_8.txt

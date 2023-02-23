@@ -1,5 +1,0 @@
-ds_data/exp_dataset_22.txt
-ds_data/exp_dataset_23.txt
-ds_data/exp_dataset_24.txt
-ds_data/exp_dataset_25.txt
-ds_data/exp_dataset_26.txt

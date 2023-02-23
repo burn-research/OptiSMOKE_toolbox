@@ -1,5 +1,0 @@
-cases/wang_0_4.0_1174/input.dic
-cases/wang_0_4.0_1166/input.dic
-cases/wang_0_4.0_1159/input.dic
-cases/wang_0_4.0_1110/input.dic
-cases/wang_0_4.0_1086/input.dic

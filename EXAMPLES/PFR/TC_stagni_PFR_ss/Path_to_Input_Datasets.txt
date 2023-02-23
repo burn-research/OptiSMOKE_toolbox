@@ -1,5 +1,0 @@
-ds_inputs/input_dataset_22.txt
-ds_inputs/input_dataset_23.txt
-ds_inputs/input_dataset_24.txt
-ds_inputs/input_dataset_25.txt
-ds_inputs/input_dataset_26.txt
