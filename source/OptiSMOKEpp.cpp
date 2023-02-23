@@ -35,22 +35,6 @@
 
 #include "OptiSMOKEpp.h"
 
-#ifdef HAVE_AMPL 
-// Floating-point initialization from AMPL: switch to 53-bit rounding
-// if appropriate, to eliminate some cross-platform differences.
-extern "C" void fpinit_ASL(); 
-#endif 
-
-#ifndef DAKOTA_HAVE_MPI
-#define MPI_COMM_WORLD 0
-#endif // not DAKOTA_HAVE_MPI
-
-
-/// Run a Dakota LibraryEnvironment, mode 1: parsing an input file
-void run_dakota_parse(const char* plugin_input_file);
-
-void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env,const char* plugin_input_file);
-
 int main(int argc, char* argv[])
 {
 

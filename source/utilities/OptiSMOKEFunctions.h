@@ -47,7 +47,7 @@
 #include <map>
 #include <stdlib.h>
 
-#define __OPTISMOKE_VERSION__ "0.3.0 beta"
+#define __OPTISMOKE_VERSION__ "3.0.0"
 #define OPTISMOKE_FATAL_ERROR_EXIT -1
 #define OPTISMOKE_SUCCESSFULL_EXIT  0
 
