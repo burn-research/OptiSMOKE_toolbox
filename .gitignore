@@ -6,3 +6,4 @@
 *.o
 *.sh
 test/
+build/
