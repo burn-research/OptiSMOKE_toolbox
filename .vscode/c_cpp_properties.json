@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "Mac di Tito",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/source/**",
+                "/Users/tdinelli/Documents/GitHub/OpenSMOKEppSolvers/src",
+                "/Users/tdinelli/Documents/GitHub/OpenSMOKEpp/source",
+                "/Users/tdinelli/NumericalLibraries/boost/boost-1.79-gcc-12/include",
+                "/Users/tdinelli/NumericalLibraries/eigen/eigen-3.4.0",
+                "/Users/tdinelli/NumericalLibraries/eigen/eigen-3.4.0/Eigen/src",
+                "/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17-gcc-12/include"
+            ],
+            "forcedInclude": [
+                "${workspaceFolder}/.vscode/eigen_fix.h"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "/opt/homebrew/bin/gcc-12",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "macos-gcc-arm64"
+        }
+    ],
+    "version": 4
+}
