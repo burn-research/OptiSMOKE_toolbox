@@ -36,13 +36,13 @@ namespace OptiSMOKE
 {
     options_optimization_target::options_optimization_target() 
     {
-        numberOfBatchReactor = 0;
-        numberOfPlugFlowReactor = 0;
-        numberOfPerfectlyStirredReactor = 0;
-        numberOfPremixedLaminarFlame = 0;
-        numberOfCounterFlowFlame = 0;
+        numberOfBatchReactor_ = 0;
+        numberOfPlugFlowReactor_ = 0;
+        numberOfPerfectlyStirredReactor_ = 0;
+        numberOfPremixedLaminarFlame_ = 0;
+        numberOfCounterFlowFlame_ = 0;
 
-		numberOfParameters = 0;
+		numberOfParameters_ = 0;
     }
     
     options_optimization_target::~options_optimization_target() {}
@@ -54,145 +54,142 @@ namespace OptiSMOKE
         dictionary_manager(dictionary_name).SetGrammar(optimization_target_grammar_);
 
         if (dictionary_manager(dictionary_name).CheckOption("@NumberOfBatchReactor"))
-			dictionary_manager(dictionary_name).ReadInt("@NumberOfBatchReactor", numberOfBatchReactor);
+			dictionary_manager(dictionary_name).ReadInt("@NumberOfBatchReactor", 
+													numberOfBatchReactor_);
 
         if (dictionary_manager(dictionary_name).CheckOption("@NumberOfPlugFlowReactor"))
-			dictionary_manager(dictionary_name).ReadInt("@NumberOfPlugFlowReactor", numberOfPlugFlowReactor);
+		dictionary_manager(dictionary_name).ReadInt("@NumberOfPlugFlowReactor", 
+													numberOfPlugFlowReactor_);
 
         if (dictionary_manager(dictionary_name).CheckOption("@NumberOfPerfectlyStirredReactor"))
 			dictionary_manager(dictionary_name).ReadInt("@NumberOfPerfectlyStirredReactor", 
-														numberOfPerfectlyStirredReactor);
+														numberOfPerfectlyStirredReactor_);
 
         if (dictionary_manager(dictionary_name).CheckOption("@NumberOfPremixedLaminarFlame"))
 			dictionary_manager(dictionary_name).ReadInt("@NumberOfPremixedLaminarFlame", 
-														numberOfPremixedLaminarFlame);
+														numberOfPremixedLaminarFlame_);
 
         if(dictionary_manager(dictionary_name).CheckOption("@NumberOfCounterFlowFlame"))
-            dictionary_manager(dictionary_name).ReadInt("@NumberOfCounterFlowFlame", numberOfCounterFlowFlame);
+            dictionary_manager(dictionary_name).ReadInt("@NumberOfCounterFlowFlame", 
+														numberOfCounterFlowFlame_);
 
         // EPLR - Which reactions for Optimization of A, n, Ea
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_EPLR"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_EPLR", target_optimization_.list_of_target_EPLR);
-
-		numberOfParameters += target_optimization_.list_of_target_EPLR.size() * 3;
+			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_EPLR", list_of_target_EPLR_);
 		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_BathGases_EPLR"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_BathGases_EPLR", 
-															target_optimization_.list_of_bath_gases_EPLR);
+															list_of_bath_gases_EPLR_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfUncertaintyFactors_EPLR"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfUncertaintyFactors_EPLR", 
-															target_optimization_.list_of_uncertainty_factors_EPLR);
-		// EPLR - Which reactions for Optimization of A, n, Ea
+															list_of_uncertainty_factors_EPLR_);
+
+		numberOfParameters_ += list_of_target_EPLR_.size() * 3;
 		
 		// Extended PLOG - Which reactions for Optimization of A, n, Ea
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ExtPLOG_Reactions"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ExtPLOG_Reactions", 
-															target_optimization_.list_of_target_extplog);
-		
-		numberOfParameters += target_optimization_.list_of_target_extplog.size() * 3;
+															list_of_target_extplog_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfUncertaintyFactors_ExtPLOG"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfUncertaintyFactors_ExtPLOG", 
-															target_optimization_.list_of_uncertainty_factors_extplog);
+															list_of_uncertainty_factors_extplog_);
 
+		numberOfParameters_ += list_of_target_extplog_.size() * 3;
+		
 		// Extended PLOG - Which reactions and which Third Bodies to Optimize
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ExtPLOG_Reactions_TB"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ExtPLOG_Reactions_TB", 
-															target_optimization_.list_of_target_extended_plog_reactions);
+															list_of_target_extended_plog_reactions_);
 
-		numberOfParameters += target_optimization_.list_of_target_extended_plog_reactions.size();
+		numberOfParameters_ += list_of_target_extended_plog_reactions_.size();
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ExtPLOG_Species"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ExtPLOG_Species", 
-															target_optimization_.list_of_target_extended_plog_species);
+															list_of_target_extended_plog_species_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMin_TBeff_ExtPLOG"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMin_TBeff_ExtPLOG", 
-															target_optimization_.list_of_min_tb_extplog);
+															list_of_min_tb_extplog_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMax_TBeff_ExtPLOG"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMax_TBeff_ExtPLOG", 
-															target_optimization_.list_of_max_tb_extplog);
+															list_of_max_tb_extplog_);
 
 		// Direct reactions - specific parameters to be optimized	
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_lnA"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_lnA", target_optimization_.list_of_target_lnA);
+			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_lnA", list_of_target_lnA_);
 
-		numberOfParameters += target_optimization_.list_of_target_lnA.size();
+		numberOfParameters_ += list_of_target_lnA_.size();
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_Beta"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_Beta", target_optimization_.list_of_target_Beta);
+			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_Beta", list_of_target_Beta_);
 
-		numberOfParameters += target_optimization_.list_of_target_Beta.size();
+		numberOfParameters_ += list_of_target_Beta_.size();
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_E_over_R"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_E_over_R", target_optimization_.list_of_target_E_over_R);
+			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_E_over_R", list_of_target_E_over_R_);
 
-		numberOfParameters += target_optimization_.list_of_target_E_over_R.size();
+		numberOfParameters_ += list_of_target_E_over_R_.size();
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_lnA_inf"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_lnA_inf", target_optimization_.list_of_target_lnA_inf);
+			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_lnA_inf", list_of_target_lnA_inf_);
 
-		numberOfParameters += target_optimization_.list_of_target_lnA_inf.size();
+		numberOfParameters_ += list_of_target_lnA_inf_.size();
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_Beta_inf"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_Beta_inf", target_optimization_.list_of_target_Beta_inf);
+			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_Beta_inf", list_of_target_Beta_inf_);
 
-		numberOfParameters += target_optimization_.list_of_target_Beta_inf.size();
+		numberOfParameters_ += list_of_target_Beta_inf_.size();
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_E_over_R_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_E_over_R_inf", 
-															target_optimization_.list_of_target_E_over_R_inf);
+															list_of_target_E_over_R_inf_);
 
-		numberOfParameters += target_optimization_.list_of_target_E_over_R_inf.size();
+		numberOfParameters_ += list_of_target_E_over_R_inf_.size();
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ThirdBody_Reactions"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ThirdBody_Reactions", 
-															target_optimization_.list_of_target_thirdbody_reactions);
+															list_of_target_thirdbody_reactions_);
 
-		numberOfParameters += target_optimization_.list_of_target_thirdbody_reactions.size();
+		numberOfParameters_ += list_of_target_thirdbody_reactions_.size();
 		
 		// Classic PLOG - which
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_classic_PLOG_Reactions"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_classic_PLOG_Reactions", 
-															target_optimization_.list_of_target_classic_plog_reactions);
+															list_of_target_classic_plog_reactions_);
 
-		numberOfParameters += target_optimization_.list_of_target_classic_plog_reactions.size() * 3;
+		numberOfParameters_ += list_of_target_classic_plog_reactions_.size() * 3;
 
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfUncertaintyFactors_classic_PLOG"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfUncertaintyFactors_classic_PLOG", 
-															target_optimization_.list_of_uncertainty_factors_classic_plog);
+															list_of_uncertainty_factors_classic_plog_);
 
 		// List of third body species
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ThirdBody_Species"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ThirdBody_Species", 
-															target_optimization_.list_of_target_thirdbody_species);
-
-		// number_of_parameters = list_of_target_lnA.size() + list_of_target_Beta.size() + list_of_target_E_over_R.size() + 
-		//                        list_of_target_lnA_inf.size() + list_of_target_Beta_inf.size() + list_of_target_E_over_R_inf.size() + 
-		//                        list_of_target_thirdbody_reactions.size() + list_of_target_extended_plog_reactions.size() + list_of_target_extplog.size()*3 + 
-		//                        list_of_target_classic_plog_reactions.size()*3 +list_of_target_EPLR.size()*3;
+															list_of_target_thirdbody_species_);
 		
 		// List of target reactions for uncertainty factors
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTargetUncertaintyFactors"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTargetUncertaintyFactors", 
-															target_optimization_.list_of_target_uncertainty_factors);
+															list_of_target_uncertainty_factors_);
 	
 		// List of uncertainty factors
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfUncertaintyFactors"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfUncertaintyFactors", 
-															target_optimization_.list_of_uncertainty_factors);
+															list_of_uncertainty_factors_);
 	
 		// List of target inf reactions for uncertainty factors
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTargetUncertaintyFactors_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTargetUncertaintyFactors_inf", 
-															target_optimization_.list_of_target_uncertainty_factors_inf);
+															list_of_target_uncertainty_factors_inf_);
 	
 		// List of inf uncertainty factors
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfUncertaintyFactors_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfUncertaintyFactors_inf", 
-															target_optimization_.list_of_uncertainty_factors_inf);
+															list_of_uncertainty_factors_inf_);
 
         if(dictionary_manager(dictionary_name).CheckOption("@ReactionsClassesDefinitions"))
         {
@@ -205,8 +202,7 @@ namespace OptiSMOKE
         }
     }
 
-    void options_optimization_target::ReadReactionClassesDefinition(fs::path classes_definition)
-	{
+    void options_optimization_target::ReadReactionClassesDefinition(fs::path classes_definition){
 		// FA CAGARE VA RISCRITTA A TUONO
 		fs::ifstream fileHandler(classes_definition.c_str());
     	std::string line;
@@ -279,17 +275,17 @@ namespace OptiSMOKE
 		
     	for(int i = 0; i<NumberOfReactionClasses; i++)
 		{
-			target_optimization_.list_of_target_lnA.push_back(classes_structure_[i].list_of_target_reactions[0]);
-			target_optimization_.list_of_target_Beta.push_back(classes_structure_[i].list_of_target_reactions[0]);
-			target_optimization_.list_of_target_E_over_R.push_back(classes_structure_[i].list_of_target_reactions[0]);
-			target_optimization_.list_of_target_uncertainty_factors.push_back(classes_structure_[i].list_of_target_reactions[0]);
+			list_of_target_lnA_.push_back(classes_structure_[i].list_of_target_reactions[0]);
+			list_of_target_Beta_.push_back(classes_structure_[i].list_of_target_reactions[0]);
+			list_of_target_E_over_R_.push_back(classes_structure_[i].list_of_target_reactions[0]);
+			list_of_target_uncertainty_factors_.push_back(classes_structure_[i].list_of_target_reactions[0]);
         	
 		}
 		
 		// Da capire se sta roba ha senso
 		for(int i = 0; i<NumberOfReactionClasses; i++)
 		{
-			target_optimization_.list_of_uncertainty_factors.push_back(classes_structure_[i].list_of_uncertainty_factor[0]);
+			list_of_uncertainty_factors_.push_back(classes_structure_[i].list_of_uncertainty_factor[0]);
 		}
 
 		std::cout << "Reading the reaction classes definition in: " << classes_definition.c_str() << std::endl;

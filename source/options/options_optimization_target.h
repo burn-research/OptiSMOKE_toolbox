@@ -48,56 +48,46 @@ namespace OptiSMOKE
         void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
                                 std::string dictionary_name);
 
-        inline const int& number_of_batch_reactor() const {return numberOfBatchReactor;};
-        inline const int& number_of_plug_flow_reactor() const {return numberOfPlugFlowReactor;};
-        inline const int& number_of_perfectly_stirred_reactor() const {return numberOfPerfectlyStirredReactor;};
-        inline const int& number_of_premixed_laminar_flame_reactor() const {return numberOfPremixedLaminarFlame;};
-        inline const int& number_of_counter_flow_flame_reactor() const {return numberOfCounterFlowFlame;};
-        inline const int& number_of_parameters() const {return numberOfParameters;};
-        
-        struct reactions_
-        {
-            // EPLR
-	        std::vector<int> list_of_target_EPLR;
-	        std::vector<std::string> list_of_bath_gases_EPLR;
-	        std::vector<double> list_of_uncertainty_factors_EPLR;
+        inline const int& number_of_batch_reactor() const {return numberOfBatchReactor_;};
+        inline const int& number_of_plug_flow_reactor() const {return numberOfPlugFlowReactor_;};
+        inline const int& number_of_perfectly_stirred_reactor() const {return numberOfPerfectlyStirredReactor_;};
+        inline const int& number_of_premixed_laminar_flame_reactor() const {return numberOfPremixedLaminarFlame_;};
+        inline const int& number_of_counter_flow_flame_reactor() const {return numberOfCounterFlowFlame_;};
+        inline const int& number_of_parameters() const {return numberOfParameters_;};
+
+	    inline const std::vector<int>& list_of_target_EPLR() const {return list_of_target_EPLR_;};
+	    inline const std::vector<std::string>& list_of_bath_gases_EPLR() const {return list_of_bath_gases_EPLR_;};
+	    inline const std::vector<double>& list_of_uncertainty_factors_EPLR() const {return list_of_uncertainty_factors_EPLR_;};
             	
-            // Indices of extended plog for optimization
-	        std::vector<int> list_of_target_extplog;
-	        std::vector<double> list_of_uncertainty_factors_extplog;
+	    inline const std::vector<int>& list_of_target_extplog() const {return list_of_target_extplog_;};
+	    inline const std::vector<double>& list_of_uncertainty_factors_extplog() const {return list_of_uncertainty_factors_extplog_;};
 
-            std::vector<int> list_of_target_extended_plog_reactions;
-	        std::vector<std::string> list_of_target_extended_plog_species;
+        inline const std::vector<int>& list_of_target_extended_plog_reactions() const {return list_of_target_extended_plog_reactions_;};
+	    inline const std::vector<std::string>& list_of_target_extended_plog_species() const {return list_of_target_extended_plog_species_;};
             
-            // DIRECT REACTIONS
-	        std::vector<int> list_of_target_lnA;
-	        std::vector<int> list_of_target_Beta;
-	        std::vector<int> list_of_target_E_over_R;
+	    inline const std::vector<int>& list_of_target_lnA() const {return list_of_target_lnA_;};
+	    inline const std::vector<int>& list_of_target_Beta() const {return list_of_target_Beta_;};
+	    inline const std::vector<int>& list_of_target_E_over_R() const {return list_of_target_E_over_R_;};
 
-	        // INF REACTIONS
-	        std::vector<int> list_of_target_lnA_inf;
-	        std::vector<int> list_of_target_Beta_inf;
-	        std::vector<int> list_of_target_E_over_R_inf;
+	    inline const std::vector<int>& list_of_target_lnA_inf() const {return list_of_target_lnA_inf_;};
+	    inline const std::vector<int>& list_of_target_Beta_inf() const {return list_of_target_Beta_inf_;};
+	    inline const std::vector<int>& list_of_target_E_over_R_inf() const {return list_of_target_E_over_R_inf_;};
 
-	        // INF REACTIONS
-	        std::vector<int> list_of_target_thirdbody_reactions;
-	        std::vector<std::string> list_of_target_thirdbody_species;
+	    inline const std::vector<int>& list_of_target_thirdbody_reactions() const {return list_of_target_thirdbody_reactions_;};
+	    inline const std::vector<std::string>& list_of_target_thirdbody_species() const {return list_of_target_thirdbody_species_;};
 
-	        // PLOG -- AB
-	        std::vector<int> list_of_target_classic_plog_reactions;
-	        // AB // List of uncertainties for plogs
-	        std::vector<double> list_of_uncertainty_factors_classic_plog;
+	    inline const std::vector<int>& list_of_target_classic_plog_reactions() const {return list_of_target_classic_plog_reactions_;};
+	    inline const std::vector<double>& list_of_uncertainty_factors_classic_plog() const {return list_of_uncertainty_factors_classic_plog_;};
 
-            std::vector<double> list_of_min_tb_extplog;
-            std::vector<double> list_of_max_tb_extplog;
+        inline const std::vector<double>& list_of_min_tb_extplog() const {return list_of_min_tb_extplog_;};
+        inline const std::vector<double>& list_of_max_tb_extplog() const {return list_of_max_tb_extplog_;};
             
-            std::vector<int> list_of_target_uncertainty_factors;
-	        std::vector<double> list_of_uncertainty_factors;
+        inline const std::vector<int>& list_of_target_uncertainty_factors() const {return list_of_target_uncertainty_factors_;};
+	    inline const std::vector<double>& list_of_uncertainty_factors() const {return list_of_uncertainty_factors_;};
 
-	        std::vector<int> list_of_target_uncertainty_factors_inf;
-	        std::vector<double> list_of_uncertainty_factors_inf;
-        };
-
+	    inline const std::vector<int>& list_of_target_uncertainty_factors_inf() const {return list_of_target_uncertainty_factors_inf_;};
+	    inline const std::vector<double>& list_of_uncertainty_factors_inf() const {return list_of_uncertainty_factors_inf_;};
+        
         // PENSIAMO ALLA CLASSE PIÙ GENERICA DELLA TERRA DOVREI
         // USARE LA STRUTTURA DI SOPRA ALLO STESSO MODO NO? 
         struct reactions_classes_
@@ -106,9 +96,6 @@ namespace OptiSMOKE
             std::vector<int> list_of_target_reactions;
             std::vector<double> list_of_uncertainty_factor;
         };
-        
-        inline const reactions_& optimization_target() const {return target_optimization_;};
-        inline const std::vector<reactions_classes_>& classes_structure() const {return classes_structure_;};
     
     private:
 
@@ -116,12 +103,12 @@ namespace OptiSMOKE
 
         void ReadReactionClassesDefinition(fs::path reaction_classes);
 
-        int numberOfBatchReactor;
-        int numberOfPlugFlowReactor;
-        int numberOfPerfectlyStirredReactor;
-        int numberOfPremixedLaminarFlame;
-        int numberOfCounterFlowFlame;
-        int numberOfParameters;
+        int numberOfBatchReactor_;
+        int numberOfPlugFlowReactor_;
+        int numberOfPerfectlyStirredReactor_;
+        int numberOfPremixedLaminarFlame_;
+        int numberOfCounterFlowFlame_;
+        int numberOfParameters_;
 
         bool iReactionClasses; // Per ora uno non deve sbagliare ma sarebbe meglio mettere un check
                                // nel senso che in teoria è vero che uno puo ottimizzare sia classi 
@@ -129,7 +116,46 @@ namespace OptiSMOKE
 
         fs::path reactions_classes_definition_;
         std::vector<reactions_classes_> classes_structure_;
-        reactions_ target_optimization_;
+
+        // EPLR
+	    std::vector<int> list_of_target_EPLR_;
+	    std::vector<std::string> list_of_bath_gases_EPLR_;
+	    std::vector<double> list_of_uncertainty_factors_EPLR_;
+            	
+        // Indices of extended plog for optimization
+	    std::vector<int> list_of_target_extplog_;
+	    std::vector<double> list_of_uncertainty_factors_extplog_;
+
+        std::vector<int> list_of_target_extended_plog_reactions_;
+	    std::vector<std::string> list_of_target_extended_plog_species_;
+            
+        // DIRECT REACTIONS
+	    std::vector<int> list_of_target_lnA_;
+	    std::vector<int> list_of_target_Beta_;
+	    std::vector<int> list_of_target_E_over_R_;
+
+	    // INF REACTIONS
+	    std::vector<int> list_of_target_lnA_inf_;
+	    std::vector<int> list_of_target_Beta_inf_;
+	    std::vector<int> list_of_target_E_over_R_inf_;
+
+	    // INF REACTIONS
+	    std::vector<int> list_of_target_thirdbody_reactions_;
+	    std::vector<std::string> list_of_target_thirdbody_species_;
+
+	    // PLOG -- AB
+	    std::vector<int> list_of_target_classic_plog_reactions_;
+	    // List of uncertainties for PLOGS -- AB
+	    std::vector<double> list_of_uncertainty_factors_classic_plog_;
+
+        std::vector<double> list_of_min_tb_extplog_;
+        std::vector<double> list_of_max_tb_extplog_;
+            
+        std::vector<int> list_of_target_uncertainty_factors_;
+	    std::vector<double> list_of_uncertainty_factors_;
+
+	    std::vector<int> list_of_target_uncertainty_factors_inf_;
+	    std::vector<double> list_of_uncertainty_factors_inf_;
     };
     
 } // namespace OptiSMOKE

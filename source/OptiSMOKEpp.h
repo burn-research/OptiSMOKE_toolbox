@@ -55,6 +55,7 @@
 // Boost Library
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 namespace fs = boost::filesystem;
 namespace po = boost::program_options;
@@ -68,14 +69,13 @@ namespace po = boost::program_options;
 #include "LibraryEnvironment.hpp"
 #include "DakotaModel.hpp"
 #include "DakotaInterface.hpp"
+#include "PluginSerialDirectApplicInterface.hpp"
 
 // Header files
 #include "utilities/OptiSMOKEUtilities"
 #include "grammar/grammar.h"
 #include "options/options.h"
 #include "InputManager.h"
-
-//#include "Dakota_Plugin.h"
 
 #ifdef HAVE_AMPL 
 // Floating-point initialization from AMPL: switch to 53-bit rounding
@@ -91,4 +91,4 @@ extern "C" void fpinit_ASL();
 /// Run a Dakota LibraryEnvironment, mode 1: parsing an input file
 void run_dakota_parse(const char* plugin_input_file);
 
-void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env,const char* plugin_input_file);
+void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env); //,const char* plugin_input_file);

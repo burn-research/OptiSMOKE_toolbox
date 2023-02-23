@@ -35,8 +35,7 @@
 
 #include "OptiSMOKEpp.h"
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]){
 
     #ifdef HAVE_AMPL
     // Switch to 53-bit rounding if appropriate, to eliminate some
@@ -54,14 +53,13 @@ int main(int argc, char* argv[])
     if (parallel)
         MPI_Init(&argc, &argv); // initialize MPI
     #endif // DAKOTA_HAVE_MPI
-
-    // Allow MPI to extract its command line arguments first in detect above,
-    // then detect "-mixed" and dakota_input_file
-    OptiSMOKE::OptiSMOKE_logo("OptiSMOKE++", "M. Furst, A. Bertolino, T. Dinelli");
     
-    bool mixed_input = false;
+    // Allow MPI to extract its command line arguments 
+    // first in detect above, then detect "-mixed" and
+    // dakota_input_file this is bypassed 
     const char *plugin_input_file = NULL;
-    plugin_input_file = argv[1];
+
+    OptiSMOKE::OptiSMOKE_logo("OptiSMOKE++", "M. Furst, A. Bertolino, T. Dinelli");
 
     // Reading OptiSMOKE Input file
     OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
@@ -69,6 +67,7 @@ int main(int argc, char* argv[])
 
     input.SetInputOptions(argc, argv);
     input.ReadDictionary();
+    plugin_input_file = input.dakota_input_string().c_str(); // TODO check char string stuff
 
     run_dakota_parse(plugin_input_file); // mode 1: parse
 
@@ -84,51 +83,40 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void run_dakota_parse(const char* plugin_input_file)
-{
+void run_dakota_parse(const char* plugin_input_file){
 
-    // Parse input and construct Dakota LibraryEnvironment, performing
-    // input data checks
+    // Parse input and construct Dakota LibraryEnvironment, 
+    // performing input data checks
     Dakota::ProgramOptions opts;
-    // opts.input_string(ObjectInput1.dakota_options_string);
+    opts.input_string(plugin_input_file);
 
     // Defaults constructs the MPIManager, which assumes COMM_WORLD
-    
     Dakota::LibraryEnvironment env(opts);
 
-    if (env.mpi_manager().world_rank() == 0){
+    if (env.mpi_manager().world_rank() == 0)
         Cout << "Library mode 1: run_dakota_parse()\n";
-    }
     
     // plug the client's interface (function evaluator) into the Dakota
     // environment; in serial case, demonstrate the simpler plugin method
-    /*if (env.mpi_manager().mpirun_flag())
-    parallel_interface_plugin(env);
-    else */
-    //opensmoke_interface_plugin(env,plugin_input_file);
+    if (env.mpi_manager().mpirun_flag())
+        // parallel_interface_plugin(env);
+        OptiSMOKE::ErrorMessage("run_dakota_parse", "Parallel interface not implemented yet!");
+    else
+        opensmoke_interface_plugin(env);//, plugin_input_file);
 
     // Execute the environment
-    //env.execute();
-
+    env.execute();
 }
 
-/*
-void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env,const char* plugin_input_file)//const char opensmoke_input_file)
-{
+
+void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env){
     std::string model_type(""); // demo: empty string will match any model type
     std::string interf_type("direct");
-    std::string an_driver("plugin_opensmoke");
+    std::string an_driver("optismoke_plugin");
         
     Dakota::ProblemDescDB& problem_db = env.problem_description_db();
-        
-    // here it actually uses the DirectApplicInterface
+    Dakota::Interface* serial_iface = new SIM::SerialDirectApplicInterface(problem_db);
     
-    // This is the old way of instace connection with Dakota
-    // Dakota::Interface* serial_iface = new SIM::OpenSMOKEDirectApplicInterface(problem_db,plugin_input_file);
-    
-    // This is the new way with the shared pointer
-    std::shared_ptr<Dakota::Interface> serial_iface =  
-        std::make_shared<SIM::OpenSMOKEDirectApplicInterface>(problem_db, plugin_input_file);
     bool plugged_in = env.plugin_interface(model_type, interf_type, an_driver, serial_iface);
         
     if (!plugged_in) {
@@ -137,4 +125,4 @@ void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env,const char* plug
         << "selected analysis_driver." << std::endl;
         Dakota::abort_handler(-1);
     }
-}*/
+}

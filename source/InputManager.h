@@ -134,6 +134,24 @@ namespace OptiSMOKE{
         void InitialParameters();
         void ComputeBoundaries();
 
+        // Boundaries variables
+        std::vector<std::string> list_of_min_abs_lnA_;
+	    std::vector<std::string> list_of_max_abs_lnA_;
+        
+        std::vector<std::string> list_of_min_abs_Beta_;
+	    std::vector<std::string> list_of_max_abs_Beta_;
+
+        std::vector<std::string> list_of_min_abs_E_over_R_;
+	    std::vector<std::string> list_of_max_abs_E_over_R_;
+
+        std::vector<std::string> list_of_min_abs_lnA_inf_;
+	    std::vector<std::string> list_of_max_abs_lnA_inf_;
+
+        std::vector<std::string> list_of_min_abs_Beta_inf_;
+	    std::vector<std::string> list_of_max_abs_Beta_inf_;
+
+        std::vector<std::string> list_of_min_abs_E_over_R_inf_;
+	    std::vector<std::string> list_of_max_abs_E_over_R_inf_;
     };
 } // namespace OptiSMOKE
 
