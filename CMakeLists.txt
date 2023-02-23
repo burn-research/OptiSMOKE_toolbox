@@ -30,7 +30,7 @@ message (STATUS "Compiling in mode: ${CMAKE_BUILD_TYPE}")
 message (STATUS "OptiSMOKE++ source: ${PROJECT_SOURCE_DIR}")
 
 # --- Boost (Compulsory)
-find_package (Boost REQUIRED COMPONENTS date_time filesystem program_options system regex timer chrono)
+find_package (Boost REQUIRED COMPONENTS date_time filesystem program_options system regex timer chrono serialization)
 message (STATUS "Boost include directory: ${Boost_INCLUDE_DIRS}")
 message (STATUS "Boost libraries: ${Boost_LIBRARIES}")
 
