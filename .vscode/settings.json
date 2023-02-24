@@ -108,6 +108,7 @@
     "cmake.configureArgs": [
         "-DCMAKE_C_COMPILER=/opt/homebrew/bin/gcc-12",
         "-DCMAKE_CXX_COMPILER=/opt/homebrew/bin/g++-12",
+        "-DCMAKE_INSTALL_PREFIX=/Users/tdinelli/Documents/GitHub/OptiSMOKE_toolbox/test",
         "-DBLAS_VERBOSE=OFF",
         "-DBLAS_DIR=$env{BLAS_ROOT}/include",
         "-DBLAS_LIBDIR=$env{BLAS_ROOT}/lib",

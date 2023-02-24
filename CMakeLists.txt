@@ -236,7 +236,7 @@ add_executable (OptiSMOKEpp.sh source/OptiSMOKEpp.cpp)
 # Installing options
 #--------------------------------------------------------------------
 
-# install(TARGETS OpenSMOKEpp_LicenseGenerator.sh DESTINATION ${INSTALL_BIN_DIR})
+install(TARGETS OptiSMOKEpp.sh DESTINATION ${INSTALL_BIN_DIR})
 
 #--------------------------------------------------------------------
 # Testing options
