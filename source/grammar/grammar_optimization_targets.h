@@ -233,6 +233,22 @@ namespace OptiSMOKE
                 "@ListOfTarget_ThirdBody_Reactions",
                 "none"));
 
+	        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMaxAbs_ThirdBody_Eff",
+		        OpenSMOKE::VECTOR_STRING,
+		        "List of maximum values for the third body efficiencies",
+		        false,
+                "none",
+                "@ListOfTarget_ThirdBody_Reactions",
+                "none"));
+            
+            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMinAbs_ThirdBody_Eff",
+		        OpenSMOKE::VECTOR_STRING,
+		        "List of minimum values for the third body efficiencies",
+		        false,
+                "none",
+                "@ListOfTarget_ThirdBody_Reactions",
+                "none"));
+
             // Extended PLOG reactions for THIRD BODY ESTIMATION
 	        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfTarget_ExtPLOG_Reactions_TB",
 		        OpenSMOKE::VECTOR_INT,

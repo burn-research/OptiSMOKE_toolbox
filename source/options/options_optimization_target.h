@@ -88,6 +88,30 @@ namespace OptiSMOKE
 	    inline const std::vector<int>& list_of_target_uncertainty_factors_inf() const {return list_of_target_uncertainty_factors_inf_;};
 	    inline const std::vector<double>& list_of_uncertainty_factors_inf() const {return list_of_uncertainty_factors_inf_;};
         
+        inline const std::vector<double>& list_of_min_rel_lnA() const {return list_of_min_rel_lnA_;};
+	    inline const std::vector<double>& list_of_max_rel_lnA() const {return list_of_max_rel_lnA_;};
+
+        inline const std::vector<double>& list_of_min_rel_Beta() const {return list_of_min_rel_Beta_;};
+	    inline const std::vector<double>& list_of_max_rel_Beta() const {return list_of_max_rel_Beta_;};
+
+        inline const std::vector<double>& list_of_min_rel_E_over_R() const {return list_of_min_rel_E_over_R_;};
+	    inline const std::vector<double>& list_of_max_rel_E_over_R() const {return list_of_max_rel_E_over_R_;};
+
+        inline const std::vector<double>& list_of_min_rel_lnA_inf() const {return list_of_min_rel_lnA_inf_;};
+	    inline const std::vector<double>& list_of_max_rel_lnA_inf() const {return list_of_max_rel_lnA_inf_;};
+
+        inline const std::vector<double>& list_of_min_rel_Beta_inf() const {return list_of_min_rel_Beta_inf_;};
+	    inline const std::vector<double>& list_of_max_rel_Beta_inf() const {return list_of_max_rel_Beta_inf_;};
+
+        inline const std::vector<double>& list_of_min_rel_E_over_R_inf() const {return list_of_min_rel_E_over_R_inf_;};
+	    inline const std::vector<double>& list_of_max_rel_E_over_R_inf() const {return list_of_max_rel_E_over_R_inf_;};
+
+        inline const std::vector<double>& list_of_min_rel_thirdbody_eff() const {return list_of_min_rel_thirdbody_eff_;};
+	    inline const std::vector<double>& list_of_max_rel_thirdbody_eff() const {return list_of_max_rel_thirdbody_eff_;};
+
+        inline const std::vector<std::string>& list_of_min_abs_thirdbody_eff() const {return list_of_min_abs_thirdbody_eff_;};
+	    inline const std::vector<std::string>& list_of_max_abs_thirdbody_eff() const {return list_of_max_abs_thirdbody_eff_;};
+        
         // PENSIAMO ALLA CLASSE PIÙ GENERICA DELLA TERRA DOVREI
         // USARE LA STRUTTURA DI SOPRA ALLO STESSO MODO NO? 
         struct reactions_classes_
@@ -156,6 +180,50 @@ namespace OptiSMOKE
 
 	    std::vector<int> list_of_target_uncertainty_factors_inf_;
 	    std::vector<double> list_of_uncertainty_factors_inf_;
+
+        std::vector<double> list_of_min_rel_lnA_;
+	    std::vector<double> list_of_max_rel_lnA_;
+
+        std::vector<double> list_of_min_rel_Beta_;
+	    std::vector<double> list_of_max_rel_Beta_;
+
+        std::vector<double> list_of_min_rel_E_over_R_;
+	    std::vector<double> list_of_max_rel_E_over_R_;
+
+        std::vector<double> list_of_min_rel_lnA_inf_;
+	    std::vector<double> list_of_max_rel_lnA_inf_;
+
+        std::vector<double> list_of_min_rel_Beta_inf_;
+	    std::vector<double> list_of_max_rel_Beta_inf_;
+
+        std::vector<double> list_of_min_rel_E_over_R_inf_;
+	    std::vector<double> list_of_max_rel_E_over_R_inf_;
+
+        std::vector<double> list_of_min_rel_thirdbody_eff_;
+	    std::vector<double> list_of_max_rel_thirdbody_eff_;
+
+        std::vector<std::string> list_of_min_abs_lnA_;
+	    std::vector<std::string> list_of_max_abs_lnA_;
+
+        std::vector<std::string> list_of_min_abs_Beta_;
+	    std::vector<std::string> list_of_max_abs_Beta_;
+
+        std::vector<std::string> list_of_min_abs_E_over_R_;
+	    std::vector<std::string> list_of_max_abs_E_over_R_;
+
+        std::vector<std::string> list_of_min_abs_lnA_inf_;
+	    std::vector<std::string> list_of_max_abs_lnA_inf_;
+
+        std::vector<std::string> list_of_min_abs_Beta_inf_;
+	    std::vector<std::string> list_of_max_abs_Beta_inf_;
+
+        std::vector<std::string> list_of_min_abs_E_over_R_inf_;
+	    std::vector<std::string> list_of_max_abs_E_over_R_inf_;
+
+        std::vector<std::string> list_of_min_abs_thirdbody_eff_;
+	    std::vector<std::string> list_of_max_abs_thirdbody_eff_;
+
+
     };
     
 } // namespace OptiSMOKE

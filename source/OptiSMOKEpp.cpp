@@ -67,8 +67,9 @@ int main(int argc, char* argv[]){
 
     input.SetInputOptions(argc, argv);
     input.ReadDictionary();
+    input.DakotaInputString();
     plugin_input_file = input.dakota_input_string().c_str(); // TODO check char string stuff
-
+    
     run_dakota_parse(plugin_input_file); // mode 1: parse
 
     // Note: Dakota objects created in above function calls need to go

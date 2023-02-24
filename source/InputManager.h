@@ -57,6 +57,9 @@ namespace OptiSMOKE{
         // Da privatizzare
         void DakotaInputString();
 
+        // Da privatizzare
+        void DakotaInputPreliminaryOptions();
+
         // Public access variables
         inline const OptiSMOKE::options_kinetics& kinetics_data() const {return kinetics_data_;};
         inline const OptiSMOKE::options_optimization_target& optimization_target() const {return optimization_target_;};
@@ -130,8 +133,11 @@ namespace OptiSMOKE{
 
         // Functions
         void ReadMainDictionary();
+
         void CreateMaps();
-        void InitialParameters();
+        
+        void FromTargetToInitialParameter();
+        
         void ComputeBoundaries();
 
         // Boundaries variables
@@ -152,6 +158,59 @@ namespace OptiSMOKE{
 
         std::vector<std::string> list_of_min_abs_E_over_R_inf_;
 	    std::vector<std::string> list_of_max_abs_E_over_R_inf_;
+
+        // EPLR
+    	std::vector<std::string> list_of_nominal_lnA_EPLR_;
+	    std::vector<std::string> list_of_min_lnA_EPLR_;
+	    std::vector<std::string> list_of_max_lnA_EPLR_;
+	
+	    std::vector<std::string> list_of_nominal_ER_EPLR_;
+	    std::vector<std::string> list_of_min_ER_EPLR_;
+	    std::vector<std::string> list_of_max_ER_EPLR_;
+	 
+	    std::vector<std::string> list_of_nominal_Beta_EPLR_;
+	    std::vector<std::string> list_of_min_Beta_EPLR_;
+	    std::vector<std::string> list_of_max_Beta_EPLR_;
+
+        std::vector<std::string> list_of_nominal_lnA_ext_plog_coefficients_;
+	    std::vector<std::string> list_of_min_lnA_ext_plog_coefficients_;
+	    std::vector<std::string> list_of_max_lnA_ext_plog_coefficients_;
+	
+	    std::vector<std::string> list_of_nominal_ER_ext_plog_coefficients_;
+	    std::vector<std::string> list_of_min_ER_ext_plog_coefficients_;
+	    std::vector<std::string> list_of_max_ER_ext_plog_coefficients_;
+	
+	    std::vector<std::string> list_of_nominal_Beta_ext_plog_coefficients_;
+	    std::vector<std::string> list_of_min_Beta_ext_plog_coefficients_;
+	    std::vector<std::string> list_of_max_Beta_ext_plog_coefficients_;
+
+        std::vector<std::string> list_of_nominal_lnA_classic_plog_coefficients_;
+	    std::vector<std::string> list_of_min_lnA_classic_plog_coefficients_;
+	    std::vector<std::string> list_of_max_lnA_classic_plog_coefficients_;
+
+	    std::vector<std::string> list_of_nominal_ER_classic_plog_coefficients_;
+	    std::vector<std::string> list_of_min_ER_classic_plog_coefficients_;
+	    std::vector<std::string> list_of_max_ER_classic_plog_coefficients_;
+
+    	std::vector<std::string> list_of_nominal_Beta_classic_plog_coefficients_;
+	    std::vector<std::string> list_of_min_Beta_classic_plog_coefficients_;
+	    std::vector<std::string> list_of_max_Beta_classic_plog_coefficients_;
+
+        // String needed by dakota in order to generate the input string
+        std::string param_name_string_;
+		std::string initial_values_string_;
+		std::string lower_bounds_string_;
+		std::string upper_bounds_string_;
+		std::string std_deviations_string_;
+
+        // Initial Parameters string
+        std::vector<std::string> list_of_initial_lnA_;
+        std::vector<std::string> list_of_initial_Beta_;
+        std::vector<std::string> list_of_initial_E_over_R;
+        std::vector<std::string> list_of_initial_lnA_inf_;
+        std::vector<std::string> list_of_initial_Beta_inf_;
+        std::vector<std::string> list_of_initial_E_over_R_inf_;
+        std::vector<std::string> list_of_initial_thirdbody_eff_;
     };
 } // namespace OptiSMOKE
 

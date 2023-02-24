@@ -191,8 +191,69 @@ namespace OptiSMOKE
 			dictionary_manager(dictionary_name).ReadOption("@ListOfUncertaintyFactors_inf", 
 															list_of_uncertainty_factors_inf_);
 
-        if(dictionary_manager(dictionary_name).CheckOption("@ReactionsClassesDefinitions"))
-        {
+		// List of relative maximum parameters
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_lnA"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_lnA", list_of_max_rel_lnA_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_Beta"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_Beta", list_of_max_rel_Beta_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_E_over_R"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_E_over_R", list_of_max_rel_E_over_R_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_lnA_inf"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_lnA_inf", list_of_max_rel_lnA_inf_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_Beta_inf"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_Beta_inf", list_of_max_rel_Beta_inf_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_E_over_R_inf"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_E_over_R_inf", list_of_max_rel_E_over_R_inf_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_ThirdBody_Eff"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_ThirdBody_Eff", list_of_max_rel_thirdbody_eff_);
+	
+		// List of relative minimum parameters
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_lnA"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_lnA", list_of_min_rel_lnA_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_Beta"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_Beta", list_of_min_rel_Beta_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_E_over_R"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_E_over_R", list_of_min_rel_E_over_R_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_lnA_inf"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_lnA_inf", list_of_min_rel_lnA_inf_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_Beta_inf"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_Beta_inf", list_of_min_rel_Beta_inf_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_E_over_R_inf"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_E_over_R_inf", list_of_min_rel_E_over_R_inf_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_ThirdBody_Eff"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_ThirdBody_Eff", list_of_min_rel_thirdbody_eff_);
+        
+		// List of absolute maximum parameters
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_lnA"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_lnA", list_of_max_abs_lnA_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_Beta"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_Beta", list_of_max_abs_Beta_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_E_over_R"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_E_over_R", list_of_max_abs_E_over_R_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_lnA_inf"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_lnA_inf", list_of_max_abs_lnA_inf_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_Beta_inf"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_Beta_inf", list_of_max_abs_Beta_inf_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_E_over_R_inf"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_E_over_R_inf", list_of_max_abs_E_over_R_inf_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_ThirdBody_Eff"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_ThirdBody_Eff", list_of_max_abs_thirdbody_eff_);
+	
+		// List of absolute minimum parameters
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinAbs_Beta"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinAbs_Beta", list_of_min_abs_Beta_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinAbs_E_over_R"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinAbs_E_over_R", list_of_min_abs_E_over_R_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinAbs_lnA_inf"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinAbs_lnA_inf", list_of_min_abs_lnA_inf_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinAbs_Beta_inf"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinAbs_Beta_inf", list_of_min_abs_Beta_inf_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinAbs_E_over_R_inf"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinAbs_E_over_R_inf", list_of_min_abs_E_over_R_inf_);
+		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinAbs_ThirdBody_Eff"))
+			dictionary_manager(dictionary_name).ReadOption("@ListOfMinAbs_ThirdBody_Eff", list_of_min_abs_thirdbody_eff_);
+
+		if(dictionary_manager(dictionary_name).CheckOption("@ReactionsClassesDefinitions")){
             dictionary_manager(dictionary_name).ReadPath("@ReactionsClassesDefinitions", reactions_classes_definition_);
 			if(!fs::exists(reactions_classes_definition_))
 			{
