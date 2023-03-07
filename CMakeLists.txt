@@ -15,6 +15,7 @@ set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} $ENV{EIGEN_LIBRARY_PATH}/cmake)
 set (CMAKE_COLOR_MAKEFILE ON)
 set (VERSION "3.0.0-Beta")
 set (INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Installation directory for executables")
+set (MACOSX_DEPLOYMENT_TARGET 12.6)
 
 if( NOT CMAKE_BUILD_TYPE)
   set (CMAKE_BUILD_TYPE Release)
@@ -56,7 +57,13 @@ if (OPTISMOKE_USE_CEQ)
 endif()
 
 # --- Dakota (Compulsory)
-find_package(Dakota REQUIRED PATHS $ENV{Dakota_ROOT})
+find_package(Dakota REQUIRED PATHS $ENV{Dakota_ROOT} COMPONENTS dakota_surrogates dakota_util dakota_src dakota_src_fortran nidr 
+  teuchosremainder teuchosnumerics teuchoscomm teuchosparameterlist teuchosparser
+  teuchoscore pecos_util pecos_src lhs lhs_mods lhs_mod dfftpack sparsegrid
+  surfpack surfpack surfpack_fortran utilib colin interfaces scolib 3po
+  pebbl tinyxml approxnn conmin ddace dream fsudace hopspack jega jega_fe
+  moga soga eutils utilities ncsuopt cport nomad optpp psuade amplsolver)
+  
 message(STATUS "Dakota include:   ${Dakota_INCLUDE_DIRS}")
 message(STATUS "Dakota libraries: ${Dakota_LIBRARIES}")
 message(STATUS "Dakota binaries:  ${Dakota_EXECUTABLE}")
