@@ -86,7 +86,8 @@ void run_dakota_parse(const char* plugin_input_file){
     // performing input data checks
     Dakota::ProgramOptions opts;
     opts.input_string(plugin_input_file);
-
+    opts.echo_input(false);
+    
     // Defaults constructs the MPIManager, which assumes COMM_WORLD
     Dakota::LibraryEnvironment env(opts);
 

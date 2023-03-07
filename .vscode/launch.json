@@ -5,7 +5,21 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug",
+            "name": "Debug-UfficioTito",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/OptiSMOKEpp.sh",
+            "args": ["--input", "input.dic"],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/test",
+            "environment": [
+                {"name": "DYLD_LIBRARY_PATH", "value": "/Users/tdinelli/NumericalLibraries/boost/boost-1.79-gcc-12/lib:/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17-gcc-12/lib"}
+            ],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        },
+        {
+            "name": "Debug-MacTito",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/OptiSMOKEpp.sh",

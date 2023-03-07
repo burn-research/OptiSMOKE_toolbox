@@ -178,17 +178,17 @@ namespace OptiSMOKE{
 		ComputeBoundaries();
 		DakotaInputPreliminaryOptions();
 		
-		dakota_input_string_ = " environment,\n"
-		                       " 	tabular_data\n";
-		dakota_input_string_.append(" 	tabular_data_file '" + dakota_options_.tabular_data_file() + "'");
+		dakota_input_string_ = " environment,"
+		                       "\n      tabular_data";
+		dakota_input_string_.append("\n 		tabular_data_file '" + dakota_options_.tabular_data_file() + "'");
 		
         dakota_input_string_.append("\n	method,"); 
 		dakota_input_string_.append("\n 		" + dakota_options_.method());
 		dakota_input_string_.append("\n		  max_iterations = " + dakota_options_.max_iterations());
-		dakota_input_string_.append("\n 		  max_function_evaluations = " + dakota_options_.max_function_evaluations());
+		dakota_input_string_.append("\n		  max_function_evaluations = " + dakota_options_.max_function_evaluations());
         dakota_input_string_.append("\n		  convergence_tolerance = " + dakota_options_.convergence_tolerance());
-		dakota_input_string_.append("\n 		  solution_target = " + dakota_options_.solution_target());
-		dakota_input_string_.append("\n 		  seed = " + dakota_options_.seed());
+		dakota_input_string_.append("\n 	  solution_target = " + dakota_options_.solution_target());
+		dakota_input_string_.append("\n       seed = " + dakota_options_.seed());
 
 		if(dakota_options_.iDiverseInput()){
 		    dakota_input_string_.append("\n");
@@ -198,7 +198,7 @@ namespace OptiSMOKE{
 			}
 		} 
         else if(dakota_options_.method() == "coliny_ea"){
-		  	dakota_input_string_.append("\n 		  population_size = " + dakota_options_.population_size());
+		  	dakota_input_string_.append("\n 	  population_size = " + dakota_options_.population_size());
 			dakota_input_string_.append("\n		  fitness_type " + dakota_options_.fitness_type());
 			dakota_input_string_.append("\n		  mutation_type " + dakota_options_.mutation_type());
 			dakota_input_string_.append("\n		  mutation_rate " + dakota_options_.mutation_rate());
@@ -212,7 +212,7 @@ namespace OptiSMOKE{
 			dakota_input_string_.append("\n                 min_boxsize_limit " + dakota_options_.min_boxsize_limit());
 		}
         else{
-            OptiSMOKE::FatalErrorMessage("Available implemented methods are coliny_ea | coliny_direct");
+            OptiSMOKE::FatalErrorMessage("Available methods currently implemented are coliny_ea | coliny_direct");
         }
 			
         dakota_input_string_.append("\n	variables,");
