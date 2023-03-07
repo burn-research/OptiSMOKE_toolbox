@@ -11,7 +11,7 @@ build/
 # Files and Folders from autoconf
 autom4te.cache/
 aclocal.m4
-compile
+projects/OS-X/compile
 config.log
 config.status
 configure
