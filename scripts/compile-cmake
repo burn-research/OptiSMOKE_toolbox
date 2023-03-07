@@ -1,0 +1,9 @@
+export CC=/opt/homebrew/bin/gcc-12
+export CXX=/opt/homebrew/bin/g++-12
+export CUSTOM_INSTALL=/Users/tdinelli/Documents/GitHub/OptiSMOKE_toolbox/test
+
+cd ..
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=$CUSTOM_INSTALL ..
+make
