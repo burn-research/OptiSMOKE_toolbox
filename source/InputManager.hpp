@@ -334,8 +334,6 @@ namespace OptiSMOKE{
 		    int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_thirdbody_species()[i]);
 			list_of_initial_thirdbody_eff_.push_back(boost::lexical_cast<std::string>(kineticsMapXML_->ThirdBody(optimization_target_.list_of_target_thirdbody_reactions()[i]-1, iSpecies-1)));
 		}
-
-
     }     
 
     void InputManager::ComputeBoundaries(){

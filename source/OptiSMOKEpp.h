@@ -69,13 +69,16 @@ namespace po = boost::program_options;
 #include "LibraryEnvironment.hpp"
 #include "DakotaModel.hpp"
 #include "DakotaInterface.hpp"
-#include "PluginSerialDirectApplicInterface.hpp"
+#include "DakotaResponse.hpp"
+#include "ParamResponsePair.hpp"
+#include "DirectApplicInterface.hpp"
 
 // Header files
 #include "utilities/OptiSMOKEUtilities"
 #include "grammar/grammar.h"
 #include "options/options.h"
 #include "InputManager.h"
+#include "SerialDakotaInterface.h"
 
 #ifdef HAVE_AMPL 
 // Floating-point initialization from AMPL: switch to 53-bit rounding
@@ -88,7 +91,11 @@ extern "C" void fpinit_ASL();
 #endif // not DAKOTA_HAVE_MPI
 
 
-/// Run a Dakota LibraryEnvironment, mode 1: parsing an input file
+// Run a Dakota LibraryEnvironment, mode 1: parsing an input file
 void run_dakota_parse(const char* plugin_input_file);
 
 void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env); //,const char* plugin_input_file);
+
+// Maybe it is better to use raw?
+OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
+OptiSMOKE::InputManager* input = new OptiSMOKE::InputManager(dictionaries);

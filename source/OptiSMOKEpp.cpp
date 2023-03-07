@@ -61,14 +61,10 @@ int main(int argc, char* argv[]){
 
     OptiSMOKE::OptiSMOKE_logo("OptiSMOKE++", "M. Furst, A. Bertolino, T. Dinelli");
 
-    // Reading OptiSMOKE Input file
-    OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
-    OptiSMOKE::InputManager input(dictionaries);
-
-    input.SetInputOptions(argc, argv);
-    input.ReadDictionary();
-    input.DakotaInputString();
-    plugin_input_file = input.dakota_input_string().c_str(); // TODO check char string stuff
+    input->SetInputOptions(argc, argv);
+    input->ReadDictionary();
+    input->DakotaInputString();
+    plugin_input_file = input->dakota_input_string().c_str(); // TODO check char string stuff
     
     run_dakota_parse(plugin_input_file); // mode 1: parse
 
@@ -113,15 +109,18 @@ void run_dakota_parse(const char* plugin_input_file){
 void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env){
     std::string model_type(""); // demo: empty string will match any model type
     std::string interf_type("direct");
-    std::string an_driver("optismoke_plugin");
-        
+    std::string an_driver("opensmoke_plugin");
     Dakota::ProblemDescDB& problem_db = env.problem_description_db();
-    Dakota::Interface* serial_iface = new SIM::SerialDirectApplicInterface(problem_db);
+    
+    // Dakota::Interface* serial_iface = new SIM::SerialDakotaInterface(problem_db, input);
+    // bool plugged_in = env.plugin_interface(model_type, interf_type, an_driver, serial_iface);
+    std::shared_ptr<Dakota::Interface> serial_iface = 
+        std::make_shared<SIM::SerialDakotaInterface>(problem_db, input);
     
     bool plugged_in = env.plugin_interface(model_type, interf_type, an_driver, serial_iface);
-        
+            
     if (!plugged_in) {
-        Cerr << "Error: no serial interface plugin performed.  Check "
+        Cerr << "Error: no serial interface plugin performed. Check  "
         << "compatibility between parallel\n       configuration and "
         << "selected analysis_driver." << std::endl;
         Dakota::abort_handler(-1);
