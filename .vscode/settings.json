@@ -93,7 +93,8 @@
         "source_location": "cpp",
         "utility": "cpp",
         "stop_token": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "slist": "cpp"
     },
     "cmake.configureEnvironment":{
         "Boost_ROOT":"/Users/tdinelli/NumericalLibraries/boost/boost-1.79-gcc-12",
