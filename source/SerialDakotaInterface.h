@@ -46,8 +46,10 @@ class SerialDakotaInterface: public Dakota::DirectApplicInterface
   // Constructor
   inline SerialDakotaInterface::SerialDakotaInterface
   (const Dakota::ProblemDescDB& problem_db, const OptiSMOKE::InputManager* data) : 
-  Dakota::DirectApplicInterface(problem_db)
-  {data_ = data;}
+  Dakota::DirectApplicInterface(problem_db){
+    // Setting database
+    data_ = data;
+  }
 
   // Destructor
   inline SerialDakotaInterface::~SerialDakotaInterface()

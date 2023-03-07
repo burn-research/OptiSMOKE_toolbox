@@ -63,8 +63,7 @@ namespace SIM {
     int SerialDakotaInterface::simulations_interface(const Dakota::RealVector& c_vars, short asv, Dakota::Real& fn_val)
     {
         unsigned int count = 0;
-        // std::cout << c_vars[count] << std::endl;
-        std::cout << "data_->output_folder().c_str()" << std::endl;
+        ComputeSimulations();
         return 0;
     }
 

@@ -178,9 +178,9 @@ namespace OptiSMOKE{
 		ComputeBoundaries();
 		DakotaInputPreliminaryOptions();
 		
-		dakota_input_string_ = " environment,"
-		                       "\n		tabular_data";
-		dakota_input_string_.append("\n		tabular_data_file '" + dakota_options_.tabular_data_file() + "'");
+		dakota_input_string_ = " environment,\n"
+		                       " 	tabular_data\n";
+		dakota_input_string_.append(" 	tabular_data_file '" + dakota_options_.tabular_data_file() + "'");
 		
         dakota_input_string_.append("\n	method,"); 
 		dakota_input_string_.append("\n 		" + dakota_options_.method());
@@ -234,7 +234,7 @@ namespace OptiSMOKE{
 
 		dakota_input_string_.append("\n	interface,");
 		dakota_input_string_.append("\n		direct");
-		dakota_input_string_.append("\n		  analysis_driver = 'plugin_opensmoke'");
+		dakota_input_string_.append("\n		  analysis_driver = 'opensmoke_plugin'");
 		dakota_input_string_.append("\n	responses,");
 		dakota_input_string_.append("\n		num_objective_functions = 1");
 			
