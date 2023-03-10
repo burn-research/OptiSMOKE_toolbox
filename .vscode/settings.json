@@ -94,10 +94,11 @@
         "utility": "cpp",
         "stop_token": "cpp",
         "cinttypes": "cpp",
-        "slist": "cpp"
+        "slist": "cpp",
+        "transport_chemkin": "cpp"
     },
     "cmake.configureEnvironment":{
-        "Boost_ROOT":"/Users/tdinelli/NumericalLibraries/boost/boost-1.79-gcc-12",
+        "Boost_ROOT":"/Users/tdinelli/NumericalLibraries/boost/boost-1.80-gcc-12",
         "Eigen3_ROOT":"/Users/tdinelli/NumericalLibraries/eigen/eigen-3.4.0",
         "CONFIG_ROOT":"/opt/homebrew/opt/libconfig",
         "BLAS_ROOT":"/Users/tdinelli/NumericalLibraries/openblas/openblas-0.3.21-gcc-12",
@@ -113,7 +114,7 @@
         "-DBLAS_VERBOSE=OFF",
         "-DBLAS_DIR=$env{BLAS_ROOT}/include",
         "-DBLAS_LIBDIR=$env{BLAS_ROOT}/lib",
-        "-DOPTISMOKE_USE_CEQ=1",
+        "-DOPTISMOKE_USE_CEQ=0",
         "-DOPTISMOKE_USE_MKL=0",
         "-DOPTISMOKE_USE_OPENBLAS=0",
         "-DOPTISMOKE_USE_UMFPACK=0",
@@ -123,7 +124,8 @@
         "-DOPTISMOKE_USE_DASPK=0",
         "-DOPTISMOKE_USE_MEBDF=0",
         "-DOPTISMOKE_USE_SUNDIALS=0",
-        "-DOPTISMOKE_USE_OPENMP=0"
+        "-DOPTISMOKE_USE_OPENMP=0",
+        "-DCMAKE_BUILD_TYPE=Debug"
     ],
     "cmake.configureOnOpen": false,
     "cmake.ctest.parallelJobs": 1
