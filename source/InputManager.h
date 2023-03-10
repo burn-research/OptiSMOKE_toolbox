@@ -70,8 +70,8 @@ namespace OptiSMOKE{
         inline const fs::path& output_folder() const {return output_folder_;};
         inline const fs::path& kinetics_folder() const {return kinetics_folder_;};
         inline const fs::path& optimized_kinetics_folder() const {return optimized_kinetics_folder_;};
-        inline const fs::path& path_opensmoke_input_files() const {return path_opensmoke_input_files_;};
-        inline const fs::path& path_experimental_data_files() const {return path_experimental_data_files_;};
+        inline const std::vector<std::string>& path_opensmoke_input_files() const {return path_opensmoke_input_files_;};
+        inline const std::vector<std::string>& path_experimental_data_files() const {return path_experimental_data_files_;};
         inline const bool& iDebug() const {return iDebug_;};
         inline const bool& iDebugSimulations() const {return iDebugSimulations_;};
         inline const std::string& dakota_input_string() const {return dakota_input_string_;};
@@ -125,8 +125,8 @@ namespace OptiSMOKE{
         fs::path output_folder_;
         fs::path kinetics_folder_;
         fs::path optimized_kinetics_folder_;
-        fs::path path_opensmoke_input_files_;
-        fs::path path_experimental_data_files_;
+        std::vector<std::string> path_opensmoke_input_files_;
+        std::vector<std::string> path_experimental_data_files_;
         bool iDebug_;
         bool iDebugSimulations_;
         bool iXml_;

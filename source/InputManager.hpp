@@ -148,10 +148,10 @@ namespace OptiSMOKE{
         }
 
         // path OpenSMOKE input files
-        dictionary_(main_dictionary_).ReadPath("@PathDatasetInputFiles", path_opensmoke_input_files_);
+        dictionary_(main_dictionary_).ReadOption("@ListOfOpenSMOKEInputFiles", path_opensmoke_input_files_);
 
         // path data set input files
-        dictionary_(main_dictionary_).ReadPath("@PathExperimentalDataFiles", path_experimental_data_files_);
+        dictionary_(main_dictionary_).ReadOption("@ListOfExperimentalDataFiles", path_experimental_data_files_);
 
         // Dictionaries
 

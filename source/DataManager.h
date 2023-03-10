@@ -52,22 +52,36 @@ namespace OptiSMOKE{
         /// @brief Default destructor
         ~DataManager();
 
-        void ReadExperimentalData(fs::path experimental_data_files);
+        void ReadExperimentalData(std::vector<std::string> experimental_data_files);
 
-    protected:
+        /*inline const std::string& dataset_names() const {return dataset_names_;};
+        inline const std::string& solver_name() const {return solver_name_;};
+        inline const std::string& QoI() const {return QoI_;};
+        inline const std::string& QoI_target() const {return QoI_target_;};
+        inline const bool& multiple_input() const {return multiple_input_;};
+        inline const std::vector<std::string>& input_paths() const {return input_paths_;};
+        inline const std::vector<std::string>& ordinates_label() const {return ordinates_label_;};
+        inline const std::vector<std::string>& abscissae_label() const {return abscissae_label_;};
+        inline const std::vector<std::string>& uncertainty_kind() const {return uncertainty_kind_;};
+        inline const std::vector<double>& expdata_x() const {return expdata_y_;};
+        inline const std::vector<double>& expdata_y() const {return expdata_x_;};
+        inline const std::vector<double>& uncertainty() const {return uncertainty_;};*/
+
     private:
-        std::string dataset_name;
-        std::string solver_name;
-        std::string QoI;
-        std::string QoI_target;
-        bool multiple_input;
+        std::vector<std::string> dataset_names_;
+        std::vector<std::string> solver_name_;
+        std::vector<std::string> QoI_;
+        std::vector<std::string> QoI_target_;
+        std::vector<bool> multiple_input_;
 
-        std::vector<double> expdata_x;
-        std::vector<double> expdata_y;
-        std::vector<double> uncertainty;
-        std::string ordinates_label;
-        std::string abscissae_label;
-        std::string uncertainty_kind;
+        std::vector<std::vector<std::string>> input_paths_;
+        std::vector<std::vector<std::string>> ordinates_label_;
+        std::vector<std::vector<std::string>> abscissae_label_;
+        std::vector<std::vector<std::string>> uncertainty_kind_;
+        
+        std::vector<std::vector<double>> expdata_x_;
+        std::vector<std::vector<double>> expdata_y_;
+        std::vector<std::vector<double>> uncertainty_;
     };
 } // namespace OptiSMOKE
 

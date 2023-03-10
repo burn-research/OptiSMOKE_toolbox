@@ -54,9 +54,6 @@ int main(int argc, char* argv[]){
         MPI_Init(&argc, &argv); // initialize MPI
     #endif // DAKOTA_HAVE_MPI
     
-    // Allow MPI to extract its command line arguments 
-    // first in detect above, then detect "-mixed" and
-    // dakota_input_file this is bypassed 
     const char *plugin_input_file = NULL;
 
     OptiSMOKE::OptiSMOKE_logo("OptiSMOKE++", "M. Furst, A. Bertolino, T. Dinelli");
@@ -64,9 +61,9 @@ int main(int argc, char* argv[]){
     input->SetInputOptions(argc, argv);
     input->ReadDictionary();
     input->DakotaInputString();
-    plugin_input_file = input->dakota_input_string().c_str(); // TODO check char string stuff
+    plugin_input_file = input->dakota_input_string().c_str();
     
-    run_dakota_parse(plugin_input_file); // mode 1: parse
+    run_dakota_parse(plugin_input_file);
 
     // Note: Dakota objects created in above function calls need to go
     // out of scope prior to MPI_Finalize so that MPI code in
