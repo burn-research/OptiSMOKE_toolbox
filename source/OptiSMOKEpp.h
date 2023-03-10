@@ -42,12 +42,12 @@
 #include "OpenSMOKE_Definitions.h"
 #include "dictionary/OpenSMOKE_DictionaryManager.h"
 
-// Base classes
+// OpenSMOKE Base classes
 #include "kernel/thermo/Thermodynamics_CHEMKIN"
 #include "kernel/transport/Transport_CHEMKIN"
 #include "kernel/kinetics/ReactionPolicy_CHEMKIN.h"
 
-// CHEMKIN maps
+// OpenSMOKE CHEMKIN maps
 #include "maps/ThermodynamicsMap_CHEMKIN.h"
 #include "maps/TransportPropertiesMap_CHEMKIN.h"
 #include "maps/KineticsMap_CHEMKIN.h"
@@ -77,6 +77,7 @@ namespace po = boost::program_options;
 #include "utilities/OptiSMOKEUtilities"
 #include "grammar/grammar.h"
 #include "options/options.h"
+#include "DataManager.h"
 #include "InputManager.h"
 #include "SerialDakotaInterface.h"
 

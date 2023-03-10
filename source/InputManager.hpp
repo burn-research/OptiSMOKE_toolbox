@@ -98,6 +98,7 @@ namespace OptiSMOKE{
         }
 
         CreateMaps();
+		data_manager_.ReadExperimentalData(path_experimental_data_files_);
     }
 
     void InputManager::ReadMainDictionary(){

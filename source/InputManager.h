@@ -109,6 +109,9 @@ namespace OptiSMOKE{
         OptiSMOKE::options_curvematching curvematching_options_;
         OptiSMOKE::options_dakota dakota_options_;
 
+        //Reading data from json files
+        OptiSMOKE::DataManager data_manager_;
+        
         // Dictionaries string
         std::string preprocessor_dictionary_;
         std::string optimization_target_dictionary_;
