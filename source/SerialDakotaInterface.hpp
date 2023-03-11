@@ -1,15 +1,15 @@
 namespace SIM {
 
-    int SerialDakotaInterface::derived_map_ac(const Dakota::String& ac_name)
-    {
-        #ifdef MPI_DEBUG
-            Cout << "analysis server " << analysisServerId << " invoking " << ac_name
-                << " within SIM::OpenSMOKEDirectApplicInterface." << std::endl;
-        #endif // MPI_DEBUG
+	int SerialDakotaInterface::derived_map_ac(const Dakota::String& ac_name)
+	{
+		#ifdef MPI_DEBUG
+			Cout << "analysis server " << analysisServerId << " invoking " << ac_name
+				<< " within SIM::OpenSMOKEDirectApplicInterface." << std::endl;
+		#endif // MPI_DEBUG
 
-        if (multiProcAnalysisFlag) {
-            Cerr << "Error: plugin serial direct fn does not support multiprocessor "
-                << "analyses." << std::endl;
+		if (multiProcAnalysisFlag) {
+			Cerr << "Error: plugin serial direct fn does not support multiprocessor "
+				<< "analyses." << std::endl;
             Dakota::abort_handler(-1);
         }
   

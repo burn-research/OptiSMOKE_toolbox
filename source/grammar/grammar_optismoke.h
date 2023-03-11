@@ -63,7 +63,6 @@ namespace OptiSMOKE
                 "Name of the dictionary with options for Dakota", 
                 false));
         
-        // To be removed
 	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@IgnitionDelayTimes", 
                 OpenSMOKE::SINGLE_DICTIONARY,
                 "Name of the dictionary with options for ignition delay time calculations", 
@@ -72,7 +71,6 @@ namespace OptiSMOKE
                 "none",
                 "none"));
 
-        // AB  // dictionary for curve matching options
 	AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@CurveMatchingOptions", 
                 OpenSMOKE::SINGLE_DICTIONARY,
                 "Name of the dictionary with options for setting Curve Matching as the objective function", 
@@ -80,8 +78,8 @@ namespace OptiSMOKE
                 "none",
                 "none",
                 "none"));
-        // AB //
 
+        // TODO revision based on dakota
         AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OptimizationSetup",
                 OpenSMOKE::SINGLE_DICTIONARY,
                 "Name of the dictionary to set the options for the optimization",
@@ -181,7 +179,13 @@ namespace OptiSMOKE
                 "none",
                 "@ListOfExperimentalDataFiles"));
 
-        
+        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OptimizationLibrary",
+                OpenSMOKE::SINGLE_STRING,
+                "Name of the library containing the optimization routines",
+                true,
+                "none",
+                "none",
+                "none"));
         // List of MAX ABS and MIN ABS and MAX REL and MIN REL vanno tenute e messe in optimization target
         // List initial li facciamo volare potenti e ce ne fottiamo
         // ICA e PCA gli dedicherei un dizionario a parte

@@ -67,6 +67,7 @@ namespace OptiSMOKE{
         inline const bool& iNominalXml() const {return iNominalXml_;};
         inline const std::string& input_file_name() const {return input_file_name_;};
         inline const std::string& main_dictionary() const {return main_dictionary_;};
+        inline const std::string& optimization_library() const {return optimization_library_;};
         inline const fs::path& output_folder() const {return output_folder_;};
         inline const fs::path& kinetics_folder() const {return kinetics_folder_;};
         inline const fs::path& optimized_kinetics_folder() const {return optimized_kinetics_folder_;};
@@ -122,6 +123,7 @@ namespace OptiSMOKE{
         // Variables of main dictionaries
         std::string input_file_name_;
         std::string main_dictionary_;
+        std::string optimization_library_;
         fs::path output_folder_;
         fs::path kinetics_folder_;
         fs::path optimized_kinetics_folder_;

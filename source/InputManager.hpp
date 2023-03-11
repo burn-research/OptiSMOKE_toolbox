@@ -170,6 +170,9 @@ namespace OptiSMOKE{
         // Optimization target
         dictionary_(main_dictionary_).ReadDictionary("@OptimizationTarget", optimization_target_dictionary_);
         optimization_target_.SetupFromDictionary(dictionary_, optimization_target_dictionary_);
+
+        // path OpenSMOKE input files
+        dictionary_(main_dictionary_).ReadString("@OptimizationLibrary", optimization_library_);
         
     }
 

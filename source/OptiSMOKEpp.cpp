@@ -62,19 +62,24 @@ int main(int argc, char* argv[]){
     input->ReadDictionary();
     input->DakotaInputString();
     plugin_input_file = input->dakota_input_string().c_str();
+
+    if(input->optimization_library() == "dakota"){
+        run_dakota_parse(plugin_input_file);
+
+        // Note: Dakota objects created in above function calls need to go
+        // out of scope prior to MPI_Finalize so that MPI code in
+        // destructors works properly in library mode.
+
+        #ifdef DAKOTA_HAVE_MPI
+        if (parallel)
+            MPI_Finalize(); // finalize MPI
+        #endif // DAKOTA_HAVE_MPI
     
-    run_dakota_parse(plugin_input_file);
-
-    // Note: Dakota objects created in above function calls need to go
-    // out of scope prior to MPI_Finalize so that MPI code in
-    // destructors works properly in library mode.
-
-    #ifdef DAKOTA_HAVE_MPI
-    if (parallel)
-        MPI_Finalize(); // finalize MPI
-    #endif // DAKOTA_HAVE_MPI
-
-    return 0;
+        return 0;
+    }
+    else{
+        OptiSMOKE::FatalErrorMessage("Available optimization routine are dakota");
+    }
 }
 
 void run_dakota_parse(const char* plugin_input_file){
