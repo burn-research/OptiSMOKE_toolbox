@@ -82,6 +82,7 @@ namespace po = boost::program_options;
 #include "utilities/OptiSMOKEUtilities"
 #include "grammar/grammar.h"
 #include "options/options.h"
+#include "ideal_reactors/ideal_reactors.h"
 #include "DataManager.h"
 #include "InputManager.h"
 #include "SerialDakotaInterface.h"

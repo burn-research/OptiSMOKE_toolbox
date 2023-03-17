@@ -1,0 +1,6 @@
+#ifndef OPTISMOKE_IDEAL_REACTORS_H
+#define OPTISMOKE_IDEAL_REACTORS_H
+
+#include "batch/OptiSMOKE_BatchReactor.h"
+
+#endif // OPTISMOKE_IDEAL_REACTORS_H

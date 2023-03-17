@@ -63,7 +63,9 @@ namespace SIM {
     int SerialDakotaInterface::simulations_interface(const Dakota::RealVector& c_vars, short asv, Dakota::Real& fn_val)
     {
         unsigned int count = 0;
-        std::cout << "CIAO TITO" << std::endl;
+        // Here we allocate the new parameters
+        // Then execute simulations
+        //std::shared_ptr<> simulations_iface = std::make_shared<>();
         return 0;
     }
 

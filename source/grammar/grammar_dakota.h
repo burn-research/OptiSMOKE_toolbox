@@ -29,8 +29,8 @@
 |   You should have received a copy of the GNU General Public License     |
 |   along with OptiSMOKE. If not, see <http://www.gnu.org/licenses/>.     |
 |                                                                         |
-\*-----------------------------------------------------------------------*/
-
+\*-----------------------------------------------------------------------*/     
+                                          
 #ifndef GRAMMAR_DAKOTAOPTIONS_H
 #define GRAMMAR_DAKOTAOPTIONS_H
 
