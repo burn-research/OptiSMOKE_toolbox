@@ -61,6 +61,7 @@ namespace OptiSMOKE{
                 QoI_.push_back(ptree.get<std::string>("QoI"));
                 QoI_target_.push_back(ptree.get<std::string>("QoI_target"));
                 multiple_input_.push_back(ptree.get<bool>("multiple_input"));
+                save_simulations_.push_back(ptree.get<bool>("save_simulations_data"));
 
                 BOOST_FOREACH(boost::property_tree::ptree::value_type &node, ptree.get_child("OS_Input_File")){
                     assert(node.first.empty());
@@ -106,6 +107,7 @@ namespace OptiSMOKE{
         std::vector<std::string> QoI_tmp;
         std::vector<std::string> QoI_target_tmp;
         std::vector<bool> multiple_input_tmp;
+        std::vector<bool> save_simulations_tmp;
 
         std::vector<std::vector<std::string>> input_paths_tmp;
         std::vector<std::vector<std::string>> ordinates_label_tmp;
@@ -162,6 +164,7 @@ namespace OptiSMOKE{
                 expdata_x_tmp.push_back(expdata_x_[pos]);
                 expdata_y_tmp.push_back(expdata_y_[pos]);
                 uncertainty_tmp.push_back(uncertainty_[pos]);
+                save_simulations_tmp.push_back(save_simulations_[pos]);
             }
         }
         
@@ -181,6 +184,7 @@ namespace OptiSMOKE{
                 expdata_x_tmp.push_back(expdata_x_[pos]);
                 expdata_y_tmp.push_back(expdata_y_[pos]);
                 uncertainty_tmp.push_back(uncertainty_[pos]);
+                save_simulations_tmp.push_back(save_simulations_[pos]);
             }
         }
         
@@ -200,6 +204,7 @@ namespace OptiSMOKE{
                 expdata_x_tmp.push_back(expdata_x_[pos]);
                 expdata_y_tmp.push_back(expdata_y_[pos]);
                 uncertainty_tmp.push_back(uncertainty_[pos]);
+                save_simulations_tmp.push_back(save_simulations_[pos]);
             }
         }
         
@@ -219,6 +224,7 @@ namespace OptiSMOKE{
                 expdata_x_tmp.push_back(expdata_x_[pos]);
                 expdata_y_tmp.push_back(expdata_y_[pos]);
                 uncertainty_tmp.push_back(uncertainty_[pos]);
+                save_simulations_tmp.push_back(save_simulations_[pos]);
             }
         }
 
@@ -238,6 +244,7 @@ namespace OptiSMOKE{
                 expdata_x_tmp.push_back(expdata_x_[pos]);
                 expdata_y_tmp.push_back(expdata_y_[pos]);
                 uncertainty_tmp.push_back(uncertainty_[pos]);
+                save_simulations_tmp.push_back(save_simulations_[pos]);
             }
         }
         
@@ -253,6 +260,7 @@ namespace OptiSMOKE{
         expdata_x_ = expdata_x_tmp;
         expdata_y_ = expdata_y_tmp;
         uncertainty_ = uncertainty_tmp;
+        save_simulations_ = save_simulations_tmp;
     }
 
 } // namespace OptiSMOKE

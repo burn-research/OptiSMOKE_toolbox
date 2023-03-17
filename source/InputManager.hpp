@@ -1061,12 +1061,7 @@ namespace OptiSMOKE{
 		expdata_x_ = data_manager_.expdata_x();
 		expdata_y_ = data_manager_.expdata_y();
 		uncertainty_ = data_manager_.uncertainty();
+		save_simulations_ = data_manager_.save_simulations();
 
-		for(unsigned int i = 0; i<expdata_x_.size(); i++){
-			std::cout << "Set: " << i << std::endl;
-			for(unsigned int j = 0; j<expdata_x_[i].size(); j++){
-				std::cout << expdata_x_[i][j] << std::endl;
-			}
-		}
 	}
 } // namespace OptiSMOKE

@@ -42,6 +42,9 @@ namespace OptiSMOKE
 		OpenSMOKE::SensitivityAnalysis_Options* sensitivity_options_;
 		OpenSMOKE::IgnitionDelayTimes_Analyzer* idt;
 		OpenSMOKE::OnTheFlyCEMA* onTheFlyCEMA;
+
+		double tStart_;
+		double tEnd_;
 	};
 } // namespace OptiSMOKE
 

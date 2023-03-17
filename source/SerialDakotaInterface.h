@@ -1,6 +1,8 @@
 #ifndef SERIAL_DAKOTA_INTERFACE_H
 #define SERIAL_DAKOTA_INTERFACE_H
 
+#include "SimulationsInterface.h"
+
 namespace SIM {
 
 class SerialDakotaInterface: public Dakota::DirectApplicInterface
@@ -8,7 +10,7 @@ class SerialDakotaInterface: public Dakota::DirectApplicInterface
   public:
 
     // constructor
-    SerialDakotaInterface(const Dakota::ProblemDescDB& problem_db, const OptiSMOKE::InputManager* data);
+    SerialDakotaInterface(const Dakota::ProblemDescDB& problem_db, OptiSMOKE::InputManager* data);
   
     // destructor
     ~SerialDakotaInterface();
@@ -40,12 +42,12 @@ class SerialDakotaInterface: public Dakota::DirectApplicInterface
 
     int simulations_interface(const Dakota::RealVector& c_vars, short asv,Dakota::Real& fn_val);
          
-    const OptiSMOKE::InputManager* data_;
+    OptiSMOKE::InputManager* data_;
 };
 
   // Constructor
   inline SerialDakotaInterface::SerialDakotaInterface
-  (const Dakota::ProblemDescDB& problem_db, const OptiSMOKE::InputManager* data) : 
+  (const Dakota::ProblemDescDB& problem_db, OptiSMOKE::InputManager* data) : 
   Dakota::DirectApplicInterface(problem_db){
     // Setting database
     data_ = data;

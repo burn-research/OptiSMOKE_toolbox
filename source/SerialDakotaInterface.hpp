@@ -63,9 +63,8 @@ namespace SIM {
     int SerialDakotaInterface::simulations_interface(const Dakota::RealVector& c_vars, short asv, Dakota::Real& fn_val)
     {
         unsigned int count = 0;
-        // Here we allocate the new parameters
-        // Then execute simulations
-        //std::shared_ptr<> simulations_iface = std::make_shared<>();
+        OptiSMOKE::SimulationsInterface sim_iface(data_);
+        sim_iface.run();
         return 0;
     }
 

@@ -51,8 +51,8 @@ namespace OptiSMOKE
         inline const int& number_of_batch_reactor() const {return numberOfBatchReactor_;};
         inline const int& number_of_plug_flow_reactor() const {return numberOfPlugFlowReactor_;};
         inline const int& number_of_perfectly_stirred_reactor() const {return numberOfPerfectlyStirredReactor_;};
-        inline const int& number_of_premixed_laminar_flame_reactor() const {return numberOfPremixedLaminarFlame_;};
-        inline const int& number_of_counter_flow_flame_reactor() const {return numberOfCounterFlowFlame_;};
+        inline const int& number_of_premixed_laminar_flame() const {return numberOfPremixedLaminarFlame_;};
+        inline const int& number_of_counter_flow_flame() const {return numberOfCounterFlowFlame_;};
         inline const int& number_of_parameters() const {return numberOfParameters_;};
 
 	    inline const std::vector<int>& list_of_target_EPLR() const {return list_of_target_EPLR_;};
