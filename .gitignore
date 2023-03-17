@@ -21,4 +21,4 @@ Makefile
 Makefile.in
 missing
 configure~
-
+targets.txt
