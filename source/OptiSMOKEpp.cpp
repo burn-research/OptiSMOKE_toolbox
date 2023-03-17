@@ -54,17 +54,18 @@ int main(int argc, char* argv[]){
         MPI_Init(&argc, &argv); // initialize MPI
     #endif // DAKOTA_HAVE_MPI
     
-    const char *plugin_input_file = NULL;
+    const char *dakota_input_string = NULL;
 
     OptiSMOKE::OptiSMOKE_logo("OptiSMOKE++", "M. Furst, A. Bertolino, T. Dinelli");
 
     input->SetInputOptions(argc, argv);
     input->ReadDictionary();
-    input->DakotaInputString();
-    plugin_input_file = input->dakota_input_string().c_str();
+    input->ReadExperimentalDataFiles();
 
     if(input->optimization_library() == "dakota"){
-        run_dakota_parse(plugin_input_file);
+        input->DakotaInputString();
+        dakota_input_string = input->dakota_input_string().c_str();
+        run_dakota_parse(dakota_input_string);
 
         // Note: Dakota objects created in above function calls need to go
         // out of scope prior to MPI_Finalize so that MPI code in
@@ -77,17 +78,20 @@ int main(int argc, char* argv[]){
     
         return 0;
     }
+    else if (input->optimization_library() == "nlopt"){
+        OptiSMOKE::FatalErrorMessage("Not yet come up with the implementation!");
+    }
     else{
-        OptiSMOKE::FatalErrorMessage("Available optimization routine are dakota");
+        OptiSMOKE::FatalErrorMessage("Available libraries for the optimization are: DAKOTA | NLOPT");
     }
 }
 
-void run_dakota_parse(const char* plugin_input_file){
+void run_dakota_parse(const char* dakota_input_string){
 
     // Parse input and construct Dakota LibraryEnvironment, 
     // performing input data checks
     Dakota::ProgramOptions opts;
-    opts.input_string(plugin_input_file);
+    opts.input_string(dakota_input_string);
     opts.echo_input(false);
     
     // Defaults constructs the MPIManager, which assumes COMM_WORLD
@@ -102,7 +106,7 @@ void run_dakota_parse(const char* plugin_input_file){
         // parallel_interface_plugin(env);
         OptiSMOKE::ErrorMessage("run_dakota_parse", "Parallel interface not implemented yet!");
     else
-        opensmoke_interface_plugin(env);//, plugin_input_file);
+        opensmoke_interface_plugin(env);
 
     // Execute the environment
     env.execute();

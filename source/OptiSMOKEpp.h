@@ -73,6 +73,11 @@ namespace po = boost::program_options;
 #include "ParamResponsePair.hpp"
 #include "DirectApplicInterface.hpp"
 
+// NLOPT++ Library
+#if OPTISMOKE_USE_NLOPT
+#include <nlopt.h>
+#endif
+
 // Header files
 #include "utilities/OptiSMOKEUtilities"
 #include "grammar/grammar.h"
@@ -80,6 +85,7 @@ namespace po = boost::program_options;
 #include "DataManager.h"
 #include "InputManager.h"
 #include "SerialDakotaInterface.h"
+#include "SimulationsInterface.h"
 
 #ifdef HAVE_AMPL 
 // Floating-point initialization from AMPL: switch to 53-bit rounding
