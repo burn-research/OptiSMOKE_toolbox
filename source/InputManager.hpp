@@ -98,7 +98,6 @@ namespace OptiSMOKE{
         }
 
         CreateMaps();
-		data_manager_.ReadExperimentalData(path_experimental_data_files_);
     }
 
     void InputManager::ReadMainDictionary(){
@@ -152,9 +151,11 @@ namespace OptiSMOKE{
 
         // path data set input files
         dictionary_(main_dictionary_).ReadOption("@ListOfExperimentalDataFiles", path_experimental_data_files_);
-
-        // Dictionaries
-
+        
+		// optimization libraries
+        dictionary_(main_dictionary_).ReadString("@OptimizationLibrary", optimization_library_);
+        
+		// Dictionaries
         // Dakota options
         dictionary_(main_dictionary_).ReadDictionary("@DakotaOptions", dakota_dictionary_);
         dakota_options_.SetupFromDictionary(dictionary_, dakota_dictionary_);
@@ -170,16 +171,15 @@ namespace OptiSMOKE{
         // Optimization target
         dictionary_(main_dictionary_).ReadDictionary("@OptimizationTarget", optimization_target_dictionary_);
         optimization_target_.SetupFromDictionary(dictionary_, optimization_target_dictionary_);
-
-        // path OpenSMOKE input files
-        dictionary_(main_dictionary_).ReadString("@OptimizationLibrary", optimization_library_);
         
     }
 
     void InputManager::DakotaInputString(){
-		
+
 		FromTargetToInitialParameter();
+
 		ComputeBoundaries();
+		
 		DakotaInputPreliminaryOptions();
 		
 		dakota_input_string_ = " environment,"
@@ -317,7 +317,7 @@ namespace OptiSMOKE{
 			int pos_FallOff_Reaction = std::find(indices_of_falloff_reactions.begin(),indices_of_falloff_reactions.end(),optimization_target_.list_of_target_lnA_inf()[i])-indices_of_falloff_reactions.begin();
 			list_of_initial_lnA_inf_.push_back(boost::lexical_cast<std::string>(std::log(kineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction))));
 		}
-		
+
 		// Beta_inf
 		for(int i=0; i < optimization_target_.list_of_target_Beta_inf().size(); i++){
 			int pos_FallOff_Reaction = std::find(indices_of_falloff_reactions.begin(),
@@ -333,15 +333,15 @@ namespace OptiSMOKE{
 												optimization_target_.list_of_target_E_over_R_inf()[i])-indices_of_falloff_reactions.begin();
 			list_of_initial_E_over_R_inf_.push_back(boost::lexical_cast<std::string>(kineticsMapXML_->E_over_R_falloff_inf(pos_FallOff_Reaction)));
 		}
-		
+
 		for(int i=0; i< optimization_target_.list_of_target_thirdbody_reactions().size(); i++){
-		    int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_thirdbody_species()[i]);
+			int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_thirdbody_species()[i]);
 			list_of_initial_thirdbody_eff_.push_back(boost::lexical_cast<std::string>(kineticsMapXML_->ThirdBody(optimization_target_.list_of_target_thirdbody_reactions()[i]-1, iSpecies-1)));
 		}
     }     
 
     void InputManager::ComputeBoundaries(){
-		
+
 		/// TODO REFACTORING BRUTALE
 		double T_low = 300;
 		double T_high = 2500;
@@ -1043,5 +1043,30 @@ namespace OptiSMOKE{
 				upper_bounds_string_   += list_of_max_TB_ExtPLOG_[i]     + " ";
 			}*/
 		}			
+	}
+
+	void InputManager::ReadExperimentalDataFiles(){
+		
+		data_manager_.ReadExperimentalData(path_experimental_data_files_);
+
+		dataset_names_ = data_manager_.dataset_names();
+		input_paths_ = data_manager_.input_paths();
+		solver_name_ = data_manager_.solver_name();
+		QoI_ = data_manager_.QoI();
+		QoI_target_ = data_manager_.QoI_target();
+		multiple_input_ = data_manager_.multiple_input();
+		ordinates_label_ = data_manager_.ordinates_label();
+		abscissae_label_ = data_manager_.abscissae_label();
+		uncertainty_kind_ = data_manager_.uncertainty_kind();
+		expdata_x_ = data_manager_.expdata_x();
+		expdata_y_ = data_manager_.expdata_y();
+		uncertainty_ = data_manager_.uncertainty();
+
+		for(unsigned int i = 0; i<expdata_x_.size(); i++){
+			std::cout << "Set: " << i << std::endl;
+			for(unsigned int j = 0; j<expdata_x_[i].size(); j++){
+				std::cout << expdata_x_[i][j] << std::endl;
+			}
+		}
 	}
 } // namespace OptiSMOKE

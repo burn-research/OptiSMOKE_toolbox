@@ -60,6 +60,9 @@ namespace OptiSMOKE{
         // Da privatizzare
         void DakotaInputPreliminaryOptions();
 
+        //
+        void ReadExperimentalDataFiles();
+
         // Public access variables
         inline const OptiSMOKE::options_kinetics& kinetics_data() const {return kinetics_data_;};
         inline const OptiSMOKE::options_optimization_target& optimization_target() const {return optimization_target_;};
@@ -216,6 +219,20 @@ namespace OptiSMOKE{
         std::vector<std::string> list_of_initial_Beta_inf_;
         std::vector<std::string> list_of_initial_E_over_R_inf_;
         std::vector<std::string> list_of_initial_thirdbody_eff_;
+
+        // Experimental data files variables
+        std::vector<std::string> dataset_names_;
+		std::vector<std::vector<std::string>> input_paths_;
+		std::vector<std::string> solver_name_;
+		std::vector<std::string> QoI_;
+		std::vector<std::string> QoI_target_;
+		std::vector<bool> multiple_input_;
+		std::vector<std::vector<std::string>> ordinates_label_;
+		std::vector<std::vector<std::string>> abscissae_label_;
+		std::vector<std::vector<std::string>> uncertainty_kind_;
+		std::vector<std::vector<double>> expdata_x_;
+		std::vector<std::vector<double>> expdata_y_;
+		std::vector<std::vector<double>> uncertainty_;
     };
 } // namespace OptiSMOKE
 
