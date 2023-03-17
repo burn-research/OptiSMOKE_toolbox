@@ -12,9 +12,9 @@
 #include "idealreactors/batch/BatchReactor"
 #include "grammar/grammar_batchreactor.h"
 
-namespace OpenSMOKE
+namespace OptiSMOKE
 {
-	class OptiSMOKE_BatchReactor
+	class BatchReactor
 	{
 	public:
 		void Setup(const std::string input_file_name,
@@ -45,5 +45,5 @@ namespace OpenSMOKE
 	};
 } // namespace OptiSMOKE
 
-#include "OptiSMOKE_BatchReactor.hpp"
+#include "BatchReactor.hpp"
 #endif // OPTISMOKE_BATCHREACTOR_H
