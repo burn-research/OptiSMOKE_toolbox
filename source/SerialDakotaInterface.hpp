@@ -64,6 +64,7 @@ namespace SIM {
     {
         unsigned int count = 0;
         OptiSMOKE::SimulationsInterface sim_iface(data_);
+        sim_iface.Setup();
         sim_iface.run();
         return 0;
     }

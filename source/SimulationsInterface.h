@@ -11,7 +11,9 @@ namespace OptiSMOKE {
 		~SimulationsInterface();
   	
 		void run();
-	protected:
+
+		void Setup();
+		
   	private:
 		OptiSMOKE::InputManager* data_;
 	

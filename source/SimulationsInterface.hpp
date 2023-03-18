@@ -15,19 +15,33 @@ namespace OptiSMOKE{
 
 	SimulationsInterface::~SimulationsInterface(){}
 
+	void SimulationsInterface::Setup(){
+
+		if(n_batch != 0){
+			batch_reactors.resize(n_batch);
+			for(unsigned int i = 0; i < n_batch; i++)
+				batch_reactors[i] = new OptiSMOKE::BatchReactor[data_->input_paths()[i].size()];
+		}
+	}
+
 	void SimulationsInterface::run(){
 
 		OpenSMOKE::KineticsMap_CHEMKIN* kinetics = data_->kineticsMapXML();
 		OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermo = data_->thermodynamicsMapXML();
 
-		// batch_reactors = new OptiSMOKE::BatchReactor[n_batch];
 		for(unsigned int i = 0; i < n_batch; i++){
-			batch_reactors[i] = new OptiSMOKE::BatchReactor[data_->input_paths()[i].size()];
-			for(unsigned int j = 0; j < data_->input_paths()[i].size(); j++)
-				batch_reactors[i][j].Setup(data_->input_paths()[i][j], thermo, kinetics);
-
+			std::string qoi = data_->QoI()[i];
+			std::string qoi_target = data_->QoI_target()[i];
+			if(qoi == "IDT"){
+				for(unsigned int j = 0; j < data_->input_paths()[i].size(); j++){
+					// For the moment stay simple but keep in mind that this every time 
+					// re-read the OS input file
+					batch_reactors[i][j].Setup(data_->input_paths()[i][j], thermo, kinetics);
+					batch_reactors[i][j].Solve();
+					std::cout << batch_reactors[i][j].GetIgnitionDelayTime(qoi_target) << std::endl;
+				}
+			}
 		}
-
 	}
 
 } // namespace OptiSMOKE

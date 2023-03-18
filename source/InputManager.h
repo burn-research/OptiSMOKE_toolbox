@@ -89,8 +89,11 @@ namespace OptiSMOKE{
         inline OpenSMOKE::TransportPropertiesMap_CHEMKIN* transportMapXML() {return transportMapXML_;};
         inline OpenSMOKE::TransportPropertiesMap_CHEMKIN* nominaltransportMapXML() {return nominaltransportMapXML_;};
 
-        inline const std::vector<std::vector<std::string>>& input_paths() const {return input_paths_;};        
-
+        inline const std::vector<std::vector<std::string>>& input_paths() const {return input_paths_;};
+        inline const std::vector<std::string>& QoI() const {return QoI_;};
+		inline const std::vector<std::string>& QoI_target() const {return QoI_target_;};        
+        inline const std::vector<std::vector<double>>& expdata_x() const {return expdata_x_;};
+        inline const std::vector<std::vector<double>>& expdata_y() const {return expdata_y_;};
     private:
 
         OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_;
