@@ -21,6 +21,10 @@ namespace OptiSMOKE
 			OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML,
 			OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML);
 
+		void Solve();
+
+		double GetIgnitionDelayTime(std::string criterion);
+
 	private:
 		OpenSMOKE::BatchReactor_Type type_;
 		OpenSMOKE::BatchReactor_NonIsothermal_ConstantPressure* batch_nonisothermal_constantp_;

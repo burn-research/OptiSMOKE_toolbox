@@ -313,12 +313,12 @@ namespace OptiSMOKE{
 		// No polimi soot at the moment
 		OpenSMOKE::PolimiSoot_Analyzer* polimi_soot = new OpenSMOKE::PolimiSoot_Analyzer(thermodynamicsMapXML);
 		{
-			std::string name_of_polimisoot_analyzer_subdictionary;
-			if (dictionaries(main_dictionary_name_).CheckOption("@PolimiSoot") == true)
-			{
-				dictionaries(main_dictionary_name_).ReadDictionary("@PolimiSoot", name_of_polimisoot_analyzer_subdictionary);
-				polimi_soot->SetupFromDictionary(dictionaries(name_of_polimisoot_analyzer_subdictionary));
-			}
+			//std::string name_of_polimisoot_analyzer_subdictionary;
+			//if (dictionaries(main_dictionary_name_).CheckOption("@PolimiSoot") == true)
+			//{
+			//	dictionaries(main_dictionary_name_).ReadDictionary("@PolimiSoot", name_of_polimisoot_analyzer_subdictionary);
+			//	polimi_soot->SetupFromDictionary(dictionaries(name_of_polimisoot_analyzer_subdictionary));
+			//}
 		}
 
 		// Solve the ODE system: NonIsothermal, Constant Volume
@@ -327,7 +327,6 @@ namespace OptiSMOKE{
 			batch_nonisothermal_constantv_ = new OpenSMOKE::BatchReactor_NonIsothermal_ConstantVolume(*thermodynamicsMapXML, *kineticsMapXML,
 					*ode_parameters, *batch_options, *onTheFlyROPA, *onTheFlyCEMA, *on_the_fly_post_processing, *idt, *polimi_soot, volume, T, P_Pa, omega,
 					global_thermal_exchange_coefficient, exchange_area, T_environment);
-			batch_nonisothermal_constantv_->Solve(tStart_, tEnd_);
 		}
 
 		// Solve the ODE system: NonIsothermal, Volume assigned according to a specified law
@@ -338,8 +337,6 @@ namespace OptiSMOKE{
 					global_thermal_exchange_coefficient, exchange_area, T_environment);
 
 			batch_nonisothermal_userdefinedv_->SetVolumeProfile(*batchreactor_volumeprofile);
-
-			batch_nonisothermal_userdefinedv_->Solve(tStart_, tEnd_);
 		}
 
 		// Solve the ODE system: Isothermal, Constant Volume
@@ -347,7 +344,6 @@ namespace OptiSMOKE{
 		{
 			batch_isothermal_constantv_ = new OpenSMOKE::BatchReactor_Isothermal_ConstantVolume(*thermodynamicsMapXML, *kineticsMapXML,
 					*ode_parameters, *batch_options, *onTheFlyROPA, *onTheFlyCEMA, *on_the_fly_post_processing, *idt, *polimi_soot, volume, T, P_Pa, omega);
-			batch_isothermal_constantv_->Solve(tStart_, tEnd_);
 		}
 
 		// Solve the ODE system: NonIsothermal, Constant Pressure
@@ -364,5 +360,111 @@ namespace OptiSMOKE{
 			batch_isothermal_constantp_ = new OpenSMOKE::BatchReactor_Isothermal_ConstantPressure(*thermodynamicsMapXML, *kineticsMapXML,
 				*ode_parameters, *batch_options, *onTheFlyROPA, *onTheFlyCEMA, *on_the_fly_post_processing, *idt, *polimi_soot, volume, T, P_Pa, omega);
 		}
+	}
+
+	void BatchReactor::Solve()
+	{
+		std::cout.setstate(std::ios_base::failbit); // Disable video output
+		// Solve the ODE system: NonIsothermal, Constant Volume
+		if (type_ == OpenSMOKE::BATCH_REACTOR_NONISOTHERMAL_CONSTANTV)
+			batch_nonisothermal_constantv_->Solve(tStart_, tEnd_);
+
+		// Solve the ODE system: NonIsothermal, Volume assigned according to a specified law
+		if (type_ == OpenSMOKE::BATCH_REACTOR_NONISOTHERMAL_USERDEFINEDVOLUME)
+			batch_nonisothermal_userdefinedv_->Solve(tStart_, tEnd_);
+
+		// Solve the ODE system: Isothermal, Constant Volume
+		if (type_ == OpenSMOKE::BATCH_REACTOR_ISOTHERMAL_CONSTANTV)
+			batch_isothermal_constantv_->Solve(tStart_, tEnd_);
+
+		// Solve the ODE system: NonIsothermal, Constant Pressure
+		if (type_ == OpenSMOKE::BATCH_REACTOR_NONISOTHERMAL_CONSTANTP)
+			batch_nonisothermal_constantp_->Solve(tStart_, tEnd_);
+
+		// Solve the ODE system: Isothermal, Constant Pressure
+		if (type_ == OpenSMOKE::BATCH_REACTOR_ISOTHERMAL_CONSTANTP)
+			batch_isothermal_constantp_->Solve(tStart_, tEnd_);
+		std::cout.clear(); // Re-enable video-output
+	}
+
+	double BatchReactor::GetIgnitionDelayTime(std::string criterion)
+	{
+		double tau_ign_temp;
+		std::string delimiter = "-";
+		
+		int pos = 0;
+		std::vector<std::string> token;
+		std::string tmp = criterion; // This because i want to save criterion
+		while ((pos = tmp.find(delimiter)) != std::string::npos) {
+    		token.push_back(tmp.substr(0, pos));
+    		tmp.erase(0, pos + delimiter.length());
+		}
+
+		if(token[1] == "increase"){
+			if(token[0] == "Temperature")
+				// Temperature-increase
+				tau_ign_temp = idt->temperature_increase_tau();
+			else if(token[0] == "Pressure")
+				// Pressure-increase
+				tau_ign_temp = idt->pressure_increase_tau();
+			else
+				OptiSMOKE::FatalErrorMessage(criterion + " unknown for the evaluation of Ignition Delay Time!");
+		}
+		else if(token[1] == "max" && token.size() == 2){
+			if(token[0] == "Temperature")
+				// Temperature-max
+				tau_ign_temp = idt->temperature_max_tau();
+			else if(token[0] == "Pressure")
+				// Pressure-max
+				tau_ign_temp = idt->pressure_max_tau();
+			else{
+				// <Species>-max
+				std::vector<unsigned int> species_index_temp;
+				species_index_temp = idt->species_index();
+				int species_index = std::distance(species_index_temp.begin(),std::find(species_index_temp.begin(),species_index_temp.end(),thermodynamicsMapXML_->IndexOfSpecies(token[0])))-1;
+				tau_ign_temp = idt->species_max_tau()[species_index];
+			}
+		}
+		else if(token[1] == "max" && token.size() == 3){
+			if(token[0] == "Temperature")
+				// Temperature-max-slope
+				tau_ign_temp = idt->temperature_slope_tau();
+			else if(token[0] == "Pressure")
+				// Pressure-max-slope
+				tau_ign_temp =idt->pressure_slope_tau();
+			else if(token[2] == "intercept"){
+				// <Species>-max-intercept
+				std::vector<unsigned int> species_index_temp;
+				species_index_temp = idt->species_index();
+
+				if (std::find(species_index_temp.begin(),species_index_temp.end(),thermodynamicsMapXML_->IndexOfSpecies(token[0])-1) == species_index_temp.end())
+					OptiSMOKE::FatalErrorMessage("Species: " + token[0] + " not specified in the OpenSMOKE++ input file properly!");
+
+				int species_index = std::distance(species_index_temp.begin(),std::find(species_index_temp.begin(),species_index_temp.end(),thermodynamicsMapXML_->IndexOfSpecies(token[0])-1));
+				tau_ign_temp = idt->species_intercept_max_tau()[species_index];
+			}
+			else{
+				// <Species>-max-slope
+				std::vector<unsigned int> species_index_temp;
+				species_index_temp = idt->species_index();
+				int species_index = std::distance(species_index_temp.begin(),std::find(species_index_temp.begin(),species_index_temp.end(),thermodynamicsMapXML_->IndexOfSpecies(token[0])))-1;
+				tau_ign_temp = idt->species_slope_tau()[species_index];
+			}
+		}
+		else if(token[1] == "min" && token.size() == 3){
+			// <Species>-min-intercept
+			std::vector<unsigned int> species_index_temp;
+			species_index_temp = idt->species_index();
+
+			if (std::find(species_index_temp.begin(),species_index_temp.end(),thermodynamicsMapXML_->IndexOfSpecies(token[0])-1) == species_index_temp.end())
+				OptiSMOKE::FatalErrorMessage("Species: " + token[0] + " not specified in the OpenSMOKE++ input file properly!");
+
+			int species_index = std::distance(species_index_temp.begin(),std::find(species_index_temp.begin(),species_index_temp.end(),thermodynamicsMapXML_->IndexOfSpecies(token[0])-1));
+			tau_ign_temp = idt->species_intercept_min_tau()[species_index];
+		}
+		else 
+			OptiSMOKE::FatalErrorMessage(criterion + " not yet implemented for the evaluation of Ignition Delay Time!");
+
+		return tau_ign_temp;
 	}
 }
