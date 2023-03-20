@@ -152,6 +152,9 @@ namespace OptiSMOKE{
 				dictionaries(main_dictionary_name_).ReadDictionary("@Options", name_of_options_subdictionary);
 				batch_options->SetupFromDictionary(dictionaries(name_of_options_subdictionary));
 			}
+			batch_options_->SetVerboseVideo(false);
+			batch_options_->SetVerboseOutput(false);
+			batch_options_->SetSensitivityAnalysis(false);
 		}
 
 		// ODE Parameters
@@ -364,7 +367,7 @@ namespace OptiSMOKE{
 
 	void BatchReactor::Solve()
 	{
-		std::cout.setstate(std::ios_base::failbit); // Disable video output
+		//std::cout.setstate(std::ios_base::failbit); // Disable video output
 		// Solve the ODE system: NonIsothermal, Constant Volume
 		if (type_ == OpenSMOKE::BATCH_REACTOR_NONISOTHERMAL_CONSTANTV)
 			batch_nonisothermal_constantv_->Solve(tStart_, tEnd_);
@@ -384,7 +387,7 @@ namespace OptiSMOKE{
 		// Solve the ODE system: Isothermal, Constant Pressure
 		if (type_ == OpenSMOKE::BATCH_REACTOR_ISOTHERMAL_CONSTANTP)
 			batch_isothermal_constantp_->Solve(tStart_, tEnd_);
-		std::cout.clear(); // Re-enable video-output
+		//std::cout.clear(); // Re-enable video-output
 	}
 
 	double BatchReactor::GetIgnitionDelayTime(std::string criterion)
