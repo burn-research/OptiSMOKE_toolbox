@@ -37,6 +37,8 @@
 #include <string>
 #include <iostream>
 #include <numeric>
+#include <random>
+#include <chrono>
 
 // OpenSMOKE header
 #include "OpenSMOKE_Definitions.h"
@@ -78,6 +80,9 @@ namespace po = boost::program_options;
 #include <nlopt.h>
 #endif
 
+// Curve Matching
+#include "curve_matching/Indexes.h"
+
 // Header files
 #include "utilities/OptiSMOKEUtilities"
 #include "grammar/grammar.h"
@@ -87,9 +92,6 @@ namespace po = boost::program_options;
 #include "InputManager.h"
 #include "SerialDakotaInterface.h"
 #include "SimulationsInterface.h"
-
-// Curve Matching
-#include "curve_matching/Indexes.h"
 
 #ifdef HAVE_AMPL 
 // Floating-point initialization from AMPL: switch to 53-bit rounding

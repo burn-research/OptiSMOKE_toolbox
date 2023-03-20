@@ -67,6 +67,7 @@ namespace OptiSMOKE{
         inline const OptiSMOKE::options_kinetics& kinetics_data() const {return kinetics_data_;};
         inline const OptiSMOKE::options_optimization_target& optimization_target() const {return optimization_target_;};
         inline const OptiSMOKE::options_optimization_setup& optimization_setup() const {return optimization_setup_;};
+        inline const OptiSMOKE::options_curvematching& curvematching_options() const {return curvematching_options_;};
         
         inline const bool& iXml() const {return iXml_;};
         inline const bool& iNominalXml() const {return iNominalXml_;};

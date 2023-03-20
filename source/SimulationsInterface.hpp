@@ -143,7 +143,44 @@ namespace OptiSMOKE{
 		//             Spline for experimental data              //
 		//-------------------------------------------------------//
 
-		
+		if(data_->optimization_setup().objective_function_type() == "CurveMatching"){
+
+			splines_exp.resize(data_->expdata_x().size());
+			if(data_->curvematching_options().use_bootstrap() == false){
+				for (int a=0; a < data_->expdata_x().size(); a++){	
+					splines_exp[a].resize(data_->expdata_x()[a].size());
+					for (int b = 0; b < data_->expdata_x()[a].size(); b++){
+						splines_exp[a][b].resize(1);
+						if(data_->QoI()[a] == "IDT"){
+							// Initialize 1 vector to get the ordinates
+							std::vector<double> temporary_vector;			
+							temporary_vector.resize(data_->expdata_y()[a][b].size());
+							for (int z=0; z < data_->expdata_y()[a][b].size(); z++){
+								temporary_vector[z] = std::log(data_->expdata_y()[a][b][z]);
+							}
+							splines_exp[a][b][0].solve(data_->expdata_x()[a][b], temporary_vector, 0, 0, false);
+						} 
+						else {
+							splines_exp[a][b][0].solve(data_->expdata_x()[a][b], data_->expdata_y()[a][b], 0, 0, false);	
+						}
+						splines_exp[a][b][0].removeAsymptotes();	
+					}
+				}
+			}
+			else{
+				// Bootstrap is active
+
+				
+			}
+		}
+		else if(data_->optimization_setup().objective_function_type() == "L2-norm"){
+
+		}
+		else if(data_->optimization_setup().objective_function_type() == "L1-norm"){
+		}
+		else{
+			OptiSMOKE::FatalErrorMessage("Unknown type for the Objective Function, available are: CurveMatching | L2-norm | L1-norm");
+		}
 	}
 
 	void SimulationsInterface::run(){
@@ -191,6 +228,63 @@ namespace OptiSMOKE{
             
 			if (solver == "CounterFlowFlame1D"){
 				OptiSMOKE::FatalErrorMessage(solver + " not yet supported!");
+			}
+		}
+	}
+
+	void SimulationsInterface::BootstrappingData(std::vector<std::vector<std::vector<double>>>){
+	
+		bootstrap_exp.resize(data_->expdata_y().size());
+
+    	for (int a = 0; a < data_->expdata_y().size(); a++) {
+			bootstrap_exp[a].resize(data_->expdata_y()[a].size()); 
+			for (int b=0; b < data_->expdata_y()[a].size(); b++) {
+				bootstrap_exp[a][b].resize(data_->curvematching_options().number_of_bootstrap()); 
+				for (int c=0; c < data_->curvematching_options().number_of_bootstrap(); c++) {
+					bootstrap_exp[a][b][c].resize(data_->expdata_y()[a][b].size()); 
+					for (int d=0; d < data_->expdata_y()[a][b].size(); d++) {
+						bootstrap_exp[a][b][c][d] = data_->expdata_y()[a][b][d];
+					}
+				}
+			}		
+		}
+		
+		// Replace BS variations with samples from a 
+		// gaussian distribution
+
+		for (int i=0; i < bootstrap_exp.size(); i++) {
+			for (int c=0; c < bootstrap_exp[i].size(); c++){
+				for (int a=0; a < bootstrap_exp[i][c][0].size(); a++) {
+					// create an object of class std::default_random_engine, 
+					// which generates pseudo-random numbers
+					std::default_random_engine generator;
+					// initializes the seed of the random_engine_generator
+					generator.seed(std::chrono::system_clock::now().time_since_epoch().count());
+					std::normal_distribution<double> distribution(data_->expdata_y()[i][c][a], ObjectInput2.standard_deviations[i][c][a]);	
+					// loop over the number of Bootstrap variations
+					for (int b=1; b < data_->curvematching_options().number_of_bootstrap(); b++){
+						// generate a random number from the distribution
+						double number = distribution(generator);
+						// if negative replace with 0
+						if (number < 0 && data_->curvematching_options().possible_negative_ordinates() == false){
+							number = 0;
+						}
+						// if logScale is false, returns the number
+						// otherwise, return the log of the number to bootstrap.
+						if (logScale == false){
+							// if the data is 0, then always put 0, otherwise, replace the nominal value with the sampled number
+							if (Exp_data[i][c][1][a]==0){
+								bootstrapExp[i][c][b][a] = 0;
+							} else{
+								bootstrapExp[i][c][b][a] = number;
+							}
+						}
+						else{
+							// IN PRINCIPLES IT WILL NEVER GO HERE
+							bootstrapExp[i][c][b][a] = log(number);
+						}	
+					}
+				}
 			}
 		}
 	}

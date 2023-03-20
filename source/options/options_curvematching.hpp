@@ -34,7 +34,9 @@
 
 namespace OptiSMOKE
 {
-    options_curvematching::options_curvematching() {}
+    options_curvematching::options_curvematching(){
+        // TODO: check options that have default values
+    }
     
     options_curvematching::~options_curvematching() {}
 
@@ -53,13 +55,14 @@ namespace OptiSMOKE
         if (dictionary_manager(dictionary_name).CheckOption("@UseSumOfIndexesForAlignment"))
 			dictionary_manager(dictionary_name).ReadBool("@UseSumOfIndexesForAlignment", use_index_for_alignement_);
         
-        // da fare check sul tipo
         if (dictionary_manager(dictionary_name).CheckOption("@FractionOfExpRangeForModelExtrapolation"))
 			dictionary_manager(dictionary_name).ReadDouble("@FractionOfExpRangeForModelExtrapolation", fraction_of_exp_for_model_extrapolation_);
 
         if (dictionary_manager(dictionary_name).CheckOption("@UseBootStrap"))
 			dictionary_manager(dictionary_name).ReadBool("@UseBootStrap", use_bootstrap_);
 
+        if (dictionary_manager(dictionary_name).CheckOption("@PossibleNegativeOrdinates"))
+			dictionary_manager(dictionary_name).ReadBool("@PossibleNegativeOrdinates", possible_negative_ordinates_);
     }
 
 } // namespace OptiSMOKE
