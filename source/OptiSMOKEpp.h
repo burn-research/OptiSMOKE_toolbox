@@ -88,6 +88,9 @@ namespace po = boost::program_options;
 #include "SerialDakotaInterface.h"
 #include "SimulationsInterface.h"
 
+// Curve Matching
+#include "curve_matching/Indexes.h"
+
 #ifdef HAVE_AMPL 
 // Floating-point initialization from AMPL: switch to 53-bit rounding
 // if appropriate, to eliminate some cross-platform differences.
