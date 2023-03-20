@@ -48,14 +48,14 @@ namespace OptiSMOKE
         void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
                                 std::string dictionary_name);
     
-        inline const std::string& parameter_boundaries() {return parameter_boundaries_;};
-        inline const int& sigma_exp_ditribution() {return sigma_exp_ditribution_;};
-        inline const int& sigma_k_distribution() {return sigma_k_distribution_;};
-        inline const std::string& parameter_distribution() {return parameter_distribution_;};
-        inline const bool& penalty_function() {return penalty_function_;};
-        inline const std::string& objective_function_type() {return objective_function_type_;};
-        inline const bool& iReactionClasses() {return iReactionClasses_;};
-        inline const bool& iScalingClasses() {return iScalingClasses_;};
+        inline const std::string& parameter_boundaries() const {return parameter_boundaries_;};
+        inline const int& sigma_exp_ditribution() const {return sigma_exp_ditribution_;};
+        inline const int& sigma_k_distribution() const {return sigma_k_distribution_;};
+        inline const std::string& parameter_distribution() const {return parameter_distribution_;};
+        inline const bool& penalty_function() const {return penalty_function_;};
+        inline const std::string& objective_function_type() const {return objective_function_type_;};
+        inline const bool& iReactionClasses() const {return iReactionClasses_;};
+        inline const bool& iScalingClasses() const {return iScalingClasses_;};
 
     private:
 

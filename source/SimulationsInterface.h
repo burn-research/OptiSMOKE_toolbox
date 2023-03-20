@@ -24,6 +24,17 @@ namespace OptiSMOKE {
 		unsigned int n_psr;
 		unsigned int n_premixed;
 		unsigned int n_counterflow;
+
+		std::vector<std::vector<std::vector<double>>> simulations_results_;
+
+		std::vector<std::vector<double>> k_upper;
+		std::vector<std::vector<double>> k_lower;
+
+		std::vector<std::vector<double>> k_upper_inf;
+		std::vector<std::vector<double>> k_lower_inf;
+
+		std::vector<std::vector<std::vector<double>>> k_upper_classic_plog;
+		std::vector<std::vector<std::vector<double>>> k_lower_classic_plog;
 	};
 } // namespace OptiSMOKE
 
