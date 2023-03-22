@@ -128,5 +128,6 @@
         "-DCMAKE_BUILD_TYPE=Debug"
     ],
     "cmake.configureOnOpen": false,
-    "cmake.ctest.parallelJobs": 1
+    "cmake.ctest.parallelJobs": 1,
+    "debug.inlineValues": "off"
 }

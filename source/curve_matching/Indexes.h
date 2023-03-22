@@ -374,15 +374,12 @@ double Indexes::solve(bool CalculateShift,
 				    bool LogScale,
                     Spline splinesExp_receive,
                     std::vector<double> valuesSim_receive,
-		    std::vector<double> experimental_abscissae,
-		    int a,
-		    bool print_indexes,
-		    bool print_splines,
-            	    std::string quantity_of_interest
-                    //const std::string& FolderPath,
-                    //const std::string& FolderName,
-                    //const std::string& FileName,
-                    ) {
+		            std::vector<double> experimental_abscissae,
+		            int a,
+		            bool print_indexes,
+		            bool print_splines,
+            	    std::string quantity_of_interest) 
+{
 
     Spline splinesExp;
     print_indexes = print_indexes;
@@ -396,13 +393,11 @@ double Indexes::solve(bool CalculateShift,
 
 
     if(quantity_of_interest == "IDT"){
-
         std::vector<double> temporary_vector;
         temporary_vector.resize(Sim_values.size());
 
-        for (int z; z<Sim_values.size(); ++z)
-        {
-                temporary_vector[z] = std::log(Sim_values[z]);
+        for (int z; z < Sim_values.size(); ++z){
+            temporary_vector[z] = std::log(Sim_values[z]);
         }
 
         splinesMod.solve(experimental_abscissae,temporary_vector,1,0,print_splines);

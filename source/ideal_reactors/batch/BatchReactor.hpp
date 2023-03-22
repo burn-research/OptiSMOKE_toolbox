@@ -152,9 +152,9 @@ namespace OptiSMOKE{
 				dictionaries(main_dictionary_name_).ReadDictionary("@Options", name_of_options_subdictionary);
 				batch_options->SetupFromDictionary(dictionaries(name_of_options_subdictionary));
 			}
-			batch_options_->SetVerboseVideo(false);
-			batch_options_->SetVerboseOutput(false);
-			batch_options_->SetSensitivityAnalysis(false);
+			batch_options->SetVerboseVideo(false);
+			batch_options->SetVerboseOutput(false);
+		    batch_options->SetSensitivityAnalysis(false);
 		}
 
 		// ODE Parameters
@@ -367,7 +367,7 @@ namespace OptiSMOKE{
 
 	void BatchReactor::Solve()
 	{
-		//std::cout.setstate(std::ios_base::failbit); // Disable video output
+		// std::cout.setstate(std::ios_base::failbit); // Disable video output
 		// Solve the ODE system: NonIsothermal, Constant Volume
 		if (type_ == OpenSMOKE::BATCH_REACTOR_NONISOTHERMAL_CONSTANTV)
 			batch_nonisothermal_constantv_->Solve(tStart_, tEnd_);
@@ -387,7 +387,7 @@ namespace OptiSMOKE{
 		// Solve the ODE system: Isothermal, Constant Pressure
 		if (type_ == OpenSMOKE::BATCH_REACTOR_ISOTHERMAL_CONSTANTP)
 			batch_isothermal_constantp_->Solve(tStart_, tEnd_);
-		//std::cout.clear(); // Re-enable video-output
+		// std::cout.clear(); // Re-enable video-output
 	}
 
 	double BatchReactor::GetIgnitionDelayTime(std::string criterion)
@@ -395,13 +395,15 @@ namespace OptiSMOKE{
 		double tau_ign_temp;
 		std::string delimiter = "-";
 		
+		// --- Think about rewrting this piece
 		int pos = 0;
 		std::vector<std::string> token;
-		std::string tmp = criterion; // This because i want to save criterion
+		std::string tmp = criterion; // This because I don't want to overwrite criterion
 		while ((pos = tmp.find(delimiter)) != std::string::npos) {
     		token.push_back(tmp.substr(0, pos));
     		tmp.erase(0, pos + delimiter.length());
 		}
+		token.push_back(tmp);
 
 		if(token[1] == "increase"){
 			if(token[0] == "Temperature")

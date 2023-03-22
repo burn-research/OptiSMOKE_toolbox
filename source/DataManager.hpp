@@ -80,7 +80,6 @@ namespace OptiSMOKE{
                     assert(node.first.empty());
                     abscissae_label_[i][count].push_back(node.second.get<std::string>("abscissae_label"));
                     ordinates_label_[i][count].push_back(node.second.get<std::string>("ordinates_label"));
-                    uncertainty_kind_[i][count].push_back(node.second.get<std::string>("uncertainty_kind"));
                     
                     BOOST_FOREACH(boost::property_tree::ptree::value_type &node2, node.second.get_child("abscissae")){
                         assert(node2.first.empty());
@@ -90,9 +89,25 @@ namespace OptiSMOKE{
                         assert(node2.first.empty());
                         expdata_y_[i][count].push_back(node2.second.get_value<double>());
                     }
-                    BOOST_FOREACH(boost::property_tree::ptree::value_type &node2, node.second.get_child("uncertainty")){
-                        assert(node2.first.empty());
-                        uncertainty_[i][count].push_back(node2.second.get_value<double>());
+                    
+                    boost::optional<std::string> uncertainty_node = node.second.get_optional<std::string>("uncertainty_kind");
+                    if(uncertainty_node){
+                        uncertainty_kind_[i][count].push_back(node.second.get<std::string>("uncertainty_kind"));
+                        BOOST_FOREACH(boost::property_tree::ptree::value_type &node2, node.second.get_child("uncertainty")){
+                            assert(node2.first.empty());
+                            uncertainty_[i][count].push_back(node2.second.get_value<double>());
+                        }
+                    }
+                    else {
+                        // TODO: implement the standard deviation
+                        // std::cout << "The uncertainty for the datasets ";
+                        // std::cout << experimental_data_files[i].c_str();
+                        // std::cout << " is not provided!" << std::endl;
+                        uncertainty_kind_[i][count].push_back("relative");
+                        for(unsigned int j=0; j < expdata_y_[i][count].size(); j++){
+                            uncertainty_[i][count].push_back(0);
+                        }
+
                     }
                     count += 1;
                 }
@@ -134,9 +149,9 @@ namespace OptiSMOKE{
         std::vector<int> counterflow;
 
         for(unsigned int i = 0; i < num; i++){
-            if(solver_name_[i] == "Batchreactor")
+            if(solver_name_[i] == "BatchReactor")
                 batch.push_back(i);
-            else if (solver_name_[i] == "PlugFlowreactor")
+            else if (solver_name_[i] == "PlugFlowReactor")
                 pfr.push_back(i);
             else if (solver_name_[i] == "PerfectlyStirredReactor")
                 psr.push_back(i);
@@ -269,6 +284,19 @@ namespace OptiSMOKE{
         expdata_y_ = expdata_y_tmp;
         uncertainty_ = uncertainty_tmp;
         save_simulations_ = save_simulations_tmp;
+    }
+
+    void DataManager::ComputeStandardDeviations(){
+        standard_deviations_.resize(expdata_y_.size());
+        for(unsigned int i = 0; i < expdata_y_.size(); i++){
+            standard_deviations_[i].resize(expdata_y_[i].size());
+            for(unsigned int j = 0; j < expdata_y_[i].size(); j++){
+                standard_deviations_[i][j].resize(expdata_y_[i][j].size());
+                for(unsigned int k = 0; k < expdata_y_[i][j].size(); k++){
+                    // standard_deviations_[i][j][k] = uncertainty_[i][j][k] * (expdata_y_[i][j][k]) / Sigma_vector[i];
+                }
+            }
+        }
     }
 
 } // namespace OptiSMOKE

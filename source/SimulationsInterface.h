@@ -13,6 +13,8 @@ namespace OptiSMOKE {
 		void run();
 
 		void Setup();
+
+		double ComputeObjectiveFunction();
 		
   	private:
 		OptiSMOKE::InputManager* data_;
@@ -37,11 +39,11 @@ namespace OptiSMOKE {
 		std::vector<std::vector<std::vector<double>>> k_lower_classic_plog;
 
 		std::vector<Spline> splines_sim;
-  		std::vector<std::vector<std::vector<Indexes>>> indexes;
   		std::vector<std::vector<std::vector<Spline>>> splines_exp;
 		std::vector<std::vector<std::vector<std::vector<double>>>> bootstrap_exp;
 		
 		void BootstrappingData(std::vector<std::vector<std::vector<double>>>);
+
 	};
 } // namespace OptiSMOKE
 

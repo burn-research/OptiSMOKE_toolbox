@@ -36,6 +36,7 @@
 #define DATAMANAGER_H
 
 #include <boost/property_tree/json_parser.hpp>
+#include <boost/optional.hpp>
 #include <boost/foreach.hpp>
 #include <boost/json.hpp>
 
@@ -89,8 +90,15 @@ namespace OptiSMOKE{
         std::vector<std::vector<std::vector<double>>> expdata_x_;
         std::vector<std::vector<std::vector<double>>> expdata_y_;
         std::vector<std::vector<std::vector<double>>> uncertainty_;
+        std::vector<std::vector<std::vector<double>>> standard_deviations_;
+
+        // Default sigma for standard deviation if it is not present
+        // inside the file
+        double default_sigma = 2;
 
         void OrderData();
+
+        void ComputeStandardDeviations();
     };
 } // namespace OptiSMOKE
 

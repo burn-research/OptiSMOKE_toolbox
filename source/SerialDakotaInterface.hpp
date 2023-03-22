@@ -66,6 +66,7 @@ namespace SIM {
         OptiSMOKE::SimulationsInterface sim_iface(data_);
         sim_iface.Setup();
         sim_iface.run();
+        fn_val = sim_iface.ComputeObjectiveFunction();
         return 0;
     }
 
