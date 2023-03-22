@@ -141,39 +141,6 @@ namespace OptiSMOKE{
 				}
 			}		
 		}
-
-		//-------------------------------------------------------//
-		//             Spline for experimental data              //
-		//-------------------------------------------------------//
-
-		if(data_->optimization_setup().objective_function_type() == "CurveMatching"){
-
-			splines_exp.resize(data_->expdata_x().size());
-			if(data_->curvematching_options().use_bootstrap() == false){
-				for (int a=0; a < data_->expdata_x().size(); ++a){	
-					splines_exp[a].resize(data_->expdata_x()[a].size());
-					for (int b = 0; b < data_->expdata_x()[a].size(); ++b){
-						splines_exp[a][b].resize(1);
-						if(data_->QoI()[a] == "IDT"){
-							// Initialize 1 vector to get the ordinates
-							std::vector<double> temporary_vector;			
-							temporary_vector.resize(data_->expdata_y()[a][b].size());
-							for (int z=0; z < data_->expdata_y()[a][b].size(); ++z){
-								temporary_vector[z] = std::log(data_->expdata_y()[a][b][z]);
-							}
-							splines_exp[a][b][0].solve(data_->expdata_x()[a][b], temporary_vector, 0, 0, false);
-						} 
-						else {
-							splines_exp[a][b][0].solve(data_->expdata_x()[a][b], data_->expdata_y()[a][b], 0, 0, false);	
-						}
-						splines_exp[a][b][0].removeAsymptotes();	
-					}
-				}
-			}
-			else{
-				// Bootstrap is active
-			}
-		}
 	}
 
 	void SimulationsInterface::run()
@@ -287,66 +254,20 @@ namespace OptiSMOKE{
 	double SimulationsInterface::ComputeObjectiveFunction(){
 
 		double objective_function = 0;
-		std::vector<std::vector<std::vector<double>>> Diff_obj;
 
 		if (data_->optimization_setup().objective_function_type() == "CurveMatching") {
-		
-			std::vector<std::vector<std::vector<double>>> CM_values;
-			std::vector<std::vector<std::vector<Indexes>>> indexes;
+			std::vector<double> CM_Score;
+			std::vector<double> ciao = {0, 0, 0, 0, 0};
+			CM_Score = curveMatching(data_->curvematching_options().number_of_bootstrap(),
+									data_->expdata_x()[0][0],
+									data_->expdata_y()[0][0],
+									data_->expdata_x()[0][0],
+									simulations_results_[0][0],
+									ciao);
 
-			indexes.resize(simulations_results_.size());
-			CM_values.resize(simulations_results_.size());
-			double tStart_CM = OpenSMOKE::OpenSMOKEGetCpuTime();
-
-			for (int i=0; i < simulations_results_.size(); ++i){	
-	
-				CM_values[i].resize(simulations_results_[i].size());
-				indexes[i].resize(simulations_results_[i].size());
-
-				for (int j=0; j < simulations_results_[i].size(); ++j) {
-
-					CM_values[i][j].resize(data_->curvematching_options().number_of_bootstrap());
-					indexes[i][j].resize(data_->curvematching_options().number_of_bootstrap());
-					
-					for (int a=0; a < data_->curvematching_options().number_of_bootstrap(); ++a) {
-						
-						CM_values[i][j][a] = 0;
-						CM_values[i][j][a] = indexes[i][j][a].solve(false, 
-							false, 
-							splines_exp[i][j][a], 
-							simulations_results_[i][j], 
-							data_->expdata_x()[i][j], 
-							i, 
-							true, 
-							true, 
-							data_->QoI()[i]
-						);
-					}
-				}
+			for(auto& c : CM_Score){
+				std::cout << c << std::endl;
 			}
-			
-			double final_index = 0;
-			for (int i =0; i<indexes.size(); ++i){
-				double i_th_index = 0;
-				for (int j=0; j<indexes[i].size(); ++j) {
-					double j_th_index = 0;
-					for (int a=0; a < data_->curvematching_options().number_of_bootstrap(); ++a){
-						j_th_index  = j_th_index + CM_values[i][j][a] / data_->curvematching_options().number_of_bootstrap();	
-					}
-					i_th_index = i_th_index  + j_th_index/indexes[i].size();
-				}
-				std::cout << " * The CM index of the " << i << "-th dataset is ";
-				std::cout << i_th_index / data_->curvematching_options().number_of_bootstrap()<< std::endl;	
-				final_index = final_index + i_th_index/indexes.size();
-			}
-
-			double tEnd_CM = OpenSMOKE::OpenSMOKEGetCpuTime();
-
-			std::cout << " * Time to compute the Curve Matching using ";
-			std::cout << data_->curvematching_options().number_of_bootstrap();
-			std::cout << " bootstrap variations: " << tEnd_CM - tStart_CM << std::endl;			
-			std::cout << " * The final CM index is " << final_index << std::endl;
-			objective_function = 1 - final_index;
 		} 
 		else if (data_->optimization_setup().objective_function_type() == "L1-norm"){
 			OptiSMOKE::FatalErrorMessage("L1-norm not yet implemented!");

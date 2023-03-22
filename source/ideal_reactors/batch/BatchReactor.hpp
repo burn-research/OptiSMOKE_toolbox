@@ -452,7 +452,12 @@ namespace OptiSMOKE{
 				// <Species>-max-slope
 				std::vector<unsigned int> species_index_temp;
 				species_index_temp = idt->species_index();
-				int species_index = std::distance(species_index_temp.begin(),std::find(species_index_temp.begin(),species_index_temp.end(),thermodynamicsMapXML_->IndexOfSpecies(token[0])))-1;
+				int species_index = std::distance(species_index_temp.begin(),
+					std::find(species_index_temp.begin(),
+						species_index_temp.end(),
+						thermodynamicsMapXML_->IndexOfSpecies(token[0])
+					)
+				)-1;
 				tau_ign_temp = idt->species_slope_tau()[species_index];
 			}
 		}

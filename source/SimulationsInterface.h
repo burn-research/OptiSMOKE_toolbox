@@ -15,8 +15,8 @@ namespace OptiSMOKE {
 		void Setup();
 
 		double ComputeObjectiveFunction();
-		
-  	private:
+	
+	private:
 		OptiSMOKE::InputManager* data_;
 	
 		std::vector<OptiSMOKE::BatchReactor*> batch_reactors;
@@ -27,8 +27,6 @@ namespace OptiSMOKE {
 		unsigned int n_premixed;
 		unsigned int n_counterflow;
 
-		std::vector<std::vector<std::vector<double>>> simulations_results_;
-
 		std::vector<std::vector<double>> k_upper;
 		std::vector<std::vector<double>> k_lower;
 
@@ -38,11 +36,11 @@ namespace OptiSMOKE {
 		std::vector<std::vector<std::vector<double>>> k_upper_classic_plog;
 		std::vector<std::vector<std::vector<double>>> k_lower_classic_plog;
 
-		std::vector<Spline> splines_sim;
-  		std::vector<std::vector<std::vector<Spline>>> splines_exp;
+		std::vector<std::vector<std::vector<double>>> simulations_results_;
+	
 		std::vector<std::vector<std::vector<std::vector<double>>>> bootstrap_exp;
 		
-		void BootstrappingData(std::vector<std::vector<std::vector<double>>>);
+		void BootstrappingData(std::vector<std::vector<std::vector<double>>> ciao);
 
 	};
 } // namespace OptiSMOKE

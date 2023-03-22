@@ -81,7 +81,7 @@ namespace po = boost::program_options;
 #endif
 
 // Curve Matching
-#include "curve_matching/Indexes.h"
+#include "curve_matching/curve_matching.h"
 
 // Header files
 #include "utilities/OptiSMOKEUtilities"

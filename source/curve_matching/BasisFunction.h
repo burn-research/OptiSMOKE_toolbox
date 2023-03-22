@@ -1,54 +1,21 @@
-/*-----------------------------------------------------------------------*\
-|     ____            _  ______ __  __  ____  _  ________                 |
-|    / __ \       _  (_)/  ___ |  \/  |/ __ \| |/ /  ____|                |
-|   | |  | |_ __ | |_ _|  (___ | \  / | |  | | ' /| |__    _     _        |
-|   | |  | | '_ \|  _| |\___  \| |\/| | |  | |  < |  __| _| |_ _| |_      |
-|   | |__| | |_) | |_| |____)  | |  | | |__| | . \| |___|_   _|_   _|     |
-|    \____/| .__/\___|_|______/|_|  |_|\____/|_|\_\______||_|   |_|       |
-|          | |                                                            |
-|          |_|                                                            |
-|                                                                         |
-|            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
-|                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|-------------------------------------------------------------------------|
-|   License                                                               |
-|                                                                         |
-|   This file is part of OptiSMOKE.                                       |
-|   Copyright (C) 2020 by Magnus Fürst and Andrea Bertolino               |
-|                                                                         |
-|   OptiSMOKE is free software: you can redistribute it and/or modify     |
-|   it under the terms of the GNU General Public License as published by  |
-|   the Free Software Foundation, either version 3 of the License, or     |
-|   (at your option) any later version.                                   |
-|                                                                         |
-|   OptiSMOKE is distributed in the hope that it will be useful,          |
-|   but WITHOUT ANY WARRANTY; without even the implied warranty of        |
-|   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         |
-|   GNU General Public License for more details.                          |
-|                                                                         |
-|   You should have received a copy of the GNU General Public License     |
-|   along with OptiSMOKE. If not, see <http://www.gnu.org/licenses/>.     |
-|                                                                         |
-\*-----------------------------------------------------------------------*/
-
 class BasisFunction {
 
 public:
 
     /* Coefficients of the basis function */
-    std::vector<std::vector<double>> coeffD0;
+    vector<vector<double>> coeffD0;
 
     /* Coefficients of the first derivative of the basis function */
-    std::vector<std::vector<double>> coeffD1;
+    vector<vector<double>> coeffD1;
 
     /* Coefficients of the second derivative of the basis function */
-    std::vector<std::vector<double>> coeffD2;
+    vector<vector<double>> coeffD2;
 
     ////////////////////////////////////////////////////////////////////////////
 
     /* Calculates the coefficients of the basis function, and calculates the
     coefficients of its first and second derivative */
-    void calculateCoefficients(int indexFirstKnot, const std::vector<double>& knots);
+    void calculateCoefficients(int indexFirstKnot, const vector<double>& knots);
 
     /* Calculates the value of the basis function at position x on the x-axis */
     double D0(double x);
@@ -67,10 +34,10 @@ public:
 private:
 
     /* Knots of the basis function, including non-real ones */
-    std::vector<double> knotsAll;
+    vector<double> knotsAll;
 
     /* Knots of the basis function, excluding non-real ones */
-    std::vector<double> knotsReal;
+    vector<double> knotsReal;
 
     /* Index of the leftmost knot of the basis function in the knotsAll vector
     */
@@ -85,22 +52,22 @@ private:
 
     /* Powers of the abscissa where the value of the basis function is to be
     calculated */
-    std::vector<double> powers;
+    vector<double> powers;
 
     ////////////////////////////////////////////////////////////////////////////
 
     /* Finds the knots in common, given two sets of knots */
-    void findKnotsInCommon(const std::vector<double>& knotsAlpha,
-                           const std::vector<double>& knotsBeta,
-                           std::vector<double>& knotsInCommon);
+    void findKnotsInCommon(const vector<double>& knotsAlpha,
+                           const vector<double>& knotsBeta,
+                           vector<double>& knotsInCommon);
 
     /* Sums the basisAlpha and basisBeta basis functions. The basis functions
     must be separated by a single knot */
-    void sumBasisFunctions(std::vector<std::vector<double>> basisAlpha,
-                           std::vector<std::vector<double>> basisBeta,
+    void sumBasisFunctions(vector<vector<double>> basisAlpha,
+                           vector<vector<double>> basisBeta,
                            int degree /* of the basis functions */,
                            int index /* of the first knot */,
-                           std::vector<std::vector<double>>& basisSum);
+                           vector<vector<double>>& basisSum);
 
     // FOR TESTING PURPOSES ONLY:
     /* Saves the data for creating the graph of the basis function to a .txt
@@ -123,45 +90,37 @@ private:
 
 
 void BasisFunction::calculateCoefficients(int indexFirstKnot,
-                                          const std::vector<double>& knots) {
-    // defines the starting point from where to compute the basis Function
-    j = indexFirstKnot;
-    //std::cout<<"The indexFirstKnot is :"<<indexFirstKnot<<std::endl;
-    // indeed, i starts from j, and it goes from j to j+4, m=4, which is the order of the polynomial that will 
-    // represent the basis function. 
+                                          const vector<double>& knots) {
 
-    // The variable knotsAll will include  all the knots composing this basis function, which is equal to the order
+    j = indexFirstKnot;
+
     for (int i=j; i<=j+m; ++i)
         knotsAll.push_back(knots[i]);
-    // also the number of polynomials is initialized
+
     int numberOfPolynomials = knots.size() - 1;
-    // the first real knot will be always the third
     double firstRealKnot = knots[g];
-    // The last real knot will be always the third last, because a number of knots equal to g was added before, so we have to remove them
-    // while computing the splines.
     double lastRealKnot = knots[numberOfPolynomials-g];
-    // only if the knots are bigger or lower than firstRealKnot/lastRealKnot they are added to knotsReal
     for (int i=0; i<=m; ++i)
         if (knotsAll[i] >= firstRealKnot)
             if (knotsAll[i] <= lastRealKnot)
                 knotsReal.push_back(knotsAll[i]);
-    // finds the index of first real knot
+
     indexOfFirstRealKnot = 0;
     for (int i=0; i<m; ++i)
         if (knotsAll[i] >= firstRealKnot) {
             indexOfFirstRealKnot = i;
             break;
         }
-    // compute the max height
+
     maxHeight = (knots.back()-knots[0])/numberOfPolynomials*(double)m;
-    //std::cout<<"The maxHeight is :"<<maxHeight<<std::endl;
+
     // The 'pyramid' vector of vectors of vectors will contain the coefficients
     // of the basis function
-    std::vector<std::vector<std::vector<std::vector<double>>>> pyramid;
-    for (int a=0; a<g; ++a) 
-    {
-        std::vector<std::vector<std::vector<double>>> pyramidLevel;
-        auto basis = std::vector<std::vector<double>>(a+1,std::vector<double>(m,0));
+
+    vector<vector<vector<vector<double>>>> pyramid;
+    for (int a=0; a<g; ++a) {
+        vector<vector<vector<double>>> pyramidLevel;
+        auto basis = vector<vector<double>>(a+1,vector<double>(m,0));
         for (int b=0; b<m-a; ++b)
             pyramidLevel.push_back(basis);
         pyramid.push_back(pyramidLevel);
@@ -179,28 +138,24 @@ void BasisFunction::calculateCoefficients(int indexFirstKnot,
                               pyramid[a][b]);
 
     // coefficientsD0 is equal to the top of 'pyramid'
-    coeffD0 = std::vector<std::vector<double>>(m,std::vector<double>(m,0));
+    coeffD0 = vector<vector<double>>(m,vector<double>(m,0));
     sumBasisFunctions(pyramid[g-1][0],
                       pyramid[g-1][1],
                       g /*degree of the basis functions*/,
                       0 /*index of the first knot*/,
                       coeffD0);
 
-    coeffD1 = std::vector<std::vector<double>>(m,std::vector<double>(m,0));
+    coeffD1 = vector<vector<double>>(m,vector<double>(m,0));
     for (int i=0; i<m; ++i)
-    {
         for (int a=1; a<m; ++a)
-	{
             coeffD1[i][a-1] = (double)a*coeffD0[i][a];
-	    //std::cout<<"The CoeffD1["<<i<<"]"<<"["<<a-1<<"]"<<" is :"<<coeffD1[i][a-1]<<std::endl;
-	}
-    }
-    coeffD2 = std::vector<std::vector<double>>(m,std::vector<double>(m,0));
+
+    coeffD2 = vector<vector<double>>(m,vector<double>(m,0));
     for (int i=0; i<m; ++i)
         for (int a=2; a<m; ++a)
             coeffD2[i][a-2] = (double)(a*(a-1))*coeffD0[i][a];
 
-    powers = std::vector<double>(m,1);
+    powers = vector<double>(m,1);
 
 }
 
@@ -210,20 +165,15 @@ double BasisFunction::D0(double x) {
 
     // If x is outside the knots or equal to the rightmost knot, the basis
     // function is equal to 0
-    //std::cout<<"x "<<x<<std::endl;
-    //std::cout<<"m "<<m<<std::endl;
-    //std::cout<<"knotsAll[0] "<<knotsAll[0]<<std::endl;
-    //std::cout<<"knotsAll[m] "<<knotsAll[m]<<std::endl;
-    if (x < knotsAll[0] || x >= knotsAll[m]){
-	 return 0;
-    }else{
+    if (x < knotsAll[0] || x >= knotsAll[m]) return 0;
+
     int indexOfPolynomial = 0;
     for (int i=0; i<m; ++i)
         if (x < knotsAll[i+1]) {
             indexOfPolynomial = i;
             break;
         }
-    //std::cout<<"indexOfPolynomial "<< indexOfPolynomial <<knotsAll[m]<<std::endl;
+
     // Calculates the powers of x
     for (int i=1; i<m; ++i)
         powers[i] = powers[i-1]*x;
@@ -232,9 +182,9 @@ double BasisFunction::D0(double x) {
     double y = 0;
     for (int i=0; i<m; ++i)
         y += coeffD0[indexOfPolynomial][i]*powers[i];
-    //std::cout<<"actual y "<<y<<std::endl;
+
     return y;
-    }
+
 }
 
 
@@ -270,7 +220,7 @@ double BasisFunction::D1(double x) {
 double BasisFunction::integralOfProductD2(const BasisFunction& basisFunction) {
 
     // knotsInCommon will contain the real knots in common
-    std::vector<double> knotsInCommon;
+    vector<double> knotsInCommon;
 
     findKnotsInCommon(knotsReal, basisFunction.knotsReal, knotsInCommon);
 
@@ -280,8 +230,8 @@ double BasisFunction::integralOfProductD2(const BasisFunction& basisFunction) {
     // derivatives of the basis functions for the segments between real knots in
     // common to both basis functions
 
-    std::vector<std::vector<double>> D2Basis1;
-    std::vector<std::vector<double>> D2Basis2;
+    vector<vector<double>> D2Basis1;
+    vector<vector<double>> D2Basis2;
 
     for (int a=indexOfFirstRealKnot; a<m; ++a)
         if (knotsAll[a] == knotsInCommon[0]) {
@@ -303,8 +253,8 @@ double BasisFunction::integralOfProductD2(const BasisFunction& basisFunction) {
     // productD2 will contain the coefficients of the product of the second
     // derivatives of the basis functions
     auto productD2 =
-        std::vector<std::vector<double>>(numberOfPolynomialsInCommon,
-        std::vector<double>(mTimesTwoMinusFive,0));
+        vector<vector<double>>(numberOfPolynomialsInCommon,
+        vector<double>(mTimesTwoMinusFive,0));
 
     // For each segments calculates the coefficients of the product of the
     // second derivatives of the basis functions
@@ -316,7 +266,7 @@ double BasisFunction::integralOfProductD2(const BasisFunction& basisFunction) {
 
     // Calculates the powers of each knot in common
     auto powersKnotsInCommon =
-        std::vector<std::vector<double>>(numberOfKnotsInCommon,std::vector<double>(m*2-4,1));
+        vector<vector<double>>(numberOfKnotsInCommon,vector<double>(m*2-4,1));
     for (int i=0; i<numberOfKnotsInCommon; ++i)
         for (int a=1; a<=mTimesTwoMinusFive; ++a)
             powersKnotsInCommon[i][a] =
@@ -336,9 +286,9 @@ double BasisFunction::integralOfProductD2(const BasisFunction& basisFunction) {
 
 
 
-void BasisFunction::findKnotsInCommon(const std::vector<double>& knotsAlpha,
-                                      const std::vector<double>& knotsBeta,
-                                      std::vector<double>& knotsInCommon) {
+void BasisFunction::findKnotsInCommon(const vector<double>& knotsAlpha,
+                                      const vector<double>& knotsBeta,
+                                      vector<double>& knotsInCommon) {
 
     int knotsAlphaSize = knotsAlpha.size();
     int knotsBetaSize = knotsBeta.size();
@@ -362,11 +312,11 @@ void BasisFunction::findKnotsInCommon(const std::vector<double>& knotsAlpha,
 
 
 
-void BasisFunction::sumBasisFunctions(std::vector<std::vector<double>> basisAlpha,
-                                      std::vector<std::vector<double>> basisBeta,
+void BasisFunction::sumBasisFunctions(vector<vector<double>> basisAlpha,
+                                      vector<vector<double>> basisBeta,
                                       int degree /* of the basis functions */,
                                       int index /* of the first knot */,
-                                      std::vector<std::vector<double>>& basisSum) {
+                                      vector<vector<double>>& basisSum) {
 
     int order = degree + 1;
 
@@ -417,42 +367,42 @@ void BasisFunction::sumBasisFunctions(std::vector<std::vector<double>> basisAlph
 
 void BasisFunction::printBasisR(int derivativeOrder) {
 
-    // int numberPoints = 10000;
+    int numberPoints = 10000;
 
-    // double distance = (knotsAll.back()-knotsAll[0]) / (double)(numberPoints-1);
+    double distance = (knotsAll.back()-knotsAll[0]) / (double)(numberPoints-1);
 
-    // // Saves the data for the plot to a .txt file
+    // Saves the data for the plot to a .txt file
 
-    // std::string fileName = "DatiPlotR.txt";
-    // std::string fileNameWithPath = "./" + fileName;
+    string fileName = "DatiPlotR.txt";
+    string fileNameWithPath = "./" + fileName;
 
-    // const char* fileNameWithPathChar = fileNameWithPath.c_str();
-    // ofstream file(fileNameWithPathChar);
+    const char* fileNameWithPathChar = fileNameWithPath.c_str();
+    ofstream file(fileNameWithPathChar);
 
-    // file << "x\ty" << endl;
-    // for (int i=0; i<numberPoints; ++i) {
-    //     file << knotsAll[0]+(double)i*distance << "\t";
-    //     if (derivativeOrder == 0)
-    //         file << this->D0(knotsAll[0]+(double)i*distance) << endl;
-    //     else if (derivativeOrder == 1)
-    //         file << this->D1(knotsAll[0]+(double)i*distance) << endl;
-    //     else if (derivativeOrder == 2)
-    //         file << this->D2(knotsAll[0]+(double)i*distance) << endl;
-    // }
-    // file.close();
+    file << "x\ty" << endl;
+    for (int i=0; i<numberPoints; ++i) {
+        file << knotsAll[0]+(double)i*distance << "\t";
+        if (derivativeOrder == 0)
+            file << this->D0(knotsAll[0]+(double)i*distance) << endl;
+        else if (derivativeOrder == 1)
+            file << this->D1(knotsAll[0]+(double)i*distance) << endl;
+        else if (derivativeOrder == 2)
+            file << this->D2(knotsAll[0]+(double)i*distance) << endl;
+    }
+    file.close();
 
-    // // Writes the .R script to create the graph
+    // Writes the .R script to create the graph
 
-    // std::string scriptName = "Script.R";
+    string scriptName = "Script.R";
 
-    // const char* scriptNameAndPathChar = scriptName.c_str();
-    // ofstream script(scriptNameAndPathChar);
+    const char* scriptNameAndPathChar = scriptName.c_str();
+    ofstream script(scriptNameAndPathChar);
 
-    // script << "Test = read.table(\"" << fileName
-    //        << "\", sep=\"\\t\", header=TRUE)" << endl
-    //        << "plot(Test[,1],Test[,2], cex=0.01, col=3)";
+    script << "Test = read.table(\"" << fileName
+           << "\", sep=\"\\t\", header=TRUE)" << endl
+           << "plot(Test[,1],Test[,2], cex=0.01, col=3)";
 
-    // script.close();
+    script.close();
 
 }
 
