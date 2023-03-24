@@ -1,0 +1,7 @@
+cases/wang_25_9.5_1252/input.dic
+cases/wang_25_9.5_1243/input.dic
+cases/wang_25_9.5_1212/input.dic
+cases/wang_25_9.5_1198/input.dic
+cases/wang_25_9.5_1188/input.dic
+cases/wang_25_9.5_1154/input.dic
+cases/wang_25_9.5_1145/input.dic

@@ -1,0 +1,40 @@
+{
+	"notes": "Wang dataset test",
+	"name": "Wang dataset 2",
+	"solver": "BatchReactor",
+	"QoI": "IDT",
+	"QoI_target": "OH-max-slope",
+	"OS_Input_File": ["cases/wang_15_4.0_1237/input.dic",
+					"cases/wang_15_4.0_1232/input.dic",
+					"cases/wang_15_4.0_1227/input.dic",
+					"cases/wang_15_4.0_1222/input.dic",
+					"cases/wang_15_4.0_1209/input.dic",
+					"cases/wang_15_4.0_1185/input.dic",
+					"cases/wang_15_4.0_1170/input.dic",
+					"cases/wang_15_4.0_1155/input.dic",
+					"cases/wang_15_4.0_1142/input.dic",
+					"cases/wang_15_4.0_1133/input.dic",
+					"cases/wang_15_4.0_1130/input.dic"],
+	"multiple_input": true,
+	"save_simulations_data": true,
+	"data":[
+		{
+			"abscissae_label": "1000/Temperature",
+			"abscissae_unit": "1/K",
+			"abscissae": [0.808407437,
+						0.811688312,
+						0.814995925,
+						0.818330606,
+						0.827129859,
+						0.843881857,
+						0.854700855,
+						0.865800866,
+						0.875656743,
+						0.882612533,
+						0.884955752],
+			"ordinates_label": "IDT",
+			"ordinates_unit": "us",
+			"ordinates": [29,25,31,27,38,39,51,77,177,157,172]
+		}
+	]
+}

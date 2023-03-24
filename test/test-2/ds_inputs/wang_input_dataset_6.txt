@@ -1,0 +1,8 @@
+cases/wang_40_4.5_1331/input.dic
+cases/wang_40_4.5_1300/input.dic
+cases/wang_40_4.5_1266/input.dic
+cases/wang_40_4.5_1245/input.dic
+cases/wang_40_4.5_1207/input.dic
+cases/wang_40_4.5_1206/input.dic
+cases/wang_40_4.5_1199/input.dic
+cases/wang_40_4.5_1166/input.dic

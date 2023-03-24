@@ -5,8 +5,17 @@
 .dirstamp
 *.o
 *.sh
-test/
+test/test-1
 build/
+test/mechanisms/Aramco_MB
+test/mechanisms/ELTE
+test/mechanisms/GLOBAL
+test/mechanisms/H2_effort
+test/mechanisms/NUIG
+test/mechanisms/POLIMI_C1C3
+test/mechanisms/POLIMI_C1C3_OPT
+test/mechanisms/Polimi_NH3_2020
+
 
 # Files and Folders from autoconf
 autom4te.cache/
