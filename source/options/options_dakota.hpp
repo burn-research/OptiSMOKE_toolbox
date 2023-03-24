@@ -54,6 +54,8 @@ namespace OptiSMOKE
 		iDiverseInput_ = false;
 
         tabular_data_file_ = "tabulara_data.dat";
+
+		echo_dakota_string_ = false;
     }
 
     void options_dakota::SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, 
@@ -116,6 +118,10 @@ namespace OptiSMOKE
 		if (dictionary_manager(dictionary_name).CheckOption("@DiverseInput") == true){
 			iDiverseInput_ = true;
 			dictionary_manager(dictionary_name).ReadOption("@DiverseInput", diverse_dakota_input_);
+		}
+
+		if(dictionary_manager(dictionary_name).CheckOption("@EchoDakotaInput") == true){
+			dictionary_manager(dictionary_name).ReadBool("@EchoDakotaInput", echo_dakota_string_);
 		}
 			
  		if (dictionary_manager(dictionary_name).CheckOption("@Gradient") == true)

@@ -62,11 +62,29 @@ namespace SIM {
 
     int SerialDakotaInterface::simulations_interface(const Dakota::RealVector& c_vars, short asv, Dakota::Real& fn_val)
     {
-        unsigned int count = 0;
+        eval_nr++;
+        // Consider of using a smart pointer or move them insde the constructor
         OptiSMOKE::SimulationsInterface sim_iface(data_);
         sim_iface.Setup();
-        sim_iface.run();
-        fn_val = sim_iface.ComputeObjectiveFunction();
+        sim_iface.SubstituteKineticParameters(c_vars);
+        bool violated_uncertainty = sim_iface.CheckKineticConstasts();
+        if(violated_uncertainty){
+            if (data_->optimization_setup().objective_function_type() == "CurveMatching")
+				fn_val = 1;
+			else
+				fn_val = 10000000;
+        }
+        else{
+            sim_iface.run();
+            fn_val = sim_iface.ComputeObjectiveFunction();
+        }
+        
+        if(eval_nr == 1)
+            prev_fn_val = fn_val;
+        
+        if(prev_fn_val > fn_val){
+            // Save optimized mech    
+        }
         return 0;
     }
 

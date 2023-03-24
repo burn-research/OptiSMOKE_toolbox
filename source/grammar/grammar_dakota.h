@@ -51,6 +51,11 @@ namespace OptiSMOKE
                 OpenSMOKE::SINGLE_STRING,
                 "Specific name for tabular data file",
                 false));
+            
+            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@EchoDakotaInput",
+                OpenSMOKE::SINGLE_BOOL,
+                "Print on the log file the dakota input string",
+                false));
 
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Method",
                 OpenSMOKE::SINGLE_STRING,

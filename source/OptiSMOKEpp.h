@@ -65,6 +65,8 @@ namespace po = boost::program_options;
 // Eigen Library
 #include <Eigen/Dense>
 
+const double UNFEASIBLE_BIG_NUMBER = 1.e16;
+
 // Dakota Library
 #include "ParallelLibrary.hpp"
 #include "ProblemDescDB.hpp"
@@ -105,7 +107,7 @@ extern "C" void fpinit_ASL();
 
 
 // Run a Dakota LibraryEnvironment, mode 1: parsing an input file
-void run_dakota_parse(const char* plugin_input_file);
+void run_dakota_parse(const char* plugin_input_file, bool echo_dakota_string);
 
 void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env); //,const char* plugin_input_file);
 

@@ -67,6 +67,7 @@ namespace OptiSMOKE
     inline const bool& iGradient() const {return iGradient_;};
     inline const bool& iDiverseInput() const {return iDiverseInput_;};
     inline const std::string& tabular_data_file() const {return tabular_data_file_;};
+    inline const bool& echo_dakota_string() const {return echo_dakota_string_;};
 
     private:
 
@@ -86,6 +87,7 @@ namespace OptiSMOKE
     std::string solution_target_;
     std::string seed_;
     std::vector<std::string> diverse_dakota_input_;
+    bool echo_dakota_string_;
 
     // Values for coliny_direct
 		std::string division_;

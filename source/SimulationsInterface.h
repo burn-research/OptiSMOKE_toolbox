@@ -15,6 +15,10 @@ namespace OptiSMOKE {
 		void Setup();
 
 		double ComputeObjectiveFunction();
+
+		bool CheckKineticConstasts();
+			
+		void SubstituteKineticParameters(const Dakota::RealVector& c_vars);
 	
 	private:
 		OptiSMOKE::InputManager* data_;
@@ -37,11 +41,16 @@ namespace OptiSMOKE {
 		std::vector<std::vector<std::vector<double>>> k_lower_classic_plog;
 
 		std::vector<std::vector<std::vector<double>>> simulations_results_;
-	
-		std::vector<std::vector<std::vector<std::vector<double>>>> bootstrap_exp;
-		
-		void BootstrappingData(std::vector<std::vector<std::vector<double>>> ciao);
 
+		std::vector<double> T_span = {300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, \
+		1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400, 2500};
+
+		void ChangeDirectParamaters(std::string type, int index, double parameter);
+
+		void ChangeFallOffParamaters(std::string type, int index, double parameter);
+
+		void ChangeThirdBodyEfficiencies(unsigned int i, std::string name, double parameter);
+	
 	};
 } // namespace OptiSMOKE
 

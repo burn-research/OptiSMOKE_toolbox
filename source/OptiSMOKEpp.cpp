@@ -7,10 +7,12 @@
 |    \____/| .__/\___|_|______/|_|  |_|\____/|_|\_\______||_|   |_|       |
 |          | |                                                            |
 |          |_|                                                            |
+|                                                                         |                                           
 |                                                                         |
 |            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
 |                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
 |                     Timoteo Dinelli <timoteo.dinelli@polimi.it>         |
+|                                                                         |
 |                                                                         |
 |-------------------------------------------------------------------------|
 |   License                                                               |
@@ -65,7 +67,7 @@ int main(int argc, char* argv[]){
     if(input->optimization_library() == "dakota"){
         input->DakotaInputString();
         dakota_input_string = input->dakota_input_string().c_str();
-        run_dakota_parse(dakota_input_string);
+        run_dakota_parse(dakota_input_string, input->dakota_options().echo_dakota_string());
 
         // Note: Dakota objects created in above function calls need to go
         // out of scope prior to MPI_Finalize so that MPI code in
@@ -86,13 +88,13 @@ int main(int argc, char* argv[]){
     }
 }
 
-void run_dakota_parse(const char* dakota_input_string){
+void run_dakota_parse(const char* dakota_input_string, bool echo_dakota_string){
 
     // Parse input and construct Dakota LibraryEnvironment, 
     // performing input data checks
     Dakota::ProgramOptions opts;
     opts.input_string(dakota_input_string);
-    opts.echo_input(false);
+    opts.echo_input(echo_dakota_string);
     
     // Defaults constructs the MPIManager, which assumes COMM_WORLD
     Dakota::LibraryEnvironment env(opts);

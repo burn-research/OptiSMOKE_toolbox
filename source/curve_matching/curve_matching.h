@@ -34,18 +34,17 @@ std::vector<double> curveMatching(int numberOfBootstrapVariations_par,
     std::vector<double> vector_errors;
     std::vector<std::string> vector_names;
 
-
-
     vector_scores = r.KintSorted;
     vector_errors = r.KintStdDevSorted;
 	vector_names = r.modelNamesSorted;
-	vector<double> results_scores;
-	vector<double> results_errors;
+	// vector<double> results_scores;
+	// vector<double> results_errors;
 
-    for (int i = 0; i < vector_scores.size(); i++) {
-        results_scores.push_back(vector_scores[i]);
-        results_errors.push_back(vector_errors[i]);
-    }
-	return results_scores;
+    // for (int i = 0; i < vector_scores.size(); i++) {
+    //     results_scores.push_back(vector_scores[i]);
+    //     results_errors.push_back(vector_errors[i]);
+    // }
+	// return results_scores;
+    return ind_vect[0].allIndexes[0][0];
 }
 #endif // CURVE_MATCHING_H

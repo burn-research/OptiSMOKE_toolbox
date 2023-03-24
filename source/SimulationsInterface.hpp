@@ -31,7 +31,11 @@ namespace OptiSMOKE{
 	void SimulationsInterface::Setup()
 	{
 
-		// Allocate Reactors Object
+		//-------------------------------------------------------//
+		//               Allocations of reactors object          //
+		//-------------------------------------------------------//
+
+		// Consider offsetting
 		if(n_batch != 0){
 			batch_reactors.resize(n_batch);
 			for(unsigned int i = 0; i < n_batch; i++)
@@ -46,7 +50,6 @@ namespace OptiSMOKE{
 		// Initializes vector of uncertainty factors for Direct reactions
 		// Compute max and min reaction rates according to temperature dependent 
 		// or constant uncertainty factors for direct reactions
-		std::vector<double> T_span = {300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400, 2500};
 		std::vector<double> f_factors = data_->optimization_target().list_of_uncertainty_factors();
 
 		// Computing boundaries for all the reactions
@@ -70,6 +73,17 @@ namespace OptiSMOKE{
 				k_upper[j][i] = k_0[j][i] * std::pow(10, f_factors[j]) * ((double)data_->optimization_setup().sigma_k_distribution()/2);
 				k_lower[j][i] = k_0[j][i] * std::pow(10,-1*f_factors[j]) / ((double)data_->optimization_setup().sigma_k_distribution()/2);
 			}
+
+			// std::cout << "Reaction " << reaction_index << ": " << std::endl;
+			// for (int i=0; i < T_span.size(); i++) 
+            // {    
+            //     std::cout<< "The value of f for the lower constraint is: " << k_lower[j][i] <<std::endl;
+            // }    
+
+            // for (int i=0; i < T_span.size(); i++) 
+            // {    
+            //     std::cout<< "The value of f for the upper constraint is: " << k_upper[j][i] <<std::endl;
+            // }   
 		}
 		// }
 
@@ -117,7 +131,8 @@ namespace OptiSMOKE{
 			
 			for(int k=0; k<data_->nominalkineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).lnA().size(); k++){
 				if(data_->nominalkineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).lnA()[k].size() != 1){
-					std::cout << " * WARNING one of the plog reactions requested for the optimization is a duplicate!" << std::endl;
+					std::cout << " * WARNING the plog reactions requested for the optimization is a duplicate!" << std::endl;
+					std::cout << "   * Reaction: " << data_->optimization_target().list_of_target_classic_plog_reactions()[j] << std::endl;
 				}
 			}	
 			
@@ -193,82 +208,64 @@ namespace OptiSMOKE{
 		}
 	}
 
-	void SimulationsInterface::BootstrappingData(std::vector<std::vector<std::vector<double>>>)
+	double SimulationsInterface::ComputeObjectiveFunction()
 	{
-	/*	bool logScale = false; // TODO: Check this
-		bootstrap_exp.resize(data_->expdata_y().size());
-
-    	for (int a = 0; a < data_->expdata_y().size(); a++) {
-			bootstrap_exp[a].resize(data_->expdata_y()[a].size()); 
-			for (int b=0; b < data_->expdata_y()[a].size(); b++) {
-				bootstrap_exp[a][b].resize(data_->curvematching_options().number_of_bootstrap()); 
-				for (int c=0; c < data_->curvematching_options().number_of_bootstrap(); c++) {
-					bootstrap_exp[a][b][c].resize(data_->expdata_y()[a][b].size()); 
-					for (int d=0; d < data_->expdata_y()[a][b].size(); d++) {
-						bootstrap_exp[a][b][c][d] = data_->expdata_y()[a][b][d];
-					}
-				}
-			}		
-		}
-		
-		// Replace BS variations with samples from a 
-		// gaussian distribution
-
-		for (int i=0; i < bootstrap_exp.size(); i++) {
-			for (int c=0; c < bootstrap_exp[i].size(); c++){
-				for (int a=0; a < bootstrap_exp[i][c][0].size(); a++) {
-					// create an object of class std::default_random_engine, 
-					// which generates pseudo-random numbers
-					std::default_random_engine generator;
-					// initializes the seed of the random_engine_generator
-					generator.seed(std::chrono::system_clock::now().time_since_epoch().count());
-					std::normal_distribution<double> distribution(data_->expdata_y()[i][c][a], ObjectInput2.standard_deviations[i][c][a]);	
-					// loop over the number of Bootstrap variations
-					for (int b=1; b < data_->curvematching_options().number_of_bootstrap(); b++){
-						// generate a random number from the distribution
-						double number = distribution(generator);
-						// if negative replace with 0
-						if (number < 0 && data_->curvematching_options().possible_negative_ordinates() == false){
-							number = 0;
-						}
-						// if logScale is false, returns the number
-						// otherwise, return the log of the number to bootstrap.
-						if (logScale == false){
-							// if the data is 0, then always put 0, otherwise, replace the nominal value with the sampled number
-							if (data_->expdata_y()[i][c][a] == 0){
-								bootstrap_exp[i][c][b][a] = 0;
-							} else{
-								bootstrap_exp[i][c][b][a] = number;
-							}
-						}
-						else{
-							// IN PRINCIPLES IT WILL NEVER GO HERE
-							bootstrap_exp[i][c][b][a] = log(number);
-						}	
-					}
-				}
-			}
-		}*/
-	}
-
-	double SimulationsInterface::ComputeObjectiveFunction(){
-
 		double objective_function = 0;
 
 		if (data_->optimization_setup().objective_function_type() == "CurveMatching") {
-			std::vector<double> CM_Score;
-			std::vector<double> ciao = {0, 0, 0, 0, 0};
-			CM_Score = curveMatching(data_->curvematching_options().number_of_bootstrap(),
-									data_->expdata_x()[0][0],
-									data_->expdata_y()[0][0],
-									data_->expdata_x()[0][0],
-									simulations_results_[0][0],
-									ciao);
-
-			for(auto& c : CM_Score){
-				std::cout << c << std::endl;
+			std::vector<double> CM_indexes;
+			std::vector<std::vector<double>> CM_score;
+			CM_score.resize(simulations_results_.size());
+			
+			double tStart_CM = OpenSMOKE::OpenSMOKEGetCpuTime();
+			for(unsigned int i = 0; i < simulations_results_.size(); i++){
+				CM_score[i].resize(simulations_results_[i].size());
+				for(unsigned int j = 0; j < simulations_results_[i].size(); j++){
+					if(data_->QoI()[i] == "IDT"){
+						std::vector<double> tmp;
+						std::vector<double> tmp2;
+						for(int k = 0; k < data_->expdata_y()[i][j].size(); k++){
+							tmp.push_back(std::log(data_->expdata_y()[i][j][k]));
+							tmp2.push_back(std::log(simulations_results_[i][j][k]));
+						}
+						CM_indexes = curveMatching(data_->curvematching_options().number_of_bootstrap(),
+									data_->expdata_x()[i][j],
+									tmp,
+									data_->expdata_x()[i][j],
+									tmp2,
+									data_->uncertainty()[i][j]);
+					}
+					else{
+						CM_indexes = curveMatching(data_->curvematching_options().number_of_bootstrap(),
+									data_->expdata_x()[i][j],
+									data_->expdata_y()[i][j],
+									data_->expdata_x()[i][j],
+									simulations_results_[i][j],
+									data_->uncertainty()[i][j]);
+					}
+					CM_score[i][j] = (CM_indexes[0] + CM_indexes[1] + CM_indexes[2] + CM_indexes[3])/4;
+				}	
 			}
-		} 
+			
+			double final_index = 0; 
+            for (int i =0; i < CM_score.size(); i++){    
+                double i_th_index = 0; 
+                for (int j=0; j < CM_score[i].size(); j++){
+                	i_th_index = i_th_index  + CM_score[i][j]/CM_score[i].size(); 
+                }
+                std::cout << " * The Curve Matching score of ";
+				std::cout << data_->dataset_names()[i] << " is: " << i_th_index << std::endl; 
+                final_index = final_index+i_th_index/CM_score.size();
+            }
+
+			std::cout << " * The final Curve Matching score is ";
+			std::cout << final_index << std::endl;
+			double tEnd_CM = OpenSMOKE::OpenSMOKEGetCpuTime();
+            std::cout << " * Time to compute the Curve Matching using ";
+			std::cout << data_->curvematching_options().number_of_bootstrap();
+			std::cout << " bootstrap variations: " << tEnd_CM - tStart_CM;
+            objective_function = 1 - final_index;
+		}
 		else if (data_->optimization_setup().objective_function_type() == "L1-norm"){
 			OptiSMOKE::FatalErrorMessage("L1-norm not yet implemented!");
 		} 
@@ -281,4 +278,190 @@ namespace OptiSMOKE{
 		return objective_function;	
 	}
 
+	bool SimulationsInterface::CheckKineticConstasts()
+	{
+		// OptiSMOKE mantainer of the future in order to make things more effcient consider
+		// to not substituting kinetics and then creating constraints and then checking 
+		// just check and substitute or not
+		for (int j=0; j < data_->optimization_target().list_of_target_uncertainty_factors().size(); j++){
+			std::vector<double> k_check;
+			k_check.resize(T_span.size());
+			for (int i=0; i < T_span.size(); i++){
+				// Calculating the k value for the new set of kinetic parameters for a temperature span of 300-3000 K
+				unsigned int reaction_index = data_->optimization_target().list_of_target_uncertainty_factors()[j]-1;
+				double A_j = data_->kineticsMapXML()->A(reaction_index);
+				double Beta_j = data_->kineticsMapXML()->Beta(reaction_index);
+				double E_over_R_j = data_->kineticsMapXML()->E_over_R(reaction_index);
+
+				k_check[i] = A_j * std::pow(T_span[i], Beta_j) * std::exp((-1 * E_over_R_j)/T_span[i]);
+
+				// If at one temperature the k value is either below the lower bound or above the upper bound, 
+				// forcefully set the objective function value to 1e7 and print out for which reaction the violation occured 
+				if ((k_check[i]<=k_lower[j][i]) || (k_check[i]>=k_upper[j][i])){
+					std::cout << " * Violation for reaction: ";
+					std::cout << reaction_index + 1 << std::endl;
+					return true;
+				}
+			}
+		}
+
+		std::vector<unsigned int> indices_of_falloff_reactions = data_->kineticsMapXML()->IndicesOfFalloffReactions();
+		for (int j=0; j < data_->optimization_target().list_of_target_uncertainty_factors_inf().size(); j++){
+			std::vector<double> k_check_inf;
+			k_check_inf.resize(T_span.size());
+			
+			// Finding position of the fall off reaction
+			int pos_FallOff_Reaction = std::find(
+				indices_of_falloff_reactions.begin(),
+				indices_of_falloff_reactions.end(),
+				data_->optimization_target().list_of_target_uncertainty_factors_inf()[j]
+			) - indices_of_falloff_reactions.begin();
+			
+			for (int i=0; i < T_span.size(); i++){
+				double A_falloff_inf_j = data_->kineticsMapXML()->A_falloff_inf(pos_FallOff_Reaction);
+				double Beta_falloff_inf_j = data_->kineticsMapXML()->Beta_falloff_inf(pos_FallOff_Reaction);
+				double E_over_R_falloff_inf_j = data_->kineticsMapXML()->E_over_R_falloff_inf(pos_FallOff_Reaction);
+				k_check_inf[i] = A_falloff_inf_j * std::pow(T_span[i], Beta_falloff_inf_j) * std::exp((-1 * E_over_R_falloff_inf_j)/T_span[i]);
+
+				if ((k_check_inf[i] <= k_lower_inf[j][i]) || (k_check_inf[i] >= k_upper_inf[j][i])){
+					std::cout << " * Violation for reaction: ";
+					std::cout << data_->optimization_target().list_of_target_uncertainty_factors_inf()[j];
+					std::cout << " (inf) " << std::endl;
+					return true;
+				}
+			}
+		}
+
+		std::vector<unsigned int> indices_of_classic_plog = data_->nominalkineticsMapXML()->IndicesOfPLOGReactions();
+		for (int j=0; j < data_->optimization_target().list_of_uncertainty_factors_classic_plog().size(); j++){
+
+			int pos_classic_plog_reaction = std::find(
+				indices_of_classic_plog.begin(),
+				indices_of_classic_plog.end(),
+				data_->optimization_target().list_of_target_classic_plog_reactions()[j]
+			) - indices_of_classic_plog.begin();
+
+			for (int k=0; k < data_->kineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).lnA().size(); k++){
+				double A_CP_trial = std::exp(data_->kineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).lnA()[k][0]);
+				double n_CP_trial = data_->kineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).Beta()[k][0];
+				double E_over_R_CP_trial = data_->kineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).E_over_R()[k][0];
+
+				std::vector<double> k_check_CP;
+				k_check_CP.resize(T_span.size());
+
+				for (int i=0; i < T_span.size(); i++){
+					k_check_CP[i] = A_CP_trial * std::pow(T_span[i], n_CP_trial) * std::exp((-1*E_over_R_CP_trial)/T_span[i]);
+
+					if ((k_check_CP[i] <= k_lower_classic_plog[j][k][i]) || (k_check_CP[i] >= k_upper_classic_plog[j][k][i])){
+						std::cout << " * Violation for PLOG reaction: ";
+						std::cout << data_->optimization_target().list_of_target_classic_plog_reactions()[j] << std::endl;
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	void SimulationsInterface::SubstituteKineticParameters(const Dakota::RealVector& c_vars){
+		unsigned int count = 0;
+
+		// lnA
+		if(data_->optimization_target().list_of_target_lnA().size() != 0){
+			for(unsigned int i = 0; i < data_->optimization_target().list_of_target_lnA().size(); i++){
+				ChangeDirectParamaters("lnA", data_->optimization_target().list_of_target_lnA()[i], c_vars[count]);
+				count += 1;
+			}
+		}
+
+		// lnA_inf
+		if(data_->optimization_target().list_of_target_lnA_inf().size() != 0){
+			for(unsigned int i = 0; i < data_->optimization_target().list_of_target_lnA_inf().size(); i++){
+				ChangeFallOffParamaters("lnA", data_->optimization_target().list_of_target_lnA_inf()[i], c_vars[count]);
+				count += 1;
+			}
+		}
+		
+		// Beta
+		if(data_->optimization_target().list_of_target_Beta().size() != 0){
+			for(unsigned int i = 0; i < data_->optimization_target().list_of_target_Beta().size(); i++){
+				ChangeDirectParamaters("Beta", data_->optimization_target().list_of_target_Beta()[i], c_vars[count]);
+				count += 1;
+			}
+		}
+		
+		// Beta_inf
+		if(data_->optimization_target().list_of_target_Beta_inf().size() != 0){
+			for(unsigned int i = 0; i < data_->optimization_target().list_of_target_Beta_inf().size(); i++){
+				ChangeFallOffParamaters("Beta", data_->optimization_target().list_of_target_Beta_inf()[i], c_vars[count]);
+				count += 1;
+			}
+		}
+		
+		// E_over_R
+		if(data_->optimization_target().list_of_target_E_over_R().size() != 0){
+			for(unsigned int i = 0; i < data_->optimization_target().list_of_target_E_over_R().size(); i++){
+				ChangeDirectParamaters("E_over_R", data_->optimization_target().list_of_target_E_over_R()[i], c_vars[count]);
+				count += 1;
+			}
+		}
+		
+		// E_over_R_inf
+		if(data_->optimization_target().list_of_target_E_over_R_inf().size() != 0){
+			for(unsigned int i = 0; i < data_->optimization_target().list_of_target_E_over_R_inf().size(); i++){
+				ChangeFallOffParamaters("E_over_R", data_->optimization_target().list_of_target_E_over_R_inf()[i], c_vars[count]);
+				count += 1;
+			}			
+		}
+		
+		// 3B eff
+		if(data_->optimization_target().list_of_target_thirdbody_reactions().size() != 0){
+			for (unsigned int i = 0; i <  data_->optimization_target().list_of_target_thirdbody_reactions().size(); i++){
+                ChangeThirdBodyEfficiencies(data_->optimization_target().list_of_target_thirdbody_reactions()[i], 
+											data_->optimization_target().list_of_target_thirdbody_species()[i], 
+											c_vars[count]);
+                count += 1;
+        	}	
+		}
+		
+		// Classic PLOG
+		if(data_->optimization_target().list_of_target_classic_plog_reactions().size() != 0){
+			
+		}
+	}
+
+	void SimulationsInterface::ChangeDirectParamaters(std::string type, int index, double parameter){
+		
+		if(type == "lnA")
+			data_->kineticsMapXML()->Set_A(index-1, std::exp(parameter));
+		if(type == "Beta")
+			data_->kineticsMapXML()->Set_Beta(index-1, parameter);
+		if(type == "E_over_R")
+			data_->kineticsMapXML()->Set_E_over_R(index-1, parameter);
+	}
+
+	void SimulationsInterface::ChangeFallOffParamaters(std::string type, int index, double parameter){
+		std::vector<unsigned int> indices_of_falloff_reactions = data_->kineticsMapXML()->IndicesOfFalloffReactions();
+		int pos_FallOff_Reaction = std::find(indices_of_falloff_reactions.begin(), 
+			indices_of_falloff_reactions.end(), 
+			index
+		) - indices_of_falloff_reactions.begin();
+		
+		if(type == "lnA")
+			data_->kineticsMapXML()->Set_A_falloff_inf(pos_FallOff_Reaction, std::exp(parameter));
+		if(type == "Beta")
+			data_->kineticsMapXML()->Set_Beta_falloff_inf(pos_FallOff_Reaction, parameter);
+		if(type == "E_over_R")
+			data_->kineticsMapXML()->Set_E_over_R_falloff_inf(pos_FallOff_Reaction, parameter);
+	}
+
+	void SimulationsInterface::ChangeThirdBodyEfficiencies(unsigned int i, std::string name, double parameter){
+		// Finding position of the fall off reaction
+        // Finding the index of the third body species
+        int iSpecies = data_->thermodynamicsMapXML()->IndexOfSpecies(name);
+
+        // Finding position of the third body species to be changed
+        // Changing the value of the thirdbody species
+        data_->kineticsMapXML()->Set_ThirdBody(i-1, iSpecies-1, parameter);
+	}
 } // namespace OptiSMOKE
