@@ -31,3 +31,7 @@ Makefile.in
 missing
 configure~
 targets.txt
+Output
+log
+*.out
+
