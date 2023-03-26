@@ -27,11 +27,11 @@ Dictionary OptiSMOKEpp
 	@ListOfOpenSMOKEInputFiles		Path_to_Input_Datasets.txt;
 
 	@ListOfExperimentalDataFiles	ds_data/wang_exp_dataset_1.json 
-		ds_data/wang_exp_dataset_2.json 
-		ds_data/wang_exp_dataset_3.json 
-		ds_data/wang_exp_dataset_4.json 
-		ds_data/wang_exp_dataset_5.json 
-		ds_data/wang_exp_dataset_6.json;
+									ds_data/wang_exp_dataset_2.json 
+									ds_data/wang_exp_dataset_3.json 
+									ds_data/wang_exp_dataset_4.json 
+									ds_data/wang_exp_dataset_5.json 
+									ds_data/wang_exp_dataset_6.json;
 
 	@OptimizationSetup				OptimizationSetup;
 
@@ -56,6 +56,8 @@ Dictionary OptimizationSetup
 	@AcceptedSigmaInKDistribution	3;
         
 	@SigmaExpDistribution			3;
+
+	@PenaltyFunction				true;
 }
 
 Dictionary OptimizationTargets
@@ -100,7 +102,7 @@ Dictionary KINPREPRO
 
 Dictionary dakota_options
 {
-	@EchoDakotaInput			false;
+	@EchoDakotaInput			true;
 	@TabularDataFile			Output/tabular_data.dat;
 
 	@Method						coliny_ea;

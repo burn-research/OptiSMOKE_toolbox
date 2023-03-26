@@ -44,9 +44,9 @@ find_package(OpenSMOKEpp REQUIRED)
 message (STATUS "OpenSmoke++: ${OpenSMOKEpp_INCLUDE_DIR}")
 
 # --- libconfig++ (Compulsory for OpenSMOKE++)
-find_package (CONFIG REQUIRED COMPONENTS libconfig++)
-message (STATUS "libCONFIG++ include directory: ${CONFIG++_INCLUDE_DIR}")
-message (STATUS "libCONFIG++ libraries: ${CONFIG++_LIBRARY}")
+#find_package (CONFIG REQUIRED COMPONENTS libconfig++)
+#message (STATUS "libCONFIG++ include directory: ${CONFIG++_INCLUDE_DIR}")
+#message (STATUS "libCONFIG++ libraries: ${CONFIG++_LIBRARY}")
 
 # --- CEQ (Compulsory for OpenSMOKE++)
 option (OPTISMOKE_USE_CEQ "Activate CEQ support for OpenSMOKEpp" FALSE)
@@ -69,12 +69,10 @@ message(STATUS "Dakota libraries: ${Dakota_LIBRARIES}")
 message(STATUS "Dakota binaries:  ${Dakota_EXECUTABLE}")
 
 set(COMPULSORY_LIBRARIES ${Boost_LIBRARIES} 
-                         ${CONFIG++_LIBRARY}
                          ${Dakota_LIBRARIES}
                          ${CEQ_LIBRARIES})
 
 set(COMPULSORY_INCLUDE ${Boost_INCLUDE_DIRS} 
-                       ${CONFIG++_INCLUDE_DIR} 
                        ${Dakota_INCLUDE_DIRS}
                        ${EIGEN3_INCLUDE_DIR}
                        ${OpenSMOKEpp_INCLUDE_DIR})
