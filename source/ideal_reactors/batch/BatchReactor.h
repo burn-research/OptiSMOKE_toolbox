@@ -17,6 +17,7 @@ namespace OptiSMOKE
 	class BatchReactor
 	{
 	public:
+
 		void Setup(const std::string input_file_name,
 			OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML,
 			OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML);
@@ -26,6 +27,7 @@ namespace OptiSMOKE
 		double GetIgnitionDelayTime(std::string criterion);
 
 	private:
+
 		OpenSMOKE::BatchReactor_Type type_;
 		OpenSMOKE::BatchReactor_NonIsothermal_ConstantPressure* batch_nonisothermal_constantp_;
 		OpenSMOKE::BatchReactor_Isothermal_ConstantPressure* batch_isothermal_constantp_;
@@ -38,17 +40,22 @@ namespace OptiSMOKE
 		OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML_;
 		OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML_;
 
-		OpenSMOKE::PolimiSoot_Analyzer* polimi_soot_;
-		OpenSMOKE::OnTheFlyPostProcessing* on_the_fly_post_processing_;
-		OpenSMOKE::OnTheFlyROPA* onTheFlyROPA_;
-		OpenSMOKE::BatchReactor_Options* batch_options_;
-		OpenSMOKE::ODE_Parameters* ode_parameters_;
-		OpenSMOKE::SensitivityAnalysis_Options* sensitivity_options_;
-		OpenSMOKE::IgnitionDelayTimes_Analyzer* idt;
+		OpenSMOKE::BatchReactor_Options* batch_options;
+		OpenSMOKE::ODE_Parameters* ode_parameters;
+		OpenSMOKE::SensitivityAnalysis_Options* sensitivity_options;
+		OpenSMOKE::OnTheFlyROPA* onTheFlyROPA;
 		OpenSMOKE::OnTheFlyCEMA* onTheFlyCEMA;
+		OpenSMOKE::OnTheFlyPostProcessing* on_the_fly_post_processing;
+		OpenSMOKE::IgnitionDelayTimes_Analyzer* idt;
+		OpenSMOKE::BatchReactor_VolumeProfile* batchreactor_volumeprofile;
+		OpenSMOKE::PolimiSoot_Analyzer* polimi_soot;
 
 		double tStart_;
 		double tEnd_;
+
+		void CleanMemory();
+
+		bool volume_profile_;
 	};
 } // namespace OptiSMOKE
 

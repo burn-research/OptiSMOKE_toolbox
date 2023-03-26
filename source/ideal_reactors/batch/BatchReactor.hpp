@@ -1,4 +1,5 @@
 namespace OptiSMOKE{
+
 	void BatchReactor::Setup(const std::string input_file_name,
 		OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML,
 		OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML)
@@ -143,7 +144,6 @@ namespace OptiSMOKE{
 		}
 
 		// Options
-		OpenSMOKE::BatchReactor_Options* batch_options;
 		{
 			batch_options = new OpenSMOKE::BatchReactor_Options();
 			if (dictionaries(main_dictionary_name_).CheckOption("@Options") == true)
@@ -158,7 +158,6 @@ namespace OptiSMOKE{
 		}
 
 		// ODE Parameters
-		OpenSMOKE::ODE_Parameters*	ode_parameters;
 		{
 			ode_parameters = new OpenSMOKE::ODE_Parameters();
 			if (dictionaries(main_dictionary_name_).CheckOption("@OdeParameters") == true)
@@ -171,7 +170,6 @@ namespace OptiSMOKE{
 
 		// Sensitivity Options
 		// To check non sensitivty analysis is allowed
-		OpenSMOKE::SensitivityAnalysis_Options* sensitivity_options;
 		{
 			sensitivity_options = new OpenSMOKE::SensitivityAnalysis_Options();
 			// if (dictionaries(main_dictionary_name_).CheckOption("@SensitivityAnalysis") == true)
@@ -185,38 +183,38 @@ namespace OptiSMOKE{
 		}
 
 		// On the fly ROPA
-		// To check no onthefly ropa allowed
-		OpenSMOKE::OnTheFlyROPA* onTheFlyROPA = new OpenSMOKE::OnTheFlyROPA(*thermodynamicsMapXML, *kineticsMapXML);
-		if (dictionaries(main_dictionary_name_).CheckOption("@OnTheFlyROPA") == true)
 		{
-			//std::string name_of_options_subdictionary;
-			//dictionaries(main_dictionary_name_).ReadDictionary("@OnTheFlyROPA", name_of_options_subdictionary);
-			// No ROPA (disabled)
-			// onTheFlyROPA->SetupFromDictionary(dictionaries(name_of_options_subdictionary), path_kinetics_output);
+			onTheFlyROPA = new OpenSMOKE::OnTheFlyROPA(*thermodynamicsMapXML, *kineticsMapXML);
+			if (dictionaries(main_dictionary_name_).CheckOption("@OnTheFlyROPA") == true)
+			{
+				//std::string name_of_options_subdictionary;
+				//dictionaries(main_dictionary_name_).ReadDictionary("@OnTheFlyROPA", name_of_options_subdictionary);
+				// No ROPA (disabled)
+				// onTheFlyROPA->SetupFromDictionary(dictionaries(name_of_options_subdictionary), path_kinetics_output);
+			}
 		}
 
 		// On the fly CEMA
-		// To check no onthefly CEMA
-		onTheFlyCEMA = new OpenSMOKE::OnTheFlyCEMA(*thermodynamicsMapXML, *kineticsMapXML, batch_options->output_path());
-		if (dictionaries(main_dictionary_name_).CheckOption("@OnTheFlyCEMA") == true)
 		{
-			//std::string name_of_options_subdictionary;
-			//dictionaries(main_dictionary_name_).ReadDictionary("@OnTheFlyCEMA", name_of_options_subdictionary);
-			//onTheFlyCEMA->SetupFromDictionary(dictionaries(name_of_options_subdictionary));
+			onTheFlyCEMA = new OpenSMOKE::OnTheFlyCEMA(*thermodynamicsMapXML, *kineticsMapXML, batch_options->output_path());
+			if (dictionaries(main_dictionary_name_).CheckOption("@OnTheFlyCEMA") == true)
+			{
+				//std::string name_of_options_subdictionary;
+				//dictionaries(main_dictionary_name_).ReadDictionary("@OnTheFlyCEMA", name_of_options_subdictionary);
+				//onTheFlyCEMA->SetupFromDictionary(dictionaries(name_of_options_subdictionary));
+			}
 		}
 
 		// On the fly PostProcessing
-		// To check no onthefly postprocessing
-		OpenSMOKE::OnTheFlyPostProcessing* on_the_fly_post_processing;
 		{
 			on_the_fly_post_processing = new OpenSMOKE::OnTheFlyPostProcessing(*thermodynamicsMapXML, *kineticsMapXML, batch_options->output_path());
 
-			//if (dictionaries(main_dictionary_name_).CheckOption("@OnTheFlyPostProcessing") == true)
-			//{
-			//	std::string name_of_options_subdictionary;
-		    //  dictionaries(main_dictionary_name_).ReadDictionary("@OnTheFlyPostProcessing", name_of_options_subdictionary);
-			//	on_the_fly_post_processing->SetupFromDictionary(dictionaries(name_of_options_subdictionary));
-			//}
+			if (dictionaries(main_dictionary_name_).CheckOption("@OnTheFlyPostProcessing") == true)
+			{
+			// std::string name_of_options_subdictionary;
+			// dictionaries(main_dictionary_name_).ReadDictionary("@OnTheFlyPostProcessing", name_of_options_subdictionary);
+			// on_the_fly_post_processing->SetupFromDictionary(dictionaries(name_of_options_subdictionary));
+			}
 		}
 
 		// Ignition Delay Times
@@ -234,8 +232,8 @@ namespace OptiSMOKE{
 			}
 		}
 
-		OpenSMOKE::BatchReactor_VolumeProfile* batchreactor_volumeprofile;
 		{
+			volume_profile_ = false;
 			// Read pressure coefficient
 			if (dictionaries(main_dictionary_name_).CheckOption("@PressureCoefficient") == true)
 			{
@@ -248,13 +246,14 @@ namespace OptiSMOKE{
 				std::string units;
 
 				dictionaries(main_dictionary_name_).ReadMeasure("@PressureCoefficient", value, units);
-				if (units == "Pa/s")		 batchreactor_volumeprofile->SetPressureCoefficient(value);
+				if (units == "Pa/s")         batchreactor_volumeprofile->SetPressureCoefficient(value);
 				else if (units == "bar/s")   batchreactor_volumeprofile->SetPressureCoefficient(value*1.e5);
 				else if (units == "atm/s")   batchreactor_volumeprofile->SetPressureCoefficient(value*101325.);
-				else if (units == "Pa/ms")	 batchreactor_volumeprofile->SetPressureCoefficient(value*1000.);
+				else if (units == "Pa/ms")   batchreactor_volumeprofile->SetPressureCoefficient(value*1000.);
 				else if (units == "bar/ms")  batchreactor_volumeprofile->SetPressureCoefficient(value*1.e5*1000.);
 				else if (units == "atm/ms")  batchreactor_volumeprofile->SetPressureCoefficient(value*101325.*1000.);
 				else OpenSMOKE::FatalErrorMessage("Unknown pressure coefficient units. Available: Pa/s || Pa/ms || bar/s || bar/ms || atm/s || atm/ms");
+				volume_profile_ = true;
 			}
 
 			// Read volume profile
@@ -282,6 +281,7 @@ namespace OptiSMOKE{
 					OpenSMOKE::FatalErrorMessage("The @VolumeProfile and the @Volume options must be consistent");
 
 				batchreactor_volumeprofile->SetProfile(x, y);
+				volume_profile_ = true;
 			}
 
 			// Read pressure profile
@@ -309,19 +309,20 @@ namespace OptiSMOKE{
 					OpenSMOKE::FatalErrorMessage("The @PressureProfile and the initial pressure of mixture must be consistent");
 
 				batchreactor_volumeprofile->SetPressureProfile(x, y);
+				volume_profile_ = true;
 			}
 		}
 
 		// Polimi soot
 		// No polimi soot at the moment
-		OpenSMOKE::PolimiSoot_Analyzer* polimi_soot = new OpenSMOKE::PolimiSoot_Analyzer(thermodynamicsMapXML);
+		polimi_soot = new OpenSMOKE::PolimiSoot_Analyzer(thermodynamicsMapXML);
 		{
-			//std::string name_of_polimisoot_analyzer_subdictionary;
-			//if (dictionaries(main_dictionary_name_).CheckOption("@PolimiSoot") == true)
-			//{
+			std::string name_of_polimisoot_analyzer_subdictionary;
+			if (dictionaries(main_dictionary_name_).CheckOption("@PolimiSoot") == true)
+			{
 			//	dictionaries(main_dictionary_name_).ReadDictionary("@PolimiSoot", name_of_polimisoot_analyzer_subdictionary);
 			//	polimi_soot->SetupFromDictionary(dictionaries(name_of_polimisoot_analyzer_subdictionary));
-			//}
+			}
 		}
 
 		// Solve the ODE system: NonIsothermal, Constant Volume
@@ -475,6 +476,65 @@ namespace OptiSMOKE{
 		else 
 			OptiSMOKE::FatalErrorMessage(criterion + " not yet implemented for the evaluation of Ignition Delay Time!");
 
+		CleanMemory();
 		return tau_ign_temp;
 	}
+
+	void BatchReactor::CleanMemory(){
+
+		delete batch_options;
+		batch_options = NULL;
+
+		delete ode_parameters;
+		ode_parameters = NULL;
+
+		delete sensitivity_options;
+		sensitivity_options = NULL;
+
+		delete onTheFlyROPA;
+		onTheFlyROPA = NULL;
+
+		delete onTheFlyCEMA;
+		onTheFlyCEMA = NULL;
+
+		delete on_the_fly_post_processing;
+		on_the_fly_post_processing = NULL;
+
+		delete polimi_soot;
+		polimi_soot = NULL;
+
+		if(volume_profile_){
+			delete batchreactor_volumeprofile;
+			batchreactor_volumeprofile = NULL;
+		}
+
+		delete idt;
+		idt = NULL;
+
+		if (type_ == OpenSMOKE::BATCH_REACTOR_NONISOTHERMAL_CONSTANTV){
+			delete batch_nonisothermal_constantv_ ;
+			batch_nonisothermal_constantv_ = NULL;
+		}
+
+		if (type_ == OpenSMOKE::BATCH_REACTOR_NONISOTHERMAL_USERDEFINEDVOLUME){
+			delete batch_nonisothermal_userdefinedv_ ;
+			batch_nonisothermal_userdefinedv_ = NULL ;
+		}
+
+		if (type_ == OpenSMOKE::BATCH_REACTOR_ISOTHERMAL_CONSTANTV){
+			delete batch_isothermal_constantv_ ;
+			batch_isothermal_constantv_ = NULL;
+		}
+
+		if (type_ == OpenSMOKE::BATCH_REACTOR_NONISOTHERMAL_CONSTANTP){
+			delete batch_nonisothermal_constantp_ ;
+			batch_nonisothermal_constantp_ = NULL;
+		}
+
+		if (type_ == OpenSMOKE::BATCH_REACTOR_ISOTHERMAL_CONSTANTP){
+			delete batch_isothermal_constantp_ ;
+			batch_isothermal_constantp_ = NULL;
+		}
+	}
+
 }
