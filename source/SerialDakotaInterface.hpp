@@ -67,13 +67,16 @@ namespace SIM {
         OptiSMOKE::SimulationsInterface sim_iface(data_);
         sim_iface.Setup();
         sim_iface.SubstituteKineticParameters(c_vars);
-        bool violated_uncertainty = sim_iface.CheckKineticConstasts();
-        if(violated_uncertainty){
-            if (data_->optimization_setup().objective_function_type() == "CurveMatching")
+
+		if(data_->optimization_setup().penalty_function())
+			violated_uncertainty = sim_iface.CheckKineticConstasts();
+        
+		if(violated_uncertainty){
+			if (data_->optimization_setup().objective_function_type() == "CurveMatching")
 				fn_val = 1;
 			else
 				fn_val = 10000000;
-        }
+		}
         else{
             sim_iface.run();
             fn_val = sim_iface.ComputeObjectiveFunction();

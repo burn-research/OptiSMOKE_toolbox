@@ -43,9 +43,12 @@ class SerialDakotaInterface: public Dakota::DirectApplicInterface
     int simulations_interface(const Dakota::RealVector& c_vars, short asv,Dakota::Real& fn_val);
          
     OptiSMOKE::InputManager* data_;
+
     int eval_nr;
 
     double prev_fn_val;
+
+	bool violated_uncertainty;
 };
 
   // Constructor
@@ -55,6 +58,7 @@ class SerialDakotaInterface: public Dakota::DirectApplicInterface
     // Setting database
     data_ = data;
     eval_nr = 0;
+	violated_uncertainty = false;
   }
 
   // Destructor
