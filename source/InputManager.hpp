@@ -179,89 +179,89 @@ namespace OptiSMOKE{
 		FromTargetToInitialParameter();
 
 		ComputeBoundaries();
-		
+
 		DakotaInputPreliminaryOptions();
-		
+
 		dakota_input_string_ = " environment,"
-		                       "\n      tabular_data";
-		dakota_input_string_.append("\n 		tabular_data_file '" + dakota_options_.tabular_data_file() + "'");
+								"\n  tabular_data";
+		dakota_input_string_.append("\n   tabular_data_file '" + dakota_options_.tabular_data_file() + "'");
 		
-        dakota_input_string_.append("\n	method,"); 
-		dakota_input_string_.append("\n 		" + dakota_options_.method());
-		dakota_input_string_.append("\n		  max_iterations = " + dakota_options_.max_iterations());
-		dakota_input_string_.append("\n		  max_function_evaluations = " + dakota_options_.max_function_evaluations());
-        dakota_input_string_.append("\n		  convergence_tolerance = " + dakota_options_.convergence_tolerance());
-		dakota_input_string_.append("\n 	  solution_target = " + dakota_options_.solution_target());
-		dakota_input_string_.append("\n       seed = " + dakota_options_.seed());
+        dakota_input_string_.append("\n method,"); 
+		dakota_input_string_.append("\n  " + dakota_options_.method());
+		dakota_input_string_.append("\n   max_iterations = " + dakota_options_.max_iterations());
+		dakota_input_string_.append("\n   max_function_evaluations = " + dakota_options_.max_function_evaluations());
+        dakota_input_string_.append("\n   convergence_tolerance = " + dakota_options_.convergence_tolerance());
+		dakota_input_string_.append("\n   solution_target = " + dakota_options_.solution_target());
+		dakota_input_string_.append("\n   seed = " + dakota_options_.seed());
 
 		if(dakota_options_.iDiverseInput()){
-		    dakota_input_string_.append("\n");
+			dakota_input_string_.append("\n");
 			for (int i = 0; i < dakota_options_.diverse_dakota_input().size(); i++)
 			{
 				dakota_input_string_.append( " " + dakota_options_.diverse_dakota_input()[i]);
 			}
 		} 
-        else if(dakota_options_.method() == "coliny_ea"){
-		  	dakota_input_string_.append("\n 	  population_size = " + dakota_options_.population_size());
-			dakota_input_string_.append("\n		  fitness_type " + dakota_options_.fitness_type());
-			dakota_input_string_.append("\n		  mutation_type " + dakota_options_.mutation_type());
-			dakota_input_string_.append("\n		  mutation_rate " + dakota_options_.mutation_rate());
-			dakota_input_string_.append("\n		  crossover_type " + dakota_options_.crossover_type());
-			dakota_input_string_.append("\n		  crossover_rate " + dakota_options_.crossover_rate());
-			dakota_input_string_.append("\n		  replacement_type " + dakota_options_.replacement_type());
+		else if(dakota_options_.method() == "coliny_ea"){
+			dakota_input_string_.append("\n   population_size = " + dakota_options_.population_size());
+			dakota_input_string_.append("\n   fitness_type " + dakota_options_.fitness_type());
+			dakota_input_string_.append("\n   mutation_type " + dakota_options_.mutation_type());
+			dakota_input_string_.append("\n   mutation_rate " + dakota_options_.mutation_rate());
+			dakota_input_string_.append("\n   crossover_type " + dakota_options_.crossover_type());
+			dakota_input_string_.append("\n   crossover_rate " + dakota_options_.crossover_rate());
+			dakota_input_string_.append("\n   replacement_type " + dakota_options_.replacement_type());
 		} 
-        else if(dakota_options_.method() == "coliny_direct"){
-			dakota_input_string_.append("\n                 division " + dakota_options_.division());
-			dakota_input_string_.append("\n                 max_boxsize_limit " + dakota_options_.max_boxsize_limit());
-			dakota_input_string_.append("\n                 min_boxsize_limit " + dakota_options_.min_boxsize_limit());
+		else if(dakota_options_.method() == "coliny_direct"){
+			dakota_input_string_.append("\n   division " + dakota_options_.division());
+			dakota_input_string_.append("\n   max_boxsize_limit " + dakota_options_.max_boxsize_limit());
+			dakota_input_string_.append("\n   min_boxsize_limit " + dakota_options_.min_boxsize_limit());
 		}
-        else{
-            OptiSMOKE::FatalErrorMessage("Available methods currently implemented are coliny_ea | coliny_direct");
-        }
-			
-        dakota_input_string_.append("\n	variables,");
+		else{
+			OptiSMOKE::FatalErrorMessage("Available methods currently implemented are coliny_ea | coliny_direct");
+		}
+
+		dakota_input_string_.append("\n variables,");
 
 		if(optimization_setup_.parameter_distribution() == "uniform"){
-			dakota_input_string_.append("\n		continuous_design = " + std::to_string(optimization_target_.number_of_parameters()));
-			dakota_input_string_.append("\n		  descriptors " + param_name_string_);
-			dakota_input_string_.append("\n 		  initial_point " + initial_values_string_);
-			dakota_input_string_.append("\n 	 	  lower_bounds " + lower_bounds_string_);
-			dakota_input_string_.append("\n 		  upper_bounds " + upper_bounds_string_);
+			dakota_input_string_.append("\n  continuous_design = " + std::to_string(optimization_target_.number_of_parameters()));
+			dakota_input_string_.append("\n   descriptors " + param_name_string_);
+			dakota_input_string_.append("\n   initial_point " + initial_values_string_);
+			dakota_input_string_.append("\n   lower_bounds " + lower_bounds_string_);
+			dakota_input_string_.append("\n   upper_bounds " + upper_bounds_string_);
 		}
         else if (optimization_setup_.parameter_distribution() == "normal"){
-			dakota_input_string_.append("\n               active uncertain " );
-			dakota_input_string_.append("\n		normal_uncertain = " + std::to_string(optimization_target_.number_of_parameters()));
-			dakota_input_string_.append("\n		  descriptors " + param_name_string_);
-			dakota_input_string_.append("\n 		  means " + initial_values_string_);
-			dakota_input_string_.append("\n 		  std_deviations " + std_deviations_string_);
+			dakota_input_string_.append("\n  active uncertain " );
+			dakota_input_string_.append("\n  normal_uncertain = " + std::to_string(optimization_target_.number_of_parameters()));
+			dakota_input_string_.append("\n   descriptors " + param_name_string_);
+			dakota_input_string_.append("\n   means " + initial_values_string_);
+			dakota_input_string_.append("\n   std_deviations " + std_deviations_string_);
 		}// Da fare check su consistenza nell' input sul tipo di parameter boundary
 
-		dakota_input_string_.append("\n	interface,");
-		dakota_input_string_.append("\n		direct");
-		dakota_input_string_.append("\n		  analysis_driver = 'opensmoke_plugin'");
-		dakota_input_string_.append("\n	responses,");
-		dakota_input_string_.append("\n		num_objective_functions = 1");
-			
+		dakota_input_string_.append("\n interface,");
+		dakota_input_string_.append("\n  direct");
+		dakota_input_string_.append("\n  analysis_driver = 'opensmoke_plugin'");
+		dakota_input_string_.append("\n responses,");
+		dakota_input_string_.append("\n  num_objective_functions = 1");
+
 		// Options to use other optimization method (e.g. gradient-based)
         // Qua forse va messa la possibilità di fare altri tipi di gradienti 
         // accordingly to dakota sicuro lo faccio ora non c'ho voglia
 		if (dakota_options_.iGradient() == true){
-			dakota_input_string_.append("\n               numerical_gradients");
-			dakota_input_string_.append("\n               	method_source dakota");
-			dakota_input_string_.append("\n               	interval_type forward");
-			dakota_input_string_.append("\n               	fd_step_size = 1.e-5");
+			dakota_input_string_.append("\n  numerical_gradients");
+			dakota_input_string_.append("\n  method_source dakota");
+			dakota_input_string_.append("\n  interval_type forward");
+			dakota_input_string_.append("\n  fd_step_size = 1.e-5");
 		}
 		else{
-			dakota_input_string_.append("\n		no_gradients");
+			dakota_input_string_.append("\n  no_gradients");
 		}
 
-		dakota_input_string_.append("\n		no_hessians");
+		dakota_input_string_.append("\n  no_hessians");
     }
 
     void InputManager::CreateMaps(){
         // This goes under kinetics map
         fs::path path_kinetics_output;
-	
+
         if (!iXml_) // To be interpreted on-the-fly
             path_kinetics_output = kinetics_data_.chemkin_output();
         else if (iXml_) // Already in XML format
@@ -279,7 +279,7 @@ namespace OptiSMOKE{
 
         // This goes under nominal kinetics map
         fs::path path_nominal_kinetics_output;
-	
+
         if (!iNominalXml_) // To be interpreted on-the-fly
             path_nominal_kinetics_output = kinetics_data_.chemkin_output();
         else if (iNominalXml_) // Already in XML format
@@ -298,11 +298,11 @@ namespace OptiSMOKE{
     }
 
     void InputManager::FromTargetToInitialParameter(){
-		
+
 		// lnA
 		for(int i=0; i < optimization_target_.list_of_target_lnA().size(); i++)
 			list_of_initial_lnA_.push_back(boost::lexical_cast<std::string>(std::log(kineticsMapXML_->A(optimization_target_.list_of_target_lnA()[i]-1))));
-		
+
 		// Beta
 		for(int i=0; i < optimization_target_.list_of_target_Beta().size(); i++)
 			list_of_initial_Beta_.push_back(boost::lexical_cast<std::string>(kineticsMapXML_->Beta(optimization_target_.list_of_target_Beta()[i]-1)));
@@ -310,7 +310,7 @@ namespace OptiSMOKE{
 		// E_over_R
 		for(int i=0; i < optimization_target_.list_of_target_E_over_R().size(); i++)
 			list_of_initial_E_over_R.push_back(boost::lexical_cast<std::string>(kineticsMapXML_->E_over_R(optimization_target_.list_of_target_E_over_R()[i]-1)));
-		
+
 		// lnA_inf
 		std::vector<unsigned int> indices_of_falloff_reactions = nominalkineticsMapXML_->IndicesOfFalloffReactions();
 		for(int i=0; i < optimization_target_.list_of_target_lnA_inf().size(); i++){
@@ -326,7 +326,7 @@ namespace OptiSMOKE{
 			list_of_initial_Beta_inf_.push_back(boost::lexical_cast<std::string>(kineticsMapXML_->Beta_falloff_inf(pos_FallOff_Reaction)));
 		}
 
-		// E/R inf		
+		// E/R inf
 		for(int i=0; i < optimization_target_.list_of_target_E_over_R_inf().size(); i++){
 			int pos_FallOff_Reaction = std::find(indices_of_falloff_reactions.begin(),
 												indices_of_falloff_reactions.end(),
