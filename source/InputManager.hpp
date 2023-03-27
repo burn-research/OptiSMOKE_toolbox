@@ -314,7 +314,11 @@ namespace OptiSMOKE{
 		// lnA_inf
 		std::vector<unsigned int> indices_of_falloff_reactions = nominalkineticsMapXML_->IndicesOfFalloffReactions();
 		for(int i=0; i < optimization_target_.list_of_target_lnA_inf().size(); i++){
-			int pos_FallOff_Reaction = std::find(indices_of_falloff_reactions.begin(),indices_of_falloff_reactions.end(),optimization_target_.list_of_target_lnA_inf()[i])-indices_of_falloff_reactions.begin();
+			int pos_FallOff_Reaction = std::find(
+				indices_of_falloff_reactions.begin(), 
+				indices_of_falloff_reactions.end(), 
+				optimization_target_.list_of_target_lnA_inf()[i]
+			)-indices_of_falloff_reactions.begin();
 			list_of_initial_lnA_inf_.push_back(boost::lexical_cast<std::string>(std::log(kineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction))));
 		}
 
@@ -336,7 +340,11 @@ namespace OptiSMOKE{
 
 		for(int i=0; i< optimization_target_.list_of_target_thirdbody_reactions().size(); i++){
 			int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_thirdbody_species()[i]);
-			list_of_initial_thirdbody_eff_.push_back(boost::lexical_cast<std::string>(kineticsMapXML_->ThirdBody(optimization_target_.list_of_target_thirdbody_reactions()[i]-1, iSpecies-1)));
+			list_of_initial_thirdbody_eff_.push_back(
+				boost::lexical_cast<std::string>(
+					kineticsMapXML_->ThirdBody(optimization_target_.list_of_target_thirdbody_reactions()[i]-1, iSpecies-1)
+					)
+				);
 		}
     }     
 
@@ -377,11 +385,12 @@ namespace OptiSMOKE{
                 list_of_nominal_E_over_R_double[i] = nominalkineticsMapXML_->E_over_R(optimization_target_.list_of_target_uncertainty_factors()[i]-1);
                 
                 // Min and Max of lnA
-                list_of_min_abs_lnA_double[i] = list_of_nominal_lnA_double[i] + std::log(std::pow(10, -optimization_target_.list_of_target_uncertainty_factors()[i]));
-                list_of_max_abs_lnA_double[i] = list_of_nominal_lnA_double[i] + std::log(std::pow(10, optimization_target_.list_of_target_uncertainty_factors()[i]));
+                list_of_min_abs_lnA_double[i] = list_of_nominal_lnA_double[i] + std::log(std::pow(10, -optimization_target_.list_of_uncertainty_factors()[i]));
+                list_of_max_abs_lnA_double[i] = list_of_nominal_lnA_double[i] + std::log(std::pow(10, optimization_target_.list_of_uncertainty_factors()[i]));
                 if (std::find(optimization_target_.list_of_target_lnA().begin(),
                             optimization_target_.list_of_target_lnA().end(),
-                            optimization_target_.list_of_target_uncertainty_factors()[i]) != optimization_target_.list_of_target_lnA().end()){
+                            optimization_target_.list_of_target_uncertainty_factors()[i]) != optimization_target_.list_of_target_lnA().end())
+				{
                     list_of_min_abs_lnA_.push_back(boost::lexical_cast<std::string>(list_of_min_abs_lnA_double[i]));
                     list_of_max_abs_lnA_.push_back(boost::lexical_cast<std::string>(list_of_max_abs_lnA_double[i]));
                 }
@@ -401,7 +410,8 @@ namespace OptiSMOKE{
 				
                 if (std::find(optimization_target_.list_of_target_Beta().begin(),
                               optimization_target_.list_of_target_Beta().end(),
-                              optimization_target_.list_of_target_uncertainty_factors()[i]) != optimization_target_.list_of_target_Beta().end()){
+                              optimization_target_.list_of_target_uncertainty_factors()[i]) != optimization_target_.list_of_target_Beta().end())
+				{
 					list_of_min_abs_Beta_.push_back(boost::lexical_cast<std::string>(list_of_min_abs_Beta_double[i]));
 					list_of_max_abs_Beta_.push_back(boost::lexical_cast<std::string>(list_of_max_abs_Beta_double[i]));
 				}
@@ -449,7 +459,11 @@ namespace OptiSMOKE{
 
             for (unsigned int i=0; i < optimization_target_.list_of_target_uncertainty_factors_inf().size(); i++){
                 
-                int pos_FallOff_Reaction = std::find(indices_of_falloff_reactions.begin(), indices_of_falloff_reactions.end(), optimization_target_.list_of_target_uncertainty_factors_inf()[i])-indices_of_falloff_reactions.begin();
+                int pos_FallOff_Reaction = std::find(
+					indices_of_falloff_reactions.begin(), 
+					indices_of_falloff_reactions.end(), 
+					optimization_target_.list_of_target_uncertainty_factors_inf()[i]
+				)-indices_of_falloff_reactions.begin();
                 
                 // Nominal values of inf parameters
                 list_of_nominal_lnA_inf_double[i] = std::log(nominalkineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction));
@@ -457,11 +471,12 @@ namespace OptiSMOKE{
                 list_of_nominal_E_over_R_inf_double[i] = nominalkineticsMapXML_->E_over_R_falloff_inf(pos_FallOff_Reaction);
 
                 // Min and Max of lnA_inf
-                list_of_min_abs_lnA_inf_double[i] = list_of_nominal_lnA_inf_double[i]+std::log(std::pow(10,-optimization_target_.list_of_target_uncertainty_factors_inf()[i]));
-                list_of_max_abs_lnA_inf_double[i] = list_of_nominal_lnA_inf_double[i]+std::log(std::pow(10,optimization_target_.list_of_target_uncertainty_factors_inf()[i]));
+                list_of_min_abs_lnA_inf_double[i] = list_of_nominal_lnA_inf_double[i]+std::log(std::pow(10,-optimization_target_.list_of_uncertainty_factors_inf()[i]));
+                list_of_max_abs_lnA_inf_double[i] = list_of_nominal_lnA_inf_double[i]+std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_inf()[i]));
                 if (std::find(optimization_target_.list_of_target_lnA_inf().begin(), 
                             optimization_target_.list_of_target_lnA_inf().end(),
-                            optimization_target_.list_of_target_uncertainty_factors_inf()[i]) != optimization_target_.list_of_target_lnA_inf().end()){
+                            optimization_target_.list_of_target_uncertainty_factors_inf()[i]) != optimization_target_.list_of_target_lnA_inf().end())
+				{
                     list_of_min_abs_lnA_inf_.push_back(boost::lexical_cast<std::string>(list_of_min_abs_lnA_inf_double[i]));
                     list_of_max_abs_lnA_inf_.push_back(boost::lexical_cast<std::string>(list_of_max_abs_lnA_inf_double[i]));
                 }
@@ -478,7 +493,8 @@ namespace OptiSMOKE{
                 list_of_max_abs_Beta_inf_double[i] = std::max(Beta_1_inf[i],Beta_2_inf[i]);
                 if (std::find(optimization_target_.list_of_target_Beta_inf().begin(),
                             optimization_target_.list_of_target_Beta_inf().end(),
-                            optimization_target_.list_of_target_uncertainty_factors_inf()[i]) != optimization_target_.list_of_target_Beta_inf().end()){
+                            optimization_target_.list_of_target_uncertainty_factors_inf()[i]) != optimization_target_.list_of_target_Beta_inf().end())
+				{
                     list_of_min_abs_Beta_inf_.push_back(boost::lexical_cast<std::string>(list_of_min_abs_Beta_inf_double[i]));
                     list_of_max_abs_Beta_inf_.push_back(boost::lexical_cast<std::string>(list_of_max_abs_Beta_inf_double[i]));
                 }
@@ -492,7 +508,8 @@ namespace OptiSMOKE{
                 list_of_max_abs_E_over_R_inf_double[i] = std::max(E_over_R_1_inf[i],E_over_R_2_inf[i]);
                 if (std::find(optimization_target_.list_of_target_E_over_R_inf().begin(),
                             optimization_target_.list_of_target_E_over_R_inf().end(),
-                            optimization_target_.list_of_target_uncertainty_factors_inf()[i]) != optimization_target_.list_of_target_E_over_R_inf().end()){
+                            optimization_target_.list_of_target_uncertainty_factors_inf()[i]) != optimization_target_.list_of_target_E_over_R_inf().end())
+				{
                     list_of_min_abs_E_over_R_inf_.push_back(boost::lexical_cast<std::string>(list_of_min_abs_E_over_R_inf_double[i]));
                     list_of_max_abs_E_over_R_inf_.push_back(boost::lexical_cast<std::string>(list_of_max_abs_E_over_R_inf_double[i]));
                 }
@@ -524,12 +541,13 @@ namespace OptiSMOKE{
 				list_of_nominal_E_over_R_double[i] = nominalkineticsMapXML_->E_over_R(optimization_target_.list_of_target_uncertainty_factors()[i]-1);
 				
 
-				list_of_min_abs_lnA_double[i] = list_of_nominal_lnA_double[i]+std::log(std::pow(10, -optimization_target_.list_of_target_uncertainty_factors()[i]));
-				list_of_max_abs_lnA_double[i] = list_of_nominal_lnA_double[i]+std::log(std::pow(10, optimization_target_.list_of_target_uncertainty_factors()[i]));
+				list_of_min_abs_lnA_double[i] = list_of_nominal_lnA_double[i]+std::log(std::pow(10, -optimization_target_.list_of_uncertainty_factors()[i]));
+				list_of_max_abs_lnA_double[i] = list_of_nominal_lnA_double[i]+std::log(std::pow(10, optimization_target_.list_of_uncertainty_factors()[i]));
 				
 				if (std::find(optimization_target_.list_of_target_lnA().begin(),
                             optimization_target_.list_of_target_lnA().end(),
-                            optimization_target_.list_of_target_uncertainty_factors()[i]) != optimization_target_.list_of_target_lnA().end()){
+                            optimization_target_.list_of_target_uncertainty_factors()[i]) != optimization_target_.list_of_target_lnA().end())
+				{
 					list_of_min_abs_lnA_.push_back(boost::lexical_cast<std::string>(list_of_min_abs_lnA_double[i]));
 					list_of_max_abs_lnA_.push_back(boost::lexical_cast<std::string>(list_of_max_abs_lnA_double[i]));
 				}
@@ -542,7 +560,8 @@ namespace OptiSMOKE{
 
                 if (std::find(optimization_target_.list_of_target_Beta().begin(),
                               optimization_target_.list_of_target_Beta().end(),
-                              optimization_target_.list_of_target_uncertainty_factors()[i]) != optimization_target_.list_of_target_Beta().end()){
+                              optimization_target_.list_of_target_uncertainty_factors()[i]) != optimization_target_.list_of_target_Beta().end())
+				{
 					list_of_min_abs_Beta_.push_back(boost::lexical_cast<std::string>(list_of_min_abs_Beta_double[i]));
 					list_of_max_abs_Beta_.push_back(boost::lexical_cast<std::string>(list_of_max_abs_Beta_double[i]));
 				}
@@ -555,7 +574,8 @@ namespace OptiSMOKE{
 				
                 if (std::find(optimization_target_.list_of_target_E_over_R().begin(),
                               optimization_target_.list_of_target_E_over_R().end(),
-                              optimization_target_.list_of_target_uncertainty_factors()[i]) != optimization_target_.list_of_target_E_over_R().end()){
+                              optimization_target_.list_of_target_uncertainty_factors()[i]) != optimization_target_.list_of_target_E_over_R().end())
+				{
 					list_of_min_abs_E_over_R_.push_back(boost::lexical_cast<std::string>(list_of_min_abs_E_over_R_double[i]));
 					list_of_max_abs_E_over_R_.push_back(boost::lexical_cast<std::string>(list_of_max_abs_E_over_R_double[i]));
 				}
@@ -581,18 +601,23 @@ namespace OptiSMOKE{
 
 			std::vector<unsigned int> indices_of_falloff_reactions = nominalkineticsMapXML_->IndicesOfFalloffReactions();
 			for (unsigned int i=0; i < optimization_target_.list_of_target_uncertainty_factors_inf().size(); i++){
-				int pos_FallOff_Reaction = std::find(indices_of_falloff_reactions.begin(),indices_of_falloff_reactions.end(),optimization_target_.list_of_target_uncertainty_factors_inf()[i])-indices_of_falloff_reactions.begin();
+				int pos_FallOff_Reaction = std::find(
+					indices_of_falloff_reactions.begin(),
+					indices_of_falloff_reactions.end(),
+					optimization_target_.list_of_target_uncertainty_factors_inf()[i]
+				)-indices_of_falloff_reactions.begin();
 				// Nominal values of inf parameters
 				list_of_nominal_lnA_inf_double[i] = std::log(nominalkineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction));
 				list_of_nominal_Beta_inf_double[i] = nominalkineticsMapXML_->Beta_falloff_inf(pos_FallOff_Reaction);
 				list_of_nominal_E_over_R_inf_double[i] = nominalkineticsMapXML_->E_over_R_falloff_inf(pos_FallOff_Reaction);
 
 				// Min and Max of lnA_inf
-				list_of_min_abs_lnA_inf_double[i] = list_of_nominal_lnA_inf_double[i]+std::log(std::pow(10,-optimization_target_.list_of_target_uncertainty_factors_inf()[i]));
-				list_of_max_abs_lnA_inf_double[i] = list_of_nominal_lnA_inf_double[i]+std::log(std::pow(10,optimization_target_.list_of_target_uncertainty_factors_inf()[i]));
+				list_of_min_abs_lnA_inf_double[i] = list_of_nominal_lnA_inf_double[i]+std::log(std::pow(10,-optimization_target_.list_of_uncertainty_factors_inf()[i]));
+				list_of_max_abs_lnA_inf_double[i] = list_of_nominal_lnA_inf_double[i]+std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_inf()[i]));
 				if (std::find(optimization_target_.list_of_target_lnA_inf().begin(),
 							optimization_target_.list_of_target_lnA_inf().end(),
-							optimization_target_.list_of_target_uncertainty_factors_inf()[i]) != optimization_target_.list_of_target_lnA_inf().end()){
+							optimization_target_.list_of_target_uncertainty_factors_inf()[i]) != optimization_target_.list_of_target_lnA_inf().end())
+				{
 					list_of_min_abs_lnA_inf_.push_back(boost::lexical_cast<std::string>(list_of_min_abs_lnA_inf_double[i]));
 					list_of_max_abs_lnA_inf_.push_back(boost::lexical_cast<std::string>(list_of_max_abs_lnA_inf_double[i]));
 				}
@@ -604,7 +629,8 @@ namespace OptiSMOKE{
 				list_of_max_abs_Beta_inf_double[i] = std::max(Beta_1_inf[i],Beta_2_inf[i]);
 				if (std::find(optimization_target_.list_of_target_Beta_inf().begin(),
 							optimization_target_.list_of_target_Beta_inf().end(),
-							optimization_target_.list_of_target_uncertainty_factors_inf()[i]) != optimization_target_.list_of_target_Beta_inf().end()){
+							optimization_target_.list_of_target_uncertainty_factors_inf()[i]) != optimization_target_.list_of_target_Beta_inf().end())
+				{
 						list_of_min_abs_Beta_inf_.push_back(boost::lexical_cast<std::string>(list_of_min_abs_Beta_inf_double[i]));
 						list_of_max_abs_Beta_inf_.push_back(boost::lexical_cast<std::string>(list_of_max_abs_Beta_inf_double[i]));
 				}
@@ -624,75 +650,8 @@ namespace OptiSMOKE{
 		}
 
 		if(optimization_setup_.parameter_boundaries() == "Re-parametrization"){
-            OptiSMOKE::ErrorMessage("Compute Boundaries", "Re-Implementation not done yet");
+            OptiSMOKE::ErrorMessage("Compute Boundaries", "Re-Implementation not refactored yet");
         }
-
-		// EPLR - Alpha, Beta, Eps 
-		for (int i=0; i < optimization_target_.list_of_target_EPLR().size(); i++ )
-		{						
-			list_of_nominal_lnA_EPLR_.push_back(boost::lexical_cast<std::string>(0));
-			list_of_min_lnA_EPLR_.push_back(boost::lexical_cast<std::string>(-optimization_target_.list_of_uncertainty_factors_EPLR()[i]));
-			list_of_max_lnA_EPLR_.push_back(boost::lexical_cast<std::string>( optimization_target_.list_of_uncertainty_factors_EPLR()[i]));
-		}
-
-		for (int i=0; i < optimization_target_.list_of_target_EPLR().size(); i++){					
-			list_of_nominal_ER_EPLR_.push_back(boost::lexical_cast<std::string>(0));
-			list_of_min_ER_EPLR_.push_back(boost::lexical_cast<std::string>(-std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_EPLR()[i]))*T_low));
-			list_of_max_ER_EPLR_.push_back(boost::lexical_cast<std::string>(+std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_EPLR()[i]))*T_low));
-		}
-
-		for (int i=0; i < optimization_target_.list_of_target_EPLR().size(); i++ ){
-			list_of_nominal_Beta_EPLR_.push_back(boost::lexical_cast<std::string>(0));
-			list_of_min_Beta_EPLR_.push_back(boost::lexical_cast<std::string>(-std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_EPLR()[i])) / std::log(T_high)));
-			list_of_max_Beta_EPLR_.push_back(boost::lexical_cast<std::string>(+std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_EPLR()[i])) / std::log(T_high)));
-		}
-		
-		// EPLR - Alpha, Beta, Eps 
-
-		// Extended PLOG - Alpha, Beta, Eps 
-
-		for (int i=0; i < optimization_target_.list_of_target_extplog().size(); i++){						
-			list_of_nominal_lnA_ext_plog_coefficients_.push_back(boost::lexical_cast<std::string>(0));
-			list_of_min_lnA_ext_plog_coefficients_.push_back(boost::lexical_cast<std::string>(-optimization_target_.list_of_uncertainty_factors_extplog()[i]));
-			list_of_max_lnA_ext_plog_coefficients_.push_back(boost::lexical_cast<std::string>( optimization_target_.list_of_uncertainty_factors_extplog()[i]));
-		}
-
-		for (int i=0; i < optimization_target_.list_of_target_extplog().size(); i++){					
-			list_of_nominal_ER_ext_plog_coefficients_.push_back(boost::lexical_cast<std::string>(0));
-			list_of_min_ER_ext_plog_coefficients_.push_back(boost::lexical_cast<std::string>(-std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_extplog()[i]))*T_low));
-			list_of_max_ER_ext_plog_coefficients_.push_back(boost::lexical_cast<std::string>(+std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_extplog()[i]))*T_low));
-		}
-
-		for (int i=0; i < optimization_target_.list_of_target_extplog().size(); i++)
-		{
-			list_of_nominal_Beta_ext_plog_coefficients_.push_back(boost::lexical_cast<std::string>(0));
-			list_of_min_Beta_ext_plog_coefficients_.push_back(boost::lexical_cast<std::string>(-std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_extplog()[i])) / std::log(T_high)));
-			list_of_max_Beta_ext_plog_coefficients_.push_back(boost::lexical_cast<std::string>(+std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_extplog()[i])) / std::log(T_high)));
-		}
-
-		/* TODO INTEGRATION AND DERIVATION OF THE KINETIC MAP
-		// Extended PLOGS - THIRD BODIES!
-		int pos_extended_plog_reaction;
-		int pos_extended_plog_species;
-		
-		for (int i=0; i < optimization_target_.list_of_target_extended_plog_reactions().size(); i++){
-			// find the position of the reaction having index list_of_target_extended_plog_reactions[i] within indices_of_extendedplogs
-			pos_extended_plog_reaction = std::find(indices_of_extendedplogs_opt.begin(),indices_of_extendedplogs_opt.end(),optimization_target_.list_of_target_extended_plog_reactions()[i])-indices_of_extendedplogs_opt.begin();
-			for (int k=0; k < nominalkineticsMapXML_->extendedplogopt_reactions(pos_extended_plog_reaction).species().size(); k++ ){		
-				std::string temp_string = nominalkineticsMapXML_->extendedplogopt_reactions(pos_extended_plog_reaction).species()[k];
-				if(!nominalkineticsMapXML_->extendedplogopt_reactions(pos_extended_plog_reaction).species()[k].compare(0,temp_string.length(),list_of_target_extended_plog_species[i]))
-			    {
-               		pos_extended_plog_species = k;
-               	        break;
-			        
-               	}
-			}
-			// get the value of third body			
-			list_of_nominal_TB_ExtPLOG.push_back(boost::lexical_cast<std::string>(nominalkineticsMapXML->extendedplogopt_reactions(pos_extended_plog_reaction).ThirdBody(pos_extended_plog_species)[0]));
-			list_of_min_TB_ExtPLOG.push_back(boost::lexical_cast<std::string>(list_of_min_tb_extplog[i]));
-			list_of_max_TB_ExtPLOG.push_back(boost::lexical_cast<std::string>(list_of_max_tb_extplog[i]));
-		}*/
-
 
  		// CLASSIC PLOG - Alpha, Beta, Eps
 		for (int i=0; i < optimization_target_.list_of_target_classic_plog_reactions().size(); i++ ){					
@@ -711,8 +670,16 @@ namespace OptiSMOKE{
 
 		for (int i=0; i < optimization_target_.list_of_target_classic_plog_reactions().size(); i++){
 			list_of_nominal_Beta_classic_plog_coefficients_.push_back(boost::lexical_cast<std::string>(0));
-			list_of_min_Beta_classic_plog_coefficients_.push_back(boost::lexical_cast<std::string>(-std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_classic_plog()[i])) / std::log(T_high)));
-			list_of_max_Beta_classic_plog_coefficients_.push_back(boost::lexical_cast<std::string>(+std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_classic_plog()[i])) / std::log(T_high)));
+			list_of_min_Beta_classic_plog_coefficients_.push_back(
+				boost::lexical_cast<std::string>(
+					-std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_classic_plog()[i])) / std::log(T_high)
+				)
+			);
+			list_of_max_Beta_classic_plog_coefficients_.push_back(
+				boost::lexical_cast<std::string>(
+					+std::log(std::pow(10,optimization_target_.list_of_uncertainty_factors_classic_plog()[i])) / std::log(T_high)
+				)
+			);
 		}
 	}
 
@@ -723,7 +690,7 @@ namespace OptiSMOKE{
 		// if (pca_direct_reactions.size() > 0) {		
 		// }
 		// else if (direct_reactions_indices_ica.size() > 0) {
-		//}
+		// }
 		if(optimization_setup_.parameter_boundaries() == "PCA"){
 			OptiSMOKE::ErrorMessage("DakotaInputPreliminaryOptions", "PCA not refactored yet!");
 		}
@@ -739,18 +706,23 @@ namespace OptiSMOKE{
 					param_name_string_ += name_vec_lnA[i] + " ";
 					initial_values_string_ += list_of_initial_lnA_[i] + " ";
 					
-					// optimization_target_.list_of_mi
 					
 					if (optimization_target_.list_of_min_rel_lnA().size()>0){
-						lower_bounds_string_ += boost::lexical_cast<std::string>((std::log(kineticsMapXML_->A(optimization_target_.list_of_target_lnA()[i]-1)))+std::log(optimization_target_.list_of_min_rel_lnA()[i])) + " ";
+						lower_bounds_string_ += boost::lexical_cast<std::string>(
+							(std::log(kineticsMapXML_->A(optimization_target_.list_of_target_lnA()[i]-1))) + std::log(optimization_target_.list_of_min_rel_lnA()[i])
+						) + " ";
 					}
 					else{
 						lower_bounds_string_ += list_of_min_abs_lnA_[i] + " ";
-						std_deviations_string_ += boost::lexical_cast<std::string>((std::stod(list_of_initial_lnA_[i]) - std::stod(list_of_min_abs_lnA_[i]))/3) + " ";
+						std_deviations_string_ += boost::lexical_cast<std::string>(
+							(std::stod(list_of_initial_lnA_[i]) - std::stod(list_of_min_abs_lnA_[i]))/3
+						) + " ";
 					}
 					
 					if (optimization_target_.list_of_max_rel_lnA().size()>0){
-						upper_bounds_string_ += boost::lexical_cast<std::string>((std::log(kineticsMapXML_->A(optimization_target_.list_of_target_lnA()[i]-1)))+std::log(optimization_target_.list_of_max_rel_lnA()[i])) + " ";
+						upper_bounds_string_ += boost::lexical_cast<std::string>(
+							(std::log(kineticsMapXML_->A(optimization_target_.list_of_target_lnA()[i]-1)))+std::log(optimization_target_.list_of_max_rel_lnA()[i])
+						) + " ";
 					}	
 					else{
 						upper_bounds_string_ += list_of_max_abs_lnA_[i] + " ";
@@ -1046,7 +1018,7 @@ namespace OptiSMOKE{
 	}
 
 	void InputManager::ReadExperimentalDataFiles(){
-		
+		// In principle this is useless
 		data_manager_.ReadExperimentalData(path_experimental_data_files_);
 
 		dataset_names_ = data_manager_.dataset_names();
