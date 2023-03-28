@@ -20,12 +20,6 @@ Dictionary OptiSMOKEpp
 
 	@NameOfOptimizedKineticsFolder	Output/optimized-kinetics;
 
-	@Debug							true;
-
-	@DebugSim						true;
-
-	@ListOfOpenSMOKEInputFiles		Path_to_Input_Datasets.txt;
-
 	@ListOfExperimentalDataFiles	ds_data/wang_exp_dataset_1.json 
 									ds_data/wang_exp_dataset_2.json 
 									ds_data/wang_exp_dataset_3.json 
