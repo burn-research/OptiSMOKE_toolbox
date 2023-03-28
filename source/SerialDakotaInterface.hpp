@@ -63,7 +63,6 @@ namespace SIM {
     int SerialDakotaInterface::simulations_interface(const Dakota::RealVector& c_vars, short asv, Dakota::Real& fn_val)
     {
         eval_nr++;
-        // Consider of using a smart pointer or move them insde the constructor
         sim_iface_->SubstituteKineticParameters(c_vars);
 
 		if(data_.optimization_setup().penalty_function())
@@ -84,7 +83,7 @@ namespace SIM {
             prev_fn_val = fn_val;
         
         if(prev_fn_val > fn_val) {
-            opti_kinetics_->SetChemkinName(data_.optimized_kinetics_folder() / "OptimalMechanism.CKI");
+            prev_fn_val = fn_val;
             opti_kinetics_->WriteOptimizedMechanism();
             std::cout << " * Wrote optimized mechanism" << std::endl;
         }

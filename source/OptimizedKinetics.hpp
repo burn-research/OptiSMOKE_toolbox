@@ -12,11 +12,7 @@ namespace OptiSMOKE
         MemoryAllocation();
     }
 
-    OptimizedKinetics::~OptimizedKinetics()
-    {
-        delete preprocessor_kinetics_;
-        preprocessor_kinetics_ = NULL;
-    }
+    OptimizedKinetics::~OptimizedKinetics(){}
 
     void OptimizedKinetics::MemoryAllocation()
     {
@@ -36,7 +32,10 @@ namespace OptiSMOKE
     void OptimizedKinetics::WriteOptimizedMechanism() {
         if (isChemkinNameSet_ == false)
             OptiSMOKE::FatalErrorMessage("Error: chemkin path was not set for reduced kinetics");
-
+        
+        if(!fs::exists(chemkin_path_.parent_path()))
+            fs::create_directories(chemkin_path_.parent_path());
+        
         // Log file (Setup)
         boost::filesystem::path file_ascii_log_ = chemkin_path_.parent_path() / "log";
 
@@ -98,6 +97,9 @@ namespace OptiSMOKE
 		}
         fChemKin_ << "END";
         fChemKin_.close();
+        
+        delete preprocessor_kinetics_;
+        preprocessor_kinetics_ = NULL;
     }
 
     void OptimizedKinetics::SetChemkinName(const fs::path& path) {

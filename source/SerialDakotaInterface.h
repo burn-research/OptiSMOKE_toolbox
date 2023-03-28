@@ -68,7 +68,9 @@ class SerialDakotaInterface: public Dakota::DirectApplicInterface
 
     opti_kinetics_ = new OptiSMOKE::OptimizedKinetics(data_, 
       data_.thermodynamicsMapXML_, 
-      data_.kineticsMapXML_);
+      data_.kineticsMapXML_
+    );
+    opti_kinetics_->SetChemkinName(data_.optimized_kinetics_folder() / "OptimalMechanism.CKI");
   }
 
   // Destructor

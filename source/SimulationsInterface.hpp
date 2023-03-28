@@ -249,7 +249,7 @@ namespace OptiSMOKE{
                 for (int j=0; j < CM_score[i].size(); j++){
                 	i_th_index = i_th_index  + CM_score[i][j]/CM_score[i].size(); 
                 }
-                std::cout << " * The Curve Matching score of ";
+                std::cout << "    * The Curve Matching score of ";
 				std::cout << data_.dataset_names()[i] << " is: " << i_th_index << std::endl; 
                 final_index = final_index+i_th_index/CM_score.size();
             }
@@ -422,7 +422,7 @@ namespace OptiSMOKE{
 		
 		// Classic PLOG
 		if(data_.optimization_target().list_of_target_classic_plog_reactions().size() != 0){
-			
+			// TODO
 		}
 	}
 
