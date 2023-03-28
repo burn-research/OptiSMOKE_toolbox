@@ -38,7 +38,6 @@ namespace OptiSMOKE
     {
         penalty_function_ = true;
         iReactionClasses_ = false;
-        iScalingClasses_ = false;
     }
     
     options_optimization_setup::~options_optimization_setup(){}
@@ -69,13 +68,10 @@ namespace OptiSMOKE
 
         if (dictionary_manager(dictionary_name).CheckOption("@ReactionsClasses"))
 			dictionary_manager(dictionary_name).ReadBool("@ReactionsClasses", iReactionClasses_);
-
-        if (dictionary_manager(dictionary_name).CheckOption("@ScalingReactionClasses"))
-			dictionary_manager(dictionary_name).ReadBool("@ScalingReactionClasses", iScalingClasses_);
         
-        if(penalty_function_ == false)
-        {
-            std::cout << " * Penalty Function is turned off!" << std::endl;
-        }
+        // if(penalty_function_ == false)
+        // {
+        //     std::cout << " * Penalty Function is turned off!" << std::endl;
+        // }
     }
 } // namespace OptiSMOKE

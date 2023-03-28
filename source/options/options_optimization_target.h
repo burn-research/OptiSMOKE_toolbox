@@ -111,16 +111,7 @@ namespace OptiSMOKE
 
         inline const std::vector<std::string>& list_of_min_abs_thirdbody_eff() const {return list_of_min_abs_thirdbody_eff_;};
 	    inline const std::vector<std::string>& list_of_max_abs_thirdbody_eff() const {return list_of_max_abs_thirdbody_eff_;};
-        
-        // PENSIAMO ALLA CLASSE PIÙ GENERICA DELLA TERRA DOVREI
-        // USARE LA STRUTTURA DI SOPRA ALLO STESSO MODO NO? 
-        struct reactions_classes_
-        {
-            std::string class_name;
-            std::vector<int> list_of_target_reactions;
-            std::vector<double> list_of_uncertainty_factor;
-        };
-    
+            
     private:
 
         grammar_optimization_targets optimization_target_grammar_;
@@ -139,7 +130,6 @@ namespace OptiSMOKE
                                // che altro assieme
 
         fs::path reactions_classes_definition_;
-        std::vector<reactions_classes_> classes_structure_;
 
         // EPLR
 	    std::vector<int> list_of_target_EPLR_;

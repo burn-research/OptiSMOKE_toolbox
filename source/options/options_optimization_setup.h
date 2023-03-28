@@ -55,7 +55,6 @@ namespace OptiSMOKE
         inline const bool& penalty_function() const {return penalty_function_;};
         inline const std::string& objective_function_type() const {return objective_function_type_;};
         inline const bool& iReactionClasses() const {return iReactionClasses_;};
-        inline const bool& iScalingClasses() const {return iScalingClasses_;};
 
     private:
 
@@ -67,7 +66,6 @@ namespace OptiSMOKE
         bool penalty_function_;
         std::string objective_function_type_;
         bool iReactionClasses_;
-        bool iScalingClasses_;
     };
     
 } // namespace OptiSMOKE

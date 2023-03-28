@@ -194,172 +194,100 @@ namespace OptiSMOKE
 		// List of relative maximum parameters
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_lnA"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_lnA", list_of_max_rel_lnA_);
+
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_Beta"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_Beta", list_of_max_rel_Beta_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_E_over_R"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_E_over_R", list_of_max_rel_E_over_R_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_lnA_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_lnA_inf", list_of_max_rel_lnA_inf_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_Beta_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_Beta_inf", list_of_max_rel_Beta_inf_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_E_over_R_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_E_over_R_inf", list_of_max_rel_E_over_R_inf_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxRel_ThirdBody_Eff"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxRel_ThirdBody_Eff", list_of_max_rel_thirdbody_eff_);
 	
 		// List of relative minimum parameters
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_lnA"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_lnA", list_of_min_rel_lnA_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_Beta"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_Beta", list_of_min_rel_Beta_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_E_over_R"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_E_over_R", list_of_min_rel_E_over_R_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_lnA_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_lnA_inf", list_of_min_rel_lnA_inf_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_Beta_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_Beta_inf", list_of_min_rel_Beta_inf_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_E_over_R_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_E_over_R_inf", list_of_min_rel_E_over_R_inf_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinRel_ThirdBody_Eff"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinRel_ThirdBody_Eff", list_of_min_rel_thirdbody_eff_);
         
 		// List of absolute maximum parameters
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_lnA"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_lnA", list_of_max_abs_lnA_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_Beta"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_Beta", list_of_max_abs_Beta_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_E_over_R"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_E_over_R", list_of_max_abs_E_over_R_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_lnA_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_lnA_inf", list_of_max_abs_lnA_inf_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_Beta_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_Beta_inf", list_of_max_abs_Beta_inf_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_E_over_R_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_E_over_R_inf", list_of_max_abs_E_over_R_inf_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMaxAbs_ThirdBody_Eff"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMaxAbs_ThirdBody_Eff", list_of_max_abs_thirdbody_eff_);
 	
 		// List of absolute minimum parameters
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinAbs_Beta"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinAbs_Beta", list_of_min_abs_Beta_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinAbs_E_over_R"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinAbs_E_over_R", list_of_min_abs_E_over_R_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinAbs_lnA_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinAbs_lnA_inf", list_of_min_abs_lnA_inf_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinAbs_Beta_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinAbs_Beta_inf", list_of_min_abs_Beta_inf_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinAbs_E_over_R_inf"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinAbs_E_over_R_inf", list_of_min_abs_E_over_R_inf_);
+		
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMinAbs_ThirdBody_Eff"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfMinAbs_ThirdBody_Eff", list_of_min_abs_thirdbody_eff_);
 
-		if(dictionary_manager(dictionary_name).CheckOption("@ReactionsClassesDefinitions")){
+		if(dictionary_manager(dictionary_name).CheckOption("@ReactionsClassesDefinitions"))
+		{
             dictionary_manager(dictionary_name).ReadPath("@ReactionsClassesDefinitions", reactions_classes_definition_);
 			if(!fs::exists(reactions_classes_definition_))
-			{
 				OptiSMOKE::FatalErrorMessage("The @ReactionsClassesDefinitions path does not exists!");
-			}
+
 			ReadReactionClassesDefinition(reactions_classes_definition_);
         }
     }
 
-    void options_optimization_target::ReadReactionClassesDefinition(fs::path classes_definition){
-		// FA CAGARE VA RISCRITTA A TUONO
-		fs::ifstream fileHandler(classes_definition.c_str());
-    	std::string line;
-    	int numberOfLines = 0;
-    	std::vector<std::string> content;
-
-   		while (getline(fileHandler, line)) {
-        	numberOfLines++;
-        	content.push_back(line);
-    	}
-
-    	int NumberOfReactionClasses = numberOfLines / 5;
-
-		classes_structure_.resize(NumberOfReactionClasses);
-
-    	std::vector<std::string> reactionClassName;
-    	std::vector<std::string> str_reaction_index; // tmp vector dove mi salvo le stringhe 
-    	std::vector<std::string> str_unc; // tmp vector dove mi salvo le incertezze
-    	std::vector <std::string> str_QOI; // tmp vector dove mi salvo le stringhe delle QOI
-
-    	/*
-        	Devo prendere content e:
-            	- La prima riga di ogni blocco corrisponde al nome della classe
-            	- la seconda riga agli indici delle reazione
-            	- la terza riga bo scaling factor
-            	- la quarta riga uncertainty
-            	- la quinta riga quello che voglio ottimizzare ovvero che parametri dell'arrehnius 
-			Per ora solo le dirette dopo faccio la funzione per scegliere il tipo
-    	*/
-
-   		// Con questo ciclo for mi sono separato le cose e ora ci posso lavorare
-   		// però ho gia tutto quello che mi serve!
-    	for(int i = 0; i<NumberOfReactionClasses; i++){
-			classes_structure_[i].class_name = content[0 + i * 5];
-        	reactionClassName.push_back(content[0 + i * 5]);
-        	str_reaction_index.push_back(content[1 + i * 5]);
-        	str_unc.push_back(content[3 + i * 5]);
-        	str_QOI.push_back(content[4 + i * 5]);
-    	}
-    
-    	for(int i = 0; i < NumberOfReactionClasses; i++){
-        	std::vector<std::string> tmp_idx; // reaction index
-        	std::vector<int> tmp_int_idx;
-        	std::vector<std::string> tmp_unc; // uncertainty factors
-        	std::vector<double> tmp_double_unc;
-        	std::vector<std::string> tmp_QOI; // Quantity of interest
-
-        	boost::split(tmp_idx, str_reaction_index[i], boost::is_any_of(" "));
-        	boost::split(tmp_unc, str_unc[i], boost::is_any_of(" "));
-        	boost::split(tmp_QOI, str_QOI[i], boost::is_any_of(" "));
-        
-        	for(int j = 0; j < tmp_idx.size(); j++){
-            	tmp_int_idx.push_back(std::stoi(tmp_idx[j]));
-        	}
-        	for(int k = 0; k < tmp_unc.size(); k++){
-            	tmp_double_unc.push_back(std::stod(tmp_unc[k]));
-       		}
-        	// matrixOfReactionIndex.push_back(tmp_int_idx);
-			classes_structure_[i].list_of_target_reactions = tmp_int_idx;
-        	// matrixOfUnceratintyFactors.push_back(tmp_double_unc);
-			classes_structure_[i].list_of_uncertainty_factor = tmp_double_unc;
-        	// matrixOfQOI.push_back(tmp_QOI);
-
-        	tmp_idx.clear();
-        	tmp_int_idx.clear();
-        	tmp_unc.clear();
-        	tmp_double_unc.clear();
-        	tmp_QOI.clear();
-   		}
-		
-    	for(int i = 0; i<NumberOfReactionClasses; i++)
-		{
-			list_of_target_lnA_.push_back(classes_structure_[i].list_of_target_reactions[0]);
-			list_of_target_Beta_.push_back(classes_structure_[i].list_of_target_reactions[0]);
-			list_of_target_E_over_R_.push_back(classes_structure_[i].list_of_target_reactions[0]);
-			list_of_target_uncertainty_factors_.push_back(classes_structure_[i].list_of_target_reactions[0]);
-        	
-		}
-		
-		// Da capire se sta roba ha senso
-		for(int i = 0; i<NumberOfReactionClasses; i++)
-		{
-			list_of_uncertainty_factors_.push_back(classes_structure_[i].list_of_uncertainty_factor[0]);
-		}
-
-		std::cout << "Reading the reaction classes definition in: " << classes_definition.c_str() << std::endl;
-    	std::cout << " * Number of  reaction classess defined: " << numberOfLines/5 << std::endl;
-		for(int i = 0; i < NumberOfReactionClasses; i++)
-		{
-			std::cout << " * Reaction class: " << classes_structure_[i].class_name << std::endl;
-			for(int j = 0; j < classes_structure_[i].list_of_target_reactions.size(); j++)
-			{
-				std::cout << "   " <<  classes_structure_[i].list_of_target_reactions[j] 
-				<< "   " << classes_structure_[i].list_of_uncertainty_factor[j] << std::endl;
-			}
-		}
+    void options_optimization_target::ReadReactionClassesDefinition(fs::path classes_definition)
+	{
 	}
 
 } // namespace OptiSMOKE

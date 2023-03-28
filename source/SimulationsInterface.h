@@ -6,7 +6,7 @@ namespace OptiSMOKE {
 	class SimulationsInterface
 	{
   	public:
-		SimulationsInterface(OptiSMOKE::InputManager* data);
+		SimulationsInterface(const OptiSMOKE::InputManager& data);
 
 		~SimulationsInterface();
   	
@@ -21,7 +21,7 @@ namespace OptiSMOKE {
 		void SubstituteKineticParameters(const Dakota::RealVector& c_vars);
 	
 	private:
-		OptiSMOKE::InputManager* data_;
+		const OptiSMOKE::InputManager& data_;
 	
 		std::vector<OptiSMOKE::BatchReactor*> batch_reactors;
 	

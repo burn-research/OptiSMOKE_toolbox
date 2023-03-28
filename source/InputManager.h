@@ -78,20 +78,17 @@ namespace OptiSMOKE{
         inline const fs::path& output_folder() const {return output_folder_;};
         inline const fs::path& kinetics_folder() const {return kinetics_folder_;};
         inline const fs::path& optimized_kinetics_folder() const {return optimized_kinetics_folder_;};
-        inline const std::vector<std::string>& path_opensmoke_input_files() const {return path_opensmoke_input_files_;};
         inline const std::vector<std::string>& path_experimental_data_files() const {return path_experimental_data_files_;};
-        inline const bool& iDebug() const {return iDebug_;};
-        inline const bool& iDebugSimulations() const {return iDebugSimulations_;};
         inline const std::string& dakota_input_string() const {return dakota_input_string_;};
         inline const bool& iTransport() const {return iTransport_;};
 
         // Da checcare
-        inline OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML() {return thermodynamicsMapXML_;};
-        inline OpenSMOKE::ThermodynamicsMap_CHEMKIN* nominalthermodynamicsMapXML() {return nominalthermodynamicsMapXML_;};
-        inline OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML() {return kineticsMapXML_;};
-        inline OpenSMOKE::KineticsMap_CHEMKIN* nominalkineticsMapXML() {return nominalkineticsMapXML_;};
-        inline OpenSMOKE::TransportPropertiesMap_CHEMKIN* transportMapXML() {return transportMapXML_;};
-        inline OpenSMOKE::TransportPropertiesMap_CHEMKIN* nominaltransportMapXML() {return nominaltransportMapXML_;};
+        inline const OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML() const {return thermodynamicsMapXML_;};
+        inline const OpenSMOKE::ThermodynamicsMap_CHEMKIN* nominalthermodynamicsMapXML() const {return nominalthermodynamicsMapXML_;};
+        inline const OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML() const {return kineticsMapXML_;};
+        inline const OpenSMOKE::KineticsMap_CHEMKIN* nominalkineticsMapXML() const {return nominalkineticsMapXML_;};
+        inline const OpenSMOKE::TransportPropertiesMap_CHEMKIN* transportMapXML() const {return transportMapXML_;};
+        inline const OpenSMOKE::TransportPropertiesMap_CHEMKIN* nominaltransportMapXML() const {return nominaltransportMapXML_;};
 
         inline const std::vector<std::vector<std::string>>& input_paths() const {return input_paths_;};
         inline const std::vector<std::string>& QoI() const {return QoI_;};
@@ -101,9 +98,6 @@ namespace OptiSMOKE{
         inline const std::vector<std::vector<std::vector<double>>>& uncertainty() const {return uncertainty_;};
         inline const std::vector<std::string>& dataset_names() const {return dataset_names_;};
         inline const std::vector<std::string>& solver_name() const {return solver_name_;};
-    private:
-
-        OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_;
 
         // Standard Map
         OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML_;
@@ -114,6 +108,10 @@ namespace OptiSMOKE{
         OpenSMOKE::ThermodynamicsMap_CHEMKIN* nominalthermodynamicsMapXML_;
         OpenSMOKE::KineticsMap_CHEMKIN* nominalkineticsMapXML_;
         OpenSMOKE::TransportPropertiesMap_CHEMKIN* nominaltransportMapXML_;
+
+    private:
+
+        OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_;
 
         // Grammar Allocation
         OptiSMOKE::grammar_optismoke main_grammar_;
@@ -142,10 +140,7 @@ namespace OptiSMOKE{
         fs::path output_folder_;
         fs::path kinetics_folder_;
         fs::path optimized_kinetics_folder_;
-        std::vector<std::string> path_opensmoke_input_files_;
         std::vector<std::string> path_experimental_data_files_;
-        bool iDebug_;
-        bool iDebugSimulations_;
         bool iXml_;
         bool iNominalXml_;
         bool iTransport_;

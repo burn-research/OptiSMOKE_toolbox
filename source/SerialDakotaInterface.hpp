@@ -64,31 +64,31 @@ namespace SIM {
     {
         eval_nr++;
         // Consider of using a smart pointer or move them insde the constructor
-        OptiSMOKE::SimulationsInterface sim_iface(data_);
-        sim_iface.Setup();
-        sim_iface.SubstituteKineticParameters(c_vars);
+        sim_iface_->SubstituteKineticParameters(c_vars);
 
-		if(data_->optimization_setup().penalty_function())
-			violated_uncertainty = sim_iface.CheckKineticConstasts();
+		if(data_.optimization_setup().penalty_function())
+			violated_uncertainty = sim_iface_->CheckKineticConstasts();
         
 		if(violated_uncertainty){
-			if (data_->optimization_setup().objective_function_type() == "CurveMatching")
+			if (data_.optimization_setup().objective_function_type() == "CurveMatching")
 				fn_val = 1;
 			else
 				fn_val = 10000000;
 		}
         else{
-            sim_iface.run();
-            fn_val = sim_iface.ComputeObjectiveFunction();
+            sim_iface_->run();
+            fn_val = sim_iface_->ComputeObjectiveFunction();
         }
         
         if(eval_nr == 1)
             prev_fn_val = fn_val;
         
-        if(prev_fn_val > fn_val){
-            // Save optimized mech    
+        if(prev_fn_val > fn_val) {
+            opti_kinetics_->SetChemkinName(data_.optimized_kinetics_folder() / "OptimalMechanism.CKI");
+            opti_kinetics_->WriteOptimizedMechanism();
+            std::cout << " * Wrote optimized mechanism" << std::endl;
         }
+        
         return 0;
     }
-
-} // namespace OptiSMOKE
+} // namespace SIM

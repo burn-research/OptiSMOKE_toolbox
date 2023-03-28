@@ -50,8 +50,8 @@ namespace OptiSMOKE
 		max_boxsize_limit_ = "0.0";
 		min_boxsize_limit_ = "1.0e-4";
 
-        iGradient_ = false;
-		iDiverseInput_ = false;
+        dakota_gradient_ = false;
+		diverse_input_ = false;
 
         tabular_data_file_ = "tabulara_data.dat";
 
@@ -116,15 +116,14 @@ namespace OptiSMOKE
 			dictionary_manager(dictionary_name).ReadString("@MinBoxsizeLimit", min_boxsize_limit_);
 
 		if (dictionary_manager(dictionary_name).CheckOption("@DiverseInput") == true){
-			iDiverseInput_ = true;
+			diverse_input_ = true;
 			dictionary_manager(dictionary_name).ReadOption("@DiverseInput", diverse_dakota_input_);
 		}
 
-		if(dictionary_manager(dictionary_name).CheckOption("@EchoDakotaInput") == true){
+		if(dictionary_manager(dictionary_name).CheckOption("@EchoDakotaInput") == true)
 			dictionary_manager(dictionary_name).ReadBool("@EchoDakotaInput", echo_dakota_string_);
-		}
 			
  		if (dictionary_manager(dictionary_name).CheckOption("@Gradient") == true)
-            dictionary_manager(dictionary_name).ReadBool("@Gradient", iGradient_);
+            dictionary_manager(dictionary_name).ReadBool("@Gradient", dakota_gradient_);
 	}
 }

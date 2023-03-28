@@ -10,7 +10,7 @@ class SerialDakotaInterface: public Dakota::DirectApplicInterface
   public:
 
     // constructor
-    SerialDakotaInterface(const Dakota::ProblemDescDB& problem_db, OptiSMOKE::InputManager* data);
+    SerialDakotaInterface(const Dakota::ProblemDescDB& problem_db, const OptiSMOKE::InputManager& data);
   
     // destructor
     ~SerialDakotaInterface();
@@ -42,32 +42,40 @@ class SerialDakotaInterface: public Dakota::DirectApplicInterface
 
     int simulations_interface(const Dakota::RealVector& c_vars, short asv,Dakota::Real& fn_val);
          
-    OptiSMOKE::InputManager* data_;
+    const OptiSMOKE::InputManager& data_;
+
+    OptiSMOKE::SimulationsInterface* sim_iface_;
+
+    OptiSMOKE::OptimizedKinetics* opti_kinetics_;
 
     int eval_nr;
 
     double prev_fn_val;
 
-	bool violated_uncertainty;
+	  bool violated_uncertainty;
 };
 
   // Constructor
-  inline SerialDakotaInterface::SerialDakotaInterface
-  (const Dakota::ProblemDescDB& problem_db, OptiSMOKE::InputManager* data) : 
-  Dakota::DirectApplicInterface(problem_db){
-    // Setting database
-    data_ = data;
+  inline SerialDakotaInterface::SerialDakotaInterface (
+    const Dakota::ProblemDescDB& problem_db, const OptiSMOKE::InputManager& data
+  ) : Dakota::DirectApplicInterface(problem_db), data_(data)
+  {
     eval_nr = 0;
-	violated_uncertainty = false;
+    violated_uncertainty = false;
+    
+    sim_iface_ = new OptiSMOKE::SimulationsInterface(data_);
+    sim_iface_->Setup();
+
+    opti_kinetics_ = new OptiSMOKE::OptimizedKinetics(data_, 
+      data_.thermodynamicsMapXML_, 
+      data_.kineticsMapXML_);
   }
 
   // Destructor
-  inline SerialDakotaInterface::~SerialDakotaInterface()
-  { }
+  inline SerialDakotaInterface::~SerialDakotaInterface(){ }
 
 
-  inline void SerialDakotaInterface::
-  derived_map_asynch(const Dakota::ParamResponsePair& pair)
+  inline void SerialDakotaInterface::derived_map_asynch(const Dakota::ParamResponsePair& pair)
   {
     // no-op (just hides base class error throw). Jobs are run exclusively within
     // wait_local_evaluations(), prior to there existing true batch processing
@@ -76,19 +84,17 @@ class SerialDakotaInterface: public Dakota::DirectApplicInterface
 
 
   /** For use by ApplicationInterface::serve_evaluations_asynch(), which can
-      provide a batch processing capability within message passing schedulers
-      (called using chain IteratorScheduler::run_iterator() --> Model::serve()
-      --> ApplicationInterface::serve_evaluations()
-      --> ApplicationInterface::serve_evaluations_asynch()). */
-  inline void SerialDakotaInterface::
-  test_local_evaluations(Dakota::PRPQueue& prp_queue)
-  { wait_local_evaluations(prp_queue); }
-
+    provide a batch processing capability within message passing schedulers
+    (called using chain IteratorScheduler::run_iterator() --> Model::serve()
+    --> ApplicationInterface::serve_evaluations()
+    --> ApplicationInterface::serve_evaluations_asynch()). */
+  inline void SerialDakotaInterface::test_local_evaluations(Dakota::PRPQueue& prp_queue)
+  { 
+    wait_local_evaluations(prp_queue);
+  }
 
   // Hide default run-time error checks at DirectApplicInterface level
-  inline void SerialDakotaInterface::
-  set_communicators_checks(int max_eval_concurrency)
-  { }
+  inline void SerialDakotaInterface::set_communicators_checks(int max_eval_concurrency){ }
 
 } // namespace SIM
 

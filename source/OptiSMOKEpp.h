@@ -40,30 +40,46 @@
 #include <random>
 #include <chrono>
 
-// OpenSMOKE header
-#include "OpenSMOKE_Definitions.h"
-#include "dictionary/OpenSMOKE_DictionaryManager.h"
+// OpenSMOKE 
+#include "OpenSMOKEpp"
 
-// OpenSMOKE Base classes
-#include "kernel/thermo/Thermodynamics_CHEMKIN"
-#include "kernel/transport/Transport_CHEMKIN"
+// Thermodynamics
+#include "kernel/thermo/Species.h"
+#include "kernel/thermo/ThermoPolicy_CHEMKIN.h"
+#include "kernel/thermo/ThermoReader.h"
+#include "kernel/thermo/ThermoReaderPolicy_CHEMKIN.h"
+
+// Transport
+#include "kernel/transport/TransportPolicy_CHEMKIN.h"
+#include "kernel/transport/TransportReader.h"
+#include "kernel/transport/TransportReaderPolicy_CHEMKIN.h"
+
+// Kinetics
 #include "kernel/kinetics/ReactionPolicy_CHEMKIN.h"
 
-// OpenSMOKE CHEMKIN maps
+// Preprocessing
+#include "preprocessing/PreProcessorSpecies.h"
+#include "preprocessing/PreProcessorKinetics.h"
+#include "preprocessing/PreProcessorKineticsPolicy_CHEMKIN.h"
+#include "preprocessing/PreProcessorSpeciesPolicy_CHEMKIN_WithTransport.h"
+
+// Maps
 #include "maps/ThermodynamicsMap_CHEMKIN.h"
 #include "maps/TransportPropertiesMap_CHEMKIN.h"
 #include "maps/KineticsMap_CHEMKIN.h"
+
+//Typedefs
+typedef OpenSMOKE::Species< OpenSMOKE::ThermoPolicy_CHEMKIN, OpenSMOKE::TransportPolicy_CHEMKIN > SpeciesCHEMKIN;
+typedef OpenSMOKE::PreProcessorSpecies< OpenSMOKE::PreProcessorSpeciesPolicy_CHEMKIN_WithoutTransport<SpeciesCHEMKIN> > PreProcessorSpecies_CHEMKIN_WithoutTransport;
+typedef OpenSMOKE::PreProcessorKinetics< OpenSMOKE::PreProcessorKineticsPolicy_CHEMKIN<OpenSMOKE::ReactionPolicy_CHEMKIN> > PreProcessorKinetics_CHEMKIN;
+typedef OpenSMOKE::ThermoReader< OpenSMOKE::ThermoReaderPolicy_CHEMKIN< OpenSMOKE::ThermoPolicy_CHEMKIN > > ThermoReader_CHEMKIN;
 
 // Boost Library
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 #include <boost/filesystem/fstream.hpp>
-
 namespace fs = boost::filesystem;
 namespace po = boost::program_options;
-
-// Eigen Library
-#include <Eigen/Dense>
 
 const double UNFEASIBLE_BIG_NUMBER = 1.e16;
 
@@ -92,6 +108,7 @@ const double UNFEASIBLE_BIG_NUMBER = 1.e16;
 #include "ideal_reactors/ideal_reactors.h"
 #include "DataManager.h"
 #include "InputManager.h"
+#include "OptimizedKinetics.h"
 #include "SerialDakotaInterface.h"
 #include "SimulationsInterface.h"
 
@@ -111,6 +128,5 @@ void run_dakota_parse(const char* plugin_input_file, bool echo_dakota_string);
 
 void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env); //,const char* plugin_input_file);
 
-// Maybe it is better to use raw?
 OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
-OptiSMOKE::InputManager* input = new OptiSMOKE::InputManager(dictionaries);
+OptiSMOKE::InputManager input(dictionaries);

@@ -41,8 +41,6 @@ namespace OptiSMOKE{
         kinetics_folder_ = "kinetics";
         optimized_kinetics_folder_ = "Optimized_kinetics";
 
-        iDebug_ = false;
-        iDebugSimulations_ = false;
         iXml_ = false;
         iNominalXml_ = false;
         iTransport_ = false;
@@ -136,19 +134,6 @@ namespace OptiSMOKE{
         // name of optimized kinetic folder
         dictionary_(main_dictionary_).ReadPath("@NameOfOptimizedKineticsFolder", optimized_kinetics_folder_);
        
-        // debug
-        if(dictionary_(main_dictionary_).CheckOption("@Debug")){
-            dictionary_(main_dictionary_).ReadBool("@Debug", iDebug_);
-        }
-
-        // debug simulations
-        if(dictionary_(main_dictionary_).CheckOption("@DebugSim")){
-            dictionary_(main_dictionary_).ReadBool("@DebugSim", iDebug_);
-        }
-
-        // path OpenSMOKE input files
-        dictionary_(main_dictionary_).ReadOption("@ListOfOpenSMOKEInputFiles", path_opensmoke_input_files_);
-
         // path data set input files
         dictionary_(main_dictionary_).ReadOption("@ListOfExperimentalDataFiles", path_experimental_data_files_);
         
@@ -194,7 +179,7 @@ namespace OptiSMOKE{
 		dakota_input_string_.append("\n   solution_target = " + dakota_options_.solution_target());
 		dakota_input_string_.append("\n   seed = " + dakota_options_.seed());
 
-		if(dakota_options_.iDiverseInput()){
+		if(dakota_options_.diverse_input()){
 			dakota_input_string_.append("\n");
 			for (int i = 0; i < dakota_options_.diverse_dakota_input().size(); i++)
 			{
@@ -245,7 +230,7 @@ namespace OptiSMOKE{
 		// Options to use other optimization method (e.g. gradient-based)
         // Qua forse va messa la possibilità di fare altri tipi di gradienti 
         // accordingly to dakota sicuro lo faccio ora non c'ho voglia
-		if (dakota_options_.iGradient() == true){
+		if (dakota_options_.dakota_gradient() == true){
 			dakota_input_string_.append("\n  numerical_gradients");
 			dakota_input_string_.append("\n  method_source dakota");
 			dakota_input_string_.append("\n  interval_type forward");
@@ -1036,4 +1021,5 @@ namespace OptiSMOKE{
 		save_simulations_ = data_manager_.save_simulations();
 
 	}
+
 } // namespace OptiSMOKE
