@@ -24,6 +24,7 @@ namespace OptiSMOKE {
 		const OptiSMOKE::InputManager& data_;
 	
 		std::vector<OptiSMOKE::BatchReactor*> batch_reactors;
+		std::vector<OptiSMOKE::PlugFlowReactor*> plugflow_reactors;
 	
 		unsigned int n_batch;
 		unsigned int n_pfr;

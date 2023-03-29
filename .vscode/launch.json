@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/build/OptiSMOKEpp.sh",
             "args": ["--input", "input.dic"],
             "stopAtEntry": true,
-            "cwd": "${workspaceFolder}/test/test-2",
+            "cwd": "${workspaceFolder}/test/test-batch",
             "environment": [
                 {"name": "LD_LIBRARY_PATH", "value": "/Users/tdinelli/NumericalLibraries/boost/boost-1.79-gcc-12/lib:/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17-gcc-12/lib"}
             ],
@@ -26,7 +26,7 @@
             "args": ["--input", "input.dic"],
             "targetArchitecture": "arm64",
             "stopAtEntry": true,
-            "cwd": "${workspaceFolder}/test/test-2",
+            "cwd": "${workspaceFolder}/test/test-batch",
             "environment": [
                 {"name": "DYLD_LIBRARY_PATH", "value": "/Users/tdinelli/NumericalLibraries/boost/boost-1.79-gcc-12/lib:/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17-gcc-12/lib"}
             ],

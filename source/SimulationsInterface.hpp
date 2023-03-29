@@ -10,8 +10,6 @@ namespace OptiSMOKE{
 		n_premixed = data_.optimization_target().number_of_premixed_laminar_flame();
 		n_counterflow = data_.optimization_target().number_of_counter_flow_flame();
 
-		batch_reactors.resize(n_batch);
-
 		// Resize simulations results
 		simulations_results_.resize(data_.expdata_x().size());
 		for(unsigned int i = 0; i < data_.expdata_x().size(); i++){
@@ -30,12 +28,21 @@ namespace OptiSMOKE{
 		//-------------------------------------------------------//
 		//               Allocations of reactors object          //
 		//-------------------------------------------------------//
-
-		// Consider offsetting
+		unsigned int offset = 0;
 		if(n_batch != 0){
 			batch_reactors.resize(n_batch);
 			for(unsigned int i = 0; i < n_batch; i++)
 				batch_reactors[i] = new OptiSMOKE::BatchReactor[data_.input_paths()[i].size()];
+			
+			offset += n_batch;
+		}
+
+		if(n_pfr != 0){
+			plugflow_reactors.resize(n_pfr);
+			for(unsigned int i = 0; i < n_pfr; i++)
+				plugflow_reactors[i] = new OptiSMOKE::PlugFlowReactor[data_.input_paths()[i+offset].size()];
+			
+			offset += n_pfr; 
 		}
 
 		//-------------------------------------------------------//
@@ -163,7 +170,8 @@ namespace OptiSMOKE{
 		// Here data_.path_experimental_data_files().size() this is 
 		// misleading however keep in mind that only the size matters
 
-		for(unsigned int i = 0; i < data_.path_experimental_data_files().size(); i++){
+		for(unsigned int i = 0; i < data_.path_experimental_data_files().size(); i++)
+		{
 			std::string qoi = data_.QoI()[i];
 			std::string qoi_target = data_.QoI_target()[i];
 			std::string solver = data_.solver_name()[i];
@@ -187,7 +195,18 @@ namespace OptiSMOKE{
 			}
 
 			if(solver == "PlugFlowReactor"){
-				OptiSMOKE::FatalErrorMessage(solver + " not supported yet!");
+				if(qoi == "Composition"){
+					for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
+						plugflow_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
+						plugflow_reactors[i][j].Solve();
+						for(unsigned int k = 0; k < species_list; k++){
+							simulations_results_[i][k][j] = plugflow_reactors[i][j].GetMolefraction();
+						}
+					}
+				}
+				else{
+					OptiSMOKE::FatalErrorMessage("Unknown QoI: " + qoi);
+				}
 			}
 
 			if(solver == "PerfectlyStirredReactor"){
@@ -460,4 +479,5 @@ namespace OptiSMOKE{
         // Changing the value of the thirdbody species
         data_.kineticsMapXML_->Set_ThirdBody(i-1, iSpecies-1, parameter);
 	}
+
 } // namespace OptiSMOKE

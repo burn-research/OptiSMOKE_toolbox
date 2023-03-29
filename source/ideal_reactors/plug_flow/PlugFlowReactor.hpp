@@ -242,7 +242,7 @@ namespace OptiSMOKE
 		}
 
 		// Profile
-		bool temperature_profile = false;
+		temperature_profile = false;
 		{
 			std::string name_of_gas_status_subdictionary;
 			if (dictionaries(main_dictionary_name_).CheckOption("@TemperatureProfile") == true)
@@ -354,40 +354,108 @@ namespace OptiSMOKE
 			}
 		}
 
+		bool momentum_equation = false;
+		{
+			if (dictionaries(main_dictionary_name_).CheckOption("@MomentumEquation") == true)
+				dictionaries(main_dictionary_name_).ReadBool("@MomentumEquation", momentum_equation);
 
+			if (constant_pressure == true && momentum_equation == true)
+				OpenSMOKE::FatalErrorMessage("The @MomentumEquation=true option requires @ConstantPressure=false");
+			if (cross_section_over_perimeter == 0. && momentum_equation == true)
+				OpenSMOKE::FatalErrorMessage("The @MomentumEquation=true option requires the @CrossSectionOverPerimeter option");
+			if (time_independent_variable == true && momentum_equation == true)
+				OpenSMOKE::FatalErrorMessage("The @MomentumEquation=true option requires the @Length option");
+		}
 		// ------------------------------------------------------------------------------------------- //
 		//                              Non parametric analysis                                        //
 		// ------------------------------------------------------------------------------------------- //
-		// Solve the ODE system: NonIsothermal, Constant Volume
 		if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_ISOTHERMAL)
 		{
 			plugflow_isothermal_ = new OpenSMOKE::PlugFlowReactor_Isothermal(*thermodynamicsMapXML, *kineticsMapXML,
 				*ode_parameters_, *plugflow_options_, *onTheFlyROPA_, *on_the_fly_post_processing_, *idt_, 
-				*polimi_soot_, time_independent_variable, constant_pressure, velocity, T, P_Pa, omega);
+				*polimi_soot_, time_independent_variable, constant_pressure, momentum_equation, velocity, 
+				T, P_Pa, omega);
 
 			if (temperature_profile == true)
 				plugflow_isothermal_->SetTemperatureProfile(*profile_);
 		}
-
-
 		else if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_NONISOTHERMAL)
 		{
 			plugflow_non_isothermal_ = new OpenSMOKE::PlugFlowReactor_NonIsothermal(*thermodynamicsMapXML, *kineticsMapXML,
 				*ode_parameters_, *plugflow_options_, *onTheFlyROPA_, *on_the_fly_post_processing_, *idt_, *polimi_soot_, 
-				time_independent_variable, constant_pressure, velocity, T, P_Pa, omega, global_thermal_exchange_coefficient, 
+				time_independent_variable, constant_pressure, momentum_equation, velocity, T, P_Pa, omega, global_thermal_exchange_coefficient, 
 				cross_section_over_perimeter, T_environment);
 		}
+		//else
+			//OptiSMOKE::FatalErrorMessage("Unknown PlugFlowReactor type!");
+
 	}
 
 	void PlugFlowReactor::Solve()
 	{
+		// Solve the ODE system: NonIsothermal, Constant Volume
 		if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_ISOTHERMAL)
-		{
 			plugflow_isothermal_->Solve(end_value_);
-		}
 		else if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_NONISOTHERMAL)
-		{
 			plugflow_non_isothermal_->Solve(end_value_);
+	}
+
+	double PlugFlowReactor::GetMolefraction(std::string species_name)
+	{
+		OpenSMOKE::OpenSMOKEVectorDouble omega_Final(thermodynamicsMapXML_->NumberOfSpecies());
+		OpenSMOKE::OpenSMOKEVectorDouble x_Final(thermodynamicsMapXML_->NumberOfSpecies());
+		
+		double T_final;
+		double P_Pa_final;
+
+		if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_ISOTHERMAL)
+			plugflow_isothermal_->GetFinalStatus(T_final, P_Pa_final, omega_Final);
+		else if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_NONISOTHERMAL)
+			plugflow_non_isothermal_->GetFinalStatus(T_final, P_Pa_final, omega_Final);	
+		
+		double MW_Final = thermodynamicsMapXML_->MolecularWeight_From_MassFractions(omega_Final.GetHandle());
+		thermodynamicsMapXML_->MoleFractions_From_MassFractions(x_Final.GetHandle(), MW_Final, omega_Final.GetHandle());
+		double Mole_frac_temp = x_Final(thermodynamicsMapXML_->IndexOfSpecies(species_name));
+
+		CleanMemory();
+		return Mole_frac_temp;
+	}
+
+	void PlugFlowReactor::CleanMemory()
+	{
+		delete sensitivity_options_;
+		sensitivity_options_ = NULL;
+
+		delete ode_parameters_;
+		ode_parameters_ = NULL;
+
+		delete plugflow_options_;
+		plugflow_options_ = NULL;
+
+		delete onTheFlyROPA_;
+		onTheFlyROPA_ = NULL;
+
+		delete on_the_fly_post_processing_;
+		on_the_fly_post_processing_ = NULL;
+
+		delete polimi_soot_;
+		polimi_soot_ = NULL;
+
+		delete idt_;
+		idt_ = NULL;
+		
+		if (temperature_profile == true){
+			delete profile_;
+			profile_ = NULL;
+		}
+
+		if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_ISOTHERMAL){
+			delete plugflow_isothermal_;
+			plugflow_isothermal_ = NULL;
+		}
+		else if (type_ == OpenSMOKE::PLUGFLOW_REACTOR_NONISOTHERMAL){
+			delete plugflow_non_isothermal_;
+			plugflow_non_isothermal_ = NULL;
 		}
 	}
 

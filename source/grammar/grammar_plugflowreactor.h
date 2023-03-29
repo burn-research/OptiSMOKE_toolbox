@@ -161,7 +161,7 @@ namespace OptiSMOKE
 			AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@IgnitionDelayTimes",
 				OpenSMOKE::SINGLE_DICTIONARY,
 				"Dictionary containing additional options for estimating the ignition delay times",
-				true));
+				false));
 		}
 	};
 } // namespace OptiSMOKE

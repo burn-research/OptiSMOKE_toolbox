@@ -1,0 +1,120 @@
+//------------------------------------------------------------//
+//     ____            _  ______ __  __  ____  _  ________    //
+//    / __ \       _  (_)/  ____|  \/  |/ __ \| |/ /  ____|   //
+//   | |  | |_ __ | |_ _ | (___ | \  / | |  | | ' /| |__      //
+//   | |  | | '_ \|  _| |\___  \| |\/| | |  | |  < |  __|     //
+//   | |__| | |_) | |_| |____)  | |  | | |__| | . \| |____    //
+//    \____/| .__/\___|_|______/|_|  |_|\____/|_|\_\______|   //
+//          | |                                               //
+//          |_|                                               //
+//                                                            //
+//------------------------------------------------------------//
+
+Dictionary OptiSMOKEpp
+{
+	@NominalKineticsPreProcessor	KineticPreProcessor;
+
+	@KineticsFolder					../mechanisms/Polimi_NH3_2020;
+
+	@NameOfOptimizedKineticsFolder	Output/optimized-kinetics;
+
+	@ListOfExperimentalDataFiles	exp_data/exp_dataset_22.json
+									exp_data/exp_dataset_23.json
+									exp_data/exp_dataset_24.json
+									exp_data/exp_dataset_25.json
+									exp_data/exp_dataset_26.json; 
+
+	@OptimizationSetup				OptimizationSetup;
+
+	@OptimizationTarget				OptimizationTargets;
+        
+	@DakotaOptions					dakota_options;
+    
+	@CurveMatchingOptions			curve_matching_options;
+
+	@OptimizationLibrary			dakota;
+
+}
+
+Dictionary OptimizationSetup
+{
+	@ParametersBoundaries			Narrow;
+
+	@ObjectiveFunctionType			CurveMatching;
+    
+	@Parameters_Distribution		uniform;
+        
+	@AcceptedSigmaInKDistribution	3;
+        
+	@SigmaExpDistribution			3;
+
+	@PenaltyFunction				true;
+}
+
+Dictionary OptimizationTargets
+{
+	@NumberOfBatchReactor				0;
+
+	@NumberOfPlugFlowReactor			5;
+        
+	@NumberOfPerfectlyStirredReactor	0;
+        
+	@NumberOfPremixedLaminarFlame		0;
+
+	@ListOfTarget_lnA					30	31	38	74	75	172;
+
+	@ListOfTarget_Beta					30	31	38	74	75	172;
+        
+	@ListOfTarget_E_over_R				30	31	38	74	75	172;
+
+	@ListOfTargetUncertaintyFactors		30	31	38	74	75	172;
+        
+	@ListOfUncertaintyFactors			0.3	1	0.5	0.49	0.48	0.6;
+                
+}
+
+Dictionary KineticPreProcessor
+{
+	@Kinetics			../mechanisms/Polimi_NH3_2020/Kinetics.CKI;
+	@Thermodynamics		../mechanisms/Polimi_NH3_2020/Thermodynamics.therm;
+	@Transport			../mechanisms/Polimi_NH3_2020/Transport.TRAN;
+	@Output				Output/kinetics;
+}
+
+Dictionary dakota_options
+{
+	@EchoDakotaInput			true;
+	@TabularDataFile			Output/tabular_data.dat;
+
+	@Method						coliny_ea;
+
+	@FitnessType				linear_rank;
+
+	@CrossoverType				uniform;
+	@CrossoverRate				0.65;
+
+	@MutationType				offset_normal;
+	@MutationRate				0.5;
+
+	@ReplacementType			chc=50 ;
+
+	@MaxIterations				1000;
+	@MaxFunctionEvaluations		20000;
+	@ConvergenceTolerance		1e-12;
+	@SolutionTarget				1e-8;
+
+	@Seed						1000;
+	@PopulationSize				500;
+}
+
+Dictionary curve_matching_options
+{
+	@NumberOfBootstrapVariations				1;
+	@LineUpMaxima								true;
+	@UseSumOfIndexesForAlignment				true;
+	@FractionOfExpRangeForModelExtrapolation	0.0;
+	@UseBootStrap								false;
+	@PrintIndexes								false;
+	@PrintSplines								false;
+	@PrintBootstrap								false;
+}

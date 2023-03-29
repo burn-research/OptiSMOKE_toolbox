@@ -1,0 +1,40 @@
+{
+	"notes": "Stagni dataset test", 
+	"name": "exp_dataset_22", 
+	"solver": "PlugFlowReactor", 
+	"QoI": "Composition", 
+	"QoI_target": "mole-fraction", 
+	"OS_Input_File": 
+	[
+		"cases/Herbinet_O2_308.1/input.dic", 
+		"cases/Herbinet_O2_313.1/input.dic", 
+		"cases/Herbinet_O2_318.1/input.dic", 
+		"cases/Herbinet_O2_323.1/input.dic", 
+		"cases/Herbinet_O2_328.1/input.dic", 
+		"cases/Herbinet_O2_333.1/input.dic", 
+		"cases/Herbinet_O2_337.6/input.dic", 
+		"cases/Herbinet_O2_343.1/input.dic", 
+		"cases/Herbinet_O2_348.1/input.dic", 
+		"cases/Herbinet_O2_353.1/input.dic", 
+		"cases/Herbinet_O2_372.1/input.dic", 
+		"cases/Herbinet_O2_396.1/input.dic", 
+		"cases/Herbinet_O2_421.1/input.dic", 
+		"cases/Herbinet_O2_466.1/input.dic", 
+		"cases/Herbinet_O2_514.1/input.dic"
+	], 
+	"multiple_input": true, 
+	"save_simulations_data": true, 
+	"data": 
+	[
+		{
+			"abscissae_label": "Temperature", 
+			"abscissae_unit": "K", 
+			"abscissae": [1273.15, 1323.15, 1373.15, 1423.15, 1473.15, 1523.15, 1573.15, 1623.15, 1673.15, 1723.15, 1773.15, 1823.15, 1873.15, 1923.15, 1973.15], 
+			"ordinates_label": "O2", 
+			"ordinates_unit": "-", 
+			"ordinates": [0.002, 0.002, 0.001928287, 0.002023904, 0.001569721, 0.001505976, 0.001219124, 0.001211155, 0.001191235, 0.001190283, 0.001174089, 0.001174089, 0.001157895, 0.001153846, 0.001157895], 
+			"uncertainty": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], 
+			"uncertainty_kind": "relative"
+		}
+	]
+}

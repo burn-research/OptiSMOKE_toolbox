@@ -24,6 +24,8 @@ namespace OptiSMOKE
 
 		void Solve();
 
+		double GetMolefraction(std::string species_name);
+
 	private:
 
 		OpenSMOKE::PlugFlowReactor_Type type_;
@@ -32,19 +34,22 @@ namespace OptiSMOKE
 
 
 		// Read thermodynamics and kinetics maps
-		OpenSMOKE::ThermodynamicsMap_CHEMKIN*	thermodynamicsMapXML_;
-		OpenSMOKE::KineticsMap_CHEMKIN*			kineticsMapXML_;
+		OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML_;
+		OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML_;
 
-		OpenSMOKE::PolimiSoot_Analyzer*							polimi_soot_;
-		OpenSMOKE::OnTheFlyPostProcessing*						on_the_fly_post_processing_;
-		OpenSMOKE::OnTheFlyROPA*								onTheFlyROPA_;
-		OpenSMOKE::PlugFlowReactor_Options*						plugflow_options_;
-		OpenSMOKE::ODE_Parameters*								ode_parameters_;
-		OpenSMOKE::SensitivityAnalysis_Options*					sensitivity_options_;
-		OpenSMOKE::IgnitionDelayTimes_Analyzer*					idt_;
-		OpenSMOKE::PlugFlowReactor_Profile*						profile_;
+		OpenSMOKE::PolimiSoot_Analyzer* polimi_soot_;
+		OpenSMOKE::OnTheFlyPostProcessing* on_the_fly_post_processing_;
+		OpenSMOKE::OnTheFlyROPA* onTheFlyROPA_;
+		OpenSMOKE::PlugFlowReactor_Options*	plugflow_options_;
+		OpenSMOKE::ODE_Parameters* ode_parameters_;
+		OpenSMOKE::SensitivityAnalysis_Options* sensitivity_options_;
+		OpenSMOKE::IgnitionDelayTimes_Analyzer* idt_;
+		OpenSMOKE::PlugFlowReactor_Profile* profile_;
 
 		double end_value_;
+		bool temperature_profile;
+
+		void CleanMemory();
 	};
 }
 

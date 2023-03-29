@@ -1,0 +1,67 @@
+Dictionary PlugFlowReactor
+{
+	@KineticsFolder		folder_kin;
+	@Type               	Isothermal;	
+	@InletStatus        	inlet-mixture;	
+	@Diameter           	0.4 cm;	
+	@ConstantPressure	true;	
+	@Length             	100 cm;	
+	@MoleFlowRate		0.000691714 mol/s;
+	@Options        	output-options;
+	@TemperatureProfile 	T-Profile;
+}
+Dictionary inlet-mixture
+{
+	@Temperature   		337.65 	K ; 
+	@Pressure      		1.25 atm;
+	@Moles		NH3 	0.001
+                	O2      0.002
+               	 	HE      0.997;
+}
+Dictionary output-options
+{	
+	@StepsFile  		1;
+	@OutputSpecies   	NH3 N2 H2 O2 NO H2O;
+	@OutputFolder		Output;
+}
+Dictionary T-Profile
+{	
+	@XVariable length;
+	@YVariable temperature;	
+	@XUnits cm;
+	@YUnits K;	
+	@Profile
+0	337.65
+5	355.35
+10	417.15
+15	502.15
+20	701.15
+25	1115.15
+30	1342.15
+34	1447.15
+36	1496.15
+38	1520.15
+40	1533.15
+42	1543.15
+44	1552.15
+46	1557.15
+48	1559.15
+50	1559.15
+52	1557.15
+54	1553.15
+56	1545.15
+58	1531.15
+60	1504.15
+62	1458.15
+64	1318.15
+66	1175.95
+68	1075.15
+70	990.15
+72	928.15
+74	864.15
+80	730.75
+85	630.15
+90	544.15
+95	476.15
+100	413.15; 
+}
