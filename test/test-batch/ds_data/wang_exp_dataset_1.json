@@ -1,5 +1,4 @@
 {
-	"abscissae": [0.851788756,0.857632933,0.86281277,0.900900901,0.920810313],
 	"notes": "Wang dataset test",
 	"name": "Wang dataset 1",
 	"solver": "BatchReactor",
