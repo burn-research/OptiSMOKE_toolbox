@@ -339,30 +339,53 @@ namespace OptiSMOKE{
 		double T_low = 300;
 		double T_high = 2500;
 
+		// Initialize needed values at the specific size
+		std::vector<double> list_of_nominal_lnA_double(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> list_of_nominal_Beta_double(optimization_target_.list_of_target_uncertainty_factors().size());
+	    std::vector<double> list_of_nominal_E_over_R_double(optimization_target_.list_of_target_uncertainty_factors().size());
+
+		std::vector<double> list_of_min_abs_lnA_double(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> list_of_max_abs_lnA_double(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> list_of_min_abs_Beta_double(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> list_of_max_abs_Beta_double(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> list_of_min_abs_E_over_R_double(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> list_of_max_abs_E_over_R_double(optimization_target_.list_of_target_uncertainty_factors().size());
+
+		std::vector<double> kappa_lower_T_low(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> kappa_upper_T_low(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> kappa_lower_T_high(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> kappa_upper_T_high(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> Beta_1(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> Beta_2(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> lnA_1(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> lnA_2(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> E_over_R_1(optimization_target_.list_of_target_uncertainty_factors().size());
+		std::vector<double> E_over_R_2(optimization_target_.list_of_target_uncertainty_factors().size());
+
+
+		std::vector<double> list_of_nominal_lnA_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> list_of_nominal_Beta_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> list_of_nominal_E_over_R_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+
+		std::vector<double> list_of_min_abs_lnA_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> list_of_max_abs_lnA_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> list_of_min_abs_Beta_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> list_of_max_abs_Beta_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> list_of_min_abs_E_over_R_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> list_of_max_abs_E_over_R_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+
+		std::vector<double> kappa_lower_T_low_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> kappa_upper_T_low_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> kappa_lower_T_high_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> kappa_upper_T_high_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> Beta_1_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> Beta_2_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> lnA_1_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> lnA_2_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> E_over_R_1_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+		std::vector<double> E_over_R_2_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
+
 		if(optimization_setup_.parameter_boundaries() == "Furst"){
-		    // Initialize needed values at the specific size
-		    std::vector<double> list_of_nominal_lnA_double(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> list_of_nominal_Beta_double(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> list_of_nominal_E_over_R_double(optimization_target_.list_of_target_uncertainty_factors().size());
-
-		    std::vector<double> list_of_min_abs_lnA_double(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> list_of_max_abs_lnA_double(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> list_of_min_abs_Beta_double(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> list_of_max_abs_Beta_double(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> list_of_min_abs_E_over_R_double(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> list_of_max_abs_E_over_R_double(optimization_target_.list_of_target_uncertainty_factors().size());
-
-		    std::vector<double> kappa_lower_T_low(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> kappa_upper_T_low(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> kappa_lower_T_high(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> kappa_upper_T_high(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> Beta_1(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> Beta_2(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> lnA_1(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> lnA_2(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> E_over_R_1(optimization_target_.list_of_target_uncertainty_factors().size());
-		    std::vector<double> E_over_R_2(optimization_target_.list_of_target_uncertainty_factors().size());
-
 		    for (unsigned int i = 0; i < optimization_target_.list_of_target_uncertainty_factors().size(); i++){
                 // Nominal values of parameters
                 list_of_nominal_lnA_double[i] = std::log(nominalkineticsMapXML_->A(optimization_target_.list_of_target_uncertainty_factors()[i]-1));
@@ -416,29 +439,6 @@ namespace OptiSMOKE{
 					list_of_max_abs_E_over_R_.push_back(boost::lexical_cast<std::string>(list_of_max_abs_E_over_R_double[i]));
 				}
 		    }
-
-		    // Initialize needed values
-		    std::vector<double> list_of_nominal_lnA_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> list_of_nominal_Beta_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> list_of_nominal_E_over_R_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-
-		    std::vector<double> list_of_min_abs_lnA_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> list_of_max_abs_lnA_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> list_of_min_abs_Beta_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> list_of_max_abs_Beta_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> list_of_min_abs_E_over_R_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> list_of_max_abs_E_over_R_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-
-		    std::vector<double> kappa_lower_T_low_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> kappa_upper_T_low_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> kappa_lower_T_high_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> kappa_upper_T_high_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> Beta_1_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> Beta_2_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> lnA_1_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> lnA_2_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> E_over_R_1_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-		    std::vector<double> E_over_R_2_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
 
             std::vector<unsigned int> indices_of_falloff_reactions = nominalkineticsMapXML_->IndicesOfFalloffReactions();
 
@@ -502,23 +502,6 @@ namespace OptiSMOKE{
 		}
 		
         if(optimization_setup_.parameter_boundaries() == "Narrow"){
-			std::vector<double> list_of_nominal_lnA_double(optimization_target_.list_of_target_uncertainty_factors().size());
-			std::vector<double> list_of_nominal_Beta_double(optimization_target_.list_of_target_uncertainty_factors().size());
-			std::vector<double> list_of_nominal_E_over_R_double(optimization_target_.list_of_target_uncertainty_factors().size());
-
-			std::vector<double> list_of_min_abs_lnA_double(optimization_target_.list_of_target_uncertainty_factors().size());
-			std::vector<double> list_of_max_abs_lnA_double(optimization_target_.list_of_target_uncertainty_factors().size());
-			std::vector<double> list_of_min_abs_Beta_double(optimization_target_.list_of_target_uncertainty_factors().size());
-			std::vector<double> list_of_max_abs_Beta_double(optimization_target_.list_of_target_uncertainty_factors().size());
-			std::vector<double> list_of_min_abs_E_over_R_double(optimization_target_.list_of_target_uncertainty_factors().size());
-			std::vector<double> list_of_max_abs_E_over_R_double(optimization_target_.list_of_target_uncertainty_factors().size());
-			
-			std::vector<double> Beta_1(optimization_target_.list_of_target_uncertainty_factors().size());
-			std::vector<double> Beta_2(optimization_target_.list_of_target_uncertainty_factors().size());
-			std::vector<double> lnA_1(optimization_target_.list_of_target_uncertainty_factors().size());
-			std::vector<double> lnA_2(optimization_target_.list_of_target_uncertainty_factors().size());
-			std::vector<double> E_over_R_1(optimization_target_.list_of_target_uncertainty_factors().size());
-			std::vector<double> E_over_R_2(optimization_target_.list_of_target_uncertainty_factors().size());
 			
 			for (unsigned int i=0; i < optimization_target_.list_of_target_uncertainty_factors().size(); i++){
 				list_of_nominal_lnA_double[i] = std::log(nominalkineticsMapXML_->A(optimization_target_.list_of_target_uncertainty_factors()[i]-1));
@@ -565,24 +548,6 @@ namespace OptiSMOKE{
 					list_of_max_abs_E_over_R_.push_back(boost::lexical_cast<std::string>(list_of_max_abs_E_over_R_double[i]));
 				}
 			}
-
-            std::vector<double> list_of_nominal_lnA_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-            std::vector<double> list_of_nominal_Beta_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-            std::vector<double> list_of_nominal_E_over_R_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-
-            std::vector<double> list_of_min_abs_lnA_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-            std::vector<double> list_of_max_abs_lnA_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-            std::vector<double> list_of_min_abs_Beta_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-            std::vector<double> list_of_max_abs_Beta_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-            std::vector<double> list_of_min_abs_E_over_R_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-            std::vector<double> list_of_max_abs_E_over_R_inf_double(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-
-            std::vector<double> Beta_1_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-            std::vector<double> Beta_2_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-            std::vector<double> lnA_1_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-            std::vector<double> lnA_2_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-            std::vector<double> E_over_R_1_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
-            std::vector<double> E_over_R_2_inf(optimization_target_.list_of_target_uncertainty_factors_inf().size());
 
 			std::vector<unsigned int> indices_of_falloff_reactions = nominalkineticsMapXML_->IndicesOfFalloffReactions();
 			for (unsigned int i=0; i < optimization_target_.list_of_target_uncertainty_factors_inf().size(); i++){

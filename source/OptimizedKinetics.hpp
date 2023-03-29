@@ -29,7 +29,8 @@ namespace OptiSMOKE
         }
     }
 
-    void OptimizedKinetics::WriteOptimizedMechanism() {
+    void OptimizedKinetics::WriteOptimizedMechanism() 
+    {
         if (isChemkinNameSet_ == false)
             OptiSMOKE::FatalErrorMessage("Error: chemkin path was not set for reduced kinetics");
         
@@ -92,7 +93,6 @@ namespace OptiSMOKE
         //Writing reactions list
         fChemKin_ << "REACTIONS" << std::endl;
         for (int i = 0; i < NR_; i++) {
-
 			// TODO
 		}
         fChemKin_ << "END";
