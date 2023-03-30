@@ -2,7 +2,7 @@
 # Preliminary Settings
 #--------------------------------------------------------------------
 
-cmake_minimum_required (VERSION 3.16)
+cmake_minimum_required (VERSION 3.20)
 
 project (OptiSMOKEpp)
 
@@ -99,12 +99,11 @@ endif()
 # --- OpenBLAS (Optional but strongly Recommended: choose one between MKL and OpenBLAS)
 option (OPTISMOKE_USE_OPENBLAS "Activate OpenBLAS support for OpenSMOKEpp" FALSE)
 if(OPTISMOKE_USE_OPENBLAS)  
-  set (BLA_VENDOR Open)
-  find_package(BLAS COMPONENTS openblas)
-  message(STATUS "OpenBLAS_LIBRARIES: ${BLAS_LIBRARIES}")
-  message(STATUS "OpenBLAS_DIR: ${BLAS_DIR}")
-  list(APPEND SEMI_COMPULSORY_INCLUDE ${BLAS_DIR})
-  list(APPEND SEMI_COMPULSORY_LIBRARIES ${BLAS_LIBRARIES})
+  find_package(OpenBLAS)
+  message(STATUS "OpenBLAS_LIBRARIES: ${OpenBLAS_LIBRARIES}")
+  message(STATUS "OpenBLAS_DIR: ${OpenBLAS_INCLUDE_DIR}")
+  list(APPEND SEMI_COMPULSORY_INCLUDE ${OpenBLAS_INCLUDE_DIR})
+  list(APPEND SEMI_COMPULSORY_LIBRARIES ${OpenBLAS_LIBRARIES})
   add_compile_definitions(OPENSMOKE_USE_OPENBLAS=1)
 endif()
 

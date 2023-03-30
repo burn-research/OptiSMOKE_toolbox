@@ -13,9 +13,13 @@ export Boost_ROOT=/software/chimica2/libraries/boost/boost-1.78.0-gcc-9.2.0
 export OpenSMOKEpp_ROOT=/home/chimica2/tdinelli/GitHub/OpenSMOKEpp
 export Eigen3_ROOT=/software/chimica2/libraries/eigen/eigen-3.4.0
 export CEQ_ROOT=/home/chimica2/tdinelli/NumericalLibraries/CEQ/lib/linux
+export OpenBLAS_HOME=/home/chimica2/tdinelli/NumericalLibraries/openblas/openblas-0.3.21-gcc-9.2.0
 
 cd ..
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=$CUSTOM_INSTALL ..
+cmake \
+	-DCMAKE_INSTALL_PREFIX=$CUSTOM_INSTALL \
+	-DOPTISMOKE_USE_OPENBLAS=1 \
+	..
 make
