@@ -279,6 +279,10 @@ namespace OptiSMOKE
 				dictionaries(main_dictionary_name_).ReadDictionary("@Options", name_of_options_subdictionary);
 				plugflow_options_->SetupFromDictionary(dictionaries(name_of_options_subdictionary));
 			}
+			plugflow_options_->SetVerboseVideo(false);
+			plugflow_options_->SetVerboseOutput(false);
+			plugflow_options_->SetSensitivityAnalysis(false);
+
 		}
 
 		// ODE Parameters

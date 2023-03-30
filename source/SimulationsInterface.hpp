@@ -199,8 +199,17 @@ namespace OptiSMOKE{
 					for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
 						plugflow_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
 						plugflow_reactors[i][j].Solve();
-						for(unsigned int k = 0; k < species_list; k++){
-							simulations_results_[i][k][j] = plugflow_reactors[i][j].GetMolefraction();
+
+						if(qoi_target == "mole-fraction"){
+							for(unsigned int k = 0; k < data_.ordinates_label()[i][0].size(); k++){
+								simulations_results_[i][k][j] = plugflow_reactors[i][j].GetMolefraction(data_.ordinates_label()[i][0][k]);
+							}
+						}
+						else if (qoi_target == "mass-fraction"){
+							OptiSMOKE::FatalErrorMessage("Mass-fraction to be implemented");
+						}
+						else{
+							OptiSMOKE::FatalErrorMessage("Unknown QoI target: " + qoi_target);
 						}
 					}
 				}
@@ -226,7 +235,7 @@ namespace OptiSMOKE{
 	double SimulationsInterface::ComputeObjectiveFunction()
 	{
 		double objective_function = 0;
-
+		std::cout << " * Computing objective function" << std::endl;
 		if (data_.optimization_setup().objective_function_type() == "CurveMatching") {
 			std::vector<double> CM_indexes;
 			std::vector<std::vector<double>> CM_score;
@@ -268,7 +277,7 @@ namespace OptiSMOKE{
                 for (int j=0; j < CM_score[i].size(); j++){
                 	i_th_index = i_th_index  + CM_score[i][j]/CM_score[i].size(); 
                 }
-                std::cout << "    * The Curve Matching score of ";
+                std::cout << "   * The Curve Matching score of ";
 				std::cout << data_.dataset_names()[i] << " is: " << i_th_index << std::endl; 
                 final_index = final_index+i_th_index/CM_score.size();
             }
