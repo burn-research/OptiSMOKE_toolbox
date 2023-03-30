@@ -63,9 +63,9 @@ Dictionary OptimizationTargets
 
 	@ListOfTarget_lnA					30	31	38	74	75	172;
 
-	@ListOfTarget_Beta					30	31	38	74	75	172;
+	@ListOfTarget_Beta					30	31	74	75	172;
         
-	@ListOfTarget_E_over_R				30	31	38	74	75	172;
+	@ListOfTarget_E_over_R				30	31	74	75	172;
 
 	@ListOfTargetUncertaintyFactors		30	31	38	74	75	172;
         
