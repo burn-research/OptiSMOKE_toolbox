@@ -84,9 +84,9 @@ namespace OptiSMOKE{
         // dimension one: number of files
         // dimension two: number of datasets whithin each file
         // dimension three: number point in each datasets
-        std::vector<std::vector<std::vector<std::string>>> ordinates_label_;
-        std::vector<std::vector<std::vector<std::string>>> abscissae_label_;
-        std::vector<std::vector<std::vector<std::string>>> uncertainty_kind_;
+        std::vector<std::vector<std::vector<std::string>>> ordinates_label_; // This need to be 2d
+        std::vector<std::vector<std::vector<std::string>>> abscissae_label_; // This need to be 2d
+        std::vector<std::vector<std::vector<std::string>>> uncertainty_kind_; // This need to be 2d
         std::vector<std::vector<std::vector<double>>> expdata_x_;
         std::vector<std::vector<std::vector<double>>> expdata_y_;
         std::vector<std::vector<std::vector<double>>> uncertainty_;

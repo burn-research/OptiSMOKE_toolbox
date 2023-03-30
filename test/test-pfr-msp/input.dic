@@ -1,0 +1,118 @@
+//------------------------------------------------------------//
+//     ____            _  ______ __  __  ____  _  ________    //
+//    / __ \       _  (_)/  ____|  \/  |/ __ \| |/ /  ____|   //
+//   | |  | |_ __ | |_ _ | (___ | \  / | |  | | ' /| |__      //
+//   | |  | | '_ \|  _| |\___  \| |\/| | |  | |  < |  __|     //
+//   | |__| | |_) | |_| |____)  | |  | | |__| | . \| |____    //
+//    \____/| .__/\___|_|______/|_|  |_|\____/|_|\_\______|   //
+//          | |                                               //
+//          |_|                                               //
+//                                                            //
+//------------------------------------------------------------//
+
+Dictionary OptiSMOKEpp
+{
+	@NominalKineticsPreProcessor	KineticPreProcessor;
+
+	@KineticsFolder					../mechanisms/mech;
+
+	@NameOfOptimizedKineticsFolder	Output/optimized-kinetics;
+
+	@ListOfExperimentalDataFiles	exp_data/exp_dataset_1.json ;
+
+	@OptimizationSetup				OptimizationSetup;
+
+	@OptimizationTarget				OptimizationTargets;
+        
+	@DakotaOptions					dakota_options;
+    
+	@CurveMatchingOptions			curve_matching_options;
+
+	@OptimizationLibrary			dakota;
+
+}
+
+Dictionary OptimizationSetup
+{
+	@ParametersBoundaries			Narrow;
+
+	@ObjectiveFunctionType			CurveMatching;
+    
+	@Parameters_Distribution		uniform;
+        
+	@AcceptedSigmaInKDistribution	3;
+        
+	@SigmaExpDistribution			3;
+
+	@PenaltyFunction				true;
+}
+
+Dictionary OptimizationTargets
+{
+	@NumberOfBatchReactor				0;
+
+	@NumberOfPlugFlowReactor			1;
+        
+	@NumberOfPerfectlyStirredReactor	0;
+        
+	@NumberOfPremixedLaminarFlame		0;
+
+	@ListOfTarget_lnA					937 938 939 1191 1219 1220 1221;
+
+	@ListOfTarget_Beta					937 938 939 1191 1219 1220 1221;
+        
+	@ListOfTarget_E_over_R				937 938 939 1191 1219 1220 1221;
+
+	@ListOfTargetUncertaintyFactors		937 938 939 1191 1219 1220 1221;
+        
+	@ListOfUncertaintyFactors			0.7 0.7 0.7 0.7 0.7 0.7 0.7;
+                
+	@ListOfTarget_classic_PLOG_Reactions	1217;
+
+	@ListOfUncertaintyFactors_classic_PLOG	0.7;
+}
+
+Dictionary KineticPreProcessor
+{
+	@Kinetics			../mechanisms/mech/Kinetics.CKI;
+	@Thermodynamics		../mechanisms/mech/Thermodynamics.CKT;
+	@Output				Output/kinetics;
+}
+
+Dictionary dakota_options
+{
+	@EchoDakotaInput			true;
+	@TabularDataFile			Output/tabular_data.dat;
+
+	@Method						coliny_ea;
+
+	@FitnessType				linear_rank;
+
+	@CrossoverType				uniform;
+	@CrossoverRate				0.65;
+
+	@MutationType				offset_normal;
+	@MutationRate				0.5;
+
+	@ReplacementType			chc=25;
+
+	@MaxIterations				1000;
+	@MaxFunctionEvaluations		20000;
+	@ConvergenceTolerance		1e-12;
+	@SolutionTarget				1e-8;
+
+	@Seed						1000;
+	@PopulationSize				50;
+}
+
+Dictionary curve_matching_options
+{
+	@NumberOfBootstrapVariations				1;
+	@LineUpMaxima								true;
+	@UseSumOfIndexesForAlignment				true;
+	@FractionOfExpRangeForModelExtrapolation	0.0;
+	@UseBootStrap								false;
+	@PrintIndexes								false;
+	@PrintSplines								false;
+	@PrintBootstrap								false;
+}

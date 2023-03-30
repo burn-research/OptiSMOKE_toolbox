@@ -10,7 +10,8 @@
                 "/Users/tdinelli/NumericalLibraries/boost/boost-1.79-gcc-12/include",
                 "/Users/tdinelli/NumericalLibraries/eigen/eigen-3.4.0",
                 "/Users/tdinelli/NumericalLibraries/eigen/eigen-3.4.0/Eigen/src",
-                "/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17-gcc-12/include"
+                "/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17-gcc-12/include",
+                "/Users/tdinelli/NumericalLibraries/nlopt/nlopt-2.7.1-gcc-12/include"
             ],
             "forcedInclude": [
                 "${workspaceFolder}/.vscode/eigen_fix.h"

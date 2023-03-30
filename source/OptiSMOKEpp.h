@@ -94,9 +94,11 @@ const double UNFEASIBLE_BIG_NUMBER = 1.e16;
 #include "DirectApplicInterface.hpp"
 
 // NLOPT++ Library
-#if OPTISMOKE_USE_NLOPT
+// #if OPTISMOKE_USE_NLOPT
 #include <nlopt.h>
-#endif
+double NLOptFunction(unsigned n, const double *x, double *grad, void *my_func_data);
+double OptFunction(const Eigen::VectorXd &b, double fn_val);
+// #endif
 
 // Curve Matching
 #include "curve_matching/curve_matching.h"
@@ -130,3 +132,13 @@ void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env); //,const char*
 
 OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
 OptiSMOKE::InputManager input(dictionaries);
+
+// Here it is better to use pointersssss
+OptiSMOKE::SimulationsInterface sim_iface_(input);
+OptiSMOKE::OptimizedKinetics opti_kinetics_(input, input.thermodynamicsMapXML_, input.kineticsMapXML_);
+
+unsigned int numberOfGradientEvaluations;
+unsigned int numberOfFunctionEvaluations;
+
+bool violated_uncertainty;
+double prev_fn_val;

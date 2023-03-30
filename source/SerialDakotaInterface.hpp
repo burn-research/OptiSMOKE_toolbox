@@ -77,15 +77,15 @@ namespace SIM {
         else{
             sim_iface_->run();
             fn_val = sim_iface_->ComputeObjectiveFunction();
-        }
         
-        if(eval_nr == 1)
-            prev_fn_val = fn_val;
+            if(eval_nr == 1)
+                prev_fn_val = fn_val;
         
-        if(prev_fn_val > fn_val) {
-            prev_fn_val = fn_val;
-            opti_kinetics_->WriteOptimizedMechanism();
-            std::cout << " * Wrote optimized mechanism" << std::endl;
+            if(prev_fn_val > fn_val) {
+                prev_fn_val = fn_val;
+                opti_kinetics_->WriteOptimizedMechanism();
+                std::cout << " * Wrote optimized mechanism" << std::endl;
+            }
         }
         
         return 0;
