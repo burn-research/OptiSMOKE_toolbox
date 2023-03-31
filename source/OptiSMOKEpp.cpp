@@ -85,40 +85,52 @@ int main(int argc, char* argv[]){
         violated_uncertainty = false;
         numberOfGradientEvaluations = 0;
         numberOfFunctionEvaluations = 0;
+        
+        sim_iface_ = new OptiSMOKE::SimulationsInterface(input);
+        opti_kinetics_ = new OptiSMOKE::OptimizedKinetics(input, input.thermodynamicsMapXML_, input.kineticsMapXML_);
 
-        sim_iface_.Setup();
-        opti_kinetics_.SetChemkinName(input.optimized_kinetics_folder() / "OptimalMechanism.CKI");
+        sim_iface_->Setup();
+        opti_kinetics_->SetChemkinName(input.optimized_kinetics_folder() / "OptimalMechanism.CKI");
 
-        nlopt_opt opt;
-        opt = nlopt_create(NLOPT_LD_TNEWTON, input.optimization_target().number_of_parameters());
+        nlopt::opt opt(nlopt::GN_DIRECT, input.optimization_target().number_of_parameters());
+        
+        
+        input.DakotaInputString();
+        std::vector<std::string> initial_values_str;
+        std::vector<std::string> lb_str;
+        std::vector<std::string> ub_str;
 
-        /*double* lb = new double[number_parameters];// lower bounds
-		double* ub = new double[number_parameters];// upper bounds
-		double* x = new double[number_parameters];// first guess
-		for (unsigned int i = 0; i < number_parameters; i++){
-			lb[i] = bMin(i);
-			ub[i] = bMax(i);
-			x[i] = b0(i);
-		}
+        boost::split(initial_values_str, input.initial_values_string(), boost::is_any_of(" "));
+        boost::split(lb_str, input.lower_bounds_string(), boost::is_any_of(" "));
+        boost::split(ub_str, input.upper_bounds_string(), boost::is_any_of(" "));
+        boost::split(param_str, input.param_name_string(), boost::is_any_of(" "));
 
-		nlopt_set_lower_bounds(opt, lb);
-		nlopt_set_upper_bounds(opt, ub);
-		nlopt_set_min_objective(opt, NLOptFunction, NULL);
-		nlopt_set_maxeval(opt, max_eval);
+        initial_values_str.pop_back();
+        lb_str.pop_back();
+        ub_str.pop_back();
+        param_str.pop_back();
 
-		double fOpt;
-		if (nlopt_optimize(opt, x, &fOpt) < 0)
-		{
-			std::cout << "NLopt failed!" << std::endl;
-			getchar();
-            exit(-1);
-		}
-		else
-		{
-			for (unsigned int i = 0; i < number_parameters; i++)
-				bOpt(i) = x[i];
-		}*/
+        std::vector<double> initial_values(initial_values_str.size());
+        std::transform(initial_values_str.begin(), initial_values_str.end(), initial_values.begin(), [](const std::string& str){return std::stod(str);});
 
+        std::vector<double> lb(lb_str.size());
+        std::transform(lb_str.begin(), lb_str.end(), lb.begin(), [](const std::string& str) {return std::stod(str);});
+
+        std::vector<double> ub(ub_str.size());
+        std::transform(ub_str.begin(), ub_str.end(), ub.begin(), [](const std::string& str) {return std::stod(str);});
+        
+        opt.set_lower_bounds(lb);
+        opt.set_upper_bounds(ub);
+        opt.set_min_objective(NLOptFunction, NULL);
+        
+        opt.set_maxeval(10000);
+        double minf;
+        try{
+            nlopt::result result = opt.optimize(initial_values, minf);
+        }
+        catch(std::exception &e) {
+            std::cout << "nlopt failed: " << e.what() << std::endl;
+        }
     }
     else if (input.optimization_library() == "optimlib"){
         OptiSMOKE::FatalErrorMessage("OptimLIB not yet implemented!");
@@ -176,79 +188,18 @@ void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env){
     }
 }
 
-
 //  #if OPTISMOKE_USE_NLOPT
-double NLOptFunction(unsigned n, const double *x, double *grad, void *my_func_data)
+double NLOptFunction(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data)
 {
-    int number_parameters = input.optimization_target().number_of_parameters();
-	Eigen::VectorXd b(number_parameters);
-	for (unsigned int i = 0; i < number_parameters; i++)
-		b(i) = x[i];
+    std::cout << "Begin evaluation: " << numberOfFunctionEvaluations + 1 << std::endl;
+    for(unsigned int i = 0; i < x.size(); i++)
+        std::cout << std::scientific << std::setw(16) << std::left
+            << param_str[i] << std::scientific << std::setw(16) 
+            << std::left << std::setprecision(6)  << x[i] << std::endl;
 
-	const double f = OptFunction(b);
-
-	if (grad)
+	const double f = OptFunction(x, numberOfFunctionEvaluations);
+	if (!grad.empty())
 	{
-		std::cout << "    * Gradient evaluation..." << std::endl;
-
-		const double ETA2 = std::sqrt(OpenSMOKE::OPENSMOKE_MACH_EPS_DOUBLE);
-		const double ETA3 = std::pow(OpenSMOKE::OPENSMOKE_MACH_EPS_DOUBLE, 1./3.);
-		const double ZERO_DER = std::sqrt(OPENSMOKE_TINY_DOUBLE);
-		
-		// Dimensions of parameters vector
-		Eigen::VectorXd b_dimensions(input.optimization_target().number_of_parameters());
-		b_dimensions.setConstant(1.);
-
-		// Choosing between forward and centrale difference
-		double eta = ETA2;
-		if (central_difference == true)
-			eta = ETA3;
-		
-		// Estimate the increment for forward approximation
-		Eigen::VectorXd deltab(number_parameters);
-		for (unsigned int i = 0; i < number_parameters; i++)
-		{
-			if (b(i) < 0.)
-				deltab(i) = -eta * std::max(std::fabs(b(i)), std::fabs(b_dimensions(i)));
-			else
-				deltab(i) =  eta * std::max(std::fabs(b(i)), std::fabs(b_dimensions(i)));
-			
-			if (deltab(i) == 0.)
-				deltab(i) = ZERO_DER;
-		}
-
-		// Forward gradient
-		if (central_difference == false)
-		{
-			Eigen::VectorXd b_plus = b;
-			for (unsigned int j = 0; j < number_parameters; j++)
-			{
-				b_plus(j) = b(j) + deltab(j);
-				const double f_plus = OptFunction(b_plus);
-				
-				grad[j] = (f_plus - f) / deltab(j);
-
-				b_plus(j) = b(j);
-			}
-		}
-
-		// Central gradient
-		if (central_difference == true)
-		{
-			Eigen::VectorXd b_star = b;
-			for (unsigned int j = 0; j < number_parameters; j++)
-			{
-				b_star(j) = b(j) + deltab(j);
-				const double f_plus = OptFunction(b_star);
-				b_star(j) = b(j) - deltab(j);
-				const double f_minus = OptFunction(b_star);
-
-				grad[j] = (f_plus - f_minus) / (2.*deltab(j));
-
-				b_star(j) = b(j);
-			}
-		}
-
 		numberOfGradientEvaluations++;
 	}
 	
@@ -256,13 +207,12 @@ double NLOptFunction(unsigned n, const double *x, double *grad, void *my_func_da
 	return f;
 }
 
-double OptFunction(const Eigen::VectorXd &b, unsigned int eval_nr)
+double OptFunction(const std::vector<double>& b, unsigned int eval_nr)
 {
     double fn_val;
-    sim_iface_.SubstituteKineticParameters(b);
-
+    sim_iface_->SubstituteKineticParameters(b);
 	if(input.optimization_setup().penalty_function())
-		violated_uncertainty = sim_iface_.CheckKineticConstasts();
+		violated_uncertainty = sim_iface_->CheckKineticConstasts();
         
 	if(violated_uncertainty){
 		if (input.optimization_setup().objective_function_type() == "CurveMatching")
@@ -271,15 +221,15 @@ double OptFunction(const Eigen::VectorXd &b, unsigned int eval_nr)
 			fn_val = 10000000;
 	}
     else{
-        sim_iface_.run();
-        fn_val = sim_iface_.ComputeObjectiveFunction();
+        sim_iface_->run();
+        fn_val = sim_iface_->ComputeObjectiveFunction();
         
         if(eval_nr == 1)
             prev_fn_val = fn_val;
         
         if(prev_fn_val > fn_val) {
             prev_fn_val = fn_val;
-            opti_kinetics_.WriteOptimizedMechanism();
+            opti_kinetics_->WriteOptimizedMechanism();
             std::cout << " * Wrote optimized mechanism" << std::endl;
         }
     }

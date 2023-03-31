@@ -99,6 +99,12 @@ namespace OptiSMOKE{
         inline const std::vector<std::string>& dataset_names() const {return dataset_names_;};
         inline const std::vector<std::string>& solver_name() const {return solver_name_;};
         inline const std::vector<std::vector<std::vector<std::string>>>& ordinates_label() const {return ordinates_label_;};
+
+        inline const std::string& initial_values_string() const {return initial_values_string_;};
+		inline const std::string& lower_bounds_string() const {return lower_bounds_string_;};
+		inline const std::string& upper_bounds_string() const {return upper_bounds_string_;};
+        inline const std::string& param_name_string() const {return param_name_string_;};
+
         // Standard Map
         OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML_;
         OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML_;

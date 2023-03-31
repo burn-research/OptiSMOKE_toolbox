@@ -19,6 +19,8 @@ namespace OptiSMOKE {
 		bool CheckKineticConstasts();
 			
 		void SubstituteKineticParameters(const Dakota::RealVector& c_vars);
+
+		void SubstituteKineticParameters(const std::vector<double>& c_vars);
 	
 	private:
 		const OptiSMOKE::InputManager& data_;

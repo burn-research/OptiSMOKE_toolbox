@@ -97,7 +97,8 @@
         "slist": "cpp",
         "transport_chemkin": "cpp",
         "opensmokepp": "cpp",
-        "thermodynamics_chemkin": "cpp"
+        "thermodynamics_chemkin": "cpp",
+        "filesystem": "cpp"
     },
     "cmake.configureEnvironment":{
         "Boost_ROOT":"/Users/tdinelli/NumericalLibraries/boost/boost-1.80-gcc-12",
@@ -107,7 +108,8 @@
         "CEQ_ROOT":"/Users/tdinelli/NumericalLibraries/ceq/lib/linux",
         "OpenSMOKEpp_ROOT":"/Users/tdinelli/Documents/GitHub/OpenSMOKEpp",
         "OpenSMOKEpp_Tutorials_ROOT":"/Users/tdinelli/Documents/GitHub/OpenSMOKEppTutorials",
-        "Dakota_ROOT": "/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17-gcc-12"
+        "Dakota_ROOT": "/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17-gcc-12",
+        "NLOPT_DIR":"/Users/tdinelli/NumericalLibraries/nlopt/nlopt-2.7.1-gcc-12/lib/cmake/nlopt"
     },
     "cmake.configureArgs": [
         "-DCMAKE_C_COMPILER=/opt/homebrew/bin/gcc-12",
@@ -116,6 +118,7 @@
         "-DBLAS_VERBOSE=OFF",
         "-DBLAS_DIR=$env{BLAS_ROOT}/include",
         "-DBLAS_LIBDIR=$env{BLAS_ROOT}/lib",
+        "-DOPTISMOKE_USE_NLOPT=1",
         "-DOPTISMOKE_USE_CEQ=0",
         "-DOPTISMOKE_USE_MKL=0",
         "-DOPTISMOKE_USE_OPENBLAS=0",

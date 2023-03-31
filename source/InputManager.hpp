@@ -693,7 +693,6 @@ namespace OptiSMOKE{
 				}
 				else{
 					lower_bounds_string_ += list_of_min_abs_lnA_inf_[i] + " ";
-					// AB - Filling up the standard deviation string
 					std_deviations_string_ += boost::lexical_cast<std::string>((std::stod(list_of_initial_lnA_inf_[i]) - std::stod(list_of_min_abs_lnA_inf_[i]))/3) + " ";
 				}
 				

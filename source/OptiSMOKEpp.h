@@ -39,6 +39,7 @@
 #include <numeric>
 #include <random>
 #include <chrono>
+#include <algorithm>
 
 // OpenSMOKE 
 #include "OpenSMOKEpp"
@@ -78,6 +79,7 @@ typedef OpenSMOKE::ThermoReader< OpenSMOKE::ThermoReaderPolicy_CHEMKIN< OpenSMOK
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 #include <boost/filesystem/fstream.hpp>
+#include <boost/algorithm/string.hpp>
 namespace fs = boost::filesystem;
 namespace po = boost::program_options;
 
@@ -95,9 +97,9 @@ const double UNFEASIBLE_BIG_NUMBER = 1.e16;
 
 // NLOPT++ Library
 // #if OPTISMOKE_USE_NLOPT
-#include <nlopt.h>
-double NLOptFunction(unsigned n, const double *x, double *grad, void *my_func_data);
-double OptFunction(const Eigen::VectorXd &b, double fn_val);
+#include <nlopt.hpp>
+double NLOptFunction(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data);
+double OptFunction(const std::vector<double> &b, unsigned int fn_val);
 // #endif
 
 // Curve Matching
@@ -134,11 +136,13 @@ OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
 OptiSMOKE::InputManager input(dictionaries);
 
 // Here it is better to use pointersssss
-OptiSMOKE::SimulationsInterface sim_iface_(input);
-OptiSMOKE::OptimizedKinetics opti_kinetics_(input, input.thermodynamicsMapXML_, input.kineticsMapXML_);
+OptiSMOKE::SimulationsInterface* sim_iface_; // (input);
+OptiSMOKE::OptimizedKinetics* opti_kinetics_; // (input, input.thermodynamicsMapXML_, input.kineticsMapXML_);
 
 unsigned int numberOfGradientEvaluations;
 unsigned int numberOfFunctionEvaluations;
 
 bool violated_uncertainty;
 double prev_fn_val;
+
+std::vector<std::string> param_str;

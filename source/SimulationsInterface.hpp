@@ -307,6 +307,7 @@ namespace OptiSMOKE{
 		// OptiSMOKE mantainer of the future in order to make things more effcient consider
 		// to not substituting kinetics and then creating constraints and then checking 
 		// just check and substitute or not
+		std::cout << " * Kinetic constants check..." << std::endl;
 		for (int j=0; j < data_.optimization_target().list_of_target_uncertainty_factors().size(); j++){
 			std::vector<double> k_check;
 			k_check.resize(T_span.size());
@@ -322,7 +323,7 @@ namespace OptiSMOKE{
 				// If at one temperature the k value is either below the lower bound or above the upper bound, 
 				// forcefully set the objective function value to 1e7 and print out for which reaction the violation occured 
 				if ((k_check[i]<=k_lower[j][i]) || (k_check[i]>=k_upper[j][i])){
-					std::cout << " * Violation for reaction: ";
+					std::cout << "    * Violation for reaction: ";
 					std::cout << reaction_index + 1 << std::endl;
 					return true;
 				}
@@ -348,7 +349,7 @@ namespace OptiSMOKE{
 				k_check_inf[i] = A_falloff_inf_j * std::pow(T_span[i], Beta_falloff_inf_j) * std::exp((-1 * E_over_R_falloff_inf_j)/T_span[i]);
 
 				if ((k_check_inf[i] <= k_lower_inf[j][i]) || (k_check_inf[i] >= k_upper_inf[j][i])){
-					std::cout << " * Violation for reaction: ";
+					std::cout << "    * Violation for reaction: ";
 					std::cout << data_.optimization_target().list_of_target_uncertainty_factors_inf()[j];
 					std::cout << " (inf) " << std::endl;
 					return true;
@@ -377,7 +378,7 @@ namespace OptiSMOKE{
 					k_check_CP[i] = A_CP_trial * std::pow(T_span[i], n_CP_trial) * std::exp((-1*E_over_R_CP_trial)/T_span[i]);
 
 					if ((k_check_CP[i] <= k_lower_classic_plog[j][k][i]) || (k_check_CP[i] >= k_upper_classic_plog[j][k][i])){
-						std::cout << " * Violation for PLOG reaction: ";
+						std::cout << "    * Violation for PLOG reaction: ";
 						std::cout << data_.optimization_target().list_of_target_classic_plog_reactions()[j] << std::endl;
 						return true;
 					}
@@ -389,6 +390,76 @@ namespace OptiSMOKE{
 
 	void SimulationsInterface::SubstituteKineticParameters(const Dakota::RealVector& c_vars){
 		unsigned int count = 0;
+
+		// lnA
+		if(data_.optimization_target().list_of_target_lnA().size() != 0){
+			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_lnA().size(); i++){
+				ChangeDirectParamaters("lnA", data_.optimization_target().list_of_target_lnA()[i], c_vars[count]);
+				count += 1;
+			}
+		}
+
+		// lnA_inf
+		if(data_.optimization_target().list_of_target_lnA_inf().size() != 0){
+			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_lnA_inf().size(); i++){
+				ChangeFallOffParamaters("lnA", data_.optimization_target().list_of_target_lnA_inf()[i], c_vars[count]);
+				count += 1;
+			}
+		}
+		
+		// Beta
+		if(data_.optimization_target().list_of_target_Beta().size() != 0){
+			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_Beta().size(); i++){
+				ChangeDirectParamaters("Beta", data_.optimization_target().list_of_target_Beta()[i], c_vars[count]);
+				count += 1;
+			}
+		}
+		
+		// Beta_inf
+		if(data_.optimization_target().list_of_target_Beta_inf().size() != 0){
+			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_Beta_inf().size(); i++){
+				ChangeFallOffParamaters("Beta", data_.optimization_target().list_of_target_Beta_inf()[i], c_vars[count]);
+				count += 1;
+			}
+		}
+		
+		// E_over_R
+		if(data_.optimization_target().list_of_target_E_over_R().size() != 0){
+			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_E_over_R().size(); i++){
+				ChangeDirectParamaters("E_over_R", data_.optimization_target().list_of_target_E_over_R()[i], c_vars[count]);
+				count += 1;
+			}
+		}
+		
+		// E_over_R_inf
+		if(data_.optimization_target().list_of_target_E_over_R_inf().size() != 0){
+			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_E_over_R_inf().size(); i++){
+				ChangeFallOffParamaters("E_over_R", data_.optimization_target().list_of_target_E_over_R_inf()[i], c_vars[count]);
+				count += 1;
+			}			
+		}
+		
+		// 3B eff
+		if(data_.optimization_target().list_of_target_thirdbody_reactions().size() != 0){
+			for (unsigned int i = 0; i <  data_.optimization_target().list_of_target_thirdbody_reactions().size(); i++){
+                ChangeThirdBodyEfficiencies(data_.optimization_target().list_of_target_thirdbody_reactions()[i], 
+											data_.optimization_target().list_of_target_thirdbody_species()[i], 
+											c_vars[count]);
+                count += 1;
+        	}	
+		}
+		
+		// Classic PLOG
+		if(data_.optimization_target().list_of_target_classic_plog_reactions().size() != 0){
+			// TODO
+		}
+	}
+
+	void SimulationsInterface::SubstituteKineticParameters(const std::vector<double>& b){
+		unsigned int count = 0;
+		std::vector<double> c_vars(b.size());
+		for(unsigned int i = 0; i < b.size(); i++)
+			c_vars[i] = b[i];
 
 		// lnA
 		if(data_.optimization_target().list_of_target_lnA().size() != 0){

@@ -16,7 +16,7 @@ Dictionary OptiSMOKEpp
 {
 	@NominalKineticsPreProcessor	KINPREPRO;
 
-	@KineticsFolder					../mechanisms/Aramco_2.0;
+	@KineticsFolder					../../mechanisms/Aramco_2.0;
 
 	@NameOfOptimizedKineticsFolder	Output/optimized-kinetics;
 
@@ -85,11 +85,11 @@ Dictionary OptimizationTargets
 
 Dictionary KINPREPRO
 {
-	@Kinetics				../mechanisms/Aramco_2.0/Kinetics.CKI;
+	@Kinetics				../../mechanisms/Aramco_2.0/Kinetics.CKI;
 
-	@Thermodynamics			../mechanisms/Aramco_2.0/TH.CKT;
+	@Thermodynamics			../../mechanisms/Aramco_2.0/TH.CKT;
         
-	@Transport				../mechanisms/Aramco_2.0/TRAN.TRC;
+	@Transport				../../mechanisms/Aramco_2.0/TRAN.TRC;
 
 	@Output					Output/kinetics;
 }
