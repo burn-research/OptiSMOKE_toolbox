@@ -35,7 +35,8 @@
 namespace OptiSMOKE
 {
     options_curvematching::options_curvematching(){
-        // TODO: check options that have default values
+        use_bootstrap_ = false;
+        number_of_bootstrap_ = 0;
     }
     
     options_curvematching::~options_curvematching() {}
@@ -49,20 +50,18 @@ namespace OptiSMOKE
         if (dictionary_manager(dictionary_name).CheckOption("@NumberOfBootstrapVariations"))
 			dictionary_manager(dictionary_name).ReadInt("@NumberOfBootstrapVariations", number_of_bootstrap_);
 
-        if (dictionary_manager(dictionary_name).CheckOption("@LineUpMaxima"))
-			dictionary_manager(dictionary_name).ReadBool("@LineUpMaxima", line_up_maxima_);
-
-        if (dictionary_manager(dictionary_name).CheckOption("@UseSumOfIndexesForAlignment"))
-			dictionary_manager(dictionary_name).ReadBool("@UseSumOfIndexesForAlignment", use_index_for_alignement_);
-        
-        if (dictionary_manager(dictionary_name).CheckOption("@FractionOfExpRangeForModelExtrapolation"))
-			dictionary_manager(dictionary_name).ReadDouble("@FractionOfExpRangeForModelExtrapolation", fraction_of_exp_for_model_extrapolation_);
-
         if (dictionary_manager(dictionary_name).CheckOption("@UseBootStrap"))
 			dictionary_manager(dictionary_name).ReadBool("@UseBootStrap", use_bootstrap_);
 
-        if (dictionary_manager(dictionary_name).CheckOption("@PossibleNegativeOrdinates"))
-			dictionary_manager(dictionary_name).ReadBool("@PossibleNegativeOrdinates", possible_negative_ordinates_);
+        CheckCurveMatchingOptions();
     }
+    
+    void options_curvematching::CheckCurveMatchingOptions(){
+        if(use_bootstrap_){
+            if(number_of_bootstrap_ < 2)
+                OptiSMOKE::FatalErrorMessage("Use bootstrap true implies that the number of bootstrap variations is greter than one!");
+        }
+    }
+
 
 } // namespace OptiSMOKE

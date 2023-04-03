@@ -56,51 +56,10 @@ namespace OptiSMOKE
                 "none",
                 "none"));
 
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@LineUpMaxima",
-                OpenSMOKE::SINGLE_BOOL,
-	            "Number of Bootstraps variations",
-                false,
-                "none",
-                "none",
-                "none"));
-
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@UseSumOfIndexesForAlignment",
-                OpenSMOKE::SINGLE_BOOL,
-	            "Number of Bootstraps variations",
-                false,
-                "none",
-                "none",
-                "none"));
-
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@FractionOfExpRangeForModelExtrapolation",
-                OpenSMOKE::SINGLE_DOUBLE,
-	            "Number of Bootstraps variations",
-                false,
-                "none",
-                "none",
-                "none"));
-
-            // BOOTSTRAP//		
             AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@UseBootStrap",
                 OpenSMOKE::SINGLE_BOOL,
                 "Use Bootstrap technique in Curve Matching Index calculations (default: false)",
                 false) );
-
-            // Da vedere se metterli
-            AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@PrintIndexes",
-                OpenSMOKE::SINGLE_BOOL,
-                "Decide wheter to print out the indexes (default: false)",
-                false));
-
-	        AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@PrintSplines",
-                OpenSMOKE::SINGLE_BOOL,
-                "Decide wheter to print out the splines (default: false)",
-                false));
-
-	        AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@PrintBootstrap",
-                OpenSMOKE::SINGLE_BOOL,
-                "Decide wheter to print out the bootstrap  (default: false)",
-                false));
 		}
 	};
 }

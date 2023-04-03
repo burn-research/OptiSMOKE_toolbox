@@ -47,22 +47,15 @@ namespace OptiSMOKE
                                 std::string dictionary_name);
 
         inline const int& number_of_bootstrap() const {return number_of_bootstrap_;};
-        inline const bool& line_up_maxima() const {return line_up_maxima_;};
-        inline const bool& use_index_for_alignement() const {return use_index_for_alignement_;};
         inline const bool& use_bootstrap() const {return use_bootstrap_;};
-        inline const double& fraction_of_exp_for_model_extrapolation() const {return fraction_of_exp_for_model_extrapolation_;};
-        inline const bool& possible_negative_ordinates() const {return possible_negative_ordinates_;}; 
 
     private:
 
         grammar_curve_matching grammar_curve_matching_;
         int number_of_bootstrap_;
-        bool line_up_maxima_;
-        bool use_index_for_alignement_;
         bool use_bootstrap_;
-        bool possible_negative_ordinates_;
-        double fraction_of_exp_for_model_extrapolation_;
-        
+
+        void CheckCurveMatchingOptions();
     };
 } // namespace OptiSMOKE
 

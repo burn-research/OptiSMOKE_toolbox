@@ -72,51 +72,7 @@ namespace OptiSMOKE
         if(dictionary_manager(dictionary_name).CheckOption("@NumberOfCounterFlowFlame"))
             dictionary_manager(dictionary_name).ReadInt("@NumberOfCounterFlowFlame", 
 														numberOfCounterFlowFlame_);
-
-        // EPLR - Which reactions for Optimization of A, n, Ea
-		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_EPLR"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_EPLR", list_of_target_EPLR_);
 		
-		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_BathGases_EPLR"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_BathGases_EPLR", 
-															list_of_bath_gases_EPLR_);
-
-		if (dictionary_manager(dictionary_name).CheckOption("@ListOfUncertaintyFactors_EPLR"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfUncertaintyFactors_EPLR", 
-															list_of_uncertainty_factors_EPLR_);
-
-		numberOfParameters_ += list_of_target_EPLR_.size() * 3;
-		
-		// Extended PLOG - Which reactions for Optimization of A, n, Ea
-		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ExtPLOG_Reactions"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ExtPLOG_Reactions", 
-															list_of_target_extplog_);
-
-		if (dictionary_manager(dictionary_name).CheckOption("@ListOfUncertaintyFactors_ExtPLOG"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfUncertaintyFactors_ExtPLOG", 
-															list_of_uncertainty_factors_extplog_);
-
-		numberOfParameters_ += list_of_target_extplog_.size() * 3;
-		
-		// Extended PLOG - Which reactions and which Third Bodies to Optimize
-		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ExtPLOG_Reactions_TB"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ExtPLOG_Reactions_TB", 
-															list_of_target_extended_plog_reactions_);
-
-		numberOfParameters_ += list_of_target_extended_plog_reactions_.size();
-
-		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ExtPLOG_Species"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_ExtPLOG_Species", 
-															list_of_target_extended_plog_species_);
-
-		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMin_TBeff_ExtPLOG"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfMin_TBeff_ExtPLOG", 
-															list_of_min_tb_extplog_);
-
-		if (dictionary_manager(dictionary_name).CheckOption("@ListOfMax_TBeff_ExtPLOG"))
-			dictionary_manager(dictionary_name).ReadOption("@ListOfMax_TBeff_ExtPLOG", 
-															list_of_max_tb_extplog_);
-
 		// Direct reactions - specific parameters to be optimized	
 		if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_lnA"))
 			dictionary_manager(dictionary_name).ReadOption("@ListOfTarget_lnA", list_of_target_lnA_);

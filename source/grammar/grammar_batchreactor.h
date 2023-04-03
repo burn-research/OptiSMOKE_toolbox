@@ -13,26 +13,11 @@ namespace OptiSMOKE
 
 		virtual void DefineRules()
 		{
-			AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@KineticsFolder", 
-																OpenSMOKE::SINGLE_PATH, 
-																"Name of the folder containing the kinetic scheme (XML Version)", 
-																true,
-																"@KineticsPreProcessor",
-																"none",
-																"none") );	
-
-			AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@KineticsPreProcessor", 
-																OpenSMOKE::SINGLE_DICTIONARY, 
-																"Name of the dictionary containing the list of kinetic files to be interpreted", 
-																true,
-																"@KineticsFolder",
-																"none",
-																"none") );
 
 			AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Type", 
 																OpenSMOKE::SINGLE_STRING, 
 																"Batch reactor type: Isothermal-ConstantVolume | NonIsothermal-ConstantVolume | Isothermal-ConstantPressure | NonIsothermal-ConstantPressure | NonIsothermal-UserDefinedVolume", 
-																true) );	
+																true) );
 
 			AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@InitialStatus", 
 																OpenSMOKE::SINGLE_DICTIONARY, 
@@ -137,11 +122,6 @@ namespace OptiSMOKE
 															   OpenSMOKE::SINGLE_DICTIONARY,
 															   "Dictionary containing additional options for estimating the ignition delay times",
 															   false));
-
-			AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@KineticsModifier", 
-																OpenSMOKE::SINGLE_DICTIONARY, 
-																"Name of the dictionary defining the kinetics modifier", 
-																false) );
 		}
 	};
 }

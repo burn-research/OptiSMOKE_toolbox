@@ -68,10 +68,5 @@ namespace OptiSMOKE
 
         if (dictionary_manager(dictionary_name).CheckOption("@ReactionsClasses"))
 			dictionary_manager(dictionary_name).ReadBool("@ReactionsClasses", iReactionClasses_);
-        
-        // if(penalty_function_ == false)
-        // {
-        //     std::cout << " * Penalty Function is turned off!" << std::endl;
-        // }
     }
 } // namespace OptiSMOKE

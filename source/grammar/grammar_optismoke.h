@@ -48,16 +48,6 @@ namespace OptiSMOKE
 	virtual void DefineRules()
 	{
 
-                AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Debug",
-                        OpenSMOKE::SINGLE_BOOL,
-                        "Specify if debugging print outs should be used (default: false)",
-                        false) );
-
-                AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@DebugSim",
-                        OpenSMOKE::SINGLE_BOOL,
-                        "Specify if debugging print outs should be used (default: false)",
-                        false) );
-
                 AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@DakotaOptions", 
                         OpenSMOKE::SINGLE_DICTIONARY,
                         "Name of the dictionary with options for Dakota", 
@@ -77,41 +67,23 @@ namespace OptiSMOKE
                 AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@CurveMatchingOptions", 
                         OpenSMOKE::SINGLE_DICTIONARY,
                         "Name of the dictionary with options for setting Curve Matching as the objective function", 
-                        false,
-                        "none",
-                        "none",
-                        "none"));
+                        false));
 
-                // TODO revision based on dakota
                 AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OptimizationSetup",
                         OpenSMOKE::SINGLE_DICTIONARY,
                         "Name of the dictionary to set the options for the optimization",
-                        true,
-                        "none",
-                        "none",
-                        "none"));
+                        true));
                 
                 AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OptimizationTarget",
                         OpenSMOKE::SINGLE_DICTIONARY,
                         "Name of the dictionary to set the targets for the optimization",
-                        true,
-                        "none",
-                        "none",
-                        "none"));
+                        true));
 
                 AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@KineticsFolder",
                         OpenSMOKE::SINGLE_PATH,
                         "Name of the folder containing the kinetic scheme (XML Version)",
                         true,
                         "@KineticsPreProcessor",
-                        "none",
-                        "none"));
-
-                AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@NominalKineticsFolder",
-                        OpenSMOKE::SINGLE_PATH,
-                        "Name of the folder containing the nominal kinetic scheme (XML Version)",
-                        true,
-                        "@NominalKineticsPreProcessor",
                         "none",
                         "none"));
                 
@@ -123,38 +95,20 @@ namespace OptiSMOKE
                         "none",
                         "none"));
 
-                AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@NominalKineticsPreProcessor",
-                        OpenSMOKE::SINGLE_DICTIONARY,
-                        "Name of the dictionary containing the list of nominal kinetic files to be interpreted",
-                        true,
-                        "@NominalKineticsFolder",
-                        "none",
-                        "none"));
-
-                AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@NameOfOptimizedKineticsFolder",
+                AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OutputFolder",
                         OpenSMOKE::SINGLE_PATH,
-                        "Name of the folder where the optimized kinetics is printed at the end in CHEMKIN and XML format.",
-                        false,
-                        "none",
-                        "none",
-                        "none"));
+                        "Name of the folder where to write all the output file of the program",
+                        true));
 
-                // To be removed
                 AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfExperimentalDataFiles",
                         OpenSMOKE::VECTOR_STRING,
                         "List of Experimental data files",
-                        false,
-                        "none",
-                        "none",
-                        "none"));
+                        true));
 
                 AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OptimizationLibrary",
                         OpenSMOKE::SINGLE_STRING,
                         "Name of the library containing the optimization routines",
-                        true,
-                        "none",
-                        "none",
-                        "none"));                
+                        true));                
 	}
     };
 }

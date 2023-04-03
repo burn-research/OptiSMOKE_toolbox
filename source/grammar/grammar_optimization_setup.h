@@ -83,14 +83,6 @@ namespace OptiSMOKE
                 "Specify the method to compute the parameters boundaries",
                 false));
 
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ScalingReactionClasses",
-                OpenSMOKE::SINGLE_BOOL,
-                "If the reaction class optimization has to be done with scaling or with substitution",
-                false,
-                "none",
-                "@ReactionsClasses",
-                "none"));
-
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ReactionsClasses",
                 OpenSMOKE::SINGLE_BOOL,
                 "Enable the optimisation by reaction classes",
