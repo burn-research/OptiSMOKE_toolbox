@@ -404,7 +404,7 @@ namespace OptiSMOKE
 			plugflow_non_isothermal_->Solve(end_value_);
 	}
 
-	double PlugFlowReactor::GetMolefraction(std::string species_name)
+	double PlugFlowReactor::GetMolefractionOut(std::string species_name)
 	{
 		OpenSMOKE::OpenSMOKEVectorDouble omega_Final(thermodynamicsMapXML_->NumberOfSpecies());
 		OpenSMOKE::OpenSMOKEVectorDouble x_Final(thermodynamicsMapXML_->NumberOfSpecies());

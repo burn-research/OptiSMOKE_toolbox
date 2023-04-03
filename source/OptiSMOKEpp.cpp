@@ -92,38 +92,17 @@ int main(int argc, char* argv[]){
         sim_iface_->Setup();
         opti_kinetics_->SetChemkinName(input.optimized_kinetics_folder() / "OptimalMechanism.CKI");
 
-        nlopt::opt opt(nlopt::GN_DIRECT, input.optimization_target().number_of_parameters());
+        input.SetUpNLOPT();
+
+        nlopt::opt opt(static_cast<nlopt::algorithm>(input.nlopt_options().algo_int()), 
+            input.optimization_target().number_of_parameters());
         
-        
-        input.DakotaInputString();
-        std::vector<std::string> initial_values_str;
-        std::vector<std::string> lb_str;
-        std::vector<std::string> ub_str;
-
-        boost::split(initial_values_str, input.initial_values_string(), boost::is_any_of(" "));
-        boost::split(lb_str, input.lower_bounds_string(), boost::is_any_of(" "));
-        boost::split(ub_str, input.upper_bounds_string(), boost::is_any_of(" "));
-        boost::split(param_str, input.param_name_string(), boost::is_any_of(" "));
-
-        initial_values_str.pop_back();
-        lb_str.pop_back();
-        ub_str.pop_back();
-        param_str.pop_back();
-
-        std::vector<double> initial_values(initial_values_str.size());
-        std::transform(initial_values_str.begin(), initial_values_str.end(), initial_values.begin(), [](const std::string& str){return std::stod(str);});
-
-        std::vector<double> lb(lb_str.size());
-        std::transform(lb_str.begin(), lb_str.end(), lb.begin(), [](const std::string& str) {return std::stod(str);});
-
-        std::vector<double> ub(ub_str.size());
-        std::transform(ub_str.begin(), ub_str.end(), ub.begin(), [](const std::string& str) {return std::stod(str);});
-        
-        opt.set_lower_bounds(lb);
-        opt.set_upper_bounds(ub);
+        opt.set_lower_bounds(input.lb());
+        opt.set_upper_bounds(input.ub());
         opt.set_min_objective(NLOptFunction, NULL);
-        
-        opt.set_maxeval(10000);
+        opt.set_maxeval(input.nlopt_options().max_function_evaluations());
+
+        std::vector<double> initial_values = input.initial_values();
         double minf;
         try{
             nlopt::result result = opt.optimize(initial_values, minf);
@@ -194,12 +173,13 @@ double NLOptFunction(const std::vector<double> &x, std::vector<double> &grad, vo
     std::cout << "Begin evaluation: " << numberOfFunctionEvaluations + 1 << std::endl;
     for(unsigned int i = 0; i < x.size(); i++)
         std::cout << std::scientific << std::setw(16) << std::left
-            << param_str[i] << std::scientific << std::setw(16) 
+            << input.param_str()[i] << std::scientific << std::setw(16) 
             << std::left << std::setprecision(6)  << x[i] << std::endl;
 
 	const double f = OptFunction(x, numberOfFunctionEvaluations);
 	if (!grad.empty())
 	{
+        // FOR THE MOMENT NO GRADIENT METHODS
 		numberOfGradientEvaluations++;
 	}
 	
@@ -224,15 +204,17 @@ double OptFunction(const std::vector<double>& b, unsigned int eval_nr)
         sim_iface_->run();
         fn_val = sim_iface_->ComputeObjectiveFunction();
         
-        if(eval_nr == 1)
+        if(eval_nr == 1){
             prev_fn_val = fn_val;
-        
+            sim_iface_->PrepareASCIIFile(fOut, input.parametric_file_name(), input.param_str());
+        }
         if(prev_fn_val > fn_val) {
             prev_fn_val = fn_val;
             opti_kinetics_->WriteOptimizedMechanism();
             std::cout << " * Wrote optimized mechanism" << std::endl;
         }
     }
+    sim_iface_->PrintASCIIFile(fOut, eval_nr, b, fn_val);
     return fn_val;
 }
 // #endif

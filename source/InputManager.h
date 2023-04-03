@@ -63,13 +63,16 @@ namespace OptiSMOKE{
         //
         void ReadExperimentalDataFiles();
 
+        void SetUpNLOPT();
+
         // Public access variables
         inline const OptiSMOKE::options_kinetics& kinetics_data() const {return kinetics_data_;};
         inline const OptiSMOKE::options_optimization_target& optimization_target() const {return optimization_target_;};
         inline const OptiSMOKE::options_optimization_setup& optimization_setup() const {return optimization_setup_;};
         inline const OptiSMOKE::options_curvematching& curvematching_options() const {return curvematching_options_;};
         inline const OptiSMOKE::options_dakota& dakota_options() const {return dakota_options_;};
-        
+        inline const OptiSMOKE::options_nlopt& nlopt_options() const {return nlopt_options_;};
+
         inline const bool& iXml() const {return iXml_;};
         inline const bool& iNominalXml() const {return iNominalXml_;};
         inline const std::string& input_file_name() const {return input_file_name_;};
@@ -93,6 +96,7 @@ namespace OptiSMOKE{
         inline const std::vector<std::vector<std::string>>& input_paths() const {return input_paths_;};
         inline const std::vector<std::string>& QoI() const {return QoI_;};
 		inline const std::vector<std::string>& QoI_target() const {return QoI_target_;};        
+        inline const std::vector<std::string>& reactor_mode() const {return reactor_mode_;};
         inline const std::vector<std::vector<std::vector<double>>>& expdata_x() const {return expdata_x_;};
         inline const std::vector<std::vector<std::vector<double>>>& expdata_y() const {return expdata_y_;};
         inline const std::vector<std::vector<std::vector<double>>>& uncertainty() const {return uncertainty_;};
@@ -100,11 +104,12 @@ namespace OptiSMOKE{
         inline const std::vector<std::string>& solver_name() const {return solver_name_;};
         inline const std::vector<std::vector<std::vector<std::string>>>& ordinates_label() const {return ordinates_label_;};
 
-        inline const std::string& initial_values_string() const {return initial_values_string_;};
-		inline const std::string& lower_bounds_string() const {return lower_bounds_string_;};
-		inline const std::string& upper_bounds_string() const {return upper_bounds_string_;};
-        inline const std::string& param_name_string() const {return param_name_string_;};
-
+        inline const std::vector<std::string>& param_str() const {return param_str_;};
+        inline const std::vector<double>& initial_values() const {return initial_values_;};
+        inline const std::vector<double>& lb() const {return lb_;};
+        inline const std::vector<double>& ub() const {return ub_;};
+        inline const fs::path& parametric_file_name() const {return parametric_file_name_;};
+        
         // Standard Map
         OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML_;
         OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML_;
@@ -128,6 +133,7 @@ namespace OptiSMOKE{
         OptiSMOKE::options_optimization_setup optimization_setup_;
         OptiSMOKE::options_curvematching curvematching_options_;
         OptiSMOKE::options_dakota dakota_options_;
+        OptiSMOKE::options_nlopt nlopt_options_;
 
         //Reading data from json files
         OptiSMOKE::DataManager data_manager_;
@@ -138,6 +144,7 @@ namespace OptiSMOKE{
         std::string optimization_setup_dictionary_;
         std::string curvematching_dictionary_;
         std::string dakota_dictionary_;
+        std::string nlopt_dictionary_;
         
         // Variables of main dictionaries
         std::string input_file_name_;
@@ -217,6 +224,13 @@ namespace OptiSMOKE{
 	    std::vector<std::string> list_of_min_Beta_classic_plog_coefficients_;
 	    std::vector<std::string> list_of_max_Beta_classic_plog_coefficients_;
 
+        // Double vector needed by nlopt
+        std::vector<double> initial_values_;
+        std::vector<double> lb_;
+        std::vector<double> ub_;
+		std::vector<std::string> param_str_;
+        fs::path parametric_file_name_;
+
         // String needed by dakota in order to generate the input string
         std::string param_name_string_;
 		std::string initial_values_string_;
@@ -238,6 +252,7 @@ namespace OptiSMOKE{
 		std::vector<std::vector<std::string>> input_paths_;
 		std::vector<std::string> solver_name_;
 		std::vector<std::string> QoI_;
+        std::vector<std::string> reactor_mode_;
 		std::vector<std::string> QoI_target_;
 		std::vector<bool> multiple_input_;
         std::vector<bool> save_simulations_;

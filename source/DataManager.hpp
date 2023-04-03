@@ -63,6 +63,12 @@ namespace OptiSMOKE{
                 multiple_input_.push_back(ptree.get<bool>("multiple_input"));
                 save_simulations_.push_back(ptree.get<bool>("save_simulations_data"));
 
+                boost::optional<std::string> mode = ptree.get_optional<std::string>("reactor_mode");
+                if(mode)
+                    reactor_mode_.push_back(ptree.get<std::string>("reactor_mode"));
+                else
+                    reactor_mode_.push_back("");
+
                 BOOST_FOREACH(boost::property_tree::ptree::value_type &node, ptree.get_child("OS_Input_File")){
                     assert(node.first.empty());
                     input_paths_[i].push_back(node.second.get_value<std::string>());
@@ -128,6 +134,7 @@ namespace OptiSMOKE{
         // tmp variables
         std::vector<std::string> dataset_names_tmp;
         std::vector<std::string> solver_name_tmp;
+        std::vector<std::string> reactor_mode_tmp;
         std::vector<std::string> QoI_tmp;
         std::vector<std::string> QoI_target_tmp;
         std::vector<bool> multiple_input_tmp;
@@ -177,6 +184,7 @@ namespace OptiSMOKE{
 
                 dataset_names_tmp.push_back(dataset_names_[pos]);
                 solver_name_tmp.push_back(solver_name_[pos]);
+                reactor_mode_tmp.push_back(reactor_mode_[pos]);
                 QoI_tmp.push_back(QoI_[pos]);
                 QoI_target_tmp.push_back(QoI_target_[pos]);
                 multiple_input_tmp.push_back(multiple_input_[pos]);
@@ -197,6 +205,7 @@ namespace OptiSMOKE{
                 
                 dataset_names_tmp.push_back(dataset_names_[pos]);
                 solver_name_tmp.push_back(solver_name_[pos]);
+                reactor_mode_tmp.push_back(reactor_mode_[pos]);
                 QoI_tmp.push_back(QoI_[pos]);
                 QoI_target_tmp.push_back(QoI_target_[pos]);
                 multiple_input_tmp.push_back(multiple_input_[pos]);
@@ -217,6 +226,7 @@ namespace OptiSMOKE{
                 
                 dataset_names_tmp.push_back(dataset_names_[pos]);
                 solver_name_tmp.push_back(solver_name_[pos]);
+                reactor_mode_tmp.push_back(reactor_mode_[pos]);
                 QoI_tmp.push_back(QoI_[pos]);
                 QoI_target_tmp.push_back(QoI_target_[pos]);
                 multiple_input_tmp.push_back(multiple_input_[pos]);
@@ -237,6 +247,7 @@ namespace OptiSMOKE{
                 
                 dataset_names_tmp.push_back(dataset_names_[pos]);
                 solver_name_tmp.push_back(solver_name_[pos]);
+                reactor_mode_tmp.push_back(reactor_mode_[pos]);
                 QoI_tmp.push_back(QoI_[pos]);
                 QoI_target_tmp.push_back(QoI_target_[pos]);
                 multiple_input_tmp.push_back(multiple_input_[pos]);
@@ -257,6 +268,7 @@ namespace OptiSMOKE{
                 
                 dataset_names_tmp.push_back(dataset_names_[pos]);
                 solver_name_tmp.push_back(solver_name_[pos]);
+                reactor_mode_tmp.push_back(reactor_mode_[pos]);
                 QoI_tmp.push_back(QoI_[pos]);
                 QoI_target_tmp.push_back(QoI_target_[pos]);
                 multiple_input_tmp.push_back(multiple_input_[pos]);
@@ -272,6 +284,7 @@ namespace OptiSMOKE{
         }
         
         dataset_names_ = dataset_names_tmp; 
+        reactor_mode_ = reactor_mode_tmp;
         solver_name_ = solver_name_tmp;
         QoI_ = QoI_tmp;
         QoI_target_ = QoI_target_tmp;

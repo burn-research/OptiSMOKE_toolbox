@@ -14,7 +14,7 @@ Dictionary OptiSMOKEpp
 {
 	@NominalKineticsPreProcessor	KineticPreProcessor;
 
-	@KineticsFolder					../mechanisms/Polimi_NH3_2020;
+	@KineticsFolder					../../mechanisms/Polimi_NH3_2020;
 
 	@NameOfOptimizedKineticsFolder	Output/optimized-kinetics;
 
@@ -75,9 +75,9 @@ Dictionary OptimizationTargets
 
 Dictionary KineticPreProcessor
 {
-	@Kinetics			../mechanisms/Polimi_NH3_2020/Kinetics.CKI;
-	@Thermodynamics		../mechanisms/Polimi_NH3_2020/Thermodynamics.therm;
-	@Transport			../mechanisms/Polimi_NH3_2020/Transport.TRAN;
+	@Kinetics			../../mechanisms/Polimi_NH3_2020/Kinetics.CKI;
+	@Thermodynamics		../../mechanisms/Polimi_NH3_2020/Thermodynamics.therm;
+	@Transport			../../mechanisms/Polimi_NH3_2020/Transport.TRAN;
 	@Output				Output/kinetics;
 }
 

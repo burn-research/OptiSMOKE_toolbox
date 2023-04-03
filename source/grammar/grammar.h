@@ -40,5 +40,6 @@
 #include "grammar_optimization_setup.h"
 #include "grammar_optimization_targets.h"
 #include "grammar_curvematching.h"
+#include "grammar_nlopt.h"
 
 #endif // OPTISMOKE_GRAMMAR_H

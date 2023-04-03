@@ -175,6 +175,7 @@ namespace OptiSMOKE{
 			std::string qoi = data_.QoI()[i];
 			std::string qoi_target = data_.QoI_target()[i];
 			std::string solver = data_.solver_name()[i];
+			std::string reactor_mode = data_.reactor_mode()[i];
 
 			if (solver == "BatchReactor"){
 				if(qoi == "IDT"){
@@ -183,7 +184,13 @@ namespace OptiSMOKE{
 						// re-read the OS input file
 						batch_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
 						batch_reactors[i][j].Solve();
-						simulations_results_[i][0][j] = batch_reactors[i][j].GetIgnitionDelayTime(qoi_target) * std::pow(10, 6);
+						if(reactor_mode == "shock tube")
+							simulations_results_[i][0][j] = batch_reactors[i][j].GetIgnitionDelayTime(qoi_target) * std::pow(10, 6);
+						else if (reactor_mode == "rapid compression machine")
+							OptiSMOKE::FatalErrorMessage("RCM not yet implemented");
+						else
+							OptiSMOKE::FatalErrorMessage("Reactor mode is required for IDT experiments!");
+						
 					}
 				}
 				else if (qoi == "Composition"){
@@ -200,13 +207,13 @@ namespace OptiSMOKE{
 						plugflow_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
 						plugflow_reactors[i][j].Solve();
 
-						if(qoi_target == "mole-fraction"){
+						if(qoi_target == "mole-fraction-out"){
 							for(unsigned int k = 0; k < data_.ordinates_label()[i][0].size(); k++){
-								simulations_results_[i][k][j] = plugflow_reactors[i][j].GetMolefraction(data_.ordinates_label()[i][0][k]);
+								simulations_results_[i][k][j] = plugflow_reactors[i][j].GetMolefractionOut(data_.ordinates_label()[i][0][k]);
 							}
 						}
-						else if (qoi_target == "mass-fraction"){
-							OptiSMOKE::FatalErrorMessage("Mass-fraction to be implemented");
+						else if (qoi_target == "mass-fraction-out"){
+							OptiSMOKE::FatalErrorMessage("Mass-fraction-out to be implemented");
 						}
 						else{
 							OptiSMOKE::FatalErrorMessage("Unknown QoI target: " + qoi_target);
@@ -307,7 +314,7 @@ namespace OptiSMOKE{
 		// OptiSMOKE mantainer of the future in order to make things more effcient consider
 		// to not substituting kinetics and then creating constraints and then checking 
 		// just check and substitute or not
-		std::cout << " * Kinetic constants check..." << std::endl;
+		// std::cout << " * Kinetic constants check..." << std::endl;
 		for (int j=0; j < data_.optimization_target().list_of_target_uncertainty_factors().size(); j++){
 			std::vector<double> k_check;
 			k_check.resize(T_span.size());
@@ -558,6 +565,33 @@ namespace OptiSMOKE{
         // Finding position of the third body species to be changed
         // Changing the value of the thirdbody species
         data_.kineticsMapXML_->Set_ThirdBody(i-1, iSpecies-1, parameter);
+	}
+
+	void SimulationsInterface::PrepareASCIIFile(std::ofstream& fOutput, const fs::path output_file_ascii, const std::vector<std::string>& names)
+	{
+        fOutput.open(output_file_ascii.c_str(), std::ios::out);
+
+        unsigned int counter = 1;
+        OpenSMOKE::PrintTagOnASCIILabel(20, fOutput, "Eval-number", counter);
+		for(unsigned int i = 0; i < names.size(); i++)
+			OpenSMOKE::PrintTagOnASCIILabel(20, fOutput, names[i], counter);
+        
+		OpenSMOKE::PrintTagOnASCIILabel(20, fOutput, "Obj-Function", counter);
+		
+		fOutput << std::endl;
+	}
+
+	void SimulationsInterface::PrintASCIIFile(std::ofstream& fOutput, const int eval_nr, const std::vector<double>& b, const double fn_val)
+	{
+		
+		fOutput.setf(std::ios::scientific);
+        fOutput << std::setw(20) << std::left << eval_nr;
+
+		for(unsigned int i = 0; i < b.size(); i++)
+			fOutput << std::setw(20) << std::left << b[i];
+        
+        fOutput << std::setw(20) << std::left << fn_val;
+		fOutput << std::endl;
 	}
 
 } // namespace OptiSMOKE

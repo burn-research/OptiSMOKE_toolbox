@@ -68,6 +68,7 @@ namespace OptiSMOKE{
         inline const std::vector<std::vector<std::vector<double>>>& expdata_y() const {return expdata_y_;};
         inline const std::vector<std::vector<std::vector<double>>>& uncertainty() const {return uncertainty_;};
         inline const std::vector<bool>& save_simulations() const {return save_simulations_;};
+        inline const std::vector<std::string>& reactor_mode() const {return reactor_mode_;};
 
     private:
         std::vector<std::string> dataset_names_;
@@ -76,6 +77,7 @@ namespace OptiSMOKE{
         std::vector<std::string> QoI_target_;
         std::vector<bool> multiple_input_;
         std::vector<bool> save_simulations_;
+        std::vector<std::string> reactor_mode_;
 
         std::vector<std::vector<std::string>> input_paths_;
 

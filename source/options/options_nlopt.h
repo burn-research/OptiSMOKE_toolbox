@@ -32,14 +32,42 @@
 |                                                                         |
 \*-----------------------------------------------------------------------*/
 
-#ifndef OPTISMOKE_OPTIONS_H
-#define OPTISMOKE_OPTIONS_H
+#ifndef OPTIONS_NLOPT_H
+#define OPTIONS_NLOPT_H
 
-#include "options_kinetics.h"
-#include "options_optimization_target.h"
-#include "options_optimization_setup.h"
-#include "options_curvematching.h"
-#include "options_dakota.h"
-#include "options_nlopt.h"
+namespace OptiSMOKE
+{
+	class options_nlopt
+	{
+	public:
+		options_nlopt();
+		
+		~options_nlopt(){};
 
-#endif // OPTISMOKE_OPTIONS_H
+		void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
+								std::string dictionary_name);
+    
+		inline const int& algo_int() const {return algo_int_;};
+		inline const int& max_function_evaluations() const {return max_function_evaluations_;};
+    private:
+
+		grammar_nlopt nlopt_options_grammar_;
+
+		std::string algorithm_;
+		std::string variant_;
+		int max_iterations_;
+		int max_function_evaluations_;
+		double convergence_tolerance_;
+		double solution_target_;
+
+		bool global_;
+		bool local_;
+
+		int algo_int_;
+
+		void SetupAlgorithm();
+	};
+}
+
+#include "options_nlopt.hpp"
+#endif // OPTIONS_NLOPT_H

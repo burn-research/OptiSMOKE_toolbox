@@ -98,7 +98,8 @@
         "transport_chemkin": "cpp",
         "opensmokepp": "cpp",
         "thermodynamics_chemkin": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "*.ipp": "cpp"
     },
     "cmake.configureEnvironment":{
         "Boost_ROOT":"/Users/tdinelli/NumericalLibraries/boost/boost-1.80-gcc-12",

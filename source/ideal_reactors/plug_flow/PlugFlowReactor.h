@@ -24,7 +24,7 @@ namespace OptiSMOKE
 
 		void Solve();
 
-		double GetMolefraction(std::string species_name);
+		double GetMolefractionOut(std::string species_name);
 
 	private:
 

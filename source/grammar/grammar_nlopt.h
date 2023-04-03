@@ -32,8 +32,8 @@
 |                                                                         |
 \*-----------------------------------------------------------------------*/
 
-#ifndef GRAMMAR_CURVEMATCHINGOPTIONS_H
-#define GRAMMAR_CURVEMATCHINGOPTIONS_H
+#ifndef GRAMMAR_NLOPT_H
+#define GRAMMAR_NLOPT_H
 
 #include "dictionary/OpenSMOKE_DictionaryManager.h"
 #include "dictionary/OpenSMOKE_DictionaryGrammar.h"
@@ -41,7 +41,7 @@
 
 namespace OptiSMOKE
 {
-	class grammar_curve_matching : public OpenSMOKE::OpenSMOKE_DictionaryGrammar
+	class grammar_nlopt : public OpenSMOKE::OpenSMOKE_DictionaryGrammar
 	{
 	protected:
 
@@ -52,6 +52,16 @@ namespace OptiSMOKE
 		        OpenSMOKE::SINGLE_STRING,
 	            "NLOPT++ algorithm",
                 true));
+
+            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Global",
+                OpenSMOKE::SINGLE_BOOL,
+                "Wheter the algorithm should be global",
+                false));
+
+            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Local",
+                OpenSMOKE::SINGLE_BOOL,
+                "Wheter the algorithm should be local",
+                false));
 
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Variant",
 				OpenSMOKE::SINGLE_STRING,
@@ -82,9 +92,7 @@ namespace OptiSMOKE
                 OpenSMOKE::SINGLE_DOUBLE,
                 "Solution target for the objective function",
                 false));
-				
 		}
 	};
 }
-
-#endif // GRAMMAR_CURVEMATCHINGOPTIONS_H
+#endif // GRAMMAR_NLOPT_H

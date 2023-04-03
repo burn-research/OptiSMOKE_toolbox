@@ -3,7 +3,7 @@
 	"name": "exp_dataset_22", 
 	"solver": "PlugFlowReactor", 
 	"QoI": "Composition", 
-	"QoI_target": "mole-fraction", 
+	"QoI_target": "mole-fraction-out", 
 	"OS_Input_File": 
 	[
 		"cases/Herbinet_O2_308.1/input.dic", 

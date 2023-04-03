@@ -2,6 +2,7 @@
 	"notes": "Wang dataset test",
 	"name": "Wang dataset 5",
 	"solver": "BatchReactor",
+	"reactor_mode": "shock tube",
 	"QoI": "IDT",
 	"QoI_target": "OH-max-slope",
 	"OS_Input_File": ["cases/wang_25_16.0_1210/input.dic",

@@ -21,6 +21,10 @@ namespace OptiSMOKE {
 		void SubstituteKineticParameters(const Dakota::RealVector& c_vars);
 
 		void SubstituteKineticParameters(const std::vector<double>& c_vars);
+
+		void PrepareASCIIFile(std::ofstream& fOutput, const fs::path output_file_ascii, const std::vector<std::string>& names);
+
+		void PrintASCIIFile(std::ofstream& fOutput, const int eval_nr, const std::vector<double>& b, const double fn_val);
 	
 	private:
 		const OptiSMOKE::InputManager& data_;

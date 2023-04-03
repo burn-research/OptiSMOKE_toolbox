@@ -141,11 +141,20 @@ namespace OptiSMOKE{
         dictionary_(main_dictionary_).ReadString("@OptimizationLibrary", optimization_library_);
         
 		// Dictionaries
-        // Dakota options
-        dictionary_(main_dictionary_).ReadDictionary("@DakotaOptions", dakota_dictionary_);
-        dakota_options_.SetupFromDictionary(dictionary_, dakota_dictionary_);
+        if(optimization_library_ == "dakota"){
+			// Dakota options
+			dictionary_(main_dictionary_).ReadDictionary("@DakotaOptions", dakota_dictionary_);
+        	dakota_options_.SetupFromDictionary(dictionary_, dakota_dictionary_);
+		}
+		else if(optimization_library_ == "nlopt"){
+			// NLOPT options
+			dictionary_(main_dictionary_).ReadDictionary("@NLOPTOptions", nlopt_dictionary_);
+        	nlopt_options_.SetupFromDictionary(dictionary_, nlopt_dictionary_);
+		}
+		else
+			OptiSMOKE::FatalErrorMessage("Unknown optimization library. Available are: dakota | nlopt");
 
-        // CM options
+        // CM options this will be optional
         dictionary_(main_dictionary_).ReadDictionary("@CurveMatchingOptions", curvematching_dictionary_);
         curvematching_options_.SetupFromDictionary(dictionary_, curvematching_dictionary_);
 
@@ -158,6 +167,35 @@ namespace OptiSMOKE{
         optimization_target_.SetupFromDictionary(dictionary_, optimization_target_dictionary_);
         
     }
+
+	void InputManager::SetUpNLOPT(){
+		DakotaInputString();
+		
+        parametric_file_name_ = output_folder_ / "optimization.out";
+        
+		std::vector<std::string> initial_values_str;
+        std::vector<std::string> lb_str;
+        std::vector<std::string> ub_str;
+
+        boost::split(initial_values_str, initial_values_string_, boost::is_any_of(" "));
+        boost::split(lb_str, lower_bounds_string_, boost::is_any_of(" "));
+        boost::split(ub_str, upper_bounds_string_, boost::is_any_of(" "));
+        boost::split(param_str_, param_name_string_, boost::is_any_of(" "));
+
+        initial_values_str.pop_back();
+        lb_str.pop_back();
+        ub_str.pop_back();
+        param_str_.pop_back();
+
+		initial_values_.resize(initial_values_str.size());
+        std::transform(initial_values_str.begin(), initial_values_str.end(), initial_values_.begin(), [](const std::string& str){return std::stod(str);});
+
+		lb_.resize(lb_str.size());
+        std::transform(lb_str.begin(), lb_str.end(), lb_.begin(), [](const std::string& str) {return std::stod(str);});
+
+		ub_.resize(ub_str.size());
+        std::transform(ub_str.begin(), ub_str.end(), ub_.begin(), [](const std::string& str) {return std::stod(str);});
+	}
 
     void InputManager::DakotaInputString(){
 
@@ -983,6 +1021,7 @@ namespace OptiSMOKE{
 		expdata_y_ = data_manager_.expdata_y();
 		uncertainty_ = data_manager_.uncertainty();
 		save_simulations_ = data_manager_.save_simulations();
+		reactor_mode_ = data_manager_.reactor_mode();
 
 	}
 
