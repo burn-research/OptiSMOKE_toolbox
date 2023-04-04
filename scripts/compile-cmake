@@ -1,7 +1,7 @@
 export CC=/opt/homebrew/bin/gcc-12
 export CXX=/opt/homebrew/bin/g++-12
 export CUSTOM_INSTALL=/Users/tdinelli/Documents/GitHub/OptiSMOKE_toolbox/test
-export NLOPT_DIR=/Users/tdinelli/NumericalLibraries/nlopt/nlopt-2.7.1-gcc-12/lib/cmake/nlopt
+export NLOPT_DIR=/home/chimica2/tdinelli/NumericalLibraries/nlopt/nlopt-2.7.1-gcc-9.2/lib64/cmake/nlopt
 
 cd ..
 mkdir build
