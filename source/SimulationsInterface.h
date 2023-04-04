@@ -18,8 +18,6 @@ namespace OptiSMOKE {
 
 		bool CheckKineticConstasts();
 			
-		void SubstituteKineticParameters(const Dakota::RealVector& c_vars);
-
 		void SubstituteKineticParameters(const std::vector<double>& c_vars);
 
 		void PrepareASCIIFile(std::ofstream& fOutput, const fs::path output_file_ascii, const std::vector<std::string>& names);
@@ -57,6 +55,8 @@ namespace OptiSMOKE {
 		void ChangeFallOffParamaters(std::string type, int index, double parameter);
 
 		void ChangeThirdBodyEfficiencies(unsigned int i, std::string name, double parameter);
+
+		void ChangePLOGReactions(std::string type, unsigned int index, double parameter);
 	
 	};
 } // namespace OptiSMOKE

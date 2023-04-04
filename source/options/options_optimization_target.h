@@ -43,6 +43,7 @@ namespace OptiSMOKE
     public:
 
         options_optimization_target();
+		
         ~options_optimization_target();
 
         void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,

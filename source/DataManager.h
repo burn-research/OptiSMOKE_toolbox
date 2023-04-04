@@ -61,13 +61,12 @@ namespace OptiSMOKE{
         inline const std::vector<std::string>& QoI_target() const {return QoI_target_;};
         inline const std::vector<bool>& multiple_input() const {return multiple_input_;};
         inline const std::vector<std::vector<std::string>>& input_paths() const {return input_paths_;};
-        inline const std::vector<std::vector<std::vector<std::string>>>& ordinates_label() const {return ordinates_label_;};
-        inline const std::vector<std::vector<std::vector<std::string>>>& abscissae_label() const {return abscissae_label_;};
-        inline const std::vector<std::vector<std::vector<std::string>>>& uncertainty_kind() const {return uncertainty_kind_;};
+        inline const std::vector<std::vector<std::string>>& ordinates_label() const {return ordinates_label_;};
+        inline const std::vector<std::vector<std::string>>& abscissae_label() const {return abscissae_label_;};
+        inline const std::vector<std::vector<std::string>>& uncertainty_kind() const {return uncertainty_kind_;};
         inline const std::vector<std::vector<std::vector<double>>>& expdata_x() const {return expdata_x_;};
         inline const std::vector<std::vector<std::vector<double>>>& expdata_y() const {return expdata_y_;};
         inline const std::vector<std::vector<std::vector<double>>>& uncertainty() const {return uncertainty_;};
-        inline const std::vector<bool>& save_simulations() const {return save_simulations_;};
         inline const std::vector<std::string>& reactor_mode() const {return reactor_mode_;};
 
     private:
@@ -76,7 +75,6 @@ namespace OptiSMOKE{
         std::vector<std::string> QoI_;
         std::vector<std::string> QoI_target_;
         std::vector<bool> multiple_input_;
-        std::vector<bool> save_simulations_;
         std::vector<std::string> reactor_mode_;
 
         std::vector<std::vector<std::string>> input_paths_;
@@ -86,20 +84,19 @@ namespace OptiSMOKE{
         // dimension one: number of files
         // dimension two: number of datasets whithin each file
         // dimension three: number point in each datasets
-        std::vector<std::vector<std::vector<std::string>>> ordinates_label_; // This need to be 2d
-        std::vector<std::vector<std::vector<std::string>>> abscissae_label_; // This need to be 2d
-        std::vector<std::vector<std::vector<std::string>>> uncertainty_kind_; // This need to be 2d
+        std::vector<std::vector<std::string>> ordinates_label_;
+        std::vector<std::vector<std::string>> abscissae_label_;
+        std::vector<std::vector<std::string>> uncertainty_kind_;
         std::vector<std::vector<std::vector<double>>> expdata_x_;
         std::vector<std::vector<std::vector<double>>> expdata_y_;
         std::vector<std::vector<std::vector<double>>> uncertainty_;
         std::vector<std::vector<std::vector<double>>> standard_deviations_;
 
-        // Default sigma for standard deviation if it is not present
-        // inside the file
-        double default_sigma = 2;
-
         void OrderData();
 
+        // Default sigma for standard deviation if it is not present
+        // inside the file.
+        double default_sigma = 2;
         void ComputeStandardDeviations();
     };
 } // namespace OptiSMOKE

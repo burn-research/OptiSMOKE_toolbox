@@ -113,7 +113,7 @@ namespace OptiSMOKE
 		        false,
                 "none",
                 "none",
-                "@ListOfTarget_A"));
+                "none"));
 
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfTarget_Beta",
 		        OpenSMOKE::VECTOR_INT,

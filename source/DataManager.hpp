@@ -51,8 +51,6 @@ namespace OptiSMOKE{
             uncertainty_.resize(experimental_data_files.size());
 
             for(unsigned int i = 0; i < experimental_data_files.size(); i++){
-                // Dont know if it is the best way to do it 
-                // however still take this and will see
                 boost::property_tree::ptree ptree;
                 boost::property_tree::read_json(experimental_data_files[i].c_str(), ptree);
             
@@ -61,7 +59,6 @@ namespace OptiSMOKE{
                 QoI_.push_back(ptree.get<std::string>("QoI"));
                 QoI_target_.push_back(ptree.get<std::string>("QoI_target"));
                 multiple_input_.push_back(ptree.get<bool>("multiple_input"));
-                save_simulations_.push_back(ptree.get<bool>("save_simulations_data"));
 
                 boost::optional<std::string> mode = ptree.get_optional<std::string>("reactor_mode");
                 if(mode)
@@ -84,8 +81,8 @@ namespace OptiSMOKE{
                 unsigned int count = 0;
                 BOOST_FOREACH(boost::property_tree::ptree::value_type &node, ptree.get_child("data")){
                     assert(node.first.empty());
-                    abscissae_label_[i][count].push_back(node.second.get<std::string>("abscissae_label"));
-                    ordinates_label_[i][count].push_back(node.second.get<std::string>("ordinates_label"));
+                    abscissae_label_[i][count] = node.second.get<std::string>("abscissae_label");
+                    ordinates_label_[i][count] = node.second.get<std::string>("ordinates_label");
                     
                     BOOST_FOREACH(boost::property_tree::ptree::value_type &node2, node.second.get_child("abscissae")){
                         assert(node2.first.empty());
@@ -98,7 +95,7 @@ namespace OptiSMOKE{
                     
                     boost::optional<std::string> uncertainty_node = node.second.get_optional<std::string>("uncertainty_kind");
                     if(uncertainty_node){
-                        uncertainty_kind_[i][count].push_back(node.second.get<std::string>("uncertainty_kind"));
+                        uncertainty_kind_[i][count] = node.second.get<std::string>("uncertainty_kind");
                         BOOST_FOREACH(boost::property_tree::ptree::value_type &node2, node.second.get_child("uncertainty")){
                             assert(node2.first.empty());
                             uncertainty_[i][count].push_back(node2.second.get_value<double>());
@@ -109,11 +106,10 @@ namespace OptiSMOKE{
                         // std::cout << "The uncertainty for the datasets ";
                         // std::cout << experimental_data_files[i].c_str();
                         // std::cout << " is not provided!" << std::endl;
-                        uncertainty_kind_[i][count].push_back("relative");
+                        uncertainty_kind_[i][count] = "relative";
                         for(unsigned int j=0; j < expdata_y_[i][count].size(); j++){
                             uncertainty_[i][count].push_back(0);
                         }
-
                     }
                     count += 1;
                 }
@@ -138,12 +134,11 @@ namespace OptiSMOKE{
         std::vector<std::string> QoI_tmp;
         std::vector<std::string> QoI_target_tmp;
         std::vector<bool> multiple_input_tmp;
-        std::vector<bool> save_simulations_tmp;
         std::vector<std::vector<std::string>> input_paths_tmp;
 
-        std::vector<std::vector<std::vector<std::string>>> ordinates_label_tmp;
-        std::vector<std::vector<std::vector<std::string>>> abscissae_label_tmp;
-        std::vector<std::vector<std::vector<std::string>>> uncertainty_kind_tmp;
+        std::vector<std::vector<std::string>> ordinates_label_tmp;
+        std::vector<std::vector<std::string>> abscissae_label_tmp;
+        std::vector<std::vector<std::string>> uncertainty_kind_tmp;
         std::vector<std::vector<std::vector<double>>> expdata_x_tmp;
         std::vector<std::vector<std::vector<double>>> expdata_y_tmp;
         std::vector<std::vector<std::vector<double>>> uncertainty_tmp;
@@ -195,7 +190,6 @@ namespace OptiSMOKE{
                 expdata_x_tmp.push_back(expdata_x_[pos]);
                 expdata_y_tmp.push_back(expdata_y_[pos]);
                 uncertainty_tmp.push_back(uncertainty_[pos]);
-                save_simulations_tmp.push_back(save_simulations_[pos]);
             }
         }
         
@@ -216,7 +210,6 @@ namespace OptiSMOKE{
                 expdata_x_tmp.push_back(expdata_x_[pos]);
                 expdata_y_tmp.push_back(expdata_y_[pos]);
                 uncertainty_tmp.push_back(uncertainty_[pos]);
-                save_simulations_tmp.push_back(save_simulations_[pos]);
             }
         }
         
@@ -237,7 +230,6 @@ namespace OptiSMOKE{
                 expdata_x_tmp.push_back(expdata_x_[pos]);
                 expdata_y_tmp.push_back(expdata_y_[pos]);
                 uncertainty_tmp.push_back(uncertainty_[pos]);
-                save_simulations_tmp.push_back(save_simulations_[pos]);
             }
         }
         
@@ -258,7 +250,6 @@ namespace OptiSMOKE{
                 expdata_x_tmp.push_back(expdata_x_[pos]);
                 expdata_y_tmp.push_back(expdata_y_[pos]);
                 uncertainty_tmp.push_back(uncertainty_[pos]);
-                save_simulations_tmp.push_back(save_simulations_[pos]);
             }
         }
 
@@ -279,7 +270,6 @@ namespace OptiSMOKE{
                 expdata_x_tmp.push_back(expdata_x_[pos]);
                 expdata_y_tmp.push_back(expdata_y_[pos]);
                 uncertainty_tmp.push_back(uncertainty_[pos]);
-                save_simulations_tmp.push_back(save_simulations_[pos]);
             }
         }
         
@@ -296,7 +286,6 @@ namespace OptiSMOKE{
         expdata_x_ = expdata_x_tmp;
         expdata_y_ = expdata_y_tmp;
         uncertainty_ = uncertainty_tmp;
-        save_simulations_ = save_simulations_tmp;
     }
 
     void DataManager::ComputeStandardDeviations(){

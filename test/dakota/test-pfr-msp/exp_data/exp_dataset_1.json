@@ -1,1 +1,53 @@
-{"notes": "Dataset test nancy", "name": "exp_dataset_1", "solver": "PlugFlowReactor", "QoI": "Composition", "QoI_target": "mole-fraction", "OS_Input_File": ["cases/T_373/input.dic", "cases/T_423/input.dic", "cases/T_473/input.dic", "cases/T_498/input.dic", "cases/T_503/input.dic", "cases/T_510/input.dic", "cases/T_523/input.dic", "cases/T_548/input.dic", "cases/T_573/input.dic", "cases/T_623/input.dic", "cases/T_673/input.dic", "cases/T_723/input.dic", "cases/T_773/input.dic"], "multiple_input": true, "save_simulations_data": true, "data": [{"abscissae_label": "Temperature", "abscissae_unit": "K", "abscissae": [373, 423, 473, 498, 503, 510, 523, 548, 573, 623, 673, 723, 773], "ordinates_label": "CH2O", "ordinates_unit": "-", "ordinates": [0.0, 0.0, 0.000349619, 0.0, 0.002230269, 0.004184629, 0.005981568, 0.00706464, 0.00741858, 0.00794496, 0.008601039, 0.008012584, 0.007142244], "uncertainty": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], "uncertainty_kind": "relative"}, {"abscissae_label": "Temperature", "abscissae_unit": "K", "abscissae": [373, 423, 473, 498, 503, 510, 523, 548, 573, 623, 673, 723, 773], "ordinates_label": "CH3OH", "ordinates_unit": "-", "ordinates": [0.0, 0.0, 0.0, 0.0, 0.0010764, 0.0016822, 0.00219648, 0.00284752, 0.0035646, 0.004056, 0.004407, 0.00426296, 0.004134], "uncertainty": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], "uncertainty_kind": "relative"}, {"abscissae_label": "Temperature", "abscissae_unit": "K", "abscissae": [373, 423, 473, 498, 503, 510, 523, 548, 573, 623, 673, 723, 773], "ordinates_label": "CH3NO2", "ordinates_unit": "-", "ordinates": [0.0, 0.0, 0.000200827, 0.000882247, 0.001216327, 0.002128888, 0.002459809, 0.002560223, 0.002342976, 0.002403603, 0.002515384, 0.002505848, 0.001285164], "uncertainty": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], "uncertainty_kind": "relative"}, {"abscissae_label": "Temperature", "abscissae_unit": "K", "abscissae": [373, 423, 473, 498, 503, 510, 523, 548, 573, 623, 673, 723, 773], "ordinates_label": "NO", "ordinates_unit": "-", "ordinates": [0.0, 0.0, 9.57596e-05, 0.0, 0.000375885, 0.000647324, 0.001181704, 0.002165698, 0.003547079, 0.004886361, 0.005666926, 0.005630939, 0.006065079], "uncertainty": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], "uncertainty_kind": "relative"}]}
+{
+	"notes": "Dataset test nancy", 
+	"name": "exp_dataset_1", 
+	"solver": "PlugFlowReactor", 
+	"QoI": "Composition", 
+	"QoI_target": "mole-fraction-out", 
+	"OS_Input_File": ["cases/T_373/input.dic", "cases/T_423/input.dic", "cases/T_473/input.dic", "cases/T_498/input.dic", "cases/T_503/input.dic", "cases/T_510/input.dic", "cases/T_523/input.dic", "cases/T_548/input.dic", "cases/T_573/input.dic", "cases/T_623/input.dic", "cases/T_673/input.dic", "cases/T_723/input.dic", "cases/T_773/input.dic"], 
+	"multiple_input": true, 
+	"save_simulations_data": true, 
+	"data": 
+	[
+		{
+			"abscissae_label": "Temperature", 
+			"abscissae_unit": "K", 
+			"abscissae": [373, 423, 473, 498, 503, 510, 523, 548, 573, 623, 673, 723, 773], 
+			"ordinates_label": "CH2O", 
+			"ordinates_unit": "-", 
+			"ordinates": [0.0, 0.0, 0.000349619, 0.0, 0.002230269, 0.004184629, 0.005981568, 0.00706464, 0.00741858, 0.00794496, 0.008601039, 0.008012584, 0.007142244], 
+			"uncertainty": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], 
+			"uncertainty_kind": "relative"
+		}, 
+		{
+			"abscissae_label": "Temperature", 
+			"abscissae_unit": "K", 
+			"abscissae": [373, 423, 473, 498, 503, 510, 523, 548, 573, 623, 673, 723, 773], 
+			"ordinates_label": "CH3OH", 
+			"ordinates_unit": "-", 
+			"ordinates": [0.0, 0.0, 0.0, 0.0, 0.0010764, 0.0016822, 0.00219648, 0.00284752, 0.0035646, 0.004056, 0.004407, 0.00426296, 0.004134], 
+			"uncertainty": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], 
+			"uncertainty_kind": "relative"
+		}, 
+		{
+			"abscissae_label": "Temperature", 
+			"abscissae_unit": "K", 
+			"abscissae": [373, 423, 473, 498, 503, 510, 523, 548, 573, 623, 673, 723, 773], 
+			"ordinates_label": "CH3NO2", 
+			"ordinates_unit": "-", 
+			"ordinates": [0.0, 0.0, 0.000200827, 0.000882247, 0.001216327, 0.002128888, 0.002459809, 0.002560223, 0.002342976, 0.002403603, 0.002515384, 0.002505848, 0.001285164], 
+			"uncertainty": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], 
+			"uncertainty_kind": "relative"
+		}, 
+		{
+			"abscissae_label": "Temperature", 
+			"abscissae_unit": "K", 
+			"abscissae": [373, 423, 473, 498, 503, 510, 523, 548, 573, 623, 673, 723, 773], 
+			"ordinates_label": "NO", 
+			"ordinates_unit": "-", 
+			"ordinates": [0.0, 0.0, 9.57596e-05, 0.0, 0.000375885, 0.000647324, 0.001181704, 0.002165698, 0.003547079, 0.004886361, 0.005666926, 0.005630939, 0.006065079], 
+			"uncertainty": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], 
+			"uncertainty_kind": "relative"
+		}
+	]
+}

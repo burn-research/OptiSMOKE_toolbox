@@ -90,7 +90,7 @@ int main(int argc, char* argv[]){
         opti_kinetics_ = new OptiSMOKE::OptimizedKinetics(input, input.thermodynamicsMapXML_, input.kineticsMapXML_);
 
         sim_iface_->Setup();
-        opti_kinetics_->SetChemkinName(input.optimized_kinetics_folder() / "OptimalMechanism.CKI");
+        opti_kinetics_->SetChemkinName(input.output_folder() / input.optimized_kinetics_folder() / "OptimalMechanism.CKI");
 
         input.SetUpNLOPT();
 
@@ -210,7 +210,7 @@ double OptFunction(const std::vector<double>& b, unsigned int eval_nr)
         }
         if(prev_fn_val > fn_val) {
             prev_fn_val = fn_val;
-            opti_kinetics_->WriteOptimizedMechanism();
+            // opti_kinetics_->WriteOptimizedMechanism();
             std::cout << " * Wrote optimized mechanism" << std::endl;
         }
     }

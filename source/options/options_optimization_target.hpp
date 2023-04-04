@@ -58,7 +58,7 @@ namespace OptiSMOKE
 													numberOfBatchReactor_);
 
         if (dictionary_manager(dictionary_name).CheckOption("@NumberOfPlugFlowReactor"))
-		dictionary_manager(dictionary_name).ReadInt("@NumberOfPlugFlowReactor", 
+			dictionary_manager(dictionary_name).ReadInt("@NumberOfPlugFlowReactor", 
 													numberOfPlugFlowReactor_);
 
         if (dictionary_manager(dictionary_name).CheckOption("@NumberOfPerfectlyStirredReactor"))
