@@ -13,21 +13,21 @@ namespace OptiSMOKE
 
 		virtual void DefineRules()
 		{
-			AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@KineticsFolder",
-				OpenSMOKE::SINGLE_PATH,
-				"Name of the folder containing the kinetic scheme (XML Version)",
+			AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@KineticsFolder", 
+				OpenSMOKE::SINGLE_PATH, 
+				"Name of the folder containing the kinetic scheme (XML Version)", 
 				true,
 				"@KineticsPreProcessor",
 				"none",
-				"none"));
-
-			AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@KineticsPreProcessor",
-				OpenSMOKE::SINGLE_DICTIONARY,
-				"Name of the dictionary containing the list of kinetic files to be interpreted",
-				true,
-				"@KineticsFolder",
-				"none",
-				"none"));
+				"none"));	
+			
+			AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@KineticsPreProcessor", 
+ 				OpenSMOKE::SINGLE_DICTIONARY, 
+ 				"Name of the dictionary containing the list of kinetic files to be interpreted", 
+ 				true,
+ 				"@KineticsFolder",
+ 				"none",
+ 				"none"));
 
 			AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Type",
 				OpenSMOKE::SINGLE_STRING,

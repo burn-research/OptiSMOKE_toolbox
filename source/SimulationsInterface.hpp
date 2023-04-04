@@ -45,6 +45,13 @@ namespace OptiSMOKE{
 			offset += n_pfr; 
 		}
 
+		if(n_psr != 0){
+			perfectlystirred_reactors.resize(n_psr);
+			for(unsigned int i = 0; i < n_pfr; i++)
+				perfectlystirred_reactors[i] = new OptiSMOKE::PerfectlyStirredReactor[data_.input_paths()[i+offset].size()];
+			offset += n_psr;
+		}
+
 		//-------------------------------------------------------//
 		//               Reactions constraints                   //
 		//-------------------------------------------------------//
@@ -169,7 +176,8 @@ namespace OptiSMOKE{
 		// Loop over all datasets
 		// Here data_.path_experimental_data_files().size() this is 
 		// misleading however keep in mind that only the size matters
-
+		// Takes into consideration to setup the solvers into the constructor and here just solve them
+		// This will avoid to re-read the input file each time
 		for(unsigned int i = 0; i < data_.path_experimental_data_files().size(); i++)
 		{
 			std::string qoi = data_.QoI()[i];
@@ -178,39 +186,35 @@ namespace OptiSMOKE{
 			std::string reactor_mode = data_.reactor_mode()[i];
 
 			if (solver == "BatchReactor"){
-				if(qoi == "IDT"){
-					for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
-						// For the moment stay simple but keep in mind that this every time 
-						// re-read the OS input file
-						batch_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
-						batch_reactors[i][j].Solve();
+				for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
+					batch_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
+					batch_reactors[i][j].Solve();
+					if(qoi == "IDT"){
 						if(reactor_mode == "shock tube")
 							simulations_results_[i][0][j] = batch_reactors[i][j].GetIgnitionDelayTime(qoi_target) * std::pow(10, 6);
 						else if (reactor_mode == "rapid compression machine")
 							OptiSMOKE::FatalErrorMessage("RCM not yet implemented");
 						else
 							OptiSMOKE::FatalErrorMessage("Reactor mode is required for IDT experiments!");
-						
 					}
-				}
-				else if (qoi == "Composition"){
-					OptiSMOKE::FatalErrorMessage("Compositions profile measurements in batch reactors not yet implemented!");
-				}
-				else{
-					OptiSMOKE::FatalErrorMessage("Unknown QoI: " + qoi);
+					else if (qoi == "Composition"){
+						OptiSMOKE::FatalErrorMessage("Compositions profile measurements in batch reactors not yet implemented!");
+					}
+					else{
+						OptiSMOKE::FatalErrorMessage("Unknown QoI: " + qoi);
+					}
 				}
 			}
 
 			if(solver == "PlugFlowReactor"){
-				if(qoi == "Composition"){
-					for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
-						plugflow_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
-						plugflow_reactors[i][j].Solve();
-
+				for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
+					plugflow_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
+					plugflow_reactors[i][j].Solve();
+					if(qoi == "Composition"){
 						if(qoi_target == "mole-fraction-out"){
-							for(unsigned int k = 0; k < data_.ordinates_label()[i][0].size(); k++){
-								simulations_results_[i][k][j] = plugflow_reactors[i][j].GetMolefractionOut(data_.ordinates_label()[i][0][k]);
-							}
+							std::vector<double> tmp = plugflow_reactors[i][j].GetMolefractionsOut(data_.ordinates_label()[i]);
+							for(unsigned int k = 0; k < data_.ordinates_label()[i].size(); k++)
+								simulations_results_[i][k][j] = tmp[k];
 						}
 						else if (qoi_target == "mass-fraction-out"){
 							OptiSMOKE::FatalErrorMessage("Mass-fraction-out to be implemented");
@@ -219,14 +223,22 @@ namespace OptiSMOKE{
 							OptiSMOKE::FatalErrorMessage("Unknown QoI target: " + qoi_target);
 						}
 					}
-				}
-				else{
-					OptiSMOKE::FatalErrorMessage("Unknown QoI: " + qoi);
+					else{
+						OptiSMOKE::FatalErrorMessage("Unknown QoI: " + qoi);
+					}
 				}
 			}
 
 			if(solver == "PerfectlyStirredReactor"){
-				OptiSMOKE::FatalErrorMessage(solver + " not supported yet!");
+				for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
+					perfectlystirred_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
+					perfectlystirred_reactors[i][j].Solve();
+					if(qoi == "Composition"){
+						if(qoi_target == "mole-fraction-out"){
+							// CHECK DeltaTEMP
+						}
+					}
+				}
 			}
 			
 			if (solver == "PremixedLaminarFlame1D"){
@@ -242,7 +254,7 @@ namespace OptiSMOKE{
 	double SimulationsInterface::ComputeObjectiveFunction()
 	{
 		double objective_function = 0;
-		std::cout << " * Computing objective function" << std::endl;
+		std::cout << " * Computing objective function..." << std::endl;
 		if (data_.optimization_setup().objective_function_type() == "CurveMatching") {
 			std::vector<double> CM_indexes;
 			std::vector<std::vector<double>> CM_score;
@@ -252,6 +264,7 @@ namespace OptiSMOKE{
 			for(unsigned int i = 0; i < simulations_results_.size(); i++){
 				CM_score[i].resize(simulations_results_[i].size());
 				for(unsigned int j = 0; j < simulations_results_[i].size(); j++){
+					// Very bad
 					if(data_.QoI()[i] == "IDT"){
 						std::vector<double> tmp;
 						std::vector<double> tmp2;
@@ -395,9 +408,9 @@ namespace OptiSMOKE{
 		return false;
 	}
 
-	void SimulationsInterface::SubstituteKineticParameters(const Dakota::RealVector& c_vars){
+	void SimulationsInterface::SubstituteKineticParameters(const std::vector<double>& c_vars){
+		
 		unsigned int count = 0;
-
 		// lnA
 		if(data_.optimization_target().list_of_target_lnA().size() != 0){
 			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_lnA().size(); i++){
@@ -458,77 +471,27 @@ namespace OptiSMOKE{
 		
 		// Classic PLOG
 		if(data_.optimization_target().list_of_target_classic_plog_reactions().size() != 0){
-			// TODO
-		}
-	}
-
-	void SimulationsInterface::SubstituteKineticParameters(const std::vector<double>& b){
-		unsigned int count = 0;
-		std::vector<double> c_vars(b.size());
-		for(unsigned int i = 0; i < b.size(); i++)
-			c_vars[i] = b[i];
-
-		// lnA
-		if(data_.optimization_target().list_of_target_lnA().size() != 0){
-			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_lnA().size(); i++){
-				ChangeDirectParamaters("lnA", data_.optimization_target().list_of_target_lnA()[i], c_vars[count]);
+			// lnA
+			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_classic_plog_reactions().size(); i++){
+				ChangePLOGReactions("lnA", 
+									data_.optimization_target().list_of_target_classic_plog_reactions()[i],
+									c_vars[count]);
 				count += 1;
 			}
-		}
-
-		// lnA_inf
-		if(data_.optimization_target().list_of_target_lnA_inf().size() != 0){
-			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_lnA_inf().size(); i++){
-				ChangeFallOffParamaters("lnA", data_.optimization_target().list_of_target_lnA_inf()[i], c_vars[count]);
+			// E_over_R
+			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_classic_plog_reactions().size(); i++){
+				ChangePLOGReactions("E_over_R", 
+									data_.optimization_target().list_of_target_classic_plog_reactions()[i],
+									c_vars[count]);
 				count += 1;
 			}
-		}
-		
-		// Beta
-		if(data_.optimization_target().list_of_target_Beta().size() != 0){
-			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_Beta().size(); i++){
-				ChangeDirectParamaters("Beta", data_.optimization_target().list_of_target_Beta()[i], c_vars[count]);
+			// Beta
+			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_classic_plog_reactions().size(); i++){
+				ChangePLOGReactions("Beta", 
+									data_.optimization_target().list_of_target_classic_plog_reactions()[i],
+									c_vars[count]);
 				count += 1;
 			}
-		}
-		
-		// Beta_inf
-		if(data_.optimization_target().list_of_target_Beta_inf().size() != 0){
-			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_Beta_inf().size(); i++){
-				ChangeFallOffParamaters("Beta", data_.optimization_target().list_of_target_Beta_inf()[i], c_vars[count]);
-				count += 1;
-			}
-		}
-		
-		// E_over_R
-		if(data_.optimization_target().list_of_target_E_over_R().size() != 0){
-			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_E_over_R().size(); i++){
-				ChangeDirectParamaters("E_over_R", data_.optimization_target().list_of_target_E_over_R()[i], c_vars[count]);
-				count += 1;
-			}
-		}
-		
-		// E_over_R_inf
-		if(data_.optimization_target().list_of_target_E_over_R_inf().size() != 0){
-			for(unsigned int i = 0; i < data_.optimization_target().list_of_target_E_over_R_inf().size(); i++){
-				ChangeFallOffParamaters("E_over_R", data_.optimization_target().list_of_target_E_over_R_inf()[i], c_vars[count]);
-				count += 1;
-			}			
-		}
-		
-		// 3B eff
-		if(data_.optimization_target().list_of_target_thirdbody_reactions().size() != 0){
-			for (unsigned int i = 0; i <  data_.optimization_target().list_of_target_thirdbody_reactions().size(); i++){
-                ChangeThirdBodyEfficiencies(data_.optimization_target().list_of_target_thirdbody_reactions()[i], 
-											data_.optimization_target().list_of_target_thirdbody_species()[i], 
-											c_vars[count]);
-                count += 1;
-        	}	
-		}
-		
-		// Classic PLOG
-		if(data_.optimization_target().list_of_target_classic_plog_reactions().size() != 0){
-			// TODO
 		}
 	}
 
@@ -565,6 +528,41 @@ namespace OptiSMOKE{
         // Finding position of the third body species to be changed
         // Changing the value of the thirdbody species
         data_.kineticsMapXML_->Set_ThirdBody(i-1, iSpecies-1, parameter);
+	}
+
+	void SimulationsInterface::ChangePLOGReactions(std::string type, unsigned int index, double parameter){
+   
+        std::vector<unsigned int> indices_of_classic_plog = data_.nominalkineticsMapXML()->IndicesOfPLOGReactions();
+		
+		int pos_classic_plog_reaction = std::find(
+			indices_of_classic_plog.begin(),
+			indices_of_classic_plog.end(),
+			index
+		) - indices_of_classic_plog.begin();
+		
+		if(type == "lnA"){
+			for (int k=0; k < data_.kineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).lnA().size(); k++){
+				double lnA_nominal = data_.nominalkineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).lnA()[k][0];
+				double new_lnA_ = lnA_nominal + parameter * std::log(10);
+				data_.kineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).Set_lnA(k, 0, new_lnA_);
+			}
+		}
+
+		if(type == "Beta"){
+			for (int k=0; k < data_.kineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).Beta().size(); k++){
+				double beta_nominal = data_.nominalkineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).Beta()[k][0];
+				double new_Beta_ = beta_nominal + parameter;
+				data_.kineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).Set_Beta(k, 0, new_Beta_);
+			}
+		}
+
+		if(type == "E_over_R"){
+			for (int k=0; k < data_.kineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).E_over_R().size(); k++){
+				double E_over_R_nominal = data_.nominalkineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).E_over_R()[k][0];
+				double new_E_over_R_ = E_over_R_nominal + parameter;
+				data_.kineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).Set_E_over_R(k, 0, new_E_over_R_);
+			}			
+		}
 	}
 
 	void SimulationsInterface::PrepareASCIIFile(std::ofstream& fOutput, const fs::path output_file_ascii, const std::vector<std::string>& names)

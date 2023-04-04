@@ -53,7 +53,7 @@ namespace OptiSMOKE
         dakota_gradient_ = false;
 		diverse_input_ = false;
 
-        tabular_data_file_ = "tabulara_data.dat";
+        tabular_data_file_ = "tabular_data.dat";
 
 		echo_dakota_string_ = false;
     }
@@ -64,66 +64,66 @@ namespace OptiSMOKE
 
         dictionary_manager(dictionary_name).SetGrammar(dakota_options_grammar_);
 
-        if (dictionary_manager(dictionary_name).CheckOption("@TabularDataFile") == true)
+        if (dictionary_manager(dictionary_name).CheckOption("@TabularDataFile"))
 			dictionary_manager(dictionary_name).ReadString("@TabularDataFile", tabular_data_file_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@Method") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@Method"))
 			dictionary_manager(dictionary_name).ReadString("@Method", method_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@MaxIterations") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@MaxIterations"))
 			dictionary_manager(dictionary_name).ReadString("@MaxIterations", max_iterations_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@MaxFunctionEvaluations") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@MaxFunctionEvaluations"))
 			dictionary_manager(dictionary_name).ReadString("@MaxFunctionEvaluations", max_function_evaluations_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@ConvergenceTolerance") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@ConvergenceTolerance"))
 			dictionary_manager(dictionary_name).ReadString("@ConvergenceTolerance", convergence_tolerance_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@SolutionTarget") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@SolutionTarget"))
 			dictionary_manager(dictionary_name).ReadString("@SolutionTarget", solution_target_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@Seed") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@Seed"))
 			dictionary_manager(dictionary_name).ReadString("@Seed", seed_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@PopulationSize") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@PopulationSize"))
 			dictionary_manager(dictionary_name).ReadString("@PopulationSize", population_size_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@FitnessType") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@FitnessType"))
 			dictionary_manager(dictionary_name).ReadString("@FitnessType", fitness_type_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@MutationType") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@MutationType"))
 			dictionary_manager(dictionary_name).ReadString("@MutationType", mutation_type_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@MutationRate") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@MutationRate"))
 			dictionary_manager(dictionary_name).ReadString("@MutationRate", mutation_rate_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@CrossoverType") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@CrossoverType"))
 			dictionary_manager(dictionary_name).ReadString("@CrossoverType", crossover_type_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@CrossoverRate") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@CrossoverRate"))
 			dictionary_manager(dictionary_name).ReadString("@CrossoverRate", crossover_rate_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@ReplacementType") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@ReplacementType"))
 			dictionary_manager(dictionary_name).ReadString("@ReplacementType", replacement_type_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@Division") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@Division"))
 			dictionary_manager(dictionary_name).ReadString("@Division", division_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@MaxBoxsizeLimit") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@MaxBoxsizeLimit"))
 			dictionary_manager(dictionary_name).ReadString("@MaxBoxsizeLimit", max_boxsize_limit_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@MinBoxsizeLimit") == true)
+		if (dictionary_manager(dictionary_name).CheckOption("@MinBoxsizeLimit"))
 			dictionary_manager(dictionary_name).ReadString("@MinBoxsizeLimit", min_boxsize_limit_);
 
-		if (dictionary_manager(dictionary_name).CheckOption("@DiverseInput") == true){
+		if (dictionary_manager(dictionary_name).CheckOption("@DiverseInput")){
 			diverse_input_ = true;
 			dictionary_manager(dictionary_name).ReadOption("@DiverseInput", diverse_dakota_input_);
 		}
 
-		if(dictionary_manager(dictionary_name).CheckOption("@EchoDakotaInput") == true)
-			dictionary_manager(dictionary_name).ReadBool("@EchoDakotaInput", echo_dakota_string_);
-			
- 		if (dictionary_manager(dictionary_name).CheckOption("@Gradient") == true)
+ 		if (dictionary_manager(dictionary_name).CheckOption("@Gradient"))
             dictionary_manager(dictionary_name).ReadBool("@Gradient", dakota_gradient_);
+
+		if(dictionary_manager(dictionary_name).CheckOption("@EchoDakotaInput"))
+			dictionary_manager(dictionary_name).ReadBool("@EchoDakotaInput", echo_dakota_string_);
 	}
 }

@@ -12,11 +12,9 @@
 
 Dictionary OptiSMOKEpp
 {
-	@NominalKineticsPreProcessor	KineticPreProcessor;
+	@KineticsPreProcessor			KineticPreProcessor;
 
-	@KineticsFolder					../mechanisms/mech;
-
-	@NameOfOptimizedKineticsFolder	Output/optimized-kinetics;
+	@OutputFolder					Output;
 
 	@ListOfExperimentalDataFiles	exp_data/exp_dataset_1.json ;
 
@@ -74,14 +72,17 @@ Dictionary OptimizationTargets
 
 Dictionary KineticPreProcessor
 {
-	@Kinetics			../mechanisms/mech/Kinetics.CKI;
-	@Thermodynamics		../mechanisms/mech/Thermodynamics.CKT;
-	@Output				Output/kinetics;
+	@Kinetics			../../mechanisms/mech/Kinetics.CKI;
+
+	@Thermodynamics		../../mechanisms/mech/Thermodynamics.CKT;
+
+	@Output				kinetics;
 }
 
 Dictionary dakota_options
 {
 	@EchoDakotaInput			true;
+
 	@TabularDataFile			Output/tabular_data.dat;
 
 	@Method						coliny_ea;
@@ -89,30 +90,31 @@ Dictionary dakota_options
 	@FitnessType				linear_rank;
 
 	@CrossoverType				uniform;
+
 	@CrossoverRate				0.65;
 
 	@MutationType				offset_normal;
+
 	@MutationRate				0.5;
 
 	@ReplacementType			chc=25;
 
 	@MaxIterations				1000;
+
 	@MaxFunctionEvaluations		20000;
+
 	@ConvergenceTolerance		1e-12;
+
 	@SolutionTarget				1e-8;
 
 	@Seed						1000;
+
 	@PopulationSize				50;
 }
 
 Dictionary curve_matching_options
 {
-	@NumberOfBootstrapVariations				1;
-	@LineUpMaxima								true;
-	@UseSumOfIndexesForAlignment				true;
-	@FractionOfExpRangeForModelExtrapolation	0.0;
-	@UseBootStrap								false;
-	@PrintIndexes								false;
-	@PrintSplines								false;
-	@PrintBootstrap								false;
+	@NumberOfBootstrapVariations	1;
+
+	@UseBootStrap					false;
 }

@@ -54,13 +54,8 @@ namespace OptiSMOKE{
 
         void ReadDictionary();
 
-        // Da privatizzare
         void DakotaInputString();
 
-        // Da privatizzare
-        void DakotaInputPreliminaryOptions();
-
-        //
         void ReadExperimentalDataFiles();
 
         void SetUpNLOPT();
@@ -74,7 +69,6 @@ namespace OptiSMOKE{
         inline const OptiSMOKE::options_nlopt& nlopt_options() const {return nlopt_options_;};
 
         inline const bool& iXml() const {return iXml_;};
-        inline const bool& iNominalXml() const {return iNominalXml_;};
         inline const std::string& input_file_name() const {return input_file_name_;};
         inline const std::string& main_dictionary() const {return main_dictionary_;};
         inline const std::string& optimization_library() const {return optimization_library_;};
@@ -102,7 +96,7 @@ namespace OptiSMOKE{
         inline const std::vector<std::vector<std::vector<double>>>& uncertainty() const {return uncertainty_;};
         inline const std::vector<std::string>& dataset_names() const {return dataset_names_;};
         inline const std::vector<std::string>& solver_name() const {return solver_name_;};
-        inline const std::vector<std::vector<std::vector<std::string>>>& ordinates_label() const {return ordinates_label_;};
+        inline const std::vector<std::vector<std::string>>& ordinates_label() const {return ordinates_label_;};
 
         inline const std::vector<std::string>& param_str() const {return param_str_;};
         inline const std::vector<double>& initial_values() const {return initial_values_;};
@@ -168,6 +162,27 @@ namespace OptiSMOKE{
         
         void ComputeBoundaries();
 
+        void TargetsPreliminaryOptions();
+
+        // Initial Parameters string assigned in 
+        // FromTargetToInitialParameters()
+        std::vector<std::string> list_of_initial_lnA_;
+        std::vector<std::string> list_of_initial_Beta_;
+        std::vector<std::string> list_of_initial_E_over_R;
+        std::vector<std::string> list_of_initial_lnA_inf_;
+        std::vector<std::string> list_of_initial_Beta_inf_;
+        std::vector<std::string> list_of_initial_E_over_R_inf_;
+        std::vector<std::string> list_of_initial_thirdbody_eff_;
+
+        // String needed by dakota in order to generate 
+        // the input string
+        std::string param_name_string_;
+		std::string initial_values_string_;
+		std::string lower_bounds_string_;
+		std::string upper_bounds_string_;
+		std::string std_deviations_string_;
+
+
         // Boundaries variables
         std::vector<std::string> list_of_min_abs_lnA_;
 	    std::vector<std::string> list_of_max_abs_lnA_;
@@ -187,31 +202,6 @@ namespace OptiSMOKE{
         std::vector<std::string> list_of_min_abs_E_over_R_inf_;
 	    std::vector<std::string> list_of_max_abs_E_over_R_inf_;
 
-        // EPLR
-    	std::vector<std::string> list_of_nominal_lnA_EPLR_;
-	    std::vector<std::string> list_of_min_lnA_EPLR_;
-	    std::vector<std::string> list_of_max_lnA_EPLR_;
-	
-	    std::vector<std::string> list_of_nominal_ER_EPLR_;
-	    std::vector<std::string> list_of_min_ER_EPLR_;
-	    std::vector<std::string> list_of_max_ER_EPLR_;
-	 
-	    std::vector<std::string> list_of_nominal_Beta_EPLR_;
-	    std::vector<std::string> list_of_min_Beta_EPLR_;
-	    std::vector<std::string> list_of_max_Beta_EPLR_;
-
-        std::vector<std::string> list_of_nominal_lnA_ext_plog_coefficients_;
-	    std::vector<std::string> list_of_min_lnA_ext_plog_coefficients_;
-	    std::vector<std::string> list_of_max_lnA_ext_plog_coefficients_;
-	
-	    std::vector<std::string> list_of_nominal_ER_ext_plog_coefficients_;
-	    std::vector<std::string> list_of_min_ER_ext_plog_coefficients_;
-	    std::vector<std::string> list_of_max_ER_ext_plog_coefficients_;
-	
-	    std::vector<std::string> list_of_nominal_Beta_ext_plog_coefficients_;
-	    std::vector<std::string> list_of_min_Beta_ext_plog_coefficients_;
-	    std::vector<std::string> list_of_max_Beta_ext_plog_coefficients_;
-
         std::vector<std::string> list_of_nominal_lnA_classic_plog_coefficients_;
 	    std::vector<std::string> list_of_min_lnA_classic_plog_coefficients_;
 	    std::vector<std::string> list_of_max_lnA_classic_plog_coefficients_;
@@ -224,28 +214,25 @@ namespace OptiSMOKE{
 	    std::vector<std::string> list_of_min_Beta_classic_plog_coefficients_;
 	    std::vector<std::string> list_of_max_Beta_classic_plog_coefficients_;
 
+        // Names vector to pass euther from dakota to nlopt
+        // I know this is not the fanciest way 
+        std::vector<std::string> name_vec_lnA;
+        std::vector<std::string> name_vec_lnA_inf;
+        std::vector<std::string> name_vec_Beta;
+        std::vector<std::string> name_vec_Beta_inf;
+        std::vector<std::string> name_vec_E_over_R;
+        std::vector<std::string> name_vec_E_over_R_inf;
+		std::vector<std::string> name_vec_thirdbody;
+		std::vector<std::string> name_vec_lnA_classic_plog;
+		std::vector<std::string> name_vec_ER_classic_plog;
+        std::vector<std::string> name_vec_Beta_classic_plog;
+
         // Double vector needed by nlopt
         std::vector<double> initial_values_;
         std::vector<double> lb_;
         std::vector<double> ub_;
 		std::vector<std::string> param_str_;
         fs::path parametric_file_name_;
-
-        // String needed by dakota in order to generate the input string
-        std::string param_name_string_;
-		std::string initial_values_string_;
-		std::string lower_bounds_string_;
-		std::string upper_bounds_string_;
-		std::string std_deviations_string_;
-
-        // Initial Parameters string
-        std::vector<std::string> list_of_initial_lnA_;
-        std::vector<std::string> list_of_initial_Beta_;
-        std::vector<std::string> list_of_initial_E_over_R;
-        std::vector<std::string> list_of_initial_lnA_inf_;
-        std::vector<std::string> list_of_initial_Beta_inf_;
-        std::vector<std::string> list_of_initial_E_over_R_inf_;
-        std::vector<std::string> list_of_initial_thirdbody_eff_;
 
         // Experimental data files variables
         std::vector<std::string> dataset_names_;
@@ -255,11 +242,10 @@ namespace OptiSMOKE{
         std::vector<std::string> reactor_mode_;
 		std::vector<std::string> QoI_target_;
 		std::vector<bool> multiple_input_;
-        std::vector<bool> save_simulations_;
 
-		std::vector<std::vector<std::vector<std::string>>> ordinates_label_;
-		std::vector<std::vector<std::vector<std::string>>> abscissae_label_;
-		std::vector<std::vector<std::vector<std::string>>> uncertainty_kind_;
+		std::vector<std::vector<std::string>> ordinates_label_;
+		std::vector<std::vector<std::string>> abscissae_label_;
+		std::vector<std::vector<std::string>> uncertainty_kind_;
 		std::vector<std::vector<std::vector<double>>> expdata_x_;
 		std::vector<std::vector<std::vector<double>>> expdata_y_;
 		std::vector<std::vector<std::vector<double>>> uncertainty_;

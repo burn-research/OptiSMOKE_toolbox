@@ -63,7 +63,11 @@ namespace SIM {
     int SerialDakotaInterface::simulations_interface(const Dakota::RealVector& c_vars, short asv, Dakota::Real& fn_val)
     {
         eval_nr++;
-        sim_iface_->SubstituteKineticParameters(c_vars);
+        std::vector<double> b(c_vars.length());
+        for(unsigned int j = 0; j < c_vars.length(); j++)
+            b[j] = c_vars[j];
+
+        sim_iface_->SubstituteKineticParameters(b);
 
 		if(data_.optimization_setup().penalty_function())
 			violated_uncertainty = sim_iface_->CheckKineticConstasts();
@@ -83,7 +87,7 @@ namespace SIM {
         
             if(prev_fn_val > fn_val) {
                 prev_fn_val = fn_val;
-                opti_kinetics_->WriteOptimizedMechanism();
+                // opti_kinetics_->WriteOptimizedMechanism();
                 std::cout << " * Wrote optimized mechanism" << std::endl;
             }
         }

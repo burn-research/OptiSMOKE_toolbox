@@ -404,11 +404,12 @@ namespace OptiSMOKE
 			plugflow_non_isothermal_->Solve(end_value_);
 	}
 
-	double PlugFlowReactor::GetMolefractionOut(std::string species_name)
+	std::vector<double> PlugFlowReactor::GetMolefractionsOut(std::vector<std::string> species_name)
 	{
 		OpenSMOKE::OpenSMOKEVectorDouble omega_Final(thermodynamicsMapXML_->NumberOfSpecies());
 		OpenSMOKE::OpenSMOKEVectorDouble x_Final(thermodynamicsMapXML_->NumberOfSpecies());
-		
+		std::vector<double> Mole_frac_temp(species_name.size());
+
 		double T_final;
 		double P_Pa_final;
 
@@ -419,7 +420,9 @@ namespace OptiSMOKE
 		
 		double MW_Final = thermodynamicsMapXML_->MolecularWeight_From_MassFractions(omega_Final.GetHandle());
 		thermodynamicsMapXML_->MoleFractions_From_MassFractions(x_Final.GetHandle(), MW_Final, omega_Final.GetHandle());
-		double Mole_frac_temp = x_Final(thermodynamicsMapXML_->IndexOfSpecies(species_name));
+		
+		for(unsigned int i = 0; i < species_name.size(); i++)
+			Mole_frac_temp[i] = x_Final(thermodynamicsMapXML_->IndexOfSpecies(species_name[i]));
 
 		CleanMemory();
 		return Mole_frac_temp;

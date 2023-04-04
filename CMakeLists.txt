@@ -39,9 +39,13 @@ message (STATUS "Boost libraries: ${Boost_LIBRARIES}")
 find_package (Eigen3 REQUIRED)
 message (STATUS "Eigen libraries: ${EIGEN3_INCLUDE_DIR}")
 
-# --- OpenSmoke++ (Compulsory)
+# --- OpenSMOKE++ (Compulsory)
 find_package(OpenSMOKEpp REQUIRED)
-message (STATUS "OpenSmoke++: ${OpenSMOKEpp_INCLUDE_DIR}")
+message (STATUS "OpenSMOKE++: ${OpenSMOKEpp_INCLUDE_DIR}")
+
+# --- OpenSMOKEppSolvers (Compulsory)
+find_package(OpenSMOKEppSOLVERS REQUIRED)
+message (STATUS "OpenSMOKEppSOLVERS: ${OpenSMOKEppSOLVERS_INCLUDE_DIR}")
 
 # --- CEQ (Compulsory for OpenSMOKE++)
 option (OPTISMOKE_USE_CEQ "Activate CEQ support for OpenSMOKEpp" FALSE)
@@ -70,7 +74,8 @@ set(COMPULSORY_LIBRARIES ${Boost_LIBRARIES}
 set(COMPULSORY_INCLUDE ${Boost_INCLUDE_DIRS} 
                        ${Dakota_INCLUDE_DIRS}
                        ${EIGEN3_INCLUDE_DIR}
-                       ${OpenSMOKEpp_INCLUDE_DIR})
+                       ${OpenSMOKEpp_INCLUDE_DIR}
+                       ${OpenSMOKEppSOLVERS_INCLUDE_DIR})
 
 #--------------------------------------------------------------------
 # Semi-Compulsory libraries (desc: TODO)

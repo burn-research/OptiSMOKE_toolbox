@@ -12,11 +12,9 @@
 
 Dictionary OptiSMOKEpp
 {
-	@NominalKineticsPreProcessor	KineticPreProcessor;
-
 	@KineticsFolder					../../mechanisms/Polimi_NH3_2020;
 
-	@NameOfOptimizedKineticsFolder	Output/optimized-kinetics;
+	@OutputFolder	Output;
 
 	@ListOfExperimentalDataFiles	exp_data/exp_dataset_22.json
 									exp_data/exp_dataset_23.json
@@ -73,14 +71,6 @@ Dictionary OptimizationTargets
                 
 }
 
-Dictionary KineticPreProcessor
-{
-	@Kinetics			../../mechanisms/Polimi_NH3_2020/Kinetics.CKI;
-	@Thermodynamics		../../mechanisms/Polimi_NH3_2020/Thermodynamics.therm;
-	@Transport			../../mechanisms/Polimi_NH3_2020/Transport.TRAN;
-	@Output				Output/kinetics;
-}
-
 Dictionary dakota_options
 {
 	@EchoDakotaInput			true;
@@ -109,12 +99,6 @@ Dictionary dakota_options
 
 Dictionary curve_matching_options
 {
-	@NumberOfBootstrapVariations				1;
-	@LineUpMaxima								true;
-	@UseSumOfIndexesForAlignment				true;
-	@FractionOfExpRangeForModelExtrapolation	0.0;
-	@UseBootStrap								false;
-	@PrintIndexes								false;
-	@PrintSplines								false;
-	@PrintBootstrap								false;
+	@NumberOfBootstrapVariations	1;
+	@UseBootStrap					false;
 }

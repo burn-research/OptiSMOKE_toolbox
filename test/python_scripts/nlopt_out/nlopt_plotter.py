@@ -35,8 +35,13 @@ for i in range(len(file['Obj-Function(19)'])):
 
 fig, ax = plt.subplots()
 
-ax.plot(ev, obj, 'g')
-ax.set(xlabel = 'Evaluation number', ylabel = 'Obj function (1-CMscore)')
+#ax.plot(ev, obj, 'g')
+tg=[]
+for i in ev:
+	tg.append(file['\'lnA_R27\'(5)'].iloc[i])
+
+ax.plot(ev, tg, 'g')
+#ax.set(xlabel = 'Evaluation number', ylabel = 'Obj function (1-CMscore)')
 #ax.set_title(title)
 
 # RECAP

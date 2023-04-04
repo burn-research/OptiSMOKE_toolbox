@@ -53,16 +53,6 @@ namespace OptiSMOKE
 	            "NLOPT++ algorithm",
                 true));
 
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Global",
-                OpenSMOKE::SINGLE_BOOL,
-                "Wheter the algorithm should be global",
-                false));
-
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Local",
-                OpenSMOKE::SINGLE_BOOL,
-                "Wheter the algorithm should be local",
-                false));
-
             AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Variant",
 				OpenSMOKE::SINGLE_STRING,
 	            "NLOPT++ algorithm variant",
@@ -92,6 +82,19 @@ namespace OptiSMOKE
                 OpenSMOKE::SINGLE_DOUBLE,
                 "Solution target for the objective function",
                 false));
+
+            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@LocalAlgorithm",
+                OpenSMOKE::SINGLE_STRING,
+                "Set a specific local optimizer for the methods that requires one",
+                false));
+
+            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@LocalAlgorithmVariant",
+                OpenSMOKE::SINGLE_STRING,
+                "NLOPT++ algorithm variant",
+                false,
+                "none",
+                "@LocalAlgorithm",
+                "none"));
 		}
 	};
 }

@@ -43,6 +43,7 @@ namespace OptiSMOKE
     public:
 
         options_optimization_target();
+		
         ~options_optimization_target();
 
         void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
@@ -54,16 +55,6 @@ namespace OptiSMOKE
         inline const int& number_of_premixed_laminar_flame() const {return numberOfPremixedLaminarFlame_;};
         inline const int& number_of_counter_flow_flame() const {return numberOfCounterFlowFlame_;};
         inline const int& number_of_parameters() const {return numberOfParameters_;};
-
-	    inline const std::vector<int>& list_of_target_EPLR() const {return list_of_target_EPLR_;};
-	    inline const std::vector<std::string>& list_of_bath_gases_EPLR() const {return list_of_bath_gases_EPLR_;};
-	    inline const std::vector<double>& list_of_uncertainty_factors_EPLR() const {return list_of_uncertainty_factors_EPLR_;};
-            	
-	    inline const std::vector<int>& list_of_target_extplog() const {return list_of_target_extplog_;};
-	    inline const std::vector<double>& list_of_uncertainty_factors_extplog() const {return list_of_uncertainty_factors_extplog_;};
-
-        inline const std::vector<int>& list_of_target_extended_plog_reactions() const {return list_of_target_extended_plog_reactions_;};
-	    inline const std::vector<std::string>& list_of_target_extended_plog_species() const {return list_of_target_extended_plog_species_;};
             
 	    inline const std::vector<int>& list_of_target_lnA() const {return list_of_target_lnA_;};
 	    inline const std::vector<int>& list_of_target_Beta() const {return list_of_target_Beta_;};
@@ -78,9 +69,6 @@ namespace OptiSMOKE
 
 	    inline const std::vector<int>& list_of_target_classic_plog_reactions() const {return list_of_target_classic_plog_reactions_;};
 	    inline const std::vector<double>& list_of_uncertainty_factors_classic_plog() const {return list_of_uncertainty_factors_classic_plog_;};
-
-        inline const std::vector<double>& list_of_min_tb_extplog() const {return list_of_min_tb_extplog_;};
-        inline const std::vector<double>& list_of_max_tb_extplog() const {return list_of_max_tb_extplog_;};
             
         inline const std::vector<int>& list_of_target_uncertainty_factors() const {return list_of_target_uncertainty_factors_;};
 	    inline const std::vector<double>& list_of_uncertainty_factors() const {return list_of_uncertainty_factors_;};
@@ -125,45 +113,21 @@ namespace OptiSMOKE
         int numberOfCounterFlowFlame_;
         int numberOfParameters_;
 
-        bool iReactionClasses; // Per ora uno non deve sbagliare ma sarebbe meglio mettere un check
-                               // nel senso che in teoria è vero che uno puo ottimizzare sia classi 
-                               // che altro assieme
-
         fs::path reactions_classes_definition_;
 
-        // EPLR
-	    std::vector<int> list_of_target_EPLR_;
-	    std::vector<std::string> list_of_bath_gases_EPLR_;
-	    std::vector<double> list_of_uncertainty_factors_EPLR_;
-            	
-        // Indices of extended plog for optimization
-	    std::vector<int> list_of_target_extplog_;
-	    std::vector<double> list_of_uncertainty_factors_extplog_;
-
-        std::vector<int> list_of_target_extended_plog_reactions_;
-	    std::vector<std::string> list_of_target_extended_plog_species_;
-            
-        // DIRECT REACTIONS
 	    std::vector<int> list_of_target_lnA_;
 	    std::vector<int> list_of_target_Beta_;
 	    std::vector<int> list_of_target_E_over_R_;
 
-	    // INF REACTIONS
 	    std::vector<int> list_of_target_lnA_inf_;
 	    std::vector<int> list_of_target_Beta_inf_;
 	    std::vector<int> list_of_target_E_over_R_inf_;
 
-	    // INF REACTIONS
 	    std::vector<int> list_of_target_thirdbody_reactions_;
 	    std::vector<std::string> list_of_target_thirdbody_species_;
 
-	    // PLOG -- AB
 	    std::vector<int> list_of_target_classic_plog_reactions_;
-	    // List of uncertainties for PLOGS -- AB
 	    std::vector<double> list_of_uncertainty_factors_classic_plog_;
-
-        std::vector<double> list_of_min_tb_extplog_;
-        std::vector<double> list_of_max_tb_extplog_;
             
         std::vector<int> list_of_target_uncertainty_factors_;
 	    std::vector<double> list_of_uncertainty_factors_;
@@ -212,10 +176,7 @@ namespace OptiSMOKE
 
         std::vector<std::string> list_of_min_abs_thirdbody_eff_;
 	    std::vector<std::string> list_of_max_abs_thirdbody_eff_;
-
-
     };
-    
 } // namespace OptiSMOKE
 
 #include "options_optimization_target.hpp"

@@ -41,7 +41,7 @@
             "args": ["--input", "input.dic"],
             "targetArchitecture": "arm64",
             "stopAtEntry": true,
-            "cwd": "${workspaceFolder}/test/dakota/test-pfr",
+            "cwd": "${workspaceFolder}/test/dakota/test-pfr-msp",
             "environment": [
                 {"name": "DYLD_LIBRARY_PATH", "value": "/Users/tdinelli/NumericalLibraries/boost/boost-1.79-gcc-12/lib:/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17-gcc-12/lib"}
             ],
