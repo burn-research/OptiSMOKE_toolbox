@@ -29,7 +29,8 @@ namespace OptiSMOKE {
 	
 		std::vector<OptiSMOKE::BatchReactor*> batch_reactors;
 		std::vector<OptiSMOKE::PlugFlowReactor*> plugflow_reactors;
-	
+		std::vector<OptiSMOKE::PerfectlyStirredReactor*> perfectlystirred_reactors;
+
 		unsigned int n_batch;
 		unsigned int n_pfr;
 		unsigned int n_psr;

@@ -108,6 +108,7 @@
         "BLAS_ROOT":"/Users/tdinelli/NumericalLibraries/openblas/openblas-0.3.21-gcc-12",
         "CEQ_ROOT":"/Users/tdinelli/NumericalLibraries/ceq/lib/linux",
         "OpenSMOKEpp_ROOT":"/Users/tdinelli/Documents/GitHub/OpenSMOKEpp",
+        "OpenSMOKEppSOLVERS_ROOT":"/Users/tdinelli/Documents/GitHub/OpenSMOKEppSolvers",
         "OpenSMOKEpp_Tutorials_ROOT":"/Users/tdinelli/Documents/GitHub/OpenSMOKEppTutorials",
         "Dakota_ROOT": "/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17-gcc-12",
         "NLOPT_DIR":"/Users/tdinelli/NumericalLibraries/nlopt/nlopt-2.7.1-gcc-12/lib/cmake/nlopt"

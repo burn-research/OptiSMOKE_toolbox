@@ -45,6 +45,13 @@ namespace OptiSMOKE{
 			offset += n_pfr; 
 		}
 
+		if(n_psr != 0){
+			perfectlystirred_reactors.resize(n_psr);
+			for(unsigned int i = 0; i < n_pfr; i++)
+				perfectlystirred_reactors[i] = new OptiSMOKE::PerfectlyStirredReactor[data_.input_paths()[i+offset].size()];
+			offset += n_psr;
+		}
+
 		//-------------------------------------------------------//
 		//               Reactions constraints                   //
 		//-------------------------------------------------------//
@@ -169,7 +176,8 @@ namespace OptiSMOKE{
 		// Loop over all datasets
 		// Here data_.path_experimental_data_files().size() this is 
 		// misleading however keep in mind that only the size matters
-
+		// Takes into consideration to setup the solvers into the constructor and here just solve them
+		// This will avoid to re-read the input file each time
 		for(unsigned int i = 0; i < data_.path_experimental_data_files().size(); i++)
 		{
 			std::string qoi = data_.QoI()[i];
@@ -178,12 +186,10 @@ namespace OptiSMOKE{
 			std::string reactor_mode = data_.reactor_mode()[i];
 
 			if (solver == "BatchReactor"){
-				if(qoi == "IDT"){
-					for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
-						// For the moment stay simple but keep in mind that this every time 
-						// re-read the OS input file
-						batch_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
-						batch_reactors[i][j].Solve();
+				for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
+					batch_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
+					batch_reactors[i][j].Solve();
+					if(qoi == "IDT"){
 						if(reactor_mode == "shock tube")
 							simulations_results_[i][0][j] = batch_reactors[i][j].GetIgnitionDelayTime(qoi_target) * std::pow(10, 6);
 						else if (reactor_mode == "rapid compression machine")
@@ -191,21 +197,20 @@ namespace OptiSMOKE{
 						else
 							OptiSMOKE::FatalErrorMessage("Reactor mode is required for IDT experiments!");
 					}
-				}
-				else if (qoi == "Composition"){
-					OptiSMOKE::FatalErrorMessage("Compositions profile measurements in batch reactors not yet implemented!");
-				}
-				else{
-					OptiSMOKE::FatalErrorMessage("Unknown QoI: " + qoi);
+					else if (qoi == "Composition"){
+						OptiSMOKE::FatalErrorMessage("Compositions profile measurements in batch reactors not yet implemented!");
+					}
+					else{
+						OptiSMOKE::FatalErrorMessage("Unknown QoI: " + qoi);
+					}
 				}
 			}
 
 			if(solver == "PlugFlowReactor"){
-				if(qoi == "Composition"){
-					for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
-						plugflow_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
-						plugflow_reactors[i][j].Solve();
-
+				for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
+					plugflow_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
+					plugflow_reactors[i][j].Solve();
+					if(qoi == "Composition"){
 						if(qoi_target == "mole-fraction-out"){
 							std::vector<double> tmp = plugflow_reactors[i][j].GetMolefractionsOut(data_.ordinates_label()[i]);
 							for(unsigned int k = 0; k < data_.ordinates_label()[i].size(); k++)
@@ -218,14 +223,22 @@ namespace OptiSMOKE{
 							OptiSMOKE::FatalErrorMessage("Unknown QoI target: " + qoi_target);
 						}
 					}
-				}
-				else{
-					OptiSMOKE::FatalErrorMessage("Unknown QoI: " + qoi);
+					else{
+						OptiSMOKE::FatalErrorMessage("Unknown QoI: " + qoi);
+					}
 				}
 			}
 
 			if(solver == "PerfectlyStirredReactor"){
-				OptiSMOKE::FatalErrorMessage(solver + " not supported yet!");
+				for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
+					perfectlystirred_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
+					perfectlystirred_reactors[i][j].Solve();
+					if(qoi == "Composition"){
+						if(qoi_target == "mole-fraction-out"){
+							// CHECK DeltaTEMP
+						}
+					}
+				}
 			}
 			
 			if (solver == "PremixedLaminarFlame1D"){
@@ -251,6 +264,7 @@ namespace OptiSMOKE{
 			for(unsigned int i = 0; i < simulations_results_.size(); i++){
 				CM_score[i].resize(simulations_results_[i].size());
 				for(unsigned int j = 0; j < simulations_results_[i].size(); j++){
+					// Very bad
 					if(data_.QoI()[i] == "IDT"){
 						std::vector<double> tmp;
 						std::vector<double> tmp2;
