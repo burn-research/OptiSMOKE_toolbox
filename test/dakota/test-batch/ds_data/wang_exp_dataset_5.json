@@ -4,6 +4,7 @@
 	"solver": "BatchReactor",
 	"QoI": "IDT",
 	"QoI_target": "OH-max-slope",
+	"reactor_mode": "shock tube",
 	"OS_Input_File": ["cases/wang_25_16.0_1210/input.dic",
 					"cases/wang_25_16.0_1180/input.dic",
 					"cases/wang_25_16.0_1171/input.dic",

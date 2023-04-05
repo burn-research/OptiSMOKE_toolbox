@@ -14,11 +14,9 @@
 
 Dictionary OptiSMOKEpp
 {
-	@NominalKineticsPreProcessor	KINPREPRO;
+	@KineticsPreProcessor	KINPREPRO;
 
-	@KineticsFolder					../../mechanisms/Aramco_2.0;
-
-	@NameOfOptimizedKineticsFolder	Output/optimized-kinetics;
+	@OutputFolder	Output/optimized-kinetics;
 
 	@ListOfExperimentalDataFiles	ds_data/wang_exp_dataset_1.json 
 									ds_data/wang_exp_dataset_2.json 
@@ -123,11 +121,5 @@ Dictionary dakota_options
 Dictionary curve_matching_options
 {
 	@NumberOfBootstrapVariations				1;
-	@LineUpMaxima								true;
-	@UseSumOfIndexesForAlignment				true;
-	@FractionOfExpRangeForModelExtrapolation	0.0;
 	@UseBootStrap								false;
-	@PrintIndexes								false;
-	@PrintSplines								false;
-	@PrintBootstrap								false;
 }
