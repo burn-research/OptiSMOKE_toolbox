@@ -1,0 +1,44 @@
+{
+	"notes": "Sabia_H2", 
+	"name": "exp_data_3", 
+	"solver": "PerfectlyStirredReactor", 
+	"QoI": "Composition", 
+	"QoI_target": "mole-fraction-out", 
+	"OS_Input_File": ["cases/N2_64_CO2_0_H2O_27_T_859/input.dic", "cases/N2_64_CO2_0_H2O_27_T_871/input.dic", "cases/N2_64_CO2_0_H2O_27_T_880/input.dic", "cases/N2_64_CO2_0_H2O_27_T_884/input.dic", "cases/N2_64_CO2_0_H2O_27_T_888/input.dic", "cases/N2_64_CO2_0_H2O_27_T_893/input.dic", "cases/N2_64_CO2_0_H2O_27_T_899/input.dic", "cases/N2_64_CO2_0_H2O_27_T_905/input.dic", "cases/N2_64_CO2_0_H2O_27_T_911/input.dic", "cases/N2_64_CO2_0_H2O_27_T_919.5/input.dic", "cases/N2_64_CO2_0_H2O_27_T_925/input.dic", "cases/N2_64_CO2_0_H2O_27_T_933/input.dic", "cases/N2_64_CO2_0_H2O_27_T_941/input.dic", "cases/N2_64_CO2_0_H2O_27_T_948/input.dic", "cases/N2_64_CO2_0_H2O_27_T_956.45/input.dic", "cases/N2_64_CO2_0_H2O_27_T_968.5/input.dic", "cases/N2_64_CO2_0_H2O_27_T_971/input.dic"], 
+	"multiple_input": true, 
+	"save_simulations_data": true, 
+	"data": 
+	[
+		{
+			"abscissae_label": "Temperature", 
+			"abscissae_unit": "K", 
+			"abscissae": [859.0, 871.0, 880.0, 884.0, 888.0, 893.0, 899.0, 905.0, 911.0, 919.5, 925.0, 933.0, 941.0, 948.0, 956.45, 968.5, 971.0], 
+			"ordinates_label": "DeltaTemp", 
+			"ordinates_unit": "K", 
+			"ordinates": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.5, 2.8, 5.1, 8.0, 9.0, 10.88, 12.84, 14.0], 
+			"uncertainty": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], 
+			"uncertainty_kind": "relative"
+		}, 
+		{
+			"abscissae_label": "Temperature", 
+			"abscissae_unit": "K", 
+			"abscissae": [859.0, 871.0, 880.0, 884.0, 888.0, 893.0, 899.0, 905.0, 911.0, 919.5, 925.0, 933.0, 941.0, 948.0, 956.45, 968.5, 971.0], 
+			"ordinates_label": "H2", 
+			"ordinates_unit": "-", 
+			"ordinates": [0.042176, 0.0416443, 0.0416687, 0.0419597, 0.0418697, 0.0416427, 0.0416057, 0.0416875, 0.0406344, 0.039452, 0.0367367, 0.0321157, 0.0289867, 0.026825, 0.0227673, 0.0187407, 0.0173373], 
+			"uncertainty": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], 
+			"uncertainty_kind": "relative"
+		}, 
+		{
+			"abscissae_label": "Temperature", 
+			"abscissae_unit": "K", 
+			"abscissae": [859.0, 871.0, 880.0, 884.0, 888.0, 893.0, 899.0, 905.0, 911.0, 919.5, 925.0, 933.0, 941.0, 948.0, 956.45, 968.5, 971.0], 
+			"ordinates_label": "O2", 
+			"ordinates_unit": "-", 
+			"ordinates": [0.041962667, 0.042219, 0.042149333, 0.042135333, 0.042154333, 0.041998, 0.0418739, 0.041584, 0.0420176, 0.041173333, 0.040539, 0.038106333, 0.037427, 0.03552225, 0.034166333, 0.031671667, 0.031289], 
+			"uncertainty": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], 
+			"uncertainty_kind": "relative"
+		}
+	]
+}
+
