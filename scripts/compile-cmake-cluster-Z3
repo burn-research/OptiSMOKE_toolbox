@@ -15,6 +15,7 @@ export OpenSMOKEpp_ROOT=/home/chimica2/tdinelli/GitHub/OpenSMOKEpp
 export Eigen3_ROOT=/software/chimica2/libraries/eigen/eigen-3.4.0
 export CEQ_ROOT=/home/chimica2/tdinelli/NumericalLibraries/CEQ/lib/linux
 export OpenBLAS_HOME=/home/chimica2/tdinelli/NumericalLibraries/openblas/openblas-0.3.21-gcc-9.2.0
+export OpenSMOKEppSOLVERS_ROOT=/home/chimica2/tdinelli/GitHub/OpenSMOKEppSolvers
 
 cd ..
 mkdir build
