@@ -47,8 +47,9 @@ namespace OptiSMOKE{
 
 		if(n_psr != 0){
 			perfectlystirred_reactors.resize(n_psr);
-			for(unsigned int i = 0; i < n_pfr; i++)
+			for(unsigned int i = 0; i < n_psr; i++)
 				perfectlystirred_reactors[i] = new OptiSMOKE::PerfectlyStirredReactor[data_.input_paths()[i+offset].size()];
+
 			offset += n_psr;
 		}
 
@@ -518,7 +519,7 @@ namespace OptiSMOKE{
 	}
 
 	void SimulationsInterface::ChangeFallOffParamaters(std::string type, int index, double parameter){
-		std::vector<unsigned int> indices_of_falloff_reactions = data_.kineticsMapXML()->IndicesOfFalloffReactions();
+		std::vector<unsigned int> indices_of_falloff_reactions = data_.nominalkineticsMapXML_->IndicesOfFalloffReactions();
 		int pos_FallOff_Reaction = std::find(indices_of_falloff_reactions.begin(), 
 			indices_of_falloff_reactions.end(), 
 			index
@@ -535,7 +536,7 @@ namespace OptiSMOKE{
 	void SimulationsInterface::ChangeThirdBodyEfficiencies(unsigned int i, std::string name, double parameter){
 		// Finding position of the fall off reaction
         // Finding the index of the third body species
-        int iSpecies = data_.thermodynamicsMapXML()->IndexOfSpecies(name);
+        int iSpecies = data_.thermodynamicsMapXML_->IndexOfSpecies(name);
 
         // Finding position of the third body species to be changed
         // Changing the value of the thirdbody species
@@ -544,7 +545,7 @@ namespace OptiSMOKE{
 
 	void SimulationsInterface::ChangePLOGReactions(std::string type, unsigned int index, double parameter){
    
-        std::vector<unsigned int> indices_of_classic_plog = data_.nominalkineticsMapXML()->IndicesOfPLOGReactions();
+        std::vector<unsigned int> indices_of_classic_plog = data_.nominalkineticsMapXML_->IndicesOfPLOGReactions();
 		
 		int pos_classic_plog_reaction = std::find(
 			indices_of_classic_plog.begin(),
@@ -553,24 +554,24 @@ namespace OptiSMOKE{
 		) - indices_of_classic_plog.begin();
 		
 		if(type == "lnA"){
-			for (int k=0; k < data_.kineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).lnA().size(); k++){
-				double lnA_nominal = data_.nominalkineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).lnA()[k][0];
+			for (int k=0; k < data_.kineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).lnA().size(); k++){
+				double lnA_nominal = data_.nominalkineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).lnA()[k][0];
 				double new_lnA_ = lnA_nominal + parameter * std::log(10);
 				data_.kineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).Set_lnA(k, 0, new_lnA_);
 			}
 		}
 
 		if(type == "Beta"){
-			for (int k=0; k < data_.kineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).Beta().size(); k++){
-				double beta_nominal = data_.nominalkineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).Beta()[k][0];
+			for (int k=0; k < data_.kineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).Beta().size(); k++){
+				double beta_nominal = data_.nominalkineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).Beta()[k][0];
 				double new_Beta_ = beta_nominal + parameter;
 				data_.kineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).Set_Beta(k, 0, new_Beta_);
 			}
 		}
 
 		if(type == "E_over_R"){
-			for (int k=0; k < data_.kineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).E_over_R().size(); k++){
-				double E_over_R_nominal = data_.nominalkineticsMapXML()->pressurelog_reactions(pos_classic_plog_reaction).E_over_R()[k][0];
+			for (int k=0; k < data_.kineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).E_over_R().size(); k++){
+				double E_over_R_nominal = data_.nominalkineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).E_over_R()[k][0];
 				double new_E_over_R_ = E_over_R_nominal + parameter;
 				data_.kineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).Set_E_over_R(k, 0, new_E_over_R_);
 			}			

@@ -80,13 +80,13 @@ namespace OptiSMOKE{
         if(!iXml_){
             if(!iTransport_){
                 OpenSMOKE::RapidKineticMechanismWithoutTransport(
-                    kinetics_data_.chemkin_output(),
+                    output_folder_ / kinetics_data_.chemkin_output(),
                     kinetics_data_.chemkin_thermodynamics(),
                     kinetics_data_.chemkin_kinetics());
             }
             else{
                 OpenSMOKE::RapidKineticMechanismWithTransport(
-                    kinetics_data_.chemkin_output(),
+                    output_folder_ / kinetics_data_.chemkin_output(),
                     kinetics_data_.chemkin_transport(),
                     kinetics_data_.chemkin_thermodynamics(),
                     kinetics_data_.chemkin_kinetics());
@@ -160,7 +160,7 @@ namespace OptiSMOKE{
         
 		fs::path path_kinetics_output;
         if (!iXml_) // To be interpreted on-the-fly
-            path_kinetics_output = kinetics_data_.chemkin_output();
+            path_kinetics_output = output_folder_ / kinetics_data_.chemkin_output();
         else if (iXml_) // Already in XML format
             path_kinetics_output = kinetics_folder_;
 

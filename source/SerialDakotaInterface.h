@@ -70,7 +70,7 @@ class SerialDakotaInterface: public Dakota::DirectApplicInterface
       data_.thermodynamicsMapXML_, 
       data_.kineticsMapXML_
     );
-    opti_kinetics_->SetChemkinName(data_.optimized_kinetics_folder() / "OptimalMechanism.CKI");
+    opti_kinetics_->SetChemkinName(data_.output_folder() / data_.optimized_kinetics_folder() / "OptimalMechanism.CKI");
   }
 
   // Destructor

@@ -14,7 +14,9 @@
 
 Dictionary OptiSMOKEpp
 {
-	@KineticsPreProcessor	KINPREPRO;
+	@KineticsPreProcessor	Pre-Processor;
+
+	//@KineticsFolder			kinetics;
 
 	@OutputFolder			Output;
 
@@ -76,7 +78,7 @@ Dictionary OptimizationTargets
 	@ListOfMinAbs_ThirdBody_Eff			1	6;
 }
 
-Dictionary KINPREPRO
+Dictionary Pre-Processor
 {
 	@Kinetics				../../mechanisms/Aramco_2.0/Kinetics.CKI;
 
@@ -115,6 +117,6 @@ Dictionary dakota_options
 
 Dictionary curve_matching_options
 {
-	@NumberOfBootstrapVariations				1;
-	@UseBootStrap								false;
+	@NumberOfBootstrapVariations	1;
+	@UseBootStrap					false;
 }

@@ -1,35 +1,3 @@
-/*-----------------------------------------------------------------------*\
-|     ____            _  ______ __  __  ____  _  ________                 |
-|    / __ \       _  (_)/  ___ |  \/  |/ __ \| |/ /  ____|                |
-|   | |  | |_ __ | |_ _|  (___ | \  / | |  | | ' /| |__    _     _        |
-|   | |  | | '_ \|  _| |\___  \| |\/| | |  | |  < |  __| _| |_ _| |_      |
-|   | |__| | |_) | |_| |____)  | |  | | |__| | . \| |___|_   _|_   _|     |
-|    \____/| .__/\___|_|______/|_|  |_|\____/|_|\_\______||_|   |_|       |
-|          | |                                                            |
-|          |_|                                                            |
-|                                                                         |
-|            Author: Magnus Fürst <magnus.furst@ulb.ac.be>                |
-|-------------------------------------------------------------------------|
-|   License                                                               |
-|                                                                         |
-|   This file is part of OptiSMOKE.                                       |
-|   Copyright (C) 2019 by Magnus Fürst                                    |
-|                                                                         |
-|   OptiSMOKE is free software: you can redistribute it and/or modify     |
-|   it under the terms of the GNU General Public License as published by  |
-|   the Free Software Foundation, either version 3 of the License, or     |
-|   (at your option) any later version.                                   |
-|                                                                         |
-|   OptiSMOKE is distributed in the hope that it will be useful,          |
-|   but WITHOUT ANY WARRANTY; without even the implied warranty of        |
-|   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         |
-|   GNU General Public License for more details.                          |
-|                                                                         |
-|   You should have received a copy of the GNU General Public License     |
-|   along with OptiSMOKE. If not, see <http://www.gnu.org/licenses/>.     |
-|                                                                         |
-\*-----------------------------------------------------------------------*/
-
 #ifndef OPTISMOKE_PERFECTLYSTIRREDREACTOR_H
 #define OPTISMOKE_PERFECTLYSTIRREDREACTOR_H
 
@@ -69,7 +37,7 @@ namespace OptiSMOKE
 
 		// Read thermodynamics and kinetics maps
 		OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML_;
-		OpenSMOKE::KineticsMap_CHEMKIN*	kineticsMapXML_;
+		OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML_;
 
 		OpenSMOKE::PolimiSoot_Analyzer*	polimi_soot_;
 		OpenSMOKE::OnTheFlyPostProcessing* on_the_fly_post_processing_;
@@ -78,8 +46,6 @@ namespace OptiSMOKE
 		OpenSMOKE::ODE_Parameters* ode_parameters_;
 		OpenSMOKE::SensitivityAnalysis_Options*	sensitivity_options_;
 		OpenSMOKE::OscillatingPerfectlyStirredReactor* oscillating_psr_;
-
-		void CleanMemory();
 
 		double P_Pa_Initial;
 		double T_Initial;
@@ -94,8 +60,9 @@ namespace OptiSMOKE
 		double tEnd;
 		OpenSMOKE::OpenSMOKEVectorDouble omega_Initial;
 		OpenSMOKE::OpenSMOKEVectorDouble omega_Inlet;
+		void CleanMemory();
 	};
-}
+} // namespace OptiSMOKE
 
 #include "PerfectlyStirredReactor.hpp"
 
