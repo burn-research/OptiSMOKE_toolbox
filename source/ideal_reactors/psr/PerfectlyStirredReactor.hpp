@@ -315,7 +315,33 @@ namespace OptiSMOKE
 			psr_isothermal_->Solve(tEnd);	
 		else if (type_ == OpenSMOKE::PERFECTLYSTIRRED_REACTOR_NONISOTHERMAL_CONSTANTP)
 			psr_non_isothermal_->Solve(tEnd);
-		
+	}
+
+	std::vector<double> PerfectlyStirredReactor::GetMolefractionsOut(std::vector<std::string> targets_names){
+		OpenSMOKE::OpenSMOKEVectorDouble omega_Final(thermodynamicsMapXML_->NumberOfSpecies());
+    	OpenSMOKE::OpenSMOKEVectorDouble x_Final(thermodynamicsMapXML_->NumberOfSpecies());
+        double T_Final;
+		double P_Pa_Final;
+		double MW_Final;
+		std::vector<double> Mole_frac_temp(targets_names.size());
+
+    	if (type_ == OpenSMOKE::PERFECTLYSTIRRED_REACTOR_ISOTHERMAL_CONSTANTP)
+        	psr_isothermal_->GetFinalStatus(T_Final, P_Pa_Final, omega_Final);     
+    	else if (type_ == OpenSMOKE::PERFECTLYSTIRRED_REACTOR_NONISOTHERMAL_CONSTANTP)
+        	psr_non_isothermal_->GetFinalStatus(T_Final, P_Pa_Final, omega_Final);  
+
+    	MW_Final = thermodynamicsMapXML_->MolecularWeight_From_MassFractions(omega_Final.GetHandle());
+    	thermodynamicsMapXML_->MoleFractions_From_MassFractions(x_Final.GetHandle(), MW_Final, omega_Final.GetHandle());
+            
+		for(unsigned int i = 0; i < targets_names.size(); i++){
+			if(targets_names[i] == "DeltaTemp" || targets_names[i] == "Temp")
+				Mole_frac_temp[i] = T_Final;
+			else
+	    		Mole_frac_temp[i] = x_Final(thermodynamicsMapXML_->IndexOfSpecies(targets_names[i]));
+		}
+
+    	CleanMemory();
+		return Mole_frac_temp;
 	}
 
 	void PerfectlyStirredReactor::CleanMemory()

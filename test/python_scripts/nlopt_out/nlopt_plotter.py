@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-pathTabulardata = "/Users/tdinelli/Documents/GitHub/OptiSMOKE_toolbox/test/nlopt/test-batch/Output/optimization.out"
+pathTabulardata = "/Users/tdinelli/Documents/GitHub/OptiSMOKE_toolbox/optimization.out"
 fun_type = "cm"
 
 file = pd.read_csv(pathTabulardata, sep = '\s+', engine='python')
@@ -37,10 +37,10 @@ fig, ax = plt.subplots()
 
 #ax.plot(ev, obj, 'g')
 tg=[]
-for i in ev:
-	tg.append(file['\'lnA_R27\'(5)'].iloc[i])
+#for i in ev:
+#	tg.append(file['\'lnA_R27\'(5)'].iloc[i])
 
-ax.plot(ev, tg, 'g')
+ax.plot(ev, obj, 'g')
 #ax.set(xlabel = 'Evaluation number', ylabel = 'Obj function (1-CMscore)')
 #ax.set_title(title)
 

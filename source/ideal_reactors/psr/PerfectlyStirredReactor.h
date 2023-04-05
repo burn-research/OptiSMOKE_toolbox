@@ -59,6 +59,8 @@ namespace OptiSMOKE
 
 		void Solve();
 
+		std::vector<double> GetMolefractionsOut(std::vector<std::string> targets_names);
+
 	private:
 
 		OpenSMOKE::PerfectlyStirredReactor_Type type_;

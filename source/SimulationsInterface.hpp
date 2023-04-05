@@ -235,8 +235,20 @@ namespace OptiSMOKE{
 					perfectlystirred_reactors[i][j].Solve();
 					if(qoi == "Composition"){
 						if(qoi_target == "mole-fraction-out"){
-							// CHECK DeltaTEMP
+							std::vector<double> tmp = perfectlystirred_reactors[i][j].GetMolefractionsOut(data_.ordinates_label()[i]);
+							for(unsigned int k = 0; k < data_.ordinates_label()[i].size(); k++){
+								if(data_.ordinates_label()[i][k] == "DeltaTemp")
+									simulations_results_[i][k][j] = tmp[k] - data_.expdata_x()[i][k][j]; // Check if it is negative?
+								else
+									simulations_results_[i][k][j] = tmp[k];
+							}
 						}
+						else{
+							OptiSMOKE::FatalErrorMessage("Unknown QoI target: " + qoi_target);
+						}
+					}
+					else{
+						OptiSMOKE::FatalErrorMessage("Unknown QoI: " + qoi);
 					}
 				}
 			}
