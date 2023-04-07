@@ -77,6 +77,8 @@ namespace OptiSMOKE{
         ReadMainDictionary();
         
         // This to process or not kinetics folder
+
+		// CHECK THISSSSSSSSS
         if(!iXml_){
             if(!iTransport_){
                 OpenSMOKE::RapidKineticMechanismWithoutTransport(

@@ -87,7 +87,7 @@ namespace SIM {
         
             if(prev_fn_val > fn_val) {
                 prev_fn_val = fn_val;
-                // opti_kinetics_->WriteOptimizedMechanism();
+                opti_kinetics_->WriteOptimizedMechanism();
                 std::cout << " * Wrote optimized mechanism" << std::endl;
             }
         }

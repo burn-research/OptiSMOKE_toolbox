@@ -8,7 +8,7 @@ namespace OptiSMOKE{
 	public:
 		OptimizedKinetics(const OptiSMOKE::InputManager& data,
 						const OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML,
-						const OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML);
+						OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML);
 	
 		~OptimizedKinetics ();
 	
@@ -21,7 +21,7 @@ namespace OptiSMOKE{
 		//References
 		const OptiSMOKE::InputManager& data_;
 		const OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML_;
-		const OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML_;
+		OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML_;
 
 		int NS_, NR_;
 		fs::path chemkin_path_;
