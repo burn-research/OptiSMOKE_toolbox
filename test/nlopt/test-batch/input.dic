@@ -83,8 +83,9 @@ Dictionary OptimizationTargets
 
 Dictionary nlopt-options
 {
-	@Algorithm		STOGO;
+	@Algorithm		ISRES;
 	@Variant		NONE;
+	@MaxFunctionEvaluations 10000;
 }
 
 Dictionary curve_matching_options

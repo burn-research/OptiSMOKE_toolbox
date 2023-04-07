@@ -97,25 +97,29 @@ Dictionary dakota_options
 	@EchoDakotaInput			true;
 	@TabularDataFile			Output/tabular_data.dat;
 
-	@Method						coliny_ea;
+	@Method						coliny_direct;
 
-	@FitnessType				linear_rank;
+	//@FitnessType				linear_rank;
 
-	@CrossoverType				uniform;
-	@CrossoverRate				0.65;
+	//@CrossoverType				uniform;
+	//@CrossoverRate				0.65;
 
-	@MutationType				offset_normal;
-	@MutationRate				0.5;
+	//@MutationType				offset_normal;
+	//@MutationRate				0.5;
 
-	@ReplacementType			chc=50 ;
+	//@ReplacementType			chc=50 ;
+	@Seed						1000;
+	//@PopulationSize				100;
+
+	@Division			major_dimension;
+	@MaxBoxsizeLimit	0.0;
+	@MinBoxsizeLimit	1.0e-4;
 
 	@MaxIterations				1000;
 	@MaxFunctionEvaluations		10000;
 	@ConvergenceTolerance		1e-8;
 	@SolutionTarget				1e-6;
 
-	@Seed						1000;
-	@PopulationSize				100;
 }
 
 Dictionary curve_matching_options
