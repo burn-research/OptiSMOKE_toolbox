@@ -16,7 +16,7 @@ Dictionary OptiSMOKEpp
 {
 	@KineticsPreProcessor	KINPREPRO;
 
-	@OutputFolder	Output/optimized-kinetics;
+	@OutputFolder			Output;
 
 	@ListOfExperimentalDataFiles	ds_data/wang_exp_dataset_1.json 
 									ds_data/wang_exp_dataset_2.json 
@@ -89,7 +89,7 @@ Dictionary KINPREPRO
         
 	@Transport				../../mechanisms/Aramco_2.0/TRAN.TRC;
 
-	@Output					Output/kinetics;
+	@Output					kinetics;
 }
 
 Dictionary dakota_options
