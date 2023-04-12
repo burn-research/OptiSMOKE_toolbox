@@ -143,14 +143,18 @@ namespace OptiSMOKE
 					int pos_classic_plog_reaction = std::find(indices_of_classic_plog.begin(),indices_of_classic_plog.end(),k+1)-indices_of_classic_plog.begin();
 					reaction_data.unsetf(std::ios_base::floatfield);
 					reaction_data.precision(6);
+
 					for(unsigned int l = 0; l < preprocessor_kinetics_->reactions()[k].plog_coefficients().size() - 2; l++)
 					{
 						if(l % 4 == 0)
 							reaction_data << " PLOG /  ";
 
 						reaction_data << std::showpoint << std::setw(16) << std::scientific << std::left << kineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).GetAdjustedCoefficients()[l];
+
 						if((l+1) % 4 == 0 || l == preprocessor_kinetics_->reactions()[k].plog_coefficients().size() - 3)
+						{
 							reaction_data << "/" << std::endl;
+						}
 					}                    
 				}
 

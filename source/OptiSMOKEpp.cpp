@@ -101,6 +101,8 @@ int main(int argc, char* argv[]){
         opt.set_upper_bounds(input.ub());
         opt.set_min_objective(NLOptFunction, NULL);
         opt.set_maxeval(input.nlopt_options().max_function_evaluations());
+        opt.set_ftol_abs(1e-8);
+        opt.set_ftol_rel(1e-6);
 
         std::vector<double> initial_values = input.initial_values();
         double minf;
