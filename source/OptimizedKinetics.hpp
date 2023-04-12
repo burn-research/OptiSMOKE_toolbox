@@ -90,6 +90,7 @@ namespace OptiSMOKE
         }
         fChemKin_ << std::endl << "END" << std::endl << std::endl;
         
+		fChemKin_ << std::endl << "REACTIONS" << std::endl << std::endl;
         std::vector<unsigned int> indices_of_classic_plog = kineticsMapXML_->IndicesOfPLOGReactions();
         std::vector<unsigned int> indices_of_falloff_reactions = kineticsMapXML_->IndicesOfFalloffReactions();
         
@@ -97,10 +98,10 @@ namespace OptiSMOKE
         {
 			// initialize the stringstream for the reaction data, a string for the specific reaction
 			std::stringstream reaction_data;
-        	std::string reaction_string;
+			std::string reaction_string;
 
-	        // Get the reaction string and erase white spaces in the string
-        	preprocessor_kinetics_->reactions()[k].GetReactionString(thermodynamicsMapXML_->NamesOfSpecies(), reaction_string);
+			// Get the reaction string and erase white spaces in the string
+			preprocessor_kinetics_->reactions()[k].GetReactionString(thermodynamicsMapXML_->NamesOfSpecies(), reaction_string);
 			boost::erase_all(reaction_string, " ");
 
 			// Set precision to the stringstream
@@ -145,11 +146,10 @@ namespace OptiSMOKE
 					for(unsigned int l = 0; l < preprocessor_kinetics_->reactions()[k].plog_coefficients().size() - 2; l++)
 					{
 						if(l % 4 == 0)
-						    reaction_data << " PLOG /  ";
+							reaction_data << " PLOG /  ";
 
-						reaction_data << std::showpoint << std::setw(16) << std::scientific << std::left << kineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).GetAdjustedCoefficients()[l];	
-						
-                        if((l+1) % 4 == 0 || l == preprocessor_kinetics_->reactions()[k].plog_coefficients().size() - 3)
+						reaction_data << std::showpoint << std::setw(16) << std::scientific << std::left << kineticsMapXML_->pressurelog_reactions(pos_classic_plog_reaction).GetAdjustedCoefficients()[l];
+						if((l+1) % 4 == 0 || l == preprocessor_kinetics_->reactions()[k].plog_coefficients().size() - 3)
 							reaction_data << "/" << std::endl;
 					}                    
 				}
@@ -256,22 +256,21 @@ namespace OptiSMOKE
 					reaction_data << std::endl;
 			}
 			else
-    		{
+			{
 				int pos_FallOff_Reaction = std::find(indices_of_falloff_reactions.begin(),indices_of_falloff_reactions.end(),k+1)-indices_of_falloff_reactions.begin();
-            	reaction_data << std::setw(55) << std::left << reaction_string << " " << std::scientific << kineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction) / preprocessor_kinetics_->reactions()[k].A_inf_conversion();
-            	reaction_data.precision(6);
-            	reaction_data.width(12);
-				reaction_data <<std::fixed << std::right << kineticsMapXML_->Beta_falloff_inf(pos_FallOff_Reaction);
-        	    reaction_data.precision(4);
-            	reaction_data << std::setw(15) << std::right << kineticsMapXML_->E_over_R_falloff_inf(pos_FallOff_Reaction) * PhysicalConstants::R_cal_mol << std::endl;
+				reaction_data << std::setw(55) << std::left << reaction_string << " " << std::scientific << kineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction) / preprocessor_kinetics_->reactions()[k].A_inf_conversion();
+				reaction_data.precision(6);
+				reaction_data.width(12);
+				reaction_data <<std::fixed << std::right << kineticsMapXML_->Beta_falloff_inf(pos_FallOff_Reaction);reaction_data.precision(4);
+				reaction_data.precision(4);
+				reaction_data << std::setw(15) << std::right << kineticsMapXML_->E_over_R_falloff_inf(pos_FallOff_Reaction) * PhysicalConstants::R_cal_mol << std::endl;
 
-            	if(preprocessor_kinetics_->reactions()[k].IsDuplicate() == true)
-                	reaction_data << " DUPLICATE" << std::endl;
+				if(preprocessor_kinetics_->reactions()[k].IsDuplicate() == true)
+					reaction_data << " DUPLICATE" << std::endl;
 
-        	
-			    if(preprocessor_kinetics_->reactions()[k].IsExplicitlyReversible() == true)
-            	{
-                	reaction_data << " REV /  ";
+				if(preprocessor_kinetics_->reactions()[k].IsExplicitlyReversible() == true)
+				{
+					reaction_data << " REV /  ";
 					reaction_data.precision(4);
 					reaction_data << std::scientific << preprocessor_kinetics_->reactions()[k].A_reversible() / preprocessor_kinetics_->reactions()[k].Arev_conversion()<< "  ";
 					reaction_data.precision(3);
@@ -328,10 +327,9 @@ namespace OptiSMOKE
 						reaction_data.precision(4);
 						reaction_data << std::showpoint << "  " << preprocessor_kinetics_->reactions()[k].sri()[j];
 					}
-		
 					reaction_data << "/" << std::endl;
 				}
-		
+
 				bool iThirdBody_ = false;
 				std::vector<double> third_body_efficiencies_ = preprocessor_kinetics_->reactions()[k].third_body_efficiencies();
 				for (unsigned int j = 0; j < third_body_efficiencies_.size(); j++)
@@ -342,10 +340,9 @@ namespace OptiSMOKE
 					reaction_data << std::fixed << std::showpoint << kineticsMapXML_->ThirdBody(k, third_body_index) << "/  ";
 					iThirdBody_ = true;
 				}
-            	
-            	if(iThirdBody_ == true)
-                	reaction_data << std::endl;  
-        	}
+				if(iThirdBody_ == true)
+					reaction_data << std::endl;  
+			}
 			if(preprocessor_kinetics_->reactions()[k].IsFit1())
 			{
 				reaction_data.unsetf(std::ios_base::floatfield);
@@ -368,20 +365,18 @@ namespace OptiSMOKE
 				}
 				reaction_data << "/" << std::endl;
 			}
-	        if(preprocessor_kinetics_->reactions()[k].IsFORD())
+			if(preprocessor_kinetics_->reactions()[k].IsFORD())
 			{
 				reaction_data.unsetf(std::ios_base::floatfield);
 				reaction_data.precision(4);
 				std::vector<double> reactant_lambda_ = preprocessor_kinetics_->reactions()[k].reactant_lambda();
 				std::vector<unsigned int> reactant_lambda_indices_ = preprocessor_kinetics_->reactions()[k].reactant_lambda_indices();
-				
+
 				for(unsigned int l = 0; l < reactant_lambda_.size(); l++)
 				{
 					reaction_data << " FORD /  ";
 					int index = reactant_lambda_indices_[l];
-	
 					reaction_data << species_list_[index] << "  ";
-	
 					reaction_data << std::showpoint <<std::fixed << reactant_lambda_[l];
 					reaction_data << "/" << std::endl;
 				}
@@ -392,7 +387,7 @@ namespace OptiSMOKE
 		// close the reactions part
 		fChemKin_ << "END" << std::endl;
 		fChemKin_ << std::endl;
-        fChemKin_.close();
+		fChemKin_.close();
         
         delete preprocessor_kinetics_;
         preprocessor_kinetics_ = NULL;

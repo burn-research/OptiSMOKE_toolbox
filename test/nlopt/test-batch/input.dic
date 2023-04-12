@@ -14,7 +14,8 @@
 
 Dictionary OptiSMOKEpp
 {
-	@KineticsFolder					../../mechanisms/Aramco_2.0;
+	//@KineticsFolder					../../mechanisms/Aramco_2.0;
+	@KineticsPreProcessor	KINPREPRO;
 
 	@OutputFolder	Output;
 
@@ -35,6 +36,18 @@ Dictionary OptiSMOKEpp
 
 	@NLOPTOptions					nlopt-options;
 }
+
+Dictionary KINPREPRO
+{
+	@Kinetics				../../mechanisms/Aramco_2.0/Kinetics.CKI;
+
+	@Thermodynamics			../../mechanisms/Aramco_2.0/TH.CKT;
+        
+	@Transport				../../mechanisms/Aramco_2.0/TRAN.TRC;
+
+	@Output					kinetics;
+}
+
 
 Dictionary OptimizationSetup
 {
@@ -83,7 +96,7 @@ Dictionary OptimizationTargets
 
 Dictionary nlopt-options
 {
-	@Algorithm		ISRES;
+	@Algorithm		STOGO;
 	@Variant		NONE;
 	@MaxFunctionEvaluations 10000;
 }
