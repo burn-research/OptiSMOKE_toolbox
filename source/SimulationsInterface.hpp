@@ -179,8 +179,10 @@ namespace OptiSMOKE{
 		// misleading however keep in mind that only the size matters
 		// Takes into consideration to setup the solvers into the constructor and here just solve them
 		// This will avoid to re-read the input file each time
+		unsigned int offset = 0;
 		for(unsigned int i = 0; i < data_.path_experimental_data_files().size(); i++)
 		{
+			std::cout << " * Running: " << data_.path_experimental_data_files()[i] << std::endl;
 			std::string qoi = data_.QoI()[i];
 			std::string qoi_target = data_.QoI_target()[i];
 			std::string solver = data_.solver_name()[i];
@@ -188,6 +190,7 @@ namespace OptiSMOKE{
 
 			if (solver == "BatchReactor"){
 				for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
+					//std::cout << "   * Input: " << data_.input_paths()[i][j] << std::endl;
 					batch_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
 					batch_reactors[i][j].Solve();
 					if(qoi == "IDT"){
@@ -209,11 +212,12 @@ namespace OptiSMOKE{
 
 			if(solver == "PlugFlowReactor"){
 				for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
-					plugflow_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
-					plugflow_reactors[i][j].Solve();
+					//std::cout << "   * Input: " << data_.input_paths()[i][j] << std::endl;
+					plugflow_reactors[i-n_batch][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
+					plugflow_reactors[i-n_batch][j].Solve();
 					if(qoi == "Composition"){
 						if(qoi_target == "mole-fraction-out"){
-							std::vector<double> tmp = plugflow_reactors[i][j].GetMolefractionsOut(data_.ordinates_label()[i]);
+							std::vector<double> tmp = plugflow_reactors[i-n_batch][j].GetMolefractionsOut(data_.ordinates_label()[i]);
 							for(unsigned int k = 0; k < data_.ordinates_label()[i].size(); k++)
 								simulations_results_[i][k][j] = tmp[k];
 						}
@@ -232,11 +236,12 @@ namespace OptiSMOKE{
 
 			if(solver == "PerfectlyStirredReactor"){
 				for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
-					perfectlystirred_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
-					perfectlystirred_reactors[i][j].Solve();
+					//std::cout << "   * Input: " << data_.input_paths()[i][j] << std::endl;
+					perfectlystirred_reactors[i-n_batch-n_pfr][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
+					perfectlystirred_reactors[i-n_batch-n_pfr][j].Solve();
 					if(qoi == "Composition"){
 						if(qoi_target == "mole-fraction-out"){
-							std::vector<double> tmp = perfectlystirred_reactors[i][j].GetMolefractionsOut(data_.ordinates_label()[i]);
+							std::vector<double> tmp = perfectlystirred_reactors[i-n_batch-n_pfr][j].GetMolefractionsOut(data_.ordinates_label()[i]);
 							for(unsigned int k = 0; k < data_.ordinates_label()[i].size(); k++){
 								if(data_.ordinates_label()[i][k] == "DeltaTemp")
 									simulations_results_[i][k][j] = tmp[k] - data_.expdata_x()[i][k][j]; // Check if it is negative?
