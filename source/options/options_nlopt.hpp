@@ -73,6 +73,8 @@ namespace OptiSMOKE
 		
 		if (dictionary_manager(dictionary_name).CheckOption("@SolutionTarget"))
 			dictionary_manager(dictionary_name).ReadDouble("@SolutionTarget", solution_target_);
+
+		SetupAlgorithm();
 	}
 
 	void options_nlopt::SetupAlgorithm(){

@@ -94,8 +94,8 @@ int main(int argc, char* argv[]){
 
         input.SetUpNLOPT();
 
-        nlopt::opt opt(static_cast<nlopt::algorithm>(input.nlopt_options().algo_int()), 
-            input.optimization_target().number_of_parameters());
+        nlopt::algorithm algo = static_cast<nlopt::algorithm>(input.nlopt_options().algo_int());
+        nlopt::opt opt(algo, input.optimization_target().number_of_parameters());
         
         opt.set_lower_bounds(input.lb());
         opt.set_upper_bounds(input.ub());
