@@ -230,7 +230,7 @@ namespace OptiSMOKE{
 
 		dakota_input_string_ = " environment,"
 								"\n  tabular_data";
-		dakota_input_string_.append("\n   tabular_data_file '" + dakota_options_.tabular_data_file() + "'");
+		dakota_input_string_.append("\n   tabular_data_file '" + output_folder_.string() + "/" + dakota_options_.tabular_data_file() + "'");
 		
         dakota_input_string_.append("\n method,"); 
 		dakota_input_string_.append("\n  " + dakota_options_.method());

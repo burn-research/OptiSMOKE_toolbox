@@ -306,18 +306,22 @@ namespace OptiSMOKE{
 									data_.uncertainty()[i][j]);
 					}
 					CM_score[i][j] = (CM_indexes[0] + CM_indexes[1] + CM_indexes[2] + CM_indexes[3])/4;
-				}	
+				}
 			}
-			
+
 			double final_index = 0; 
-            for (int i =0; i < CM_score.size(); i++){    
-                double i_th_index = 0; 
-                for (int j=0; j < CM_score[i].size(); j++){
-                	i_th_index = i_th_index  + CM_score[i][j]/CM_score[i].size(); 
-                }
-                std::cout << "   * The Curve Matching score of ";
+			for (int i =0; i < CM_score.size(); i++){    
+				double i_th_index = 0; 
+				for (int j=0; j < CM_score[i].size(); j++){
+					i_th_index = i_th_index  + CM_score[i][j]/CM_score[i].size(); 
+				}
+
+				if(std::isnan(i_th_index))
+					i_th_index = -1.;
+
+				std::cout << "   * The Curve Matching score of ";
 				std::cout << data_.dataset_names()[i] << " is: " << i_th_index << std::endl; 
-                final_index = final_index+i_th_index/CM_score.size();
+				final_index = final_index+i_th_index/CM_score.size();
             }
 
 			double tEnd_CM = OpenSMOKE::OpenSMOKEGetCpuTime();
