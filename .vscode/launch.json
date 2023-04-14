@@ -77,6 +77,21 @@
             ],
             "externalConsole": false,
             "MIMode": "lldb"
+        },
+        {
+            "name": "Debug-MacTito-real",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/OptiSMOKEpp.sh",
+            "args": ["--input", "input.dic"],
+            "targetArchitecture": "arm64",
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/test/DMM-opt-paper-pegurri/new-OptiSMOKE/OPT_yesIDT",
+            "environment": [
+                {"name": "DYLD_LIBRARY_PATH", "value": "/Users/tdinelli/NumericalLibraries/boost/boost-1.79-gcc-12/lib:/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17-gcc-12/lib"}
+            ],
+            "externalConsole": false,
+            "MIMode": "lldb"
         }
     ]
 }

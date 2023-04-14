@@ -441,10 +441,7 @@ namespace OptiSMOKE{
 			else if(token[2] == "intercept"){
 				// <Species>-max-intercept
 				std::vector<unsigned int> species_index_temp;
-				species_index_temp = idt->species_index();
-
-				std::cout << "species_index_temp" << species_index_temp[0] << std::endl;
-				std::cout << "token[0]" << token[0] << std::endl;
+				species_index_temp = idt->species_intercept_max_index();
 
 				if (std::find(species_index_temp.begin(),species_index_temp.end(),thermodynamicsMapXML_->IndexOfSpecies(token[0])-1) == species_index_temp.end())
 					OptiSMOKE::FatalErrorMessage("Species: " + token[0] + " not specified in the OpenSMOKE++ input file properly!");
@@ -468,7 +465,7 @@ namespace OptiSMOKE{
 		else if(token[1] == "min" && token.size() == 3){
 			// <Species>-min-intercept
 			std::vector<unsigned int> species_index_temp;
-			species_index_temp = idt->species_index();
+			species_index_temp = idt->species_intercept_min_index();
 
 			if (std::find(species_index_temp.begin(),species_index_temp.end(),thermodynamicsMapXML_->IndexOfSpecies(token[0])-1) == species_index_temp.end())
 				OptiSMOKE::FatalErrorMessage("Species: " + token[0] + " not specified in the OpenSMOKE++ input file properly!");

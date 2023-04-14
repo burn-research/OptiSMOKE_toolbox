@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-pathTabulardata = "/Users/tdinelli/Documents/GitHub/OptiSMOKE_toolbox/optimization.out"
+pathTabulardata = "optimization.out"
 fun_type = "cm"
 
 file = pd.read_csv(pathTabulardata, sep = '\s+', engine='python')

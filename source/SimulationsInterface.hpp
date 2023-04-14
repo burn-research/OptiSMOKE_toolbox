@@ -190,7 +190,7 @@ namespace OptiSMOKE{
 
 			if (solver == "BatchReactor"){
 				for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
-					//std::cout << "   * Input: " << data_.input_paths()[i][j] << std::endl;
+					std::cout << "   * Input: " << data_.input_paths()[i][j] << std::endl;
 					batch_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
 					batch_reactors[i][j].Solve();
 					if(qoi == "IDT"){

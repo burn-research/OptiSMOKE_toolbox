@@ -99,7 +99,8 @@
         "opensmokepp": "cpp",
         "thermodynamics_chemkin": "cpp",
         "filesystem": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "perfectlystirredreactor": "cpp"
     },
     "cmake.configureEnvironment":{
         "Boost_ROOT":"/Users/tdinelli/NumericalLibraries/boost/boost-1.80-gcc-12",

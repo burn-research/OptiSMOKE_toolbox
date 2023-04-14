@@ -14,6 +14,7 @@ test/mechanisms/H2_effort
 test/mechanisms/NUIG
 test/mechanisms/POLIMI_C1C3
 test/mechanisms/POLIMI_C1C3_OPT
+test/DMM-opt-paper-pegurri
 
 # Files and Folders from autoconf
 autom4te.cache/
