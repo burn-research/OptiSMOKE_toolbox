@@ -190,7 +190,7 @@ namespace OptiSMOKE{
 
 			if (solver == "BatchReactor"){
 				for(unsigned int j = 0; j < data_.input_paths()[i].size(); j++){
-					std::cout << "   * Input: " << data_.input_paths()[i][j] << std::endl;
+					//std::cout << "   * Input: " << data_.input_paths()[i][j] << std::endl;
 					batch_reactors[i][j].Setup(data_.input_paths()[i][j], thermo, kinetics);
 					batch_reactors[i][j].Solve();
 					if(qoi == "IDT"){
@@ -365,7 +365,7 @@ namespace OptiSMOKE{
 				// If at one temperature the k value is either below the lower bound or above the upper bound, 
 				// forcefully set the objective function value to 1e7 and print out for which reaction the violation occured 
 				if ((k_check[i]<=k_lower[j][i]) || (k_check[i]>=k_upper[j][i])){
-					std::cout << "    * Violation for reaction: ";
+					std::cout << " * Violation for reaction: ";
 					std::cout << reaction_index + 1 << std::endl;
 					return true;
 				}
@@ -592,11 +592,11 @@ namespace OptiSMOKE{
         fOutput.open(output_file_ascii.c_str(), std::ios::out);
 
         unsigned int counter = 1;
-        OpenSMOKE::PrintTagOnASCIILabel(20, fOutput, "Eval-number", counter);
+        OpenSMOKE::PrintTagOnASCIILabel(40, fOutput, "Eval-number", counter);
 		for(unsigned int i = 0; i < names.size(); i++)
-			OpenSMOKE::PrintTagOnASCIILabel(20, fOutput, names[i], counter);
+			OpenSMOKE::PrintTagOnASCIILabel(40, fOutput, names[i], counter);
         
-		OpenSMOKE::PrintTagOnASCIILabel(20, fOutput, "Obj-Function", counter);
+		OpenSMOKE::PrintTagOnASCIILabel(40, fOutput, "Obj-Function", counter);
 		
 		fOutput << std::endl;
 	}
@@ -605,12 +605,12 @@ namespace OptiSMOKE{
 	{
 		
 		fOutput.setf(std::ios::scientific);
-        fOutput << std::setw(20) << std::left << eval_nr;
+        fOutput << std::setw(40) << std::left << eval_nr;
 
 		for(unsigned int i = 0; i < b.size(); i++)
-			fOutput << std::setw(20) << std::left << b[i];
+			fOutput << std::setw(40) << std::left << b[i];
         
-        fOutput << std::setw(20) << std::left << fn_val;
+        fOutput << std::setw(40) << std::left << fn_val;
 		fOutput << std::endl;
 	}
 

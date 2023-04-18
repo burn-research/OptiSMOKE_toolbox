@@ -172,11 +172,14 @@ void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env){
 //  #if OPTISMOKE_USE_NLOPT
 double NLOptFunction(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data)
 {
-    std::cout << "Begin evaluation: " << numberOfFunctionEvaluations + 1 << std::endl;
+    std::cout << "-------------------------------------------------------" << std::endl;
+    std::cout << " Begin evaluation " << numberOfFunctionEvaluations + 1 << std::endl;
+    std::cout << "-------------------------------------------------------" << std::endl;
+
     for(unsigned int i = 0; i < x.size(); i++)
-        std::cout << std::scientific << std::setw(16) << std::left
-            << input.param_str()[i] << std::scientific << std::setw(16) 
-            << std::left << std::setprecision(6)  << x[i] << std::endl;
+        std::cout << "\t" << std::scientific << std::setw(35) << std::left
+            << input.param_str()[i] << std::scientific << std::setw(35) 
+            << std::left << std::setprecision(5) << x[i] << std::endl;
 
 	const double f = OptFunction(x, numberOfFunctionEvaluations);
 	if (!grad.empty())
@@ -206,7 +209,7 @@ double OptFunction(const std::vector<double>& b, unsigned int eval_nr)
         sim_iface_->run();
         fn_val = sim_iface_->ComputeObjectiveFunction();
         
-        if(eval_nr == 1){
+        if(eval_nr == 0){
             prev_fn_val = fn_val;
             sim_iface_->PrepareASCIIFile(fOut, input.parametric_file_name(), input.param_str());
         }
