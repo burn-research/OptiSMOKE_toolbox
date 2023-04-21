@@ -32,6 +32,7 @@ configure~
 targets.txt
 Output
 log
+err
 *.out
 dakota.rst
 
