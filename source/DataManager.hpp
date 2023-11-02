@@ -69,6 +69,7 @@ namespace OptiSMOKE{
                 BOOST_FOREACH(boost::property_tree::ptree::value_type &node, ptree.get_child("OS_Input_File")){
                     assert(node.first.empty());
                     input_paths_[i].push_back(node.second.get_value<std::string>());
+                    index_exp_data_file_.push_back(i); // This is for MPI
                 }
 
                 abscissae_label_[i].resize(ptree.get_child("data").size());
@@ -83,7 +84,7 @@ namespace OptiSMOKE{
                     assert(node.first.empty());
                     abscissae_label_[i][count] = node.second.get<std::string>("abscissae_label");
                     ordinates_label_[i][count] = node.second.get<std::string>("ordinates_label");
-                    
+
                     BOOST_FOREACH(boost::property_tree::ptree::value_type &node2, node.second.get_child("abscissae")){
                         assert(node2.first.empty());
                         expdata_x_[i][count].push_back(node2.second.get_value<double>());
@@ -112,7 +113,7 @@ namespace OptiSMOKE{
                         }
                     }
                     count += 1;
-                }
+                }   
             }
             
             OrderData();

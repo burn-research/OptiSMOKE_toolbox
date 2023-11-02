@@ -25,6 +25,7 @@ namespace OptiSMOKE {
 		void PrintASCIIFile(std::ofstream& fOutput, const int eval_nr, const std::vector<double>& b, const double fn_val);
 	
 	private:
+
 		const OptiSMOKE::InputManager& data_;
 	
 		std::vector<OptiSMOKE::BatchReactor*> batch_reactors;

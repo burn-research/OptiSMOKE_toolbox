@@ -107,6 +107,18 @@ if(OPTISMOKE_USE_OPENBLAS)
   add_compile_definitions(OPENSMOKE_USE_OPENBLAS=1)
 endif()
 
+option (OPTISMOKE_USE_MPI "Activate MPI parallel support for OptiSMOKEpp" FALSE)
+
+if(OPTISMOKE_USE_MPI)
+  find_package(MPI REQUIRED)
+  message(STATUS "MPI libraries: ${MPI_CXX_LIBRARIES}")
+  message(STATUS "MPI include: ${MPI_CXX_INCLUDE_DIRS}")
+  message(STATUS "Run: ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} ${MPIEXEC_MAX_NUMPROCS} ${MPIEXEC_PREFLAGS} EXECUTABLE ${MPIEXEC_POSTFLAGS} ARGS")
+  list(APPEND SEMI_COMPULSORY_INCLUDE ${MPI_CXX_INCLUDE_DIRS})
+  list(APPEND SEMI_COMPULSORY_LIBRARIES ${MPI_CXX_LIBRARIES})
+  add_compile_definitions(OPTISMOKE_USE_MPI=1)
+endif()
+
 #--------------------------------------------------------------------
 # Optional libraries (desc: TODO)
 #--------------------------------------------------------------------
@@ -116,11 +128,7 @@ set(OPTIONAL_LIBRARIES)
 
 option (OPTISMOKE_USE_NLOPT "Activate NLOPT++ as optimization library" FALSE)
 if(OPTISMOKE_USE_NLOPT)
-	if(LINUX)
-		find_package(NLopt)
-	else()
-		find_package(NLOPT)
-	endif()
+  find_package(NLopt)
 	message(STATUS "NLOPT_DIR: ${NLOPT_INCLUDE_DIRS}")
 	message(STATUS "NLOPT_LIBRARIES: ${NLOPT_LIBRARIES}")
 	list(APPEND OPTIONAL_INCLUDE ${NLOPT_INCLUDE_DIRS})
@@ -163,7 +171,9 @@ link_libraries (${COMPULSORY_LIBRARIES}
 # Targets to compile
 #--------------------------------------------------------------------
 
-add_executable (OptiSMOKEpp.sh source/OptiSMOKEpp.cpp)
+add_executable (OptiSMOKEpp.sh 
+              source/OptiSMOKEpp.cpp)
+              #/Users/tdinelli/Downloads/dakota-6.17.0-release-public-src-cli/src/PluginParallelDirectApplicInterface.cpp 
 
 #--------------------------------------------------------------------
 # Installing options

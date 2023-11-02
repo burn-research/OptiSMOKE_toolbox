@@ -34,11 +34,11 @@
             "MIMode": "lldb"
         },
         {
-            "name": "Debug-MacTito-batch",
+            "name": "Debug-MacTito-batch-parallel",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/OptiSMOKEpp.sh",
-            "args": ["--input", "input.dic"],
+            "program": "/opt/homebrew/bin/mpirun",
+            "args": ["-np", "4", "lldb","${workspaceFolder}/build/OptiSMOKEpp.sh", "--input", "input.dic"],
             "targetArchitecture": "arm64",
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}/test/dakota/test-batch",

@@ -3,7 +3,6 @@ namespace OptiSMOKE{
 	SimulationsInterface::SimulationsInterface(const OptiSMOKE::InputManager& data) : data_(data)
 	{
 		// Resize reactors objects
-		
 		n_batch = data_.optimization_target().number_of_batch_reactor();
 		n_pfr = data_.optimization_target().number_of_plug_flow_reactor();
 		n_psr = data_.optimization_target().number_of_perfectly_stirred_reactor();
@@ -11,13 +10,18 @@ namespace OptiSMOKE{
 		n_counterflow = data_.optimization_target().number_of_counter_flow_flame();
 
 		// Resize simulations results
-		simulations_results_.resize(data_.expdata_x().size());
-		for(unsigned int i = 0; i < data_.expdata_x().size(); i++){
-			simulations_results_[i].resize(data_.expdata_x()[i].size());
-			for(unsigned int j = 0; j < data_.expdata_x()[i].size(); j++){
-				simulations_results_[i][j].resize(data_.expdata_x()[i][j].size());
-			}
-		}
+		// simulations_results_.resize(data_.n_local_sim()[data_.rank()]);
+		// simulations_results_ is a long flatten vector this for MPI maybe 
+		// it can be useful to flatten and unflatten it but I don't give a fuck
+		// on how to do it since is vector<vector<vector<>>>
+
+		// simulations_results_.resize(data_.expdata_x().size());
+		// for(unsigned int i = 0; i < data_.expdata_x().size(); i++){
+		// 	simulations_results_[i].resize(data_.expdata_x()[i].size());
+		// 	for(unsigned int j = 0; j < data_.expdata_x()[i].size(); j++){
+		// 		simulations_results_[i][j].resize(data_.expdata_x()[i][j].size());
+		// 	}
+		// }
 	}
 
 	SimulationsInterface::~SimulationsInterface(){}
@@ -117,7 +121,7 @@ namespace OptiSMOKE{
 			for (int i=0; i < columns_inf; i++){
 				k_0_inf[j][i] = A_0_inf * std::pow(T_span[i],Beta_0_inf) * std::exp((-1*E_over_R_0_inf)/T_span[i]);
 				k_upper_inf[j][i] = k_0_inf[j][i] * std::pow(10,f_factors_inf[j])* (double)data_.optimization_setup().sigma_k_distribution()/2;
-				k_lower_inf[j][i] = k_0_inf[j][i] * std::pow(10,-1*f_factors_inf[j])/ ((double)data_.optimization_setup().sigma_k_distribution()/2);
+				k_lower_inf[j][i] = k_0_inf[j][i] * std::pow(10,-1*f_factors_inf[j]) / ((double)data_.optimization_setup().sigma_k_distribution()/2);
 			}
 		}
 
@@ -174,15 +178,75 @@ namespace OptiSMOKE{
 		OpenSMOKE::KineticsMap_CHEMKIN* kinetics = data_.kineticsMapXML_;
 		OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermo = data_.thermodynamicsMapXML_;
 
+		for(unsigned int i = 0; i < data_.n_local_sim()[data_.rank()]; i++)
+		{
+			std::string qoi = data_.QoI()[data_.file_index()[i]];
+			std::string qoi_target = data_.QoI_target()[data_.file_index()[i]];
+			std::string solver = data_.solver_name()[data_.file_index()[i]];
+			std::string reactor_mode = data_.reactor_mode()[data_.file_index()[i]];
+
+			unsigned int size_one = data_.file_index()[i];
+			unsigned int size_two = std::find(
+				data_.input_paths()[size_one].begin(), 
+				data_.input_paths()[size_one].end(), 
+				data_.flatten_inputs()[data_.global_index()[i]]
+			) - data_.input_paths()[size_one].begin();
+
+			#ifdef OPTISMOKE_USE_MPI
+        	MPI_Barrier(MPI_COMM_WORLD);
+        	#endif			
+			if(data_.rank() == 0)
+			{
+				if( data_.local_index()[i] == 9)
+				{
+			 		std::cout << "size one: " << size_one << std::endl;
+			 		std::cout << "size two: " << size_two << std::endl;
+			 		std::cout << data_.data_manager().dataset_names()[size_one] << std::endl;
+			 		std::cout << data_.data_manager().input_paths()[size_one][size_two] << std::endl;
+			 	}
+			}
+			#ifdef OPTISMOKE_USE_MPI
+        	MPI_Barrier(MPI_COMM_WORLD);
+        	#endif
+			
+			if (solver == "BatchReactor"){
+				if(data_.rank() == 0)
+				{
+					std::cout << "eccomi" << std::endl;
+					std::cout << data_.input_paths()[size_one][size_two] << std::endl;	
+				}
+				batch_reactors[size_one][size_two].Setup(data_.input_paths()[size_one][size_two], thermo, kinetics);
+				batch_reactors[size_one][size_two].Solve();
+				if(qoi == "IDT"){
+					if(reactor_mode == "shock tube")
+					{
+						simulations_results_[size_one][0][size_two] = batch_reactors[size_one][size_two].GetIgnitionDelayTime(qoi_target) * std::pow(10, 6);
+					}
+					else if (reactor_mode == "rapid compression machine")
+						OptiSMOKE::FatalErrorMessage("RCM not yet implemented");
+					else
+						OptiSMOKE::FatalErrorMessage("Reactor mode is required for IDT experiments!");
+				}
+				else if (qoi == "Composition"){
+					OptiSMOKE::FatalErrorMessage("Compositions profile measurements in batch reactors not yet implemented!");
+				}
+				else{
+					OptiSMOKE::FatalErrorMessage("Unknown QoI: " + qoi);
+				}
+			}
+		}
+
 		// Loop over all datasets
 		// Here data_.path_experimental_data_files().size() this is 
 		// misleading however keep in mind that only the size matters
 		// Takes into consideration to setup the solvers into the constructor and here just solve them
 		// This will avoid to re-read the input file each time
-		unsigned int offset = 0;
-		for(unsigned int i = 0; i < data_.path_experimental_data_files().size(); i++)
+		/*for(unsigned int i = 0; i < data_.path_experimental_data_files().size(); i++)
 		{
-			std::cout << " * Running: " << data_.path_experimental_data_files()[i] << std::endl;
+			// if (i%data_.nprocs() != data_.rank()) continue; // This syncronize the executions!!
+			// std::cout << "rank: " << data_.rank()<< " working on element: " << 
+			// data_.path_experimental_data_files()[i] << std::endl;
+			// std::cout << " * Running: " << data_.path_experimental_data_files()[i] << std::endl;
 			std::string qoi = data_.QoI()[i];
 			std::string qoi_target = data_.QoI_target()[i];
 			std::string solver = data_.solver_name()[i];
@@ -195,7 +259,9 @@ namespace OptiSMOKE{
 					batch_reactors[i][j].Solve();
 					if(qoi == "IDT"){
 						if(reactor_mode == "shock tube")
+						{
 							simulations_results_[i][0][j] = batch_reactors[i][j].GetIgnitionDelayTime(qoi_target) * std::pow(10, 6);
+						}
 						else if (reactor_mode == "rapid compression machine")
 							OptiSMOKE::FatalErrorMessage("RCM not yet implemented");
 						else
@@ -266,13 +332,48 @@ namespace OptiSMOKE{
 			if (solver == "CounterFlowFlame1D"){
 				OptiSMOKE::FatalErrorMessage(solver + " not supported yet!");
 			}
-		}
+		}*/
+
+		#ifdef OPTISMOKE_USE_MPI
+		// Align solution vector
+        /*for (int p = 0; p < data_.nprocs(); p++) {
+            MPI_Barrier(MPI_COMM_WORLD);
+            for (int k = 0; k < data_.n_local_reactors()[p]; k++) {
+				
+				unsigned int size_one = data_.file_index()[k];
+				unsigned int size_two = std::find(
+					data_.input_paths()[size_one].begin(), 
+					data_.input_paths()[size_one].end(), 
+					data_.flatten_inputs()[data_.global_index()[k]]
+				) - data_.input_paths()[size_one].begin();
+                
+				if (data_.rank() == p) {
+                    MPI_Send(&simulations_results_[size_one][0][size_two], 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+                    MPI_Send(&simulations_results_[size_one][0][size_two], 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+                }
+                if (data_.isMaster()) {
+                    int index = p + data_.nprocs() * k;
+                    MPI_Recv(&simulations_results_[size_one][0][size_two], 1, MPI_DOUBLE, p, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                    MPI_Recv(&simulations_results_[size_one][0][size_two], 1, MPI_DOUBLE, p, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                }
+        	}
+        }*/
+        // MPI_Bcast(&global_epsD[0], data_.n_reactors(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        // MPI_Bcast(&global_epsS[0], data_.n_reactors(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+		#endif
+
+		#ifdef OPTISMOKE_USE_MPI
+        MPI_Barrier(MPI_COMM_WORLD);
+        #endif
 	}
 
 	double SimulationsInterface::ComputeObjectiveFunction()
 	{
 		double objective_function = 0;
-		std::cout << " * Computing objective function..." << std::endl;
+		
+		if(data_.isMaster())
+			std::cout << " * Computing objective function..." << std::endl;
+
 		if (data_.optimization_setup().objective_function_type() == "CurveMatching") {
 			std::vector<double> CM_indexes;
 			std::vector<std::vector<double>> CM_score;
@@ -391,7 +492,7 @@ namespace OptiSMOKE{
 				k_check_inf[i] = A_falloff_inf_j * std::pow(T_span[i], Beta_falloff_inf_j) * std::exp((-1 * E_over_R_falloff_inf_j)/T_span[i]);
 
 				if ((k_check_inf[i] <= k_lower_inf[j][i]) || (k_check_inf[i] >= k_upper_inf[j][i])){
-					std::cout << "    * Violation for reaction: ";
+					std::cout << " * Violation for reaction: ";
 					std::cout << data_.optimization_target().list_of_target_uncertainty_factors_inf()[j];
 					std::cout << " (inf) " << std::endl;
 					return true;
@@ -420,7 +521,7 @@ namespace OptiSMOKE{
 					k_check_CP[i] = A_CP_trial * std::pow(T_span[i], n_CP_trial) * std::exp((-1*E_over_R_CP_trial)/T_span[i]);
 
 					if ((k_check_CP[i] <= k_lower_classic_plog[j][k][i]) || (k_check_CP[i] >= k_upper_classic_plog[j][k][i])){
-						std::cout << "    * Violation for PLOG reaction: ";
+						std::cout << " * Violation for PLOG reaction: ";
 						std::cout << data_.optimization_target().list_of_target_classic_plog_reactions()[j] << std::endl;
 						return true;
 					}

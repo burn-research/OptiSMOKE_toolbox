@@ -14,10 +14,9 @@
 
 Dictionary OptiSMOKEpp
 {
-	//@KineticsFolder					../../mechanisms/Aramco_2.0;
 	@KineticsPreProcessor	KINPREPRO;
 
-	@OutputFolder	Output;
+	@OutputFolder			Output;
 
 	@ListOfExperimentalDataFiles	ds_data/wang_exp_dataset_1.json 
 									ds_data/wang_exp_dataset_2.json 
@@ -29,7 +28,7 @@ Dictionary OptiSMOKEpp
 	@OptimizationSetup				OptimizationSetup;
 
 	@OptimizationTarget				OptimizationTargets;
-        
+
 	@CurveMatchingOptions			curve_matching_options;
 
 	@OptimizationLibrary			nlopt;
@@ -40,11 +39,8 @@ Dictionary OptiSMOKEpp
 Dictionary KINPREPRO
 {
 	@Kinetics				../../mechanisms/Aramco_2.0/Kinetics.CKI;
-
 	@Thermodynamics			../../mechanisms/Aramco_2.0/TH.CKT;
-        
 	@Transport				../../mechanisms/Aramco_2.0/TRAN.TRC;
-
 	@Output					kinetics;
 }
 
@@ -54,11 +50,11 @@ Dictionary OptimizationSetup
 	@ParametersBoundaries			Narrow;
 
 	@ObjectiveFunctionType			CurveMatching;
-    
+
 	@Parameters_Distribution		uniform;
-        
+
 	@AcceptedSigmaInKDistribution	3;
-        
+
 	@SigmaExpDistribution			3;
 
 	@PenaltyFunction				true;

@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.py": "python",
         "__bit_reference": "cpp",
         "__bits": "cpp",
         "__config": "cpp",
@@ -100,7 +101,8 @@
         "thermodynamics_chemkin": "cpp",
         "filesystem": "cpp",
         "*.ipp": "cpp",
-        "perfectlystirredreactor": "cpp"
+        "perfectlystirredreactor": "cpp",
+        "hash_map": "cpp"
     },
     "cmake.configureEnvironment":{
         "Boost_ROOT":"/Users/tdinelli/NumericalLibraries/boost/boost-1.80-gcc-12",
@@ -112,11 +114,12 @@
         "OpenSMOKEppSOLVERS_ROOT":"/Users/tdinelli/Documents/GitHub/OpenSMOKEppSolvers",
         "OpenSMOKEpp_Tutorials_ROOT":"/Users/tdinelli/Documents/GitHub/OpenSMOKEppTutorials",
         "Dakota_ROOT": "/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17-gcc-12",
-        "NLOPT_DIR":"/Users/tdinelli/NumericalLibraries/nlopt/nlopt-2.7.1-gcc-12/lib/cmake/nlopt"
+        "NLOPT_DIR":"/Users/tdinelli/NumericalLibraries/nlopt/nlopt-2.7.1-gcc-12/lib/cmake/nlopt",
+        "MPI_HOME":"/opt/homebrew/bin",
     },
     "cmake.configureArgs": [
-        "-DCMAKE_C_COMPILER=/opt/homebrew/bin/gcc-12",
-        "-DCMAKE_CXX_COMPILER=/opt/homebrew/bin/g++-12",
+        "-DCMAKE_C_COMPILER=/opt/homebrew/bin/mpicc",
+        "-DCMAKE_CXX_COMPILER=/opt/homebrew/bin/mpic++",
         "-DCMAKE_INSTALL_PREFIX=/Users/tdinelli/Documents/GitHub/OptiSMOKE_toolbox/test",
         "-DBLAS_VERBOSE=OFF",
         "-DBLAS_DIR=$env{BLAS_ROOT}/include",
@@ -125,6 +128,7 @@
         "-DOPTISMOKE_USE_CEQ=0",
         "-DOPTISMOKE_USE_MKL=0",
         "-DOPTISMOKE_USE_OPENBLAS=0",
+        "-DOPTISMOKE_USE_MPI=1",
         "-DOPTISMOKE_USE_UMFPACK=0",
         "-DOPTISMOKE_USE_SUPERLU_SERIAL=0",
         "-DOPTISMOKE_USE_RADAU=0",

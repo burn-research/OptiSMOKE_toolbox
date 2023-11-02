@@ -100,6 +100,12 @@ namespace OptiSMOKE
 				OptiSMOKE::FatalErrorMessage("Allowed variants for DIRECT algorithms: \
 						NONE | L | L_RAND | NOSCAL | L_NOSCAL | L_RAND_NOSCAL | ORIG | L_ORIG");
 		}
+		else if (algorithm_ == "AGS"){
+			if (variant_ == "NONE" || variant_ == "")
+				algo_int_ = nlopt::GN_AGS;
+			else
+				OptiSMOKE::FatalErrorMessage("Allowed variants for AGS algorithms: NONE ");
+		}
 		else if (algorithm_ == "CRS"){
 			if (variant_ == "NONE" || variant_ == "")
 				algo_int_ = nlopt::GN_CRS2_LM;
@@ -203,6 +209,6 @@ namespace OptiSMOKE
 				OptiSMOKE::FatalErrorMessage("Allowed variants for TNEWTON_PRECOND algorithms: VAR2 | VAR1");
 		}
 		else
-			OptiSMOKE::FatalErrorMessage("Unknown algorithm. Avaliable are: DIRECT | ");
-	}	
+			OptiSMOKE::FatalErrorMessage("Unknown algorithm. Avaliable are: ... ");
+	}
 }

@@ -68,6 +68,7 @@ namespace OptiSMOKE{
         inline const std::vector<std::vector<std::vector<double>>>& expdata_y() const {return expdata_y_;};
         inline const std::vector<std::vector<std::vector<double>>>& uncertainty() const {return uncertainty_;};
         inline const std::vector<std::string>& reactor_mode() const {return reactor_mode_;};
+        inline const std::vector<int>& index_exp_data_file() const {return index_exp_data_file_;};
 
     private:
         std::vector<std::string> dataset_names_;
@@ -91,6 +92,7 @@ namespace OptiSMOKE{
         std::vector<std::vector<std::vector<double>>> expdata_y_;
         std::vector<std::vector<std::vector<double>>> uncertainty_;
         std::vector<std::vector<std::vector<double>>> standard_deviations_;
+        std::vector<int> index_exp_data_file_;
 
         void OrderData();
 

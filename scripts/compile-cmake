@@ -1,7 +1,11 @@
+export CUSTOM_INSTALL=/Users/tdinelli/Documents/GitHub/OptiSMOKE_toolbox/test
+export BUILD_TYPE=Debug
+export NLopt_DIR=/Users/tdinelli/NumericalLibraries/nlopt/nlopt-2.7.1-gcc-12/lib/cmake/nlopt
+export MPI_HOME=/opt/homebrew/bin
 export CC=/opt/homebrew/bin/gcc-12
 export CXX=/opt/homebrew/bin/g++-12
-export CUSTOM_INSTALL=/Users/tdinelli/Documents/GitHub/OptiSMOKE_toolbox/test
-export NLOPT_DIR=/home/chimica2/tdinelli/NumericalLibraries/nlopt/nlopt-2.7.1-gcc-9.2/lib64/cmake/nlopt
+#export CC=/opt/homebrew/bin/mpicc
+#export CXX=/opt/homebrew/bin/mpic++
 
 cd ..
 mkdir build
@@ -9,5 +13,7 @@ cd build
 cmake \
 	-DCMAKE_INSTALL_PREFIX=$CUSTOM_INSTALL \
 	-DOPTISMOKE_USE_NLOPT=1 \
+	-DOPTISMOKE_USE_MPI=1 \
+	-DCMAKE_BUILD_TYPE=$BUILD_TYPE \
 	..
 make
