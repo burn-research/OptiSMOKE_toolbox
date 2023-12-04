@@ -12,43 +12,25 @@
 #
 # This module will define the following variables:
 #  OpenSMOKEpp_FOUND - true if OpenSMOKEpp was found on the system
-#  OpenSMOKEpp_INCLUDE_DIRS - Location of the OpenSMOKEpp includes
-#  OpenSMOKEpp_VERSION_MAJOR - Major version
-#  OpenSMOKEpp_VERSION_MINOR - Minro version
-#  OpenSMOKEpp_VERSION_PATCH - Patch level
-#  OpenSMOKEpp_VERSION - Full version string
+#  OpenSMOKEpp_INCLUDE_DIRS - Location of the OpenSMOKEpp include directory
 
-SET(Open_SMOKE_SOLVER_INCLUDE_SEARCH_PATHS
-    /usr/include
-    /usr/include/OpenSMOKEppSolvers
-    /usr/local/include/OpenSMOKEppSolvers
-    /opt/OpenSMOKEppSolvers/source
-    ${OpenSMOKEppSolvers_USER_PATHS}
-    ${OpenSMOKEppSOLVERS_ROOT}
-    ${OpenSMOKEppSOLVERS_ROOT_DIR}
-    ${OpenSMOKEppSOLVERS_DIR}
-)
+# search first if an OpenSMOKEConfig.cmake is available in the system,
+# if successful this would set OPENSMOKE_INCLUDE_DIR and the rest of
+# the script will work as usual (For the moment we don't have yet this)
+# OpenSMOKEConfig.cmake
 
-# Find the OpenSMOKEpp include directories
-find_path(OpenSMOKEppSOLVERS_INCLUDE_DIR OpenSMOKEppSolvers
-    PATHS
-        ${Open_SMOKE_SOLVER_INCLUDE_SEARCH_PATHS}
-    ENV
-		OpenSMOKEppSOLVERS_ROOT
-        OpenSMOKEppSOLVERS_DIR
-        OpenSMOKEppSOLVERS_ROOT_DIR
-    PATH_SUFFIXES
-        src
-    NAMES
-        batchreactor/Grammar_BatchReactor.h
-)
-set(OpenSMOKEppSOLVERS_INCLUDE_DIR
-    "${OpenSMOKEppSOLVERS_INCLUDE_DIR}"
-)
+find_package(OpenSMOKEppSolvers NO_MODULE QUIET)
+if(NOT OPENSMOKEPPSOLVERS_INCLUDE_DIR)
+    find_path(OPENSMOKEPPSOLVERS_INCLUDE_DIR OpenSMOKEppSolvers NAMES batchreactor/BatchReactor.cpp
+        HINTS
+        ENV OpenSMOKEppSolvers_ROOT
+        ENV OpenSMOKEppSolvers_DIR
+        ENV OpenSMOKEppSolvers_ROOT_DIR
+        PATH_SUFFIXES source
+    )
+endif()
 
-# Exctract the version
-# TODO
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(OpenSMOKEppSolvers DEFAULT_MSG OPENSMOKEPPSOLVERS_INCLUDE_DIR)
 
-mark_as_advanced(
-    OpenSMOKEppSOLVERS_INCLUDE_DIR
-)
+mark_as_advanced(OPENSMOKEPPSOLVERS_INCLUDE_DIR)
