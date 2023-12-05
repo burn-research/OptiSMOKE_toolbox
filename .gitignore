@@ -5,6 +5,7 @@
 .dirstamp
 *.o
 *.sh
+.cache/
 test/test-1
 build/
 test/mechanisms/Aramco_MB

@@ -136,8 +136,8 @@ namespace OptiSMOKE{
 		}
 		else if(optimization_library_ == "nlopt"){
 			// NLOPT options
-			dictionary_(main_dictionary_).ReadDictionary("@NLOPTOptions", nlopt_dictionary_);
-        	nlopt_options_.SetupFromDictionary(dictionary_, nlopt_dictionary_);
+			// dictionary_(main_dictionary_).ReadDictionary("@NLOPTOptions", nlopt_dictionary_);
+   //      	nlopt_options_.SetupFromDictionary(dictionary_, nlopt_dictionary_);
 		}
 		else
 			OptiSMOKE::FatalErrorMessage("Unknown optimization library. Available are: dakota | nlopt");
@@ -344,7 +344,8 @@ namespace OptiSMOKE{
 												optimization_target_.list_of_target_E_over_R_inf()[i])-indices_of_falloff_reactions.begin();
 			list_of_initial_E_over_R_inf_.push_back(boost::lexical_cast<std::string>(kineticsMapXML_->E_over_R_falloff_inf(pos_FallOff_Reaction)));
 		}
-
+        
+        // Third Body Efficiencies
 		for(int i=0; i< optimization_target_.list_of_target_thirdbody_reactions().size(); i++){
 			int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_thirdbody_species()[i]);
 			list_of_initial_thirdbody_eff_.push_back(

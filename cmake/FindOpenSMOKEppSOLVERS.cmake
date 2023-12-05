@@ -26,7 +26,7 @@ if(NOT OPENSMOKEPPSOLVERS_INCLUDE_DIR)
         ENV OpenSMOKEppSolvers_ROOT
         ENV OpenSMOKEppSolvers_DIR
         ENV OpenSMOKEppSolvers_ROOT_DIR
-        PATH_SUFFIXES source
+        PATH_SUFFIXES src
     )
 endif()
 

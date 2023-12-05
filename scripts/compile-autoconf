@@ -1,3 +1,0 @@
-cd ../projects/OS-X
-./preconfigure
-make

@@ -52,7 +52,7 @@ class SerialDakotaInterface: public Dakota::DirectApplicInterface
 
     double prev_fn_val;
 
-	  bool violated_uncertainty;
+    bool violated_uncertainty;
 };
 
   // Constructor

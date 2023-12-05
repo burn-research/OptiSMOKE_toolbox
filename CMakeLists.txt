@@ -11,12 +11,14 @@ project (OptiSMOKEpp
     C CXX Fortran)
 
 # --- Set module path in order to use custom CMake modules
+
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 set (PROJECT_SOURCE_DIR "${CMAKE_SOURCE_DIR}/source")
 
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_POSITION_INDEPENDENT_CODE ON)
 set (CMAKE_COLOR_MAKEFILE ON)
+set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set (VERSION 0.3.0)
 set (INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Installation directory for executables")
 
@@ -36,7 +38,7 @@ message (STATUS "OptiSMOKE++ directory: ${PROJECT_SOURCE_DIR}")
 #--------------------------------------------------------------------
 
 # --- Boost (Compulsory)
-find_package (Boost REQUIRED COMPONENTS date_time filesystem program_options system regex timer chrono)
+find_package (Boost REQUIRED COMPONENTS date_time filesystem program_options system regex timer chrono serialization)
 message (STATUS "Boost include directory: ${Boost_INCLUDE_DIRS}")
 message (STATUS "Boost libraries: ${Boost_LIBRARIES}")
 
@@ -49,23 +51,37 @@ message (STATUS "OpenSMOKE++ include directory: ${OPENSMOKE_INCLUDE_DIR}")
 
 # --- OpenSMOKESolvers (Compulsory)
 find_package(OpenSMOKEppSolvers REQUIRED)
-message (STATUS "OpenSMOKESolvers include directory: ${OPENSMOKE_INCLUDE_DIR}")
+message (STATUS "OpenSMOKESolvers include directory: ${OPENSMOKEPPSOLVERS_INCLUDE_DIR}")
 
 # --- NLopt++
-find_package(NLopt)
-message(STATUS "NLopt include directory: ${NLOPT_INCLUDE_DIRS}")
-message(STATUS "NLopt libraries: ${NLOPT_LIBRARIES}")
+#find_package(NLopt REQUIRED)
+#message(STATUS "NLopt include directory: ${NLOPT_INCLUDE_DIRS}")
+#message(STATUS "NLopt libraries: ${NLOPT_LIBRARIES}")
 
+# --- Dakota (Optional)
+find_package(Dakota REQUIRED PATHS $ENV{Dakota_ROOT} COMPONENTS dakota_surrogates dakota_util dakota_src dakota_src_fortran nidr 
+  teuchosremainder teuchosnumerics teuchoscomm teuchosparameterlist teuchosparser
+  teuchoscore pecos_util pecos_src lhs lhs_mods lhs_mod dfftpack sparsegrid
+  surfpack surfpack surfpack_fortran utilib colin interfaces scolib 3po
+  pebbl tinyxml approxnn conmin ddace dream fsudace hopspack jega jega_fe
+  moga soga eutils utilities ncsuopt cport nomad optpp psuade amplsolver)
+  
+message(STATUS "Dakota include:   ${Dakota_INCLUDE_DIRS}")
+message(STATUS "Dakota libraries: ${Dakota_LIBRARIES}")
+message(STATUS "Dakota binaries:  ${Dakota_EXECUTABLE}")
 
 set(COMPULSORY_LIBRARIES
     ${Boost_LIBRARIES}
-    ${NLOPT_LIBRARIES})
+    #    ${NLOPT_LIBRARIES}
+    ${Dakota_LIBRARIES})
 
 set(COMPULSORY_INCLUDE
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
     ${OPENSMOKE_INCLUDE_DIR}
-    ${NLOPT_INCLUDE_DIR})
+    ${OPENSMOKEPPSOLVERS_INCLUDE_DIR}
+    #${NLOPT_INCLUDE_DIR}
+    ${DAKOTA_INCLUDE_DIRS})
 
 
 # Since at the moment we are not including any flame or what we dont need
@@ -120,23 +136,6 @@ endif()
 
 set(OPTIONAL_INCLUDE)
 set(OPTIONAL_LIBRARIES)
-
-# --- Dakota (Optional)
-option (OPTISMOKE_USE_DAKOTA "Build OptiSMOKE with dakota enabled" FALSE)
-if(OPTISMOKE_USE_DAKOTA)
-    find_package(Dakota REQUIRED PATHS $ENV{Dakota_ROOT} COMPONENTS dakota_surrogates dakota_util dakota_src dakota_src_fortran nidr 
-      teuchosremainder teuchosnumerics teuchoscomm teuchosparameterlist teuchosparser
-      teuchoscore pecos_util pecos_src lhs lhs_mods lhs_mod dfftpack sparsegrid
-      surfpack surfpack surfpack_fortran utilib colin interfaces scolib 3po
-      pebbl tinyxml approxnn conmin ddace dream fsudace hopspack jega jega_fe
-      moga soga eutils utilities ncsuopt cport nomad optpp psuade amplsolver)
-      
-    message(STATUS "Dakota include:   ${Dakota_INCLUDE_DIRS}")
-    message(STATUS "Dakota libraries: ${Dakota_LIBRARIES}")
-    message(STATUS "Dakota binaries:  ${Dakota_EXECUTABLE}")
-    list(APPEND OPTIONAL_INCLUDE ${Dakota_INCLUDE_DIRS})
-    list(APPEND OPTIONAL_LIBRARIES ${Dakota_LIBRARIES})
-endif()
 
 # --- SUNDIALS (Optional)
 option (OPTISMOKE_USE_SUNDIALS "Activate SUNDIALS support for OpenSMOKEpp" FALSE)
@@ -267,12 +266,12 @@ target_link_libraries(OptiSMOKEpp.sh
     ${COMPULSORY_LIBRARIES} 
     ${LINEAR_ALGEBRA_LIB}
     ${OPTIONAL_LIBRARIES}
-    gfortran
+    /Users/tdinelli/NumericalLibraries/dakota/dakota-6.17.0-clang-17.0.1/bin/libgfortran.5.dylib
 )
+    #/opt/homebrew/opt/gfortran/lib/gcc/13/libgfortran.dylib
 
 target_compile_definitions(OptiSMOKEpp.sh 
     PUBLIC
-    OPTISMOKE_USE_DAKOTA=${OPTISMOKE_USE_DAKOTA}
     OPENSMOKE_USE_MKL=${OPTISMOKE_USE_MKL}
     OPENSMOKE_USE_OPENBLAS=${OPTISMOKE_USE_OPENBLAS}
     OPENSMOKE_USE_SUNDIALS=${OPTISMOKE_USE_SUNDIALS}

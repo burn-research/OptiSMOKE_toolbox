@@ -82,7 +82,7 @@ namespace OptiSMOKE{
 			for (int i=0; i < columns; i++){
 				k_0[j][i] = A_0 * std::pow(T_span[i], Beta_0) * std::exp((-1*E_over_R_0)/T_span[i]);
 				k_upper[j][i] = k_0[j][i] * std::pow(10, f_factors[j]) * ((double)data_.optimization_setup().sigma_k_distribution()/2);
-				k_lower[j][i] = k_0[j][i] * std::pow(10,-1*f_factors[j]) / ((double)data_.optimization_setup().sigma_k_distribution()/2);
+				k_lower[j][i] = k_0[j][i] * std::pow(10, -1 * f_factors[j]) / ((double)data_.optimization_setup().sigma_k_distribution()/2);
 			}
 
 			// std::cout << "Reaction " << reaction_index << ": " << std::endl;

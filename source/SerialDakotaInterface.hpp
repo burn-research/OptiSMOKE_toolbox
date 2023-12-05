@@ -2,6 +2,7 @@ namespace SIM {
 
 	int SerialDakotaInterface::derived_map_ac(const Dakota::String& ac_name)
 	{
+        // Brutto coglione se è l'interfaccia seriale perchè c'è una call a MPI DEBUG?
 		#ifdef MPI_DEBUG
 			Cout << "analysis server " << analysisServerId << " invoking " << ac_name
 				<< " within SIM::OpenSMOKEDirectApplicInterface." << std::endl;
