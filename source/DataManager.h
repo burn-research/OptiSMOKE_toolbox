@@ -35,70 +35,106 @@
 #ifndef DATAMANAGER_H
 #define DATAMANAGER_H
 
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/optional.hpp>
 #include <boost/foreach.hpp>
 #include <boost/json.hpp>
+#include <boost/optional.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
-namespace json = boost::json;
+namespace OptiSMOKE
+{
 
-namespace OptiSMOKE{
-    
-    class DataManager
+class DataManager
+{
+  public:
+    DataManager();
+
+    ~DataManager();
+
+    void ReadExperimentalData(std::vector<std::string> &experimental_data_files);
+
+    inline const std::vector<std::string> &dataset_names() const
     {
-    public:
-        /// @brief Default constructor
-        DataManager();
-
-        /// @brief Default destructor
-        ~DataManager();
-
-        void ReadExperimentalData(std::vector<std::string> experimental_data_files);
-
-        inline const std::vector<std::string>& dataset_names() const {return dataset_names_;};
-        inline const std::vector<std::string>& solver_name() const {return solver_name_;};
-        inline const std::vector<std::string>& QoI() const {return QoI_;};
-        inline const std::vector<std::string>& QoI_target() const {return QoI_target_;};
-        inline const std::vector<bool>& multiple_input() const {return multiple_input_;};
-        inline const std::vector<std::vector<std::string>>& input_paths() const {return input_paths_;};
-        inline const std::vector<std::vector<std::string>>& ordinates_label() const {return ordinates_label_;};
-        inline const std::vector<std::vector<std::string>>& abscissae_label() const {return abscissae_label_;};
-        inline const std::vector<std::vector<std::string>>& uncertainty_kind() const {return uncertainty_kind_;};
-        inline const std::vector<std::vector<std::vector<double>>>& expdata_x() const {return expdata_x_;};
-        inline const std::vector<std::vector<std::vector<double>>>& expdata_y() const {return expdata_y_;};
-        inline const std::vector<std::vector<std::vector<double>>>& uncertainty() const {return uncertainty_;};
-        inline const std::vector<std::string>& reactor_mode() const {return reactor_mode_;};
-
-    private:
-        std::vector<std::string> dataset_names_;
-        std::vector<std::string> solver_name_;
-        std::vector<std::string> QoI_;
-        std::vector<std::string> QoI_target_;
-        std::vector<bool> multiple_input_;
-        std::vector<std::string> reactor_mode_;
-
-        std::vector<std::vector<std::string>> input_paths_;
-
-        // This blocks here has to go three dimensions
-        // since a datasets file can have multiple series
-        // dimension one: number of files
-        // dimension two: number of datasets whithin each file
-        // dimension three: number point in each datasets
-        std::vector<std::vector<std::string>> ordinates_label_;
-        std::vector<std::vector<std::string>> abscissae_label_;
-        std::vector<std::vector<std::string>> uncertainty_kind_;
-        std::vector<std::vector<std::vector<double>>> expdata_x_;
-        std::vector<std::vector<std::vector<double>>> expdata_y_;
-        std::vector<std::vector<std::vector<double>>> uncertainty_;
-        std::vector<std::vector<std::vector<double>>> standard_deviations_;
-
-        void OrderData();
-
-        // Default sigma for standard deviation if it is not present
-        // inside the file.
-        double default_sigma = 2;
-        void ComputeStandardDeviations();
+        return dataset_names_;
     };
+    inline const std::vector<std::string> &solver_name() const
+    {
+        return solver_name_;
+    };
+    inline const std::vector<std::string> &QoI() const
+    {
+        return QoI_;
+    };
+    inline const std::vector<std::string> &QoI_target() const
+    {
+        return QoI_target_;
+    };
+    inline const std::vector<bool> &multiple_input() const
+    {
+        return multiple_input_;
+    };
+    inline const std::vector<std::vector<std::string>> &input_paths() const
+    {
+        return input_paths_;
+    };
+    inline const std::vector<std::vector<std::string>> &ordinates_label() const
+    {
+        return ordinates_label_;
+    };
+    inline const std::vector<std::vector<std::string>> &abscissae_label() const
+    {
+        return abscissae_label_;
+    };
+    inline const std::vector<std::vector<std::string>> &uncertainty_kind() const
+    {
+        return uncertainty_kind_;
+    };
+    inline const std::vector<std::vector<std::vector<double>>> &expdata_x() const
+    {
+        return expdata_x_;
+    };
+    inline const std::vector<std::vector<std::vector<double>>> &expdata_y() const
+    {
+        return expdata_y_;
+    };
+    inline const std::vector<std::vector<std::vector<double>>> &uncertainty() const
+    {
+        return uncertainty_;
+    };
+    inline const std::vector<std::string> &reactor_mode() const
+    {
+        return reactor_mode_;
+    };
+
+  private:
+    std::vector<std::string> dataset_names_;
+    std::vector<std::string> solver_name_;
+    std::vector<std::string> QoI_;
+    std::vector<std::string> QoI_target_;
+    std::vector<bool> multiple_input_;
+    std::vector<std::string> reactor_mode_;
+
+    std::vector<std::vector<std::string>> input_paths_;
+
+    // This blocks here has to go three dimensions
+    // since a datasets file can have multiple series
+    // dimension one: number of files
+    // dimension two: number of datasets whithin each file
+    // dimension three: number point in each datasets
+    std::vector<std::vector<std::string>> ordinates_label_;
+    std::vector<std::vector<std::string>> abscissae_label_;
+    std::vector<std::vector<std::string>> uncertainty_kind_;
+    std::vector<std::vector<std::vector<double>>> expdata_x_;
+    std::vector<std::vector<std::vector<double>>> expdata_y_;
+    std::vector<std::vector<std::vector<double>>> uncertainty_;
+    std::vector<std::vector<std::vector<double>>> standard_deviations_;
+
+    void OrderData();
+
+    // Default sigma for standard deviation if it is not present
+    // inside the file.
+    const double default_sigma = 2;
+    void ComputeStandardDeviations();
+};
 } // namespace OptiSMOKE
 
 #include "DataManager.hpp"

@@ -33,6 +33,8 @@
 |                                                                         |
 \*-----------------------------------------------------------------------*/
 
+// clang-format off
+
 // Standard Library
 #include <string>
 #include <iostream>
@@ -95,11 +97,7 @@ const double UNFEASIBLE_BIG_NUMBER = 1.e16;
 #include "ParamResponsePair.hpp"
 #include "DirectApplicInterface.hpp"
 
-// #if OPTISMOKE_USE_NLOPT
 #include <nlopt.hpp>
-double NLOptFunction(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data);
-double OptFunction(const std::vector<double> &b, unsigned int fn_val);
-// #endif
 
 // Curve Matching
 #include "curve_matching/curve_matching.h"
@@ -115,28 +113,31 @@ double OptFunction(const std::vector<double> &b, unsigned int fn_val);
 #include "SerialDakotaInterface.h"
 #include "SimulationsInterface.h"
 
-#ifdef HAVE_AMPL 
+// clang-format on
+
+double NLOptFunction(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data);
+double OptFunction(const std::vector<double> &b, unsigned int fn_val);
+#ifdef HAVE_AMPL
 // Floating-point initialization from AMPL: switch to 53-bit rounding
 // if appropriate, to eliminate some cross-platform differences.
-extern "C" void fpinit_ASL(); 
-#endif 
+extern "C" void fpinit_ASL();
+#endif
 
 #ifndef DAKOTA_HAVE_MPI
 #define MPI_COMM_WORLD 0
 #endif // not DAKOTA_HAVE_MPI
 
-
 // Run a Dakota LibraryEnvironment, mode 1: parsing an input file
-void run_dakota_parse(const char* plugin_input_file, bool echo_dakota_string);
+void run_dakota_parse(const char *plugin_input_file, bool echo_dakota_string);
 
-void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env); //,const char* plugin_input_file);
+void opensmoke_interface_plugin(Dakota::LibraryEnvironment &env); //,const char* plugin_input_file);
 
 OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
 OptiSMOKE::InputManager input(dictionaries);
 
 // #if OPTISMOKE_USE_NLOPT
-OptiSMOKE::SimulationsInterface* sim_iface_;
-OptiSMOKE::OptimizedKinetics* opti_kinetics_;
+OptiSMOKE::SimulationsInterface *sim_iface_;
+OptiSMOKE::OptimizedKinetics *opti_kinetics_;
 unsigned int numberOfGradientEvaluations;
 unsigned int numberOfFunctionEvaluations;
 bool violated_uncertainty;
