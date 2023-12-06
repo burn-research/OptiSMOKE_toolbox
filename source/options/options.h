@@ -40,6 +40,6 @@
 #include "options_optimization_setup.h"
 #include "options_curvematching.h"
 #include "options_dakota.h"
-// #include "options_nlopt.h"
+#include "options_nlopt.h"
 
 #endif // OPTISMOKE_OPTIONS_H

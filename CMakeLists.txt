@@ -30,8 +30,8 @@ message (STATUS "Compiling in mode: ${CMAKE_BUILD_TYPE}")
 message (STATUS "OptiSMOKE++ directory: ${PROJECT_SOURCE_DIR}")
 
 # --- Controlling fortran c++ interoperability
-#include(FortranCInterface)
-#FortranCInterface_VERIFY(CXX)
+include(FortranCInterface)
+FortranCInterface_VERIFY(CXX)
 
 #--------------------------------------------------------------------
 # Compulsory libraries
@@ -54,9 +54,9 @@ find_package(OpenSMOKEppSolvers REQUIRED)
 message (STATUS "OpenSMOKESolvers include directory: ${OPENSMOKEPPSOLVERS_INCLUDE_DIR}")
 
 # --- NLopt++
-#find_package(NLopt REQUIRED)
-#message(STATUS "NLopt include directory: ${NLOPT_INCLUDE_DIRS}")
-#message(STATUS "NLopt libraries: ${NLOPT_LIBRARIES}")
+find_package(NLopt REQUIRED)
+message(STATUS "NLopt include directory: ${NLOPT_INCLUDE_DIRS}")
+message(STATUS "NLopt libraries: ${NLOPT_LIBRARIES}")
 
 # --- Dakota (Optional)
 find_package(Dakota REQUIRED PATHS $ENV{Dakota_ROOT} COMPONENTS dakota_surrogates dakota_util dakota_src dakota_src_fortran nidr 
@@ -72,7 +72,7 @@ message(STATUS "Dakota binaries:  ${Dakota_EXECUTABLE}")
 
 set(COMPULSORY_LIBRARIES
     ${Boost_LIBRARIES}
-    #    ${NLOPT_LIBRARIES}
+    ${NLOPT_LIBRARIES}
     ${Dakota_LIBRARIES})
 
 set(COMPULSORY_INCLUDE
@@ -80,7 +80,7 @@ set(COMPULSORY_INCLUDE
     ${EIGEN3_INCLUDE_DIR}
     ${OPENSMOKE_INCLUDE_DIR}
     ${OPENSMOKEPPSOLVERS_INCLUDE_DIR}
-    #${NLOPT_INCLUDE_DIR}
+    ${NLOPT_INCLUDE_DIRS}
     ${DAKOTA_INCLUDE_DIRS})
 
 
@@ -124,9 +124,9 @@ if(OPTISMOKE_USE_OPENBLAS)
     set (BLA_VENDOR OpenBLAS)
     set (BLA_STATIC ON)
     find_package(BLAS REQUIRED)
-    message(STATUS "OpenBLAS include directory: $ENV{BLAS_ROOT}/include")
+    message(STATUS "OpenBLAS include directory: ${BLAS_ROOT}/include")
     message(STATUS "OpenBLAS library: ${BLAS_LIBRARIES}")
-    list(APPEND LINEAR_ALGEBRA_INCLUDE  $ENV{BLAS_ROOT}/include)
+    list(APPEND LINEAR_ALGEBRA_INCLUDE  ${BLAS_ROOT}/include)
     list(APPEND LINEAR_ALGEBRA_LIB ${BLAS_LIBRARIES})
 endif()
 
@@ -255,20 +255,30 @@ add_executable (OptiSMOKEpp.sh ${PROJECT_SOURCE_DIR}/OptiSMOKEpp.cpp)
 # Include flags
 #--------------------------------------------------------------------
 
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    set(FORTRAN_LIB_NAME -static-libgfortran)
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    set(FORTRAN_LIB_NAME gfortran)
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "Intel")
+    message(FATAL_ERROR "Contact timoteo.dinelli@polimi.it")
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    message(FATAL_ERROR "Contact timoteo.dinelli@polimi.it")
+endif()
+
 target_include_directories(OptiSMOKEpp.sh
     PUBLIC
-        "${PROJECT_SOURCE_DIR}"
-        "${COMPULSORY_INCLUDE}"
-        "${LINEAR_ALGEBRA_INCLUDE}"
-        "${OPTIONAL_INCLUDE}"
+    "${PROJECT_SOURCE_DIR}"
+    "${COMPULSORY_INCLUDE}"
+    "${LINEAR_ALGEBRA_INCLUDE}"
+    "${OPTIONAL_INCLUDE}"
 )
 target_link_libraries(OptiSMOKEpp.sh
+    PUBLIC
     ${COMPULSORY_LIBRARIES} 
     ${LINEAR_ALGEBRA_LIB}
     ${OPTIONAL_LIBRARIES}
-    /Users/tdinelli/NumericalLibraries/dakota/dakota-6.17.0-clang-17.0.1/bin/libgfortran.5.dylib
+    ${FORTRAN_LIB_NAME}
 )
-    #/opt/homebrew/opt/gfortran/lib/gcc/13/libgfortran.dylib
 
 target_compile_definitions(OptiSMOKEpp.sh 
     PUBLIC

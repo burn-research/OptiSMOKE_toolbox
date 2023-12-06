@@ -3,7 +3,6 @@ namespace OptiSMOKE{
 	SimulationsInterface::SimulationsInterface(const OptiSMOKE::InputManager& data) : data_(data)
 	{
 		// Resize reactors objects
-		
 		n_batch = data_.optimization_target().number_of_batch_reactor();
 		n_pfr = data_.optimization_target().number_of_plug_flow_reactor();
 		n_psr = data_.optimization_target().number_of_perfectly_stirred_reactor();
@@ -33,7 +32,7 @@ namespace OptiSMOKE{
 			batch_reactors.resize(n_batch);
 			for(unsigned int i = 0; i < n_batch; i++)
 				batch_reactors[i] = new OptiSMOKE::BatchReactor[data_.input_paths()[i].size()];
-			
+
 			offset += n_batch;
 		}
 

@@ -136,8 +136,8 @@ namespace OptiSMOKE{
 		}
 		else if(optimization_library_ == "nlopt"){
 			// NLOPT options
-			// dictionary_(main_dictionary_).ReadDictionary("@NLOPTOptions", nlopt_dictionary_);
-   //      	nlopt_options_.SetupFromDictionary(dictionary_, nlopt_dictionary_);
+			dictionary_(main_dictionary_).ReadDictionary("@NLOPTOptions", nlopt_dictionary_);
+        	nlopt_options_.SetupFromDictionary(dictionary_, nlopt_dictionary_);
 		}
 		else
 			OptiSMOKE::FatalErrorMessage("Unknown optimization library. Available are: dakota | nlopt");

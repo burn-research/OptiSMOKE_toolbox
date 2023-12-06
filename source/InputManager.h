@@ -66,7 +66,7 @@ namespace OptiSMOKE{
         inline const OptiSMOKE::options_optimization_setup& optimization_setup() const {return optimization_setup_;};
         inline const OptiSMOKE::options_curvematching& curvematching_options() const {return curvematching_options_;};
         inline const OptiSMOKE::options_dakota& dakota_options() const {return dakota_options_;};
-        // inline const OptiSMOKE::options_nlopt& nlopt_options() const {return nlopt_options_;};
+        inline const OptiSMOKE::options_nlopt& nlopt_options() const {return nlopt_options_;};
 
         inline const bool& iXml() const {return iXml_;};
         inline const std::string& input_file_name() const {return input_file_name_;};
@@ -127,7 +127,7 @@ namespace OptiSMOKE{
         OptiSMOKE::options_optimization_setup optimization_setup_;
         OptiSMOKE::options_curvematching curvematching_options_;
         OptiSMOKE::options_dakota dakota_options_;
-        // OptiSMOKE::options_nlopt nlopt_options_;
+        OptiSMOKE::options_nlopt nlopt_options_;
 
         //Reading data from json files
         OptiSMOKE::DataManager data_manager_;

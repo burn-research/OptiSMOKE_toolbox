@@ -11,7 +11,7 @@ class SerialDakotaInterface: public Dakota::DirectApplicInterface
 
     // constructor
     SerialDakotaInterface(const Dakota::ProblemDescDB& problem_db, const OptiSMOKE::InputManager& data);
-  
+
     // destructor
     ~SerialDakotaInterface();
 

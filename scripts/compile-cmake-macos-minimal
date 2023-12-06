@@ -2,9 +2,13 @@ cmake \
     -D CMAKE_C_COMPILER=/opt/homebrew/opt/llvm/bin/clang \
     -D CMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++ \
     -D CMAKE_Fortran_COMPILER=/opt/homebrew/bin/gfortran-13 \
+    -D OpenSMOKEpp_ROOT:PATH=/Users/tdinelli/Documents/GitHub/OpenSMOKEpp \ 
+    -D OpenSMOKEppSolvers_ROOT:PATH=/Users/tdinelli/Documents/GitHub/OpenSMOKEppSolvers \
     -D Boost_ROOT:PATH=/Users/tdinelli/NumericalLibraries/boost/boost-1.83.0-clang-17.0.1 \
     -D NLopt_DIR:PATH=/Users/tdinelli/NumericalLibraries/nlopt/nlopt-2.7.1-clang-17.0.1/lib/cmake/nlopt \
-    -D Dakota_DIR:PATH=/Users/tdinelli/NumericalLibraries/dakota/dakota-6.17.0-clang-17.0.1/lib/cmake/Dakota \
+    -D Dakota_DIR:PATH=/Users/tdinelli/NumericalLibraries/dakota/dakota-6.19.0-clang-17.0.3/lib/cmake/Dakota \
     -D CEQ_ROOT:PATH=/Users/tdinelli/NumericalLibraries/ceq/lib/linux \
+    -D BLAS_ROOT:PATH=/Users/tdinelli/NumericalLibraries/openblas/openblas-0.3.24-clang-17.0.3 \
     -D OPTISMOKE_USE_CEQ=1 \
+    -D OPTISMOKE_USE_OPENBLAS=1 \
     ..

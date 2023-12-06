@@ -96,7 +96,7 @@ Dictionary OptimizationTargets
 
 Dictionary nlopt-options
 {
-	@Algorithm		STOGO;
+	@Algorithm		DIRECT;
 	@Variant		NONE;
 	@MaxFunctionEvaluations 10000;
 }

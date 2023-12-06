@@ -95,11 +95,11 @@ const double UNFEASIBLE_BIG_NUMBER = 1.e16;
 #include "ParamResponsePair.hpp"
 #include "DirectApplicInterface.hpp"
 
-#if OPTISMOKE_USE_NLOPT
+// #if OPTISMOKE_USE_NLOPT
 #include <nlopt.hpp>
 double NLOptFunction(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data);
 double OptFunction(const std::vector<double> &b, unsigned int fn_val);
-#endif
+// #endif
 
 // Curve Matching
 #include "curve_matching/curve_matching.h"
@@ -134,12 +134,12 @@ void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env); //,const char*
 OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
 OptiSMOKE::InputManager input(dictionaries);
 
+// #if OPTISMOKE_USE_NLOPT
 OptiSMOKE::SimulationsInterface* sim_iface_;
 OptiSMOKE::OptimizedKinetics* opti_kinetics_;
-#if OPTISMOKE_USE_NLOPT
 unsigned int numberOfGradientEvaluations;
 unsigned int numberOfFunctionEvaluations;
 bool violated_uncertainty;
 double prev_fn_val;
 std::ofstream fOut;
-# endif
+// # endif
