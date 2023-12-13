@@ -84,13 +84,14 @@ namespace OptiSMOKE
 																"Dictionary containing the numerical parameters for solving the stiff ODE system", 
 																false) );	
 
+
 			AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@VolumeProfile", 
 																OpenSMOKE::SINGLE_DICTIONARY, 
 																"Dictionary defining the volume profile",
 																false ,
 																"none",
 																"none",
-																"@PressureCoefficient @PressureProfile") );
+																"@PressureCoefficient @PressureProfile @TemperatureProfile") );
 
 			AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@PressureProfile", 
 																OpenSMOKE::SINGLE_DICTIONARY, 
@@ -99,6 +100,14 @@ namespace OptiSMOKE
 																"none",
 																"none",
 																"@PressureCoefficient @VolumeProfile") );
+
+			AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@TemperatureProfile", 
+																OpenSMOKE::SINGLE_DICTIONARY, 
+																"Dictionary defining the temperature profile",
+																false ,
+																"none",
+																"none",
+																"@VolumeProfile") );
 
 			AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@PressureCoefficient", 
 																OpenSMOKE::SINGLE_MEASURE, 

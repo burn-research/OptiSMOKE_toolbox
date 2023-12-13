@@ -74,7 +74,7 @@ Dictionary OptimizationTargets
 Dictionary dakota_options
 {
 	@EchoDakotaInput			true;
-	@TabularDataFile			Output/tabular_data.dat;
+	@TabularDataFile			tabular_data.dat;
 
 	@Method						coliny_ea;
 

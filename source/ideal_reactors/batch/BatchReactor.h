@@ -56,6 +56,8 @@ namespace OptiSMOKE
 		void CleanMemory();
 
 		bool volume_profile_;
+
+		bool temperature_profile_;
 	};
 } // namespace OptiSMOKE
 

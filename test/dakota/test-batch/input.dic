@@ -57,27 +57,27 @@ Dictionary OptimizationTargets
 	@NumberOfBatchReactor				6;
 
 	@NumberOfPlugFlowReactor			0;
-        
+
 	@NumberOfPerfectlyStirredReactor	0;
-        
+
 	@NumberOfPremixedLaminarFlame		0;
 
 	@ListOfTarget_lnA					5	21	23	27	34;
 
 	@ListOfTarget_Beta					5	21	23	27	34;
-        
+
 	@ListOfTarget_E_over_R				5	21	23	27	34;
 
 	@ListOfTargetUncertaintyFactors		5	21	23	27	34;
-        
+
 	@ListOfUncertaintyFactors			0.2	0.3	0.3	0.15	0.3;
 
 	@ListOfTarget_ThirdBody_Reactions	21	34;
-                
+
 	@ListOfTarget_ThirdBody_Species		H2O	H2O;
-                
+
 	@ListOfMaxAbs_ThirdBody_Eff			22	22;
-                
+
 	@ListOfMinAbs_ThirdBody_Eff			1	6;
 }
 
@@ -86,7 +86,7 @@ Dictionary KINPREPRO
 	@Kinetics				../../mechanisms/Aramco_2.0/Kinetics.CKI;
 
 	@Thermodynamics			../../mechanisms/Aramco_2.0/TH.CKT;
-        
+
 	@Transport				../../mechanisms/Aramco_2.0/TRAN.TRC;
 
 	@Output					kinetics;
@@ -95,6 +95,7 @@ Dictionary KINPREPRO
 Dictionary dakota_options
 {
 	@EchoDakotaInput			true;
+
 	@TabularDataFile		    tabular_data.dat;
 
 	@Method						coliny_ea;
@@ -102,24 +103,30 @@ Dictionary dakota_options
 	@FitnessType				linear_rank;
 
 	@CrossoverType				uniform;
+
 	@CrossoverRate				0.65;
 
 	@MutationType				offset_normal;
-	@MutationRate				0.5;
+
+    @MutationRate				0.5;
 
 	@ReplacementType			chc=50 ;
-	@Seed						1000;
-	@PopulationSize				100;
+
+    @Seed						1000;
+
+    @PopulationSize				100;
 
 	//@Division			major_dimension;
 	//@MaxBoxsizeLimit	0.0;
 	//@MinBoxsizeLimit	1.0e-4;
 
 	@MaxIterations				1000;
-	@MaxFunctionEvaluations		10000;
-	@ConvergenceTolerance		1e-8;
-	@SolutionTarget				1e-6;
 
+    @MaxFunctionEvaluations		10000;
+
+    @ConvergenceTolerance		1e-8;
+
+    @SolutionTarget				1e-6;
 }
 
 Dictionary curve_matching_options
