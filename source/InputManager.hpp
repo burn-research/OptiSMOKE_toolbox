@@ -391,6 +391,13 @@ void InputManager::FromTargetToInitialParameter()
         list_of_initial_thirdbody_eff_.push_back(boost::lexical_cast<std::string>(kineticsMapXML_->ThirdBody(
             optimization_target_.list_of_target_thirdbody_reactions()[i] - 1, iSpecies - 1)));
     }
+
+    // RPBR MR (Mixture rules implementation)
+    for ( int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++)
+    {
+        // A0
+        
+    }
 }
 
 void InputManager::ComputeBoundaries()
@@ -806,6 +813,44 @@ void InputManager::ComputeBoundaries()
             +std::log(std::pow(10, optimization_target_.list_of_uncertainty_factors_classic_plog()[i])) /
             std::log(T_high)));
     }
+
+    // RPBRM - Alpha, Beta, Eps
+    for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++)
+    {
+        std::vector<double> ciao = nominalkineticsMapXML_->rpbrm_reactions(0).lambda0_A();
+        for(auto& ii : ciao)
+            std::cout << ii << "\n" << std::endl;
+
+         std::cout << nominalkineticsMapXML_->rpbrm_reactions(0).N() << std::endl;
+         std::cout << nominalkineticsMapXML_->rpbrm_reactions(0).NTB() << std::endl;
+        // list_of_nominal_lnA_rpbmr_coefficients_.push_back();
+        // list_of_min_lnA_classic_plog_coefficients_.push_back(
+        //     boost::lexical_cast<std::string>(-optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
+        // list_of_max_lnA_classic_plog_coefficients_.push_back(
+        //     boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
+    }
+
+    // for (int i = 0; i < optimization_target_.list_of_target_classic_plog_reactions().size(); i++)
+    // {
+    //     // the nominal random variable is 0, so that Eps_0 = Esp_0 + D is verified:
+    //     list_of_nominal_ER_classic_plog_coefficients_.push_back(boost::lexical_cast<std::string>(0));
+    //     // The minimum and the maximum values of the random variable are then computed as follows:
+    //     list_of_min_ER_classic_plog_coefficients_.push_back(boost::lexical_cast<std::string>(
+    //         -std::log(std::pow(10, optimization_target_.list_of_uncertainty_factors_classic_plog()[i])) * T_low));
+    //     list_of_max_ER_classic_plog_coefficients_.push_back(boost::lexical_cast<std::string>(
+    //         +std::log(std::pow(10, optimization_target_.list_of_uncertainty_factors_classic_plog()[i])) * T_low));
+    // }
+    //
+    // for (int i = 0; i < optimization_target_.list_of_target_classic_plog_reactions().size(); i++)
+    // {
+    //     list_of_nominal_Beta_classic_plog_coefficients_.push_back(boost::lexical_cast<std::string>(0));
+    //     list_of_min_Beta_classic_plog_coefficients_.push_back(boost::lexical_cast<std::string>(
+    //         -std::log(std::pow(10, optimization_target_.list_of_uncertainty_factors_classic_plog()[i])) /
+    //         std::log(T_high)));
+    //     list_of_max_Beta_classic_plog_coefficients_.push_back(boost::lexical_cast<std::string>(
+    //         +std::log(std::pow(10, optimization_target_.list_of_uncertainty_factors_classic_plog()[i])) /
+    //         std::log(T_high)));
+    // }
 }
 
 void InputManager::TargetsPreliminaryOptions()

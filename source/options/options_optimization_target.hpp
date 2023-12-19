@@ -139,6 +139,8 @@ void options_optimization_target::SetupFromDictionary(OpenSMOKE::OpenSMOKE_Dicti
         dictionary_manager(dictionary_name)
             .ReadOption("@ListOfUncertaintyFactors_RPBMR", list_of_uncertainty_factors_rpbmr_);
 
+    numberOfParameters_ += list_of_target_rpbmr_bathgases_.size() * 3;
+
     // List of third body species
     if (dictionary_manager(dictionary_name).CheckOption("@ListOfTarget_ThirdBody_Species"))
         dictionary_manager(dictionary_name)

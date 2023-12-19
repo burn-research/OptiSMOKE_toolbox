@@ -131,19 +131,16 @@ class grammar_optimization_targets : public OpenSMOKE::OpenSMOKE_DictionaryGramm
                                                           "@ListOfTarget_classic_PLOG_Reactions", "none"));
 
         AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfTarget_RPBMR_Reactions", OpenSMOKE::VECTOR_INT,
-                                                          "TODO",
-                                                          false, "none", "@ListOfUncertaintyFactors_RPBMR",
+                                                          "TODO", false, "none", "@ListOfUncertaintyFactors_RPBMR",
                                                           "none"));
 
-        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfUncertaintyFactors_RPBMR",
-                                                          OpenSMOKE::VECTOR_DOUBLE,
-                                                          "TODO", false, "none",
-                                                          "@ListOfTarget_RPBMR_Reactions", "none"));
+        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfUncertaintyFactors_RPBMR", OpenSMOKE::VECTOR_DOUBLE,
+                                                          "TODO", false, "none", "@ListOfTarget_RPBMR_Reactions",
+                                                          "none"));
 
-        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfTarget_BathGases_RPBMR",
-                                                          OpenSMOKE::VECTOR_DOUBLE,
-                                                          "TODO", false, "none",
-                                                          "@ListOfTarget_RPBMR_Reactions", "none"));
+        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfTarget_BathGases_RPBMR", OpenSMOKE::VECTOR_STRING,
+                                                          "TODO", false, "none", "@ListOfTarget_RPBMR_Reactions",
+                                                          "none"));
 
         AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord(
             "@ReactionsClassesDefinitions", OpenSMOKE::SINGLE_PATH,
