@@ -18,7 +18,7 @@
 # message(STATUS "${LIB_NAME}")
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    set(LIB_NAME libceq-clang-${CMAKE_CXX_COMPILER_VERSION}.a)
+  set(LIB_NAME libceq-clang-${CMAKE_CXX_COMPILER_VERSION}.a)
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     set(LIB_NAME libceq-gcc-${CMAKE_CXX_COMPILER_VERSION}.a)
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "Intel")
