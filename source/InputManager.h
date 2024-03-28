@@ -10,7 +10,7 @@
 |                                                                         |
 |            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
 |                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|					  Timoteo Dinelli <timoteo.dinelli@polimi.it>	      |
+|					  Timoteo Dinelli <timoteo.dinelli@polimi.it> |
 |-------------------------------------------------------------------------|
 |   License                                                               |
 |                                                                         |
@@ -35,331 +35,261 @@
 #ifndef INPUTMANAGER_H
 #define INPUTMANAGER_H
 
-namespace OptiSMOKE
-{
+namespace OptiSMOKE {
+class InputManager {
+ public:
+  InputManager(OpenSMOKE::OpenSMOKE_DictionaryManager &dictionary);
 
-class InputManager
-{
-  public:
-    /// @brief Default Constructor
-    InputManager(OpenSMOKE::OpenSMOKE_DictionaryManager &dictionary);
+  ~InputManager();
 
-    /// @brief Default Destructor
-    ~InputManager();
+  void SetInputOptions(int argc, char *argv[]);
 
-    /// @brief Function to handle the input file
-    /// @param argc
-    /// @param argv
-    void SetInputOptions(int argc, char *argv[]);
+  void ReadDictionary();
 
-    void ReadDictionary();
+  void DakotaInputString();
 
-    void DakotaInputString();
+  void ReadExperimentalDataFiles();
 
-    void ReadExperimentalDataFiles();
+  void SetUpNLOPT();
 
-    void SetUpNLOPT();
+  // Public access variables
+  const OptiSMOKE::options_kinetics &kinetics_data() const { return kinetics_data_; };
 
-    // Public access variables
-    inline const OptiSMOKE::options_kinetics &kinetics_data() const
-    {
-        return kinetics_data_;
-    };
-    inline const OptiSMOKE::options_optimization_target &optimization_target() const
-    {
-        return optimization_target_;
-    };
-    inline const OptiSMOKE::options_optimization_setup &optimization_setup() const
-    {
-        return optimization_setup_;
-    };
-    inline const OptiSMOKE::options_curvematching &curvematching_options() const
-    {
-        return curvematching_options_;
-    };
-    inline const OptiSMOKE::options_dakota &dakota_options() const
-    {
-        return dakota_options_;
-    };
-    inline const OptiSMOKE::options_nlopt &nlopt_options() const
-    {
-        return nlopt_options_;
-    };
+  const OptiSMOKE::options_optimization_target &optimization_target() const { return optimization_target_; };
 
-    inline const bool &iXml() const
-    {
-        return iXml_;
-    };
-    inline const std::string &input_file_name() const
-    {
-        return input_file_name_;
-    };
-    inline const std::string &main_dictionary() const
-    {
-        return main_dictionary_;
-    };
-    inline const std::string &optimization_library() const
-    {
-        return optimization_library_;
-    };
-    inline const fs::path &output_folder() const
-    {
-        return output_folder_;
-    };
-    inline const fs::path &kinetics_folder() const
-    {
-        return kinetics_folder_;
-    };
-    inline const fs::path &optimized_kinetics_folder() const
-    {
-        return optimized_kinetics_folder_;
-    };
-    inline const std::vector<std::string> &path_experimental_data_files() const
-    {
-        return path_experimental_data_files_;
-    };
-    inline const std::string &dakota_input_string() const
-    {
-        return dakota_input_string_;
-    };
-    inline const bool &iTransport() const
-    {
-        return iTransport_;
-    };
+  const OptiSMOKE::options_optimization_setup &optimization_setup() const { return optimization_setup_; };
 
-    // Da checcare
-    inline const OpenSMOKE::ThermodynamicsMap_CHEMKIN *thermodynamicsMapXML() const
-    {
-        return thermodynamicsMapXML_;
-    };
-    inline const OpenSMOKE::ThermodynamicsMap_CHEMKIN *nominalthermodynamicsMapXML() const
-    {
-        return nominalthermodynamicsMapXML_;
-    };
-    inline const OpenSMOKE::KineticsMap_CHEMKIN *kineticsMapXML() const
-    {
-        return kineticsMapXML_;
-    };
-    inline const OpenSMOKE::KineticsMap_CHEMKIN *nominalkineticsMapXML() const
-    {
-        return nominalkineticsMapXML_;
-    };
-    inline const OpenSMOKE::TransportPropertiesMap_CHEMKIN *transportMapXML() const
-    {
-        return transportMapXML_;
-    };
-    inline const OpenSMOKE::TransportPropertiesMap_CHEMKIN *nominaltransportMapXML() const
-    {
-        return nominaltransportMapXML_;
-    };
+  const OptiSMOKE::options_curvematching &curvematching_options() const { return curvematching_options_; };
 
-    inline const std::vector<std::vector<std::string>> &input_paths() const
-    {
-        return input_paths_;
-    };
-    inline const std::vector<std::string> &QoI() const
-    {
-        return QoI_;
-    };
-    inline const std::vector<std::string> &QoI_target() const
-    {
-        return QoI_target_;
-    };
-    inline const std::vector<std::string> &reactor_mode() const
-    {
-        return reactor_mode_;
-    };
-    inline const std::vector<std::vector<std::vector<double>>> &expdata_x() const
-    {
-        return expdata_x_;
-    };
-    inline const std::vector<std::vector<std::vector<double>>> &expdata_y() const
-    {
-        return expdata_y_;
-    };
-    inline const std::vector<std::vector<std::vector<double>>> &uncertainty() const
-    {
-        return uncertainty_;
-    };
-    inline const std::vector<std::string> &dataset_names() const
-    {
-        return dataset_names_;
-    };
-    inline const std::vector<std::string> &solver_name() const
-    {
-        return solver_name_;
-    };
-    inline const std::vector<std::vector<std::string>> &ordinates_label() const
-    {
-        return ordinates_label_;
-    };
+  const OptiSMOKE::options_dakota &dakota_options() const { return dakota_options_; };
 
-    inline const std::vector<std::string> &param_str() const
-    {
-        return param_str_;
-    };
-    inline const std::vector<double> &initial_values() const
-    {
-        return initial_values_;
-    };
-    inline const std::vector<double> &lb() const
-    {
-        return lb_;
-    };
-    inline const std::vector<double> &ub() const
-    {
-        return ub_;
-    };
-    inline const fs::path &parametric_file_name() const
-    {
-        return parametric_file_name_;
-    };
+  const OptiSMOKE::options_nlopt &nlopt_options() const { return nlopt_options_; };
 
-    // Standard Map
-    OpenSMOKE::ThermodynamicsMap_CHEMKIN *thermodynamicsMapXML_;
-    OpenSMOKE::KineticsMap_CHEMKIN *kineticsMapXML_;
-    OpenSMOKE::TransportPropertiesMap_CHEMKIN *transportMapXML_;
+  const bool &iXml() const { return iXml_; };
 
-    // Nominal Map
-    OpenSMOKE::ThermodynamicsMap_CHEMKIN *nominalthermodynamicsMapXML_;
-    OpenSMOKE::KineticsMap_CHEMKIN *nominalkineticsMapXML_;
-    OpenSMOKE::TransportPropertiesMap_CHEMKIN *nominaltransportMapXML_;
+  const std::string &input_file_name() const { return input_file_name_; };
 
-  private:
-    OpenSMOKE::OpenSMOKE_DictionaryManager &dictionary_;
+  const std::string &main_dictionary() const { return main_dictionary_; };
 
-    // Grammar Allocation
-    OptiSMOKE::grammar_optismoke main_grammar_;
+  const std::string &optimization_library() const { return optimization_library_; };
 
-    // Options
-    OptiSMOKE::options_kinetics kinetics_data_;
-    OptiSMOKE::options_optimization_target optimization_target_;
-    OptiSMOKE::options_optimization_setup optimization_setup_;
-    OptiSMOKE::options_curvematching curvematching_options_;
-    OptiSMOKE::options_dakota dakota_options_;
-    OptiSMOKE::options_nlopt nlopt_options_;
+  const fs::path &output_folder() const { return output_folder_; };
 
-    // Reading data from json files
-    OptiSMOKE::DataManager data_manager_;
+  const fs::path &kinetics_folder() const { return kinetics_folder_; };
 
-    // Dictionaries string
-    std::string preprocessor_dictionary_;
-    std::string optimization_target_dictionary_;
-    std::string optimization_setup_dictionary_;
-    std::string curvematching_dictionary_;
-    std::string dakota_dictionary_;
-    std::string nlopt_dictionary_;
+  const fs::path &optimized_kinetics_folder() const { return optimized_kinetics_folder_; };
 
-    // Variables of main dictionaries
-    std::string input_file_name_;
-    std::string main_dictionary_;
-    std::string optimization_library_;
-    fs::path output_folder_;
-    fs::path kinetics_folder_;
-    fs::path optimized_kinetics_folder_;
-    std::vector<std::string> path_experimental_data_files_;
-    bool iXml_;
-    bool iNominalXml_;
-    bool iTransport_;
-    std::string dakota_input_string_;
+  const std::vector<std::string> &path_experimental_data_files() const { return path_experimental_data_files_; };
 
-    // Functions
-    void ReadMainDictionary();
+  const std::string &dakota_input_string() const { return dakota_input_string_; };
 
-    void CreateMaps();
+  const bool &iTransport() const { return iTransport_; };
 
-    void FromTargetToInitialParameter();
+  // Da checcare
+  const OpenSMOKE::ThermodynamicsMap_CHEMKIN *thermodynamicsMapXML() const { return thermodynamicsMapXML_; };
 
-    void ComputeBoundaries();
+  const OpenSMOKE::ThermodynamicsMap_CHEMKIN *nominalthermodynamicsMapXML() const {
+    return nominalthermodynamicsMapXML_;
+  };
 
-    void TargetsPreliminaryOptions();
+  const OpenSMOKE::KineticsMap_CHEMKIN *kineticsMapXML() const { return kineticsMapXML_; };
 
-    // Initial Parameters string assigned in
-    // FromTargetToInitialParameters()
-    std::vector<std::string> list_of_initial_lnA_;
-    std::vector<std::string> list_of_initial_Beta_;
-    std::vector<std::string> list_of_initial_E_over_R;
-    std::vector<std::string> list_of_initial_lnA_inf_;
-    std::vector<std::string> list_of_initial_Beta_inf_;
-    std::vector<std::string> list_of_initial_E_over_R_inf_;
-    std::vector<std::string> list_of_initial_thirdbody_eff_;
+  const OpenSMOKE::KineticsMap_CHEMKIN *nominalkineticsMapXML() const { return nominalkineticsMapXML_; };
 
-    // String needed by dakota in order to generate
-    // the input string
-    std::string param_name_string_;
-    std::string initial_values_string_;
-    std::string lower_bounds_string_;
-    std::string upper_bounds_string_;
-    std::string std_deviations_string_;
+  const OpenSMOKE::TransportPropertiesMap_CHEMKIN *transportMapXML() const { return transportMapXML_; };
 
-    // Boundaries variables
-    std::vector<std::string> list_of_min_abs_lnA_;
-    std::vector<std::string> list_of_max_abs_lnA_;
+  const OpenSMOKE::TransportPropertiesMap_CHEMKIN *nominaltransportMapXML() const { return nominaltransportMapXML_; };
 
-    std::vector<std::string> list_of_min_abs_Beta_;
-    std::vector<std::string> list_of_max_abs_Beta_;
+  const std::vector<std::vector<std::string>> &input_paths() const { return input_paths_; };
 
-    std::vector<std::string> list_of_min_abs_E_over_R_;
-    std::vector<std::string> list_of_max_abs_E_over_R_;
+  const std::vector<std::string> &QoI() const { return QoI_; };
 
-    std::vector<std::string> list_of_min_abs_lnA_inf_;
-    std::vector<std::string> list_of_max_abs_lnA_inf_;
+  const std::vector<std::string> &QoI_target() const { return QoI_target_; };
 
-    std::vector<std::string> list_of_min_abs_Beta_inf_;
-    std::vector<std::string> list_of_max_abs_Beta_inf_;
+  const std::vector<std::string> &reactor_mode() const { return reactor_mode_; };
 
-    std::vector<std::string> list_of_min_abs_E_over_R_inf_;
-    std::vector<std::string> list_of_max_abs_E_over_R_inf_;
+  const std::vector<std::vector<std::vector<double>>> &expdata_x() const { return expdata_x_; };
 
-    std::vector<std::string> list_of_nominal_lnA_classic_plog_coefficients_;
-    std::vector<std::string> list_of_min_lnA_classic_plog_coefficients_;
-    std::vector<std::string> list_of_max_lnA_classic_plog_coefficients_;
+  const std::vector<std::vector<std::vector<double>>> &expdata_y() const { return expdata_y_; };
 
-    std::vector<std::string> list_of_nominal_ER_classic_plog_coefficients_;
-    std::vector<std::string> list_of_min_ER_classic_plog_coefficients_;
-    std::vector<std::string> list_of_max_ER_classic_plog_coefficients_;
+  const std::vector<std::vector<std::vector<double>>> &uncertainty() const { return uncertainty_; };
 
-    std::vector<std::string> list_of_nominal_Beta_classic_plog_coefficients_;
-    std::vector<std::string> list_of_min_Beta_classic_plog_coefficients_;
-    std::vector<std::string> list_of_max_Beta_classic_plog_coefficients_;
+  const std::vector<std::string> &dataset_names() const { return dataset_names_; };
 
-    // Names vector to pass euther from dakota to nlopt
-    // I know this is not the fanciest way
-    std::vector<std::string> name_vec_lnA;
-    std::vector<std::string> name_vec_lnA_inf;
-    std::vector<std::string> name_vec_Beta;
-    std::vector<std::string> name_vec_Beta_inf;
-    std::vector<std::string> name_vec_E_over_R;
-    std::vector<std::string> name_vec_E_over_R_inf;
-    std::vector<std::string> name_vec_thirdbody;
-    std::vector<std::string> name_vec_lnA_classic_plog;
-    std::vector<std::string> name_vec_ER_classic_plog;
-    std::vector<std::string> name_vec_Beta_classic_plog;
+  const std::vector<std::string> &solver_name() const { return solver_name_; };
 
-    // Double vector needed by nlopt
-    std::vector<double> initial_values_;
-    std::vector<double> lb_;
-    std::vector<double> ub_;
-    std::vector<std::string> param_str_;
-    fs::path parametric_file_name_;
+  const std::vector<std::vector<std::string>> &ordinates_label() const { return ordinates_label_; };
 
-    // Experimental data files variables
-    std::vector<std::string> dataset_names_;
-    std::vector<std::vector<std::string>> input_paths_;
-    std::vector<std::string> solver_name_;
-    std::vector<std::string> QoI_;
-    std::vector<std::string> reactor_mode_;
-    std::vector<std::string> QoI_target_;
-    std::vector<bool> multiple_input_;
+  const std::vector<std::string> &param_str() const { return param_str_; };
 
-    std::vector<std::vector<std::string>> ordinates_label_;
-    std::vector<std::vector<std::string>> abscissae_label_;
-    std::vector<std::vector<std::string>> uncertainty_kind_;
-    std::vector<std::vector<std::vector<double>>> expdata_x_;
-    std::vector<std::vector<std::vector<double>>> expdata_y_;
-    std::vector<std::vector<std::vector<double>>> uncertainty_;
+  const std::vector<double> &initial_values() const { return initial_values_; };
+
+  const std::vector<double> &lb() const { return lb_; };
+
+  const std::vector<double> &ub() const { return ub_; };
+
+  const fs::path &parametric_file_name() const { return parametric_file_name_; };
+
+  // Standard Map
+  OpenSMOKE::ThermodynamicsMap_CHEMKIN *thermodynamicsMapXML_;
+  OpenSMOKE::KineticsMap_CHEMKIN *kineticsMapXML_;
+  OpenSMOKE::TransportPropertiesMap_CHEMKIN *transportMapXML_;
+
+  // Nominal Map
+  OpenSMOKE::ThermodynamicsMap_CHEMKIN *nominalthermodynamicsMapXML_;
+  OpenSMOKE::KineticsMap_CHEMKIN *nominalkineticsMapXML_;
+  OpenSMOKE::TransportPropertiesMap_CHEMKIN *nominaltransportMapXML_;
+
+ private:
+  OpenSMOKE::OpenSMOKE_DictionaryManager &dictionary_;
+
+  // Grammar Allocation
+  OptiSMOKE::grammar_optismoke main_grammar_;
+
+  // Options
+  OptiSMOKE::options_kinetics kinetics_data_;
+  OptiSMOKE::options_optimization_target optimization_target_;
+  OptiSMOKE::options_optimization_setup optimization_setup_;
+  OptiSMOKE::options_curvematching curvematching_options_;
+  OptiSMOKE::options_dakota dakota_options_;
+  OptiSMOKE::options_nlopt nlopt_options_;
+
+  // Reading data from json files
+  OptiSMOKE::DataManager data_manager_;
+
+  // Dictionaries string
+  std::string preprocessor_dictionary_;
+  std::string optimization_target_dictionary_;
+  std::string optimization_setup_dictionary_;
+  std::string curvematching_dictionary_;
+  std::string dakota_dictionary_;
+  std::string nlopt_dictionary_;
+
+  // Variables of main dictionaries
+  std::string input_file_name_;
+  std::string main_dictionary_;
+  std::string optimization_library_;
+  fs::path output_folder_;
+  fs::path kinetics_folder_;
+  fs::path optimized_kinetics_folder_;
+  std::vector<std::string> path_experimental_data_files_;
+  bool iXml_;
+  bool iNominalXml_;
+  bool iTransport_;
+  std::string dakota_input_string_;
+
+  // Functions
+  void ReadMainDictionary();
+
+  void CreateMaps();
+
+  void FromTargetToInitialParameter();
+
+  void ComputeBoundaries();
+
+  void TargetsPreliminaryOptions();
+
+  // Initial Parameters string assigned in
+  // FromTargetToInitialParameters()
+  std::vector<std::string> list_of_initial_lnA_;
+  std::vector<std::string> list_of_initial_Beta_;
+  std::vector<std::string> list_of_initial_E_over_R;
+  std::vector<std::string> list_of_initial_lnA_inf_;
+  std::vector<std::string> list_of_initial_Beta_inf_;
+  std::vector<std::string> list_of_initial_E_over_R_inf_;
+  std::vector<std::string> list_of_initial_thirdbody_eff_;
+
+  // String needed by dakota in order to generate
+  // the input string
+  std::string param_name_string_;
+  std::string initial_values_string_;
+  std::string lower_bounds_string_;
+  std::string upper_bounds_string_;
+  std::string std_deviations_string_;
+
+  // Boundaries variables
+  std::vector<std::string> list_of_min_abs_lnA_;
+  std::vector<std::string> list_of_max_abs_lnA_;
+
+  std::vector<std::string> list_of_min_abs_Beta_;
+  std::vector<std::string> list_of_max_abs_Beta_;
+
+  std::vector<std::string> list_of_min_abs_E_over_R_;
+  std::vector<std::string> list_of_max_abs_E_over_R_;
+
+  std::vector<std::string> list_of_min_abs_lnA_inf_;
+  std::vector<std::string> list_of_max_abs_lnA_inf_;
+
+  std::vector<std::string> list_of_min_abs_Beta_inf_;
+  std::vector<std::string> list_of_max_abs_Beta_inf_;
+
+  std::vector<std::string> list_of_min_abs_E_over_R_inf_;
+  std::vector<std::string> list_of_max_abs_E_over_R_inf_;
+
+  std::vector<std::string> list_of_nominal_lnA_classic_plog_coefficients_;
+  std::vector<std::string> list_of_min_lnA_classic_plog_coefficients_;
+  std::vector<std::string> list_of_max_lnA_classic_plog_coefficients_;
+
+  std::vector<std::string> list_of_nominal_ER_classic_plog_coefficients_;
+  std::vector<std::string> list_of_min_ER_classic_plog_coefficients_;
+  std::vector<std::string> list_of_max_ER_classic_plog_coefficients_;
+
+  std::vector<std::string> list_of_nominal_Beta_classic_plog_coefficients_;
+  std::vector<std::string> list_of_min_Beta_classic_plog_coefficients_;
+  std::vector<std::string> list_of_max_Beta_classic_plog_coefficients_;
+
+  std::vector<std::string> list_of_nominal_lnA_rpbmr_coefficients_;
+  std::vector<std::string> list_of_min_lnA_rpbmr_coefficients_;
+  std::vector<std::string> list_of_max_lnA_rpbmr_coefficients_;
+
+  std::vector<std::string> list_of_nominal_Beta_rpbmr_coefficients_;
+  std::vector<std::string> list_of_min_Beta_rpbmr_coefficients_;
+  std::vector<std::string> list_of_max_Beta_rpbmr_coefficients_;
+
+  std::vector<std::string> list_of_nominal_E_over_R_rpbmr_coefficients_;
+  std::vector<std::string> list_of_min_E_over_R_rpbmr_coefficients_;
+  std::vector<std::string> list_of_max_E_over_R_rpbmr_coefficients_;
+
+  // Names vector to pass euther from dakota to nlopt
+  // I know this is not the fanciest way
+  std::vector<std::string> name_vec_lnA;
+  std::vector<std::string> name_vec_lnA_inf;
+  std::vector<std::string> name_vec_Beta;
+  std::vector<std::string> name_vec_Beta_inf;
+  std::vector<std::string> name_vec_E_over_R;
+  std::vector<std::string> name_vec_E_over_R_inf;
+  std::vector<std::string> name_vec_thirdbody;
+  std::vector<std::string> name_vec_lnA_classic_plog;
+  std::vector<std::string> name_vec_ER_classic_plog;
+  std::vector<std::string> name_vec_Beta_classic_plog;
+  std::vector<std::string> name_vec_lnA_rpbmr;
+  std::vector<std::string> name_vec_ER_rpbmr;
+  std::vector<std::string> name_vec_Beta_rpbmr;
+
+  // Double vector needed by nlopt
+  std::vector<double> initial_values_;
+  std::vector<double> lb_;
+  std::vector<double> ub_;
+  std::vector<std::string> param_str_;
+  fs::path parametric_file_name_;
+
+  // Experimental data files variables
+  std::vector<std::string> dataset_names_;
+  std::vector<std::vector<std::string>> input_paths_;
+  std::vector<std::string> solver_name_;
+  std::vector<std::string> QoI_;
+  std::vector<std::string> reactor_mode_;
+  std::vector<std::string> QoI_target_;
+  std::vector<bool> multiple_input_;
+
+  std::vector<std::vector<std::string>> ordinates_label_;
+  std::vector<std::vector<std::string>> abscissae_label_;
+  std::vector<std::vector<std::string>> uncertainty_kind_;
+  std::vector<std::vector<std::vector<double>>> expdata_x_;
+  std::vector<std::vector<std::vector<double>>> expdata_y_;
+  std::vector<std::vector<std::vector<double>>> uncertainty_;
 };
-} // namespace OptiSMOKE
+}  // namespace OptiSMOKE
 
 #include "InputManager.hpp"
-#endif // INPUTMANAGER_H
+#endif  // INPUTMANAGER_H

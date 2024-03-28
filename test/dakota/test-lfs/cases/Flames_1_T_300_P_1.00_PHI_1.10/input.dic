@@ -1,0 +1,48 @@
+Dictionary PremixedLaminarFlame1D
+{
+	@Type                   FlameSpeed;
+    @KineticsFolder        /home/anbertolino/GeneticSMOKE/Mech/GLOBAL;
+	@InletStream 			inlet-stream;
+	@OutletStream			outlet-stream;	
+	@InletVelocity          100 cm/s;	
+	@Grid                   grid;	
+	@Output                 Output;	
+	@UseDaeSolver			true;
+	//@SensitivityAnalysis    sensitivity;
+	@Radiation              true;
+	@EnvironmentTemperature 300.000 K   ;
+	@Backup                cases/Flames_1_T_300_P_1.00_PHI_1.10/Output.xml ;
+	@DontUseBackupGrid		true;	
+}
+Dictionary inlet-stream
+{
+    @Temperature			300.000 K   ;
+    @Pressure              1.000 atm ;
+    @EquivalenceRatio	 	1.100;
+    @FuelMoles             CH4 1.00;
+    @OxidizerMoles			O2  0.21 N2 0.79;
+}
+Dictionary outlet-stream
+{	
+	@Moles                  H2O 1 N2  2;
+	@Temperature            2300 K;
+	@Pressure               1 atm;
+}
+Dictionary grid
+{
+	@Length                 5 cm;
+	@InitialPoints			50;
+	@Type                   equispaced;
+	@MaxPoints              500;
+	@MaxAdaptivePoints		15;
+	@GradientCoefficient	0.05;
+	@CurvatureCoefficient	0.5;
+}
+Dictionary sensitivity
+{	
+	@Type                   arrhenius-parameters; 
+	@DenseSolver 			Eigen;
+	@DenseFullPivoting 		false;
+	@SubSteps               5;	
+	@Species                O2;
+}

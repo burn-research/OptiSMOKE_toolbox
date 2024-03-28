@@ -10,7 +10,7 @@
 |                                                                         |
 |            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
 |                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|					  Timoteo Dinelli <timoteo.dinelli@polimi.it>	      |
+|					  Timoteo Dinelli <timoteo.dinelli@polimi.it> |
 |-------------------------------------------------------------------------|
 |   License                                                               |
 |                                                                         |
@@ -35,39 +35,37 @@
 #ifndef OPTIONS_NLOPT_H
 #define OPTIONS_NLOPT_H
 
-namespace OptiSMOKE
-{
-	class options_nlopt
-	{
-	public:
-		options_nlopt();
-		
-		~options_nlopt(){};
+namespace OptiSMOKE {
+class options_nlopt {
+ public:
+  options_nlopt();
 
-		void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
-								std::string dictionary_name);
-    
-		inline const int& algo_int() const {return algo_int_;};
-		inline const int& max_function_evaluations() const {return max_function_evaluations_;};
-    private:
+  ~options_nlopt(){};
 
-		grammar_nlopt nlopt_options_grammar_;
+  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
+                           std::string dictionary_name);
 
-		std::string algorithm_;
-		std::string variant_;
-		int max_iterations_;
-		int max_function_evaluations_;
-		double convergence_tolerance_;
-		double solution_target_;
+  const int& algo_int() const { return algo_int_; };
+  const int& max_function_evaluations() const { return max_function_evaluations_; };
 
-		bool global_;
-		bool local_;
+ private:
+  grammar_nlopt nlopt_options_grammar_;
 
-		int algo_int_;
+  std::string algorithm_;
+  std::string variant_;
+  int max_iterations_;
+  int max_function_evaluations_;
+  double convergence_tolerance_;
+  double solution_target_;
 
-		void SetupAlgorithm();
-	};
-}
+  bool global_;
+  bool local_;
+
+  int algo_int_;
+
+  void SetupAlgorithm();
+};
+}  // namespace OptiSMOKE
 
 #include "options_nlopt.hpp"
-#endif // OPTIONS_NLOPT_H
+#endif  // OPTIONS_NLOPT_H

@@ -10,7 +10,7 @@
 |                                                                         |
 |            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
 |                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|					  Timoteo Dinelli <timoteo.dinelli@polimi.it>	      |
+|					  Timoteo Dinelli <timoteo.dinelli@polimi.it> |
 |-------------------------------------------------------------------------|
 |   License                                                               |
 |                                                                         |
@@ -35,29 +35,30 @@
 #ifndef OPTIONS_CURVEMATCHING_H
 #define OPTIONS_CURVEMATCHING_H
 
-namespace OptiSMOKE
-{
-    class options_curvematching
-    {  
-    public:
-        
-        options_curvematching();
-        ~options_curvematching();
-        void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
-                                std::string dictionary_name);
+namespace OptiSMOKE {
+class options_curvematching {
+ public:
+  options_curvematching();
 
-        inline const int& number_of_bootstrap() const {return number_of_bootstrap_;};
-        inline const bool& use_bootstrap() const {return use_bootstrap_;};
+  ~options_curvematching();
 
-    private:
+  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
+                           std::string dictionary_name);
 
-        grammar_curve_matching grammar_curve_matching_;
-        int number_of_bootstrap_;
-        bool use_bootstrap_;
+  const int& number_of_bootstrap() const { return number_of_bootstrap_; };
 
-        void CheckCurveMatchingOptions();
-    };
-} // namespace OptiSMOKE
+  const bool& use_bootstrap() const { return use_bootstrap_; };
+
+ private:
+  grammar_curve_matching grammar_curve_matching_;
+
+  int number_of_bootstrap_;
+
+  bool use_bootstrap_;
+
+  void CheckCurveMatchingOptions();
+};
+}  // namespace OptiSMOKE
 
 #include "options_curvematching.hpp"
-#endif // OPTIONS_CURVEMATCHING_H
+#endif  // OPTIONS_CURVEMATCHING_H

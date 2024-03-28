@@ -1,39 +1,15 @@
 /*-----------------------------------------------------------------------*\
-|     ____            _  ______ __  __  ____  _  ________                 |
-|    / __ \       _  (_)/  ___ |  \/  |/ __ \| |/ /  ____|                |
-|   | |  | |_ __ | |_ _|  (___ | \  / | |  | | ' /| |__    _     _        |
-|   | |  | | '_ \|  _| |\___  \| |\/| | |  | |  < |  __| _| |_ _| |_      |
-|   | |__| | |_) | |_| |____)  | |  | | |__| | . \| |___|_   _|_   _|     |
-|    \____/| .__/\___|_|______/|_|  |_|\____/|_|\_\______||_|   |_|       |
-|          | |                                                            |
-|          |_|                                                            |
 |                                                                         |
-|            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
-|                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|                     Timoteo Dinelli <timoteo.dinelli@polimi.it>         |
-|                                                                         |
-|-------------------------------------------------------------------------|
-|   License                                                               |
-|                                                                         |
-|   This file is part of OptiSMOKE.                                       |
-|   Copyright (C) 2020 by Magnus Fürst and Andrea Bertolino               |
-|                                                                         |
-|   OptiSMOKE is free software: you can redistribute it and/or modify     |
-|   it under the terms of the GNU General Public License as published by  |
-|   the Free Software Foundation, either version 3 of the License, or     |
-|   (at your option) any later version.                                   |
-|                                                                         |
-|   OptiSMOKE is distributed in the hope that it will be useful,          |
-|   but WITHOUT ANY WARRANTY; without even the implied warranty of        |
-|   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         |
-|   GNU General Public License for more details.                          |
-|                                                                         |
-|   You should have received a copy of the GNU General Public License     |
-|   along with OptiSMOKE. If not, see <http://www.gnu.org/licenses/>.     |
+|       ____            _  ______ __  __  ____  _  ________               |
+|      / __ \       _  (_)/  ___ |  \/  |/ __ \| |/ /  ____|              |
+|     | |  | |_ __ | |_ _|  (___ | \  / | |  | | ' /| |__    _     _      |
+|     | |  | | '_ \|  _| |\___  \| |\/| | |  | |  < |  __| _| |_ _| |_    |
+|     | |__| | |_) | |_| |____)  | |  | | |__| | . \| |___|_   _|_   _|   |
+|      \____/| .__/\___|_|______/|_|  |_|\____/|_|\_\______||_|   |_|     |
+|            | |                                                          |
+|            |_|                                                          |
 |                                                                         |
 \*-----------------------------------------------------------------------*/
-
-// clang-format off
 
 // Standard Library
 #include <string>
@@ -43,39 +19,53 @@
 #include <chrono>
 #include <algorithm>
 
-// OpenSMOKE 
-#include "OpenSMOKEpp"
+using std::string;
+using std::vector;
+
+// OpenSMOKE
+#include <OpenSMOKEpp>
 
 // Thermodynamics
-#include "kernel/thermo/Species.h"
-#include "kernel/thermo/ThermoPolicy_CHEMKIN.h"
-#include "kernel/thermo/ThermoReader.h"
-#include "kernel/thermo/ThermoReaderPolicy_CHEMKIN.h"
+#include <kernel/thermo/Species.h>
+#include <kernel/thermo/ThermoPolicy_CHEMKIN.h>
+#include <kernel/thermo/ThermoReader.h>
+#include <kernel/thermo/ThermoReaderPolicy_CHEMKIN.h>
 
 // Transport
-#include "kernel/transport/TransportPolicy_CHEMKIN.h"
-#include "kernel/transport/TransportReader.h"
-#include "kernel/transport/TransportReaderPolicy_CHEMKIN.h"
+#include <kernel/transport/TransportPolicy_CHEMKIN.h>
+#include <kernel/transport/TransportReader.h>
+#include <kernel/transport/TransportReaderPolicy_CHEMKIN.h>
 
 // Kinetics
-#include "kernel/kinetics/ReactionPolicy_CHEMKIN.h"
+#include <kernel/kinetics/ReactionPolicy_CHEMKIN.h>
 
 // Preprocessing
-#include "preprocessing/PreProcessorSpecies.h"
-#include "preprocessing/PreProcessorKinetics.h"
-#include "preprocessing/PreProcessorKineticsPolicy_CHEMKIN.h"
-#include "preprocessing/PreProcessorSpeciesPolicy_CHEMKIN_WithTransport.h"
+#include <preprocessing/PreProcessorSpecies.h>
+#include <preprocessing/PreProcessorKinetics.h>
+#include <preprocessing/PreProcessorKineticsPolicy_CHEMKIN.h>
+#include <preprocessing/PreProcessorSpeciesPolicy_CHEMKIN_WithTransport.h>
 
 // Maps
-#include "maps/ThermodynamicsMap_CHEMKIN.h"
-#include "maps/TransportPropertiesMap_CHEMKIN.h"
-#include "maps/KineticsMap_CHEMKIN.h"
+#include <maps/ThermodynamicsMap_CHEMKIN.h>
+#include <maps/TransportPropertiesMap_CHEMKIN.h>
+#include <maps/KineticsMap_CHEMKIN.h>
 
-//Typedefs
-typedef OpenSMOKE::Species< OpenSMOKE::ThermoPolicy_CHEMKIN, OpenSMOKE::TransportPolicy_CHEMKIN > SpeciesCHEMKIN;
-typedef OpenSMOKE::PreProcessorSpecies< OpenSMOKE::PreProcessorSpeciesPolicy_CHEMKIN_WithoutTransport<SpeciesCHEMKIN> > PreProcessorSpecies_CHEMKIN_WithoutTransport;
-typedef OpenSMOKE::PreProcessorKinetics< OpenSMOKE::PreProcessorKineticsPolicy_CHEMKIN<OpenSMOKE::ReactionPolicy_CHEMKIN> > PreProcessorKinetics_CHEMKIN;
-typedef OpenSMOKE::ThermoReader< OpenSMOKE::ThermoReaderPolicy_CHEMKIN< OpenSMOKE::ThermoPolicy_CHEMKIN > > ThermoReader_CHEMKIN;
+// Typedefs
+typedef OpenSMOKE::Species<OpenSMOKE::ThermoPolicy_CHEMKIN,
+                           OpenSMOKE::TransportPolicy_CHEMKIN>
+    SpeciesCHEMKIN;
+
+typedef OpenSMOKE::PreProcessorSpecies<
+    OpenSMOKE::PreProcessorSpeciesPolicy_CHEMKIN_WithoutTransport<SpeciesCHEMKIN> >
+    PreProcessorSpecies_CHEMKIN_WithoutTransport;
+
+typedef OpenSMOKE::PreProcessorKinetics<
+    OpenSMOKE::PreProcessorKineticsPolicy_CHEMKIN<OpenSMOKE::ReactionPolicy_CHEMKIN> >
+    PreProcessorKinetics_CHEMKIN;
+
+typedef OpenSMOKE::ThermoReader<
+    OpenSMOKE::ThermoReaderPolicy_CHEMKIN<OpenSMOKE::ThermoPolicy_CHEMKIN> >
+    ThermoReader_CHEMKIN;
 
 // Boost Library
 #include <boost/filesystem.hpp>
@@ -88,14 +78,14 @@ namespace po = boost::program_options;
 const double UNFEASIBLE_BIG_NUMBER = 1.e16;
 
 // Dakota Library
-#include "ParallelLibrary.hpp"
-#include "ProblemDescDB.hpp"
-#include "LibraryEnvironment.hpp"
-#include "DakotaModel.hpp"
-#include "DakotaInterface.hpp"
-#include "DakotaResponse.hpp"
-#include "ParamResponsePair.hpp"
-#include "DirectApplicInterface.hpp"
+#include <ParallelLibrary.hpp>
+#include <ProblemDescDB.hpp>
+#include <LibraryEnvironment.hpp>
+#include <DakotaModel.hpp>
+#include <DakotaInterface.hpp>
+#include <DakotaResponse.hpp>
+#include <ParamResponsePair.hpp>
+#include <DirectApplicInterface.hpp>
 
 #include <nlopt.hpp>
 
@@ -107,16 +97,16 @@ const double UNFEASIBLE_BIG_NUMBER = 1.e16;
 #include "grammar/grammar.h"
 #include "options/options.h"
 #include "ideal_reactors/ideal_reactors.h"
+#include "1d_flames/1d_flames.h"
 #include "DataManager.h"
 #include "InputManager.h"
 #include "OptimizedKinetics.h"
 #include "SerialDakotaInterface.h"
 #include "SimulationsInterface.h"
 
-// clang-format on
+double NLOptFunction(const vector<double> &x, vector<double> &grad, void *my_func_data);
+double OptFunction(const vector<double> &b, unsigned int fn_val);
 
-double NLOptFunction(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data);
-double OptFunction(const std::vector<double> &b, unsigned int fn_val);
 #ifdef HAVE_AMPL
 // Floating-point initialization from AMPL: switch to 53-bit rounding
 // if appropriate, to eliminate some cross-platform differences.
@@ -125,12 +115,13 @@ extern "C" void fpinit_ASL();
 
 #ifndef DAKOTA_HAVE_MPI
 #define MPI_COMM_WORLD 0
-#endif // not DAKOTA_HAVE_MPI
+#endif  // not DAKOTA_HAVE_MPI
 
 // Run a Dakota LibraryEnvironment, mode 1: parsing an input file
 void run_dakota_parse(const char *plugin_input_file, bool echo_dakota_string);
 
-void opensmoke_interface_plugin(Dakota::LibraryEnvironment &env); //,const char* plugin_input_file);
+void opensmoke_interface_plugin(
+    Dakota::LibraryEnvironment &env);  //,const char* plugin_input_file);
 
 OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
 OptiSMOKE::InputManager input(dictionaries);

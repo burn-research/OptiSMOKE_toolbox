@@ -34,14 +34,15 @@
 
 namespace OptiSMOKE{
 
-    options_kinetics::options_kinetics(){}
+    options_kinetics::options_kinetics(){
+      iTransport_ = false;
+    }
     
     options_kinetics::~options_kinetics(){}
 
     void options_kinetics::SetupFromDictionary
         (OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, 
-        std::string dictionary_name, 
-        bool iTransport)
+        std::string dictionary_name)
     {
         dictionary_manager(dictionary_name).SetGrammar(kinetics_grammar_);
 
@@ -51,7 +52,7 @@ namespace OptiSMOKE{
 
         if(dictionary_manager(dictionary_name).CheckOption("@Transport"))
         {
-            iTransport = true;
+            iTransport_ = true;
             dictionary_manager(dictionary_name).ReadPath("@Transport", chemkin_transport_);
         }
 

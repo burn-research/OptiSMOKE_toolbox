@@ -465,5 +465,4 @@ namespace OptiSMOKE
 			plugflow_non_isothermal_ = NULL;
 		}
 	}
-
 }

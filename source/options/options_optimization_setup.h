@@ -10,7 +10,7 @@
 |                                                                         |
 |            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
 |                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|					  Timoteo Dinelli <timoteo.dinelli@polimi.it>	      |
+|					  Timoteo Dinelli <timoteo.dinelli@polimi.it> |
 |-------------------------------------------------------------------------|
 |   License                                                               |
 |                                                                         |
@@ -35,40 +35,38 @@
 #ifndef OPTIONS_OPTIMIZATION_SETUP_H
 #define OPTIONS_OPTIMIZATION_SETUP_H
 
-namespace OptiSMOKE
-{
-    class options_optimization_setup
-    {
+namespace OptiSMOKE {
+class options_optimization_setup {
+ public:
+  options_optimization_setup();
 
-    public:
-        options_optimization_setup();
-        
-        ~options_optimization_setup();
-        
-        void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
-                                std::string dictionary_name);
-    
-        inline const std::string& parameter_boundaries() const {return parameter_boundaries_;};
-        inline const int& sigma_exp_ditribution() const {return sigma_exp_ditribution_;};
-        inline const int& sigma_k_distribution() const {return sigma_k_distribution_;};
-        inline const std::string& parameter_distribution() const {return parameter_distribution_;};
-        inline const bool& penalty_function() const {return penalty_function_;};
-        inline const std::string& objective_function_type() const {return objective_function_type_;};
-        inline const bool& iReactionClasses() const {return iReactionClasses_;};
+  ~options_optimization_setup();
 
-    private:
+  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
+                           std::string dictionary_name);
 
-        grammar_optimization_setup optimization_setup_grammar_;
-        std::string parameter_boundaries_;
-        int sigma_exp_ditribution_;
-        int sigma_k_distribution_;
-        std::string parameter_distribution_;
-        bool penalty_function_;
-        std::string objective_function_type_;
-        bool iReactionClasses_;
-    };
-    
-} // namespace OptiSMOKE
+  const std::string& parameter_boundaries() const { return parameter_boundaries_; };
+  const int& sigma_exp_ditribution() const { return sigma_exp_ditribution_; };
+  const int& sigma_k_distribution() const { return sigma_k_distribution_; };
+  const std::string& parameter_distribution() const { return parameter_distribution_; };
+  const bool& penalty_function() const { return penalty_function_; };
+  const std::string& objective_function_type() const {
+    return objective_function_type_;
+  };
+  const bool& iReactionClasses() const { return iReactionClasses_; };
+
+ private:
+  grammar_optimization_setup optimization_setup_grammar_;
+  std::string parameter_boundaries_;
+  int sigma_exp_ditribution_;
+  int sigma_k_distribution_;
+  std::string parameter_distribution_;
+  bool penalty_function_;
+  std::string objective_function_type_;
+  bool iReactionClasses_;
+};
+
+}  // namespace OptiSMOKE
 
 #include "options_optimization_setup.hpp"
-#endif // OPTIONS_OPTIMIZATION_SETUP_H
+#endif  // OPTIONS_OPTIMIZATION_SETUP_H

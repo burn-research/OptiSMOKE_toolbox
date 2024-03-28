@@ -1,0 +1,24 @@
+{
+    "notes": "LFS unknown source",
+    "name": "CIAO",
+    "solver": "PremixedLaminarFlame1D",
+    "QoI": "LFS",
+    "reactor_mode": "",
+    "QoI_target": "",
+    "OS_Input_File": ["cases/Flames_1_T_300_P_1.00_PHI_0.70/input.dic",
+        "cases/Flames_1_T_300_P_1.00_PHI_0.80/input.dic",
+        "cases/Flames_1_T_300_P_1.00_PHI_0.90/input.dic",
+        "cases/Flames_1_T_300_P_1.00_PHI_1.00/input.dic",
+        "cases/Flames_1_T_300_P_1.00_PHI_1.10/input.dic",
+        "cases/Flames_1_T_300_P_1.00_PHI_1.20/input.dic"
+    ],
+    "multiple_input": true,
+    "save_simulations_data": true,
+    "data":[{"abscissae_label": "phi",
+        "abscissae_unit": "-",
+        "abscissae": [0.7, 0.8, 0.9, 1.0, 1.1, 1.2],
+        "ordinates_label": "LFS",
+        "ordinates_unit": "cm/s",
+        "ordinates": [100, 200, 300, 400, 500]
+    }]
+}

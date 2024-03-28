@@ -10,7 +10,7 @@
 |                                                                         |
 |            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
 |                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|					  Timoteo Dinelli <timoteo.dinelli@polimi.it>	      |
+|					  Timoteo Dinelli <timoteo.dinelli@polimi.it> |
 |-------------------------------------------------------------------------|
 |   License                                                               |
 |                                                                         |
@@ -37,36 +37,35 @@
 
 #include "idealreactors/utilities/Grammar_RapidKineticMechanism.h"
 
-namespace OptiSMOKE
-{
-    class options_kinetics
-    {
-    public:
-        options_kinetics();
-        ~options_kinetics();
+namespace OptiSMOKE {
+class options_kinetics {
+ public:
+  options_kinetics();
+  ~options_kinetics();
 
-        void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
-                                std::string dictionary_name,
-                                bool iTransport);
+  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
+                           std::string dictionary_name);
 
-        // Access function
-        
-        inline const fs::path& chemkin_kinetics() const {return chemkin_kinetics_;};
-        inline const fs::path& chemkin_thermodynamics() const {return chemkin_thermodynamics_;};
-        inline const fs::path& chemkin_transport() const {return chemkin_transport_;};
-        inline const fs::path& chemkin_output() const {return chemkin_output_;};
+  // Access function
 
-    private:
+  const fs::path& chemkin_kinetics() const { return chemkin_kinetics_; };
+  const fs::path& chemkin_thermodynamics() const { return chemkin_thermodynamics_; };
+  const fs::path& chemkin_transport() const { return chemkin_transport_; };
+  const fs::path& chemkin_output() const { return chemkin_output_; };
+  const bool& iTransport() const {return iTransport_;};
 
-        OpenSMOKE::Grammar_RapidKineticMechanism kinetics_grammar_;
-    
-        fs::path chemkin_kinetics_;
-        fs::path chemkin_thermodynamics_;
-        fs::path chemkin_transport_;
-        fs::path chemkin_output_;
-    };
-} // namespace OptiSMOKE
+ private:
+  OpenSMOKE::Grammar_RapidKineticMechanism kinetics_grammar_;
+
+  fs::path chemkin_kinetics_;
+  fs::path chemkin_thermodynamics_;
+  fs::path chemkin_transport_;
+  fs::path chemkin_output_;
+
+  bool iTransport_;
+};
+}  // namespace OptiSMOKE
 
 #include "options_kinetics.hpp"
 
-#endif // OPTIONS_KINETICS_H
+#endif  // OPTIONS_KINETICS_H
