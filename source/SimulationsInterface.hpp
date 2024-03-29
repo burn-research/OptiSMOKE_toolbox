@@ -382,9 +382,11 @@ void SimulationsInterface::run() {
     if (solver == "PremixedLaminarFlame1D") {
       for (unsigned int j = 0; j < data_.input_paths()[i].size(); j++) {
         std::cout << "   * Input: " << data_.input_paths()[i][j] << std::endl;
+        std::cout.setstate(std::ios_base::failbit);  // Disable video output
         premixed1D[i - n_batch - n_pfr - n_psr][j].Setup(data_.input_paths()[i][j], thermo, transport, kinetics);
-        std::cout << "Ciao" << std::endl;
+        // std::cout << "Ciao" << std::endl;
         premixed1D[i - n_batch - n_pfr - n_psr][j].Solve();
+        std::cout.clear();  // Re-enable video output
         if (qoi == "LFS") {
             simulations_results_[i][0][j] = premixed1D[i][j].LFS();
         } else {

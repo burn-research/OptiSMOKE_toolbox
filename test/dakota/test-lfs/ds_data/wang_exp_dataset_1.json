@@ -5,7 +5,8 @@
     "QoI": "LFS",
     "reactor_mode": "",
     "QoI_target": "",
-    "OS_Input_File": ["cases/Flames_1_T_300_P_1.00_PHI_0.70/input.dic",
+    "OS_Input_File": [
+        "cases/Flames_1_T_300_P_1.00_PHI_0.70/input.dic",
         "cases/Flames_1_T_300_P_1.00_PHI_0.80/input.dic",
         "cases/Flames_1_T_300_P_1.00_PHI_0.90/input.dic",
         "cases/Flames_1_T_300_P_1.00_PHI_1.00/input.dic",
@@ -19,6 +20,6 @@
         "abscissae": [0.7, 0.8, 0.9, 1.0, 1.1, 1.2],
         "ordinates_label": "LFS",
         "ordinates_unit": "cm/s",
-        "ordinates": [100, 200, 300, 400, 500]
+        "ordinates": [1.776933373000e+01, 2.571571218000e+01, 3.231607575000e+01, 3.677641788000e+01, 3.799612729000e+01, 3.492155468000e+01]
     }]
 }

@@ -1,7 +1,7 @@
 Dictionary PremixedLaminarFlame1D
 {
 	@Type                   FlameSpeed;
-    @KineticsFolder        /home/anbertolino/GeneticSMOKE/Mech/GLOBAL;
+    @KineticsFolder        ../../../../mechanisms/GLOBAL/POLIMI_2020_C1C3;
 	@InletStream 			inlet-stream;
 	@OutletStream			outlet-stream;	
 	@InletVelocity          100 cm/s;	
@@ -11,8 +11,8 @@ Dictionary PremixedLaminarFlame1D
 	//@SensitivityAnalysis    sensitivity;
 	@Radiation              true;
 	@EnvironmentTemperature 300.000 K   ;
-	@Backup                Output.xml ;
-	@DontUseBackupGrid		true;	
+	@Backup                cases/Flames_1_T_300_P_1.00_PHI_0.70/Output.xml ;
+	@DontUseBackupGrid		true;
 }
 Dictionary inlet-stream
 {

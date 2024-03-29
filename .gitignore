@@ -35,4 +35,4 @@ Output
 log
 *.out
 dakota.rst
-
+compile_commands.json

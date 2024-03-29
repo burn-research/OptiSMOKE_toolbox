@@ -23,9 +23,9 @@ Dictionary OptiSMOKEpp
 	@OptimizationSetup				OptimizationSetup;
 
 	@OptimizationTarget				OptimizationTargets;
-        
+
 	@DakotaOptions					dakota_options;
-    
+
 	@CurveMatchingOptions			curve_matching_options;
 
 	@OptimizationLibrary			dakota;
@@ -37,11 +37,11 @@ Dictionary OptimizationSetup
 	@ParametersBoundaries			Narrow;
 
 	@ObjectiveFunctionType			CurveMatching;
-    
+
 	@Parameters_Distribution		uniform;
-        
+
 	@AcceptedSigmaInKDistribution	3;
-        
+
 	@SigmaExpDistribution			3;
 
 	@PenaltyFunction				true;

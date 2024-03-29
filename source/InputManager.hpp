@@ -80,7 +80,6 @@ void InputManager::ReadDictionary() {
                                                        kinetics_data_.chemkin_thermodynamics(),
                                                        kinetics_data_.chemkin_kinetics());
     } else {
-      std::cout << "Reading transport" << std::endl;
       OpenSMOKE::RapidKineticMechanismWithTransport(
           output_folder_ / kinetics_data_.chemkin_output(), kinetics_data_.chemkin_transport(),
           kinetics_data_.chemkin_thermodynamics(), kinetics_data_.chemkin_kinetics());
