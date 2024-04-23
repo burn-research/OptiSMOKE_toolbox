@@ -1,4 +1,3 @@
-#include "utilities/OptiSMOKEFunctions.h"
 namespace OptiSMOKE {
 void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
                                    OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML,
@@ -42,9 +41,8 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
   // Read inlet conditions
   {
     std::vector<std::string> list_of_strings;
-    if (dictionaries(main_dictionary_name_).CheckOption("@InletStream") == true) {
+    if (dictionaries(main_dictionary_name_).CheckOption("@InletStream") == true)
       dictionaries(main_dictionary_name_).ReadOption("@InletStream", list_of_strings);
-    }
 
     // If multiple inlet streams are specified
     if (list_of_strings.size() != 1) {
@@ -115,17 +113,11 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
     std::string units;
     if (dictionaries(main_dictionary_name_).CheckOption("@InletVelocity") == true) {
       dictionaries(main_dictionary_name_).ReadMeasure("@InletVelocity", value, units);
-      if (units == "m/s") {
-        inlet_velocity = value;
-      } else if (units == "cm/s") {
-        inlet_velocity = value / 100.;
-      } else if (units == "mm/s") {
-        inlet_velocity = value / 1000.;
-      } else if (units == "km/h") {
-        inlet_velocity = value * 10. / 36.;
-      } else {
-        OpenSMOKE::FatalErrorMessage("Unknown velocity units");
-      }
+      if (units == "m/s") inlet_velocity = value;
+      else if (units == "cm/s") inlet_velocity = value / 100.;
+      else if (units == "mm/s") inlet_velocity = value / 1000.;
+      else if (units == "km/h") inlet_velocity = value * 10. / 36.;
+      else OpenSMOKE::FatalErrorMessage("Unknown velocity units");
     }
   }
 
@@ -148,9 +140,8 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
   // OpenSMOKE::Grid1D* grid;
   {
     std::string name_of_adaptive_grid_subdictionary;
-    if (dictionaries(main_dictionary_name_).CheckOption("@Grid") == true) {
+    if (dictionaries(main_dictionary_name_).CheckOption("@Grid") == true)
       dictionaries(main_dictionary_name_).ReadDictionary("@Grid", name_of_adaptive_grid_subdictionary);
-    }
 
     grid = new OpenSMOKE::Grid1D(dictionaries(name_of_adaptive_grid_subdictionary), w);
   }
@@ -162,8 +153,7 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
   if (dictionaries(main_dictionary_name_).CheckOption("@Output") == true) {
     boost::filesystem::path output_folder;
     dictionaries(main_dictionary_name_).ReadPath("@Output", output_folder);
-    fs::path output_folder_root = "/dev/null";
-    flame_premixed->SetOutputFolder(output_folder_root);
+    flame_premixed->SetOutputFolder(output_folder);
   }
 
   // Solver type
@@ -178,9 +168,8 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
   // Soret effect
   {
     bool soret = true;
-    if (dictionaries(main_dictionary_name_).CheckOption("@Soret") == true) {
+    if (dictionaries(main_dictionary_name_).CheckOption("@Soret") == true)
       dictionaries(main_dictionary_name_).ReadBool("@Soret", soret);
-    }
     flame_premixed->SetSoret(soret);
   }
 
@@ -188,27 +177,24 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
   // theory
   {
     bool flag = false;
-    if (dictionaries(main_dictionary_name_).CheckOption("@SoretKuoCorrelation") == true) {
+    if (dictionaries(main_dictionary_name_).CheckOption("@SoretKuoCorrelation") == true)
       dictionaries(main_dictionary_name_).ReadBool("@SoretKuoCorrelation", flag);
-    }
     flame_premixed->SetSoretKuoCorrelation(flag);
   }
 
   // Frozen mass diffusivities
   {
     bool frozen_mass_diffusivities = false;
-    if (dictionaries(main_dictionary_name_).CheckOption("@FrozenMassDiffusivities") == true) {
+    if (dictionaries(main_dictionary_name_).CheckOption("@FrozenMassDiffusivities") == true)
       dictionaries(main_dictionary_name_).ReadBool("@FrozenMassDiffusivities", frozen_mass_diffusivities);
-    }
     flame_premixed->SetFrozenMassDiffusivities(frozen_mass_diffusivities);
   }
 
   // Radiative heat transfer
   bool radiative_heat_transfer = false;
   {
-    if (dictionaries(main_dictionary_name_).CheckOption("@Radiation") == true) {
+    if (dictionaries(main_dictionary_name_).CheckOption("@Radiation") == true)
       dictionaries(main_dictionary_name_).ReadBool("@Radiation", radiative_heat_transfer);
-    }
     flame_premixed->SetRadiativeHeatTransfer(radiative_heat_transfer);
   }
 
@@ -218,13 +204,9 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
     std::string units;
     if (dictionaries(main_dictionary_name_).CheckOption("@EnvironmentTemperature") == true) {
       dictionaries(main_dictionary_name_).ReadMeasure("@EnvironmentTemperature", value, units);
-      if (units == "K") {
-        value *= 1.;
-      } else if (units == "C") {
-        value += 273.15;
-      } else {
-        OpenSMOKE::FatalErrorMessage("Unknown temperature units");
-      }
+      if (units == "K") value *= 1.;
+      else if (units == "C") value += 273.15;
+      else OpenSMOKE::FatalErrorMessage("Unknown temperature units");
 
       flame_premixed->SetEnvironmentTemperature(value);
     }
@@ -233,9 +215,8 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
   // Simplified fluxes on the boundaries
   {
     bool simplified_boundary_fluxes = false;
-    if (dictionaries(main_dictionary_name_).CheckOption("@SimplifiedBoundaryFluxes") == true) {
+    if (dictionaries(main_dictionary_name_).CheckOption("@SimplifiedBoundaryFluxes") == true)
       dictionaries(main_dictionary_name_).ReadBool("@SimplifiedBoundaryFluxes", simplified_boundary_fluxes);
-    }
     flame_premixed->SetSimplifiedBoundaryFluxes(simplified_boundary_fluxes);
   }
 
@@ -254,12 +235,10 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
     if (dictionaries(main_dictionary_name_).CheckOption("@PolimiSoot") == true) {
       std::string name_of_polimisoot_analyzer_subdictionary;
       dictionaries(main_dictionary_name_).ReadDictionary("@PolimiSoot", name_of_polimisoot_analyzer_subdictionary);
-
       polimi_soot = new OpenSMOKE::PolimiSoot_Analyzer(thermodynamicsMapXML,
                                                        dictionaries(name_of_polimisoot_analyzer_subdictionary));
-
       // polimi_soot->ClassesFromXMLFile(path_kinetics_output / "kinetics.xml");
-
+      //
       // // Kinetic modifier (if requested)
       // {
       //   std::vector<unsigned int> indices;
@@ -270,7 +249,7 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
       //     modifier.Setup(*thermodynamicsMapXML, *kineticsMapXML);
       //   }
       // }
-
+      //
       // if (polimi_soot->number_sections() != 0) flame_premixed->SetPolimiSoot(polimi_soot);
     }
   }
@@ -509,20 +488,14 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
     if (flame_premixed->solver_type() == OpenSMOKE::OpenSMOKE_PremixedLaminarFlame1D::SOLVER_TYPE_FLAMESPEED) {
       fs::path path_backup;
       dictionaries(main_dictionary_name_).ReadPath("@Backup", path_backup);
+      // std::cout << "Siamo in backup" << std::endl;
+      // std::cout << path_backup << std::endl;
 
       // Set inlet and outlet values and first guess velocity according to user values
-      std::cout << "Siamo in backup" << std::endl;
-      std::cout << inlet_T[0] << std::endl;
-      std::cout << P_Pa[0] << std::endl;
-      // std::cout << inlet_omega[0] << std::endl;
-
       flame_premixed->SetInlet(inlet_T[0], P_Pa[0], inlet_omega[0]);
       flame_premixed->SetOutlet(outlet_T, outlet_omega);
-      if (inlet_velocity > 0.) {
-        flame_premixed->SetInletVelocity(inlet_velocity);
-      } else {
-        flame_premixed->SetInletMassFlux(inlet_mass_flux);
-      }
+      if (inlet_velocity > 0.) flame_premixed->SetInletVelocity(inlet_velocity);
+      else flame_premixed->SetInletMassFlux(inlet_mass_flux);
 
       // Setup the solution, accordingly to backup file
       flame_premixed->InitializeFromBackupFile(path_backup, use_userdefined_grid_for_backup);
@@ -534,11 +507,8 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
       // Set inlet and outlet values and first guess velocity according to user values
       flame_premixed->SetInlet(inlet_T[0], P_Pa[0], inlet_omega[0]);
       flame_premixed->SetOutlet(outlet_T, outlet_omega);
-      if (inlet_velocity > 0.) {
-        flame_premixed->SetInletVelocity(inlet_velocity);
-      } else {
-        flame_premixed->SetInletMassFlux(inlet_mass_flux);
-      }
+      if (inlet_velocity > 0.) flame_premixed->SetInletVelocity(inlet_velocity);
+      else flame_premixed->SetInletMassFlux(inlet_mass_flux);
 
       // Setup the solution, accordingly to backup file
       flame_premixed->InitializeFromBackupFile(path_backup, use_userdefined_grid_for_backup);
@@ -547,23 +517,15 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
     if (flame_premixed->solver_type() == OpenSMOKE::OpenSMOKE_PremixedLaminarFlame1D::SOLVER_TYPE_FLAMESPEED) {
       flame_premixed->SetInlet(inlet_T[0], P_Pa[0], inlet_omega[0]);
       flame_premixed->SetOutlet(outlet_T, outlet_omega);
-      if (inlet_velocity > 0.) {
-        flame_premixed->SetInletVelocity(inlet_velocity);
-      } else {
-        flame_premixed->SetInletMassFlux(inlet_mass_flux);
-      }
-
+      if (inlet_velocity > 0.) flame_premixed->SetInletVelocity(inlet_velocity);
+      else flame_premixed->SetInletMassFlux(inlet_mass_flux);
       flame_premixed->SetupForFlameSpeed(w);
     } else if (flame_premixed->solver_type() ==
                OpenSMOKE::OpenSMOKE_PremixedLaminarFlame1D::SOLVER_TYPE_BURNERSTABILIZED) {
       flame_premixed->SetInlet(inlet_T[0], P_Pa[0], inlet_omega[0]);
       flame_premixed->SetOutlet(outlet_T, outlet_omega);
-      if (inlet_velocity > 0.) {
-        flame_premixed->SetInletVelocity(inlet_velocity);
-      } else {
-        flame_premixed->SetInletMassFlux(inlet_mass_flux);
-      }
-
+      if (inlet_velocity > 0.) flame_premixed->SetInletVelocity(inlet_velocity);
+      else flame_premixed->SetInletMassFlux(inlet_mass_flux);
       flame_premixed->SetupForBurnerStabilized(w);
     }
   }
@@ -670,17 +632,109 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
   }
 
   if (flammability_limits->is_active() == true) {
-    OptiSMOKE::FatalErrorMessage("No flammability limit!");
+    // boost::filesystem::path output_folder_root = flame_premixed->output_folder();
+    //
+    // std::ofstream fOutput((output_folder_root / "FlameSpeeds.out").string().c_str(),
+    //                       std::ios::out);
+    // fOutput.setf(std::ios::scientific);
+    // {
+    //   fOutput << std::left;
+    //   fOutput << std::setw(8) << "Case(1)";
+    //   fOutput << std::setw(20) << "Speed[cm/s](2)";
+    //   fOutput << std::setw(20) << "Eq.Ratio(3)";
+    //   fOutput << std::setw(20) << "Pressure[atm](4)";
+    //   fOutput << std::setw(20) << "TempInlet[K](5)";
+    //   fOutput << std::setw(20) << "TempMax[K](6)";
+    //   fOutput << std::setw(20) << "Fuel_x(7)";
+    //   fOutput << std::setw(20) << "Ox_x(8)";
+    //   fOutput << std::setw(20) << "Fuel_w(9)";
+    //   fOutput << std::setw(20) << "Ox_w(10)";
+    //
+    //   {
+    //     std::vector<double> X(thermodynamicsMapXML->NumberOfSpecies());
+    //     std::vector<double> Y(thermodynamicsMapXML->NumberOfSpecies());
+    //     flammability_limits->CompositionFromEquivalenceRatio(1., X, Y);
+    //
+    //     unsigned int count = 11;
+    //     for (unsigned int j = 0; j < thermodynamicsMapXML->NumberOfSpecies(); j++) {
+    //       if (X[j] > 1e-16) {
+    //         std::string title = thermodynamicsMapXML->NamesOfSpecies()[j] + "_x";
+    //         OpenSMOKE::PrintTagOnASCIILabel(20, fOutput, title, count);
+    //       }
+    //     }
+    //     for (unsigned int j = 0; j < thermodynamicsMapXML->NumberOfSpecies(); j++) {
+    //       if (Y[j] > 1e-16) {
+    //         std::string title = thermodynamicsMapXML->NamesOfSpecies()[j] + "_w";
+    //         OpenSMOKE::PrintTagOnASCIILabel(20, fOutput, title, count);
+    //       }
+    //     }
+    //   }
+    //
+    //   fOutput << std::endl;
+    // }
+    //
+    // std::ofstream fFlammability(
+    //     (output_folder_root / "FlammabilityLimits.out").string().c_str(),
+    //     std::ios::out);
+    // fFlammability.setf(std::ios::scientific);
+    // {
+    //   fFlammability << std::left;
+    //   fFlammability << std::setw(8) << "Dummy(1)";
+    //   fFlammability << std::setw(20) << "Speed[cm/s](2)";
+    //   fFlammability << std::setw(20) << "Eq.Ratio(3)";
+    //   fFlammability << std::setw(20) << "Pressure[atm](4)";
+    //   fFlammability << std::setw(20) << "TempInlet[K](5)";
+    //   fFlammability << std::setw(20) << "TempMax[K](6)";
+    //   fFlammability << std::setw(20) << "Fuel_x(7)";
+    //   fFlammability << std::setw(20) << "Ox_x(8)";
+    //   fFlammability << std::setw(20) << "Fuel_w(9)";
+    //   fFlammability << std::setw(20) << "Ox_w(10)";
+    //
+    //   {
+    //     std::vector<double> X(thermodynamicsMapXML->NumberOfSpecies());
+    //     std::vector<double> Y(thermodynamicsMapXML->NumberOfSpecies());
+    //     flammability_limits->CompositionFromEquivalenceRatio(1., X, Y);
+    //
+    //     unsigned int count = 11;
+    //     for (unsigned int j = 0; j < thermodynamicsMapXML->NumberOfSpecies(); j++) {
+    //       if (X[j] > 1e-16) {
+    //         std::string title = thermodynamicsMapXML->NamesOfSpecies()[j] + "_x";
+    //         OpenSMOKE::PrintTagOnASCIILabel(20, fFlammability, title, count);
+    //       }
+    //     }
+    //     for (unsigned int j = 0; j < thermodynamicsMapXML->NumberOfSpecies(); j++) {
+    //       if (Y[j] > 1e-16) {
+    //         std::string title = thermodynamicsMapXML->NamesOfSpecies()[j] + "_w";
+    //         OpenSMOKE::PrintTagOnASCIILabel(20, fFlammability, title, count);
+    //       }
+    //     }
+    //   }
+    //
+    //   fFlammability << std::endl;
+    // }
   }
 }
 
 void PremixedLaminarFlame1D::Solve() {
   if (flame_premixed->solver_type() == OpenSMOKE::OpenSMOKE_PremixedLaminarFlame1D::SOLVER_TYPE_FLAMESPEED) {
     if (inlet_omega.size() == 1) {  // Solve only for a single flame
+      // time_t timerStart;
+      // time_t timerEnd;
+      //
+      // time(&timerStart);
+      std::cout << "Eccoci" << std::endl;
+      fs::path output_folder_root = "/dev/null";
+      flame_premixed->SetOutputFolder(output_folder_root);
       flame_premixed->SolveFlameSpeedFromScratch(*dae_parameters, *nls_parameters, *false_transient_parameters);
       LFS_ = flame_premixed->flame_speed() * 100.;
+      // time(&timerEnd);
+      //
+      // std::cout << "Total time: " << difftime(timerEnd, timerStart) << " s" <<
+      // std::endl;
     } else {  // Solve for several flames
+      fs::path output_folder_root = "/dev/null";
       for (unsigned int i = 0; i < inlet_omega.size(); i++) {
+        flame_premixed->SetOutputFolder(output_folder_root);
         flame_premixed->ChangeInletConditions(inlet_T[i], P_Pa[i], inlet_omega[i]);
         flame_premixed->SolveFlameSpeedFromScratch(*dae_parameters, *nls_parameters, *false_transient_parameters);
       }
@@ -689,42 +743,5 @@ void PremixedLaminarFlame1D::Solve() {
              OpenSMOKE::OpenSMOKE_PremixedLaminarFlame1D::SOLVER_TYPE_BURNERSTABILIZED) {
     flame_premixed->SolveBurnerStabilizedFromScratch(*dae_parameters, *nls_parameters, *false_transient_parameters);
   }
-
-  // CleanMemory();
 }
-
-// void PremixedLaminarFlame1D::CleanMemory() {
-//   delete grid;
-//   grid = NULL;
-
-//   delete flame_premixed;
-//   flame_premixed = NULL;
-
-//   delete flammability_limits;
-//   flammability_limits = NULL;
-
-//   delete on_the_fly_post_processing;
-//   on_the_fly_post_processing = NULL;
-
-//   delete mutlib;
-//   mutlib = NULL;
-//
-//   delete sensitivity_options;
-//   sensitivity_options = NULL;
-//
-//   delete polimi_soot;
-//   polimi_soot = NULL;
-//
-//   delete hmom;
-//   hmom = NULL;
-//
-//   delete dae_parameters;
-//   dae_parameters = NULL;
-//
-//   delete nls_parameters;
-//   nls_parameters = NULL;
-//
-//   delete false_transient_parameters;
-//   false_transient_parameters = NULL;
-// }
 }  // namespace OptiSMOKE
