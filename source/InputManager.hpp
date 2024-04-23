@@ -32,6 +32,7 @@
 |                                                                         |
 \*-----------------------------------------------------------------------*/
 
+#include "utilities/OptiSMOKEFunctions.h"
 namespace OptiSMOKE {
 
 InputManager::InputManager(OpenSMOKE::OpenSMOKE_DictionaryManager &dictionary) : dictionary_(dictionary) {
@@ -94,7 +95,7 @@ void InputManager::ReadMainDictionary() {
   dictionary_(main_dictionary_).SetGrammar(main_grammar_);
 
   dictionary_(main_dictionary_).ReadPath("@OutputFolder", output_folder_);
-  if (!fs::exists(output_folder_)) fs::create_directories(output_folder_);
+  if (!fs::exists(output_folder_)) { fs::create_directories(output_folder_); }
 
   if (dictionary_(main_dictionary_).CheckOption("@KineticsFolder")) {
     iXml_ = true;
@@ -104,10 +105,9 @@ void InputManager::ReadMainDictionary() {
   } else if (dictionary_(main_dictionary_).CheckOption("@KineticsPreProcessor")) {
     dictionary_(main_dictionary_).ReadDictionary("@KineticsPreProcessor", preprocessor_dictionary_);
     kinetics_data_.SetupFromDictionary(dictionary_, preprocessor_dictionary_);
-    // TODO
-    if(kinetics_data_.iTransport() ==  true){
-      iTransport_ = true;
-    }
+    // TODO there is a bug I had not time to investigate further the following lines are
+    // a workaround
+    if (kinetics_data_.iTransport() == true) { iTransport_ = true; }
   } else {
     OptiSMOKE::FatalErrorMessage(
         "Please provide the kinetic mechanism through one of the following keywords: "
@@ -289,19 +289,22 @@ void InputManager::DakotaInputString() {
 
 void InputManager::FromTargetToInitialParameter() {
   // lnA
-  for (int i = 0; i < optimization_target_.list_of_target_lnA().size(); i++)
+  for (int i = 0; i < optimization_target_.list_of_target_lnA().size(); i++) {
     list_of_initial_lnA_.push_back(boost::lexical_cast<std::string>(
         std::log(kineticsMapXML_->A(optimization_target_.list_of_target_lnA()[i] - 1))));
+  }
 
   // Beta
-  for (int i = 0; i < optimization_target_.list_of_target_Beta().size(); i++)
+  for (int i = 0; i < optimization_target_.list_of_target_Beta().size(); i++) {
     list_of_initial_Beta_.push_back(
         boost::lexical_cast<std::string>(kineticsMapXML_->Beta(optimization_target_.list_of_target_Beta()[i] - 1)));
+  }
 
   // E_over_R
-  for (int i = 0; i < optimization_target_.list_of_target_E_over_R().size(); i++)
+  for (int i = 0; i < optimization_target_.list_of_target_E_over_R().size(); i++) {
     list_of_initial_E_over_R.push_back(boost::lexical_cast<std::string>(
         kineticsMapXML_->E_over_R(optimization_target_.list_of_target_E_over_R()[i] - 1)));
+  }
 
   // lnA_inf
   std::vector<unsigned int> indices_of_falloff_reactions = nominalkineticsMapXML_->IndicesOfFalloffReactions();
@@ -336,6 +339,23 @@ void InputManager::FromTargetToInitialParameter() {
     int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_thirdbody_species()[i]);
     list_of_initial_thirdbody_eff_.push_back(boost::lexical_cast<std::string>(
         kineticsMapXML_->ThirdBody(optimization_target_.list_of_target_thirdbody_reactions()[i] - 1, iSpecies - 1)));
+  }
+
+  // FORD
+  for (int i = 0; i < optimization_target_.list_of_ford().size(); i++) {
+    // These int are 0-based see the minus 1
+    int iReaction = optimization_target_.list_of_ford()[i] - 1;
+    int iSpecies  = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_species_ford()[i]) - 1;
+    list_of_initial_ford_.push_back(boost::lexical_cast<std::string>(
+        kineticsMapXML_->stoichiometry().reactionorders_matrix_reactants().coeff(iReaction, iSpecies)));
+  }
+
+  // RORD
+  for (int i = 0; i < optimization_target_.list_of_rord().size(); i++) {
+    int iReaction = optimization_target_.list_of_rord()[i] - 1;
+    int iSpecies  = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_species_rord()[i]) - 1;
+    list_of_initial_rord_.push_back(boost::lexical_cast<std::string>(
+        kineticsMapXML_->stoichiometry().reactionorders_matrix_products().coeff(iReaction, iSpecies)));
   }
 }
 
@@ -705,41 +725,41 @@ void InputManager::ComputeBoundaries() {
   }
 
   // RPBRM - Alpha, Beta, Eps
-  for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++) {
-    int reaction_idx                   = optimization_target_.list_of_target_rpbmr_reactions()[i];
-    std::vector<unsigned int> coll_idx = nominalkineticsMapXML_->rpbrm_reactions(reaction_idx).i_colliders();
-    int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_rpbmr_bathgases()[i]);
-
-    list_of_nominal_lnA_rpbmr_coefficients_.push_back(boost::lexical_cast<std::string>(0));
-    list_of_min_lnA_rpbmr_coefficients_.push_back(
-        boost::lexical_cast<std::string>(-optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
-    list_of_max_lnA_rpbmr_coefficients_.push_back(
-        boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
-  }
-
-  for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++) {
-    int reaction_idx                   = optimization_target_.list_of_target_rpbmr_reactions()[i];
-    std::vector<unsigned int> coll_idx = nominalkineticsMapXML_->rpbrm_reactions(reaction_idx).i_colliders();
-    int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_rpbmr_bathgases()[i]);
-
-    list_of_nominal_Beta_rpbmr_coefficients_.push_back(boost::lexical_cast<std::string>(0));
-    list_of_min_Beta_rpbmr_coefficients_.push_back(
-        boost::lexical_cast<std::string>(-optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
-    list_of_max_Beta_rpbmr_coefficients_.push_back(
-        boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
-  }
-
-  for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++) {
-    int reaction_idx                   = optimization_target_.list_of_target_rpbmr_reactions()[i];
-    std::vector<unsigned int> coll_idx = nominalkineticsMapXML_->rpbrm_reactions(reaction_idx).i_colliders();
-    int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_rpbmr_bathgases()[i]);
-
-    list_of_nominal_E_over_R_rpbmr_coefficients_.push_back(boost::lexical_cast<std::string>(0));
-    list_of_min_E_over_R_rpbmr_coefficients_.push_back(
-        boost::lexical_cast<std::string>(-optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
-    list_of_max_E_over_R_rpbmr_coefficients_.push_back(
-        boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
-  }
+  // for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++) {
+  //   int reaction_idx                   = optimization_target_.list_of_target_rpbmr_reactions()[i];
+  //   std::vector<unsigned int> coll_idx = nominalkineticsMapXML_->rpbrm_reactions(reaction_idx).i_colliders();
+  //   int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_rpbmr_bathgases()[i]);
+  //
+  //   list_of_nominal_lnA_rpbmr_coefficients_.push_back(boost::lexical_cast<std::string>(0));
+  //   list_of_min_lnA_rpbmr_coefficients_.push_back(
+  //       boost::lexical_cast<std::string>(-optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
+  //   list_of_max_lnA_rpbmr_coefficients_.push_back(
+  //       boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
+  // }
+  //
+  // for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++) {
+  //   int reaction_idx                   = optimization_target_.list_of_target_rpbmr_reactions()[i];
+  //   std::vector<unsigned int> coll_idx = nominalkineticsMapXML_->rpbrm_reactions(reaction_idx).i_colliders();
+  //   int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_rpbmr_bathgases()[i]);
+  //
+  //   list_of_nominal_Beta_rpbmr_coefficients_.push_back(boost::lexical_cast<std::string>(0));
+  //   list_of_min_Beta_rpbmr_coefficients_.push_back(
+  //       boost::lexical_cast<std::string>(-optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
+  //   list_of_max_Beta_rpbmr_coefficients_.push_back(
+  //       boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
+  // }
+  //
+  // for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++) {
+  //   int reaction_idx                   = optimization_target_.list_of_target_rpbmr_reactions()[i];
+  //   std::vector<unsigned int> coll_idx = nominalkineticsMapXML_->rpbrm_reactions(reaction_idx).i_colliders();
+  //   int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_rpbmr_bathgases()[i]);
+  //
+  //   list_of_nominal_E_over_R_rpbmr_coefficients_.push_back(boost::lexical_cast<std::string>(0));
+  //   list_of_min_E_over_R_rpbmr_coefficients_.push_back(
+  //       boost::lexical_cast<std::string>(-optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
+  //   list_of_max_E_over_R_rpbmr_coefficients_.push_back(
+  //       boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i]));
+  // }
 }
 
 void InputManager::TargetsPreliminaryOptions() {
@@ -1013,51 +1033,94 @@ void InputManager::TargetsPreliminaryOptions() {
   }
 
   // RPBMR REACTIONS
-  name_vec_lnA_rpbmr.resize(optimization_target_.list_of_target_rpbmr_reactions().size());
-  for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++) {
-    name_vec_lnA_rpbmr[i] =
-        "'lnA_RPBMR_" + std::to_string(optimization_target_.list_of_target_rpbmr_reactions()[i]) + "'";
-    param_name_string_ += name_vec_lnA_rpbmr[i] + " ";
+  // name_vec_lnA_rpbmr.resize(optimization_target_.list_of_target_rpbmr_reactions().size());
+  // for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++) {
+  //   name_vec_lnA_rpbmr[i] =
+  //       "'lnA_RPBMR_" + std::to_string(optimization_target_.list_of_target_rpbmr_reactions()[i]) + "'";
+  //   param_name_string_ += name_vec_lnA_rpbmr[i] + " ";
+  //
+  //   // filling up the strings
+  //   initial_values_string_ += list_of_nominal_lnA_rpbmr_coefficients_[i] + " ";
+  //   lower_bounds_string_ += list_of_min_lnA_rpbmr_coefficients_[i] + " ";
+  //   upper_bounds_string_ += list_of_max_lnA_rpbmr_coefficients_[i] + " ";
+  //   std_deviations_string_ +=
+  //       boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i] / 3) + " ";
+  // }
+  //
+  // name_vec_ER_rpbmr.resize(optimization_target_.list_of_target_rpbmr_reactions().size());
+  // for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++) {
+  //   name_vec_ER_rpbmr[i] =
+  //       "'ER_RPBMR_" + std::to_string(optimization_target_.list_of_target_rpbmr_reactions()[i]) + "'";
+  //   param_name_string_ += name_vec_ER_rpbmr[i] + " ";
+  //
+  //   // filling up the strings
+  //   initial_values_string_ += list_of_nominal_E_over_R_rpbmr_coefficients_[i] + " ";
+  //   lower_bounds_string_ += list_of_min_E_over_R_rpbmr_coefficients_[i] + " ";
+  //   upper_bounds_string_ += list_of_max_E_over_R_rpbmr_coefficients_[i] + " ";
+  //   std_deviations_string_ +=
+  //       boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i] / 3) + " ";
+  // }
+  //
+  // name_vec_Beta_rpbmr.resize(optimization_target_.list_of_target_rpbmr_reactions().size());
+  // for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++) {
+  //   name_vec_Beta_rpbmr[i] =
+  //       "'Beta_RPBMR_" + std::to_string(optimization_target_.list_of_target_rpbmr_reactions()[i]) + "'";
+  //   param_name_string_ += name_vec_Beta_rpbmr[i] + " ";
+  //
+  //   // filling up the strings
+  //   initial_values_string_ += list_of_nominal_Beta_rpbmr_coefficients_[i] + " ";
+  //   lower_bounds_string_ += list_of_min_Beta_rpbmr_coefficients_[i] + " ";
+  //   upper_bounds_string_ += list_of_max_Beta_rpbmr_coefficients_[i] + " ";
+  //   std_deviations_string_ +=
+  //       boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i] / 3) + " ";
+  // }
 
-    // filling up the strings
-    initial_values_string_ += list_of_nominal_lnA_rpbmr_coefficients_[i] + " ";
-    lower_bounds_string_ += list_of_min_lnA_rpbmr_coefficients_[i] + " ";
-    upper_bounds_string_ += list_of_max_lnA_rpbmr_coefficients_[i] + " ";
-    std_deviations_string_ +=
-        boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i] / 3) + " ";
+  // FORD
+  name_vec_ford.resize(optimization_target_.list_of_ford().size());
+  for (int i = 0; i < optimization_target_.list_of_ford().size(); i++) {
+    name_vec_ford[i] = "'FORD_R" + std::to_string(optimization_target_.list_of_ford()[i]) + "_" +
+                       optimization_target_.list_of_species_ford()[i] + "'";
+    param_name_string_ += name_vec_ford[i] + " ";
+    initial_values_string_ += list_of_initial_ford_[i] + " ";
+    if (optimization_target_.list_of_min_abs_FORD().size() > 0) {
+      lower_bounds_string_ += boost::lexical_cast<std::string>(optimization_target_.list_of_min_abs_FORD()[i]) + " ";
+    } else {
+      // TODO IMPLEMENT RELATIVE CHANGES
+      OptiSMOKE::FatalErrorMessage("No relative changes implemented for FORD!");
+    }
+
+    if (optimization_target_.list_of_max_abs_FORD().size() > 0) {
+      upper_bounds_string_ += boost::lexical_cast<std::string>(optimization_target_.list_of_max_abs_FORD()[i]) + " ";
+    } else {
+      OptiSMOKE::FatalErrorMessage("No relative changes implementes for FORD!");
+    }
   }
 
-  name_vec_ER_rpbmr.resize(optimization_target_.list_of_target_rpbmr_reactions().size());
-  for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++) {
-    name_vec_ER_rpbmr[i] =
-        "'ER_RPBMR_" + std::to_string(optimization_target_.list_of_target_rpbmr_reactions()[i]) + "'";
-    param_name_string_ += name_vec_ER_rpbmr[i] + " ";
+  // RORD
+  name_vec_rord.resize(optimization_target_.list_of_rord().size());
+  for (int i = 0; i < optimization_target_.list_of_rord().size(); i++) {
+    name_vec_rord[i] = "'RORD_R" + std::to_string(optimization_target_.list_of_rord()[i]) + "_" +
+                       optimization_target_.list_of_species_rord()[i] + "'";
+    param_name_string_ += name_vec_rord[i] + " ";
+    initial_values_string_ += list_of_initial_rord_[i] + " ";
+    if (optimization_target_.list_of_min_abs_RORD().size() > 0) {
+      lower_bounds_string_ += boost::lexical_cast<std::string>(optimization_target_.list_of_min_abs_RORD()[i]) + " ";
+    } else {
+      // TODO IMPLEMENT RELATIVE CHANGES
+      OptiSMOKE::FatalErrorMessage("No relative changes implemented for RORD!");
+    }
 
-    // filling up the strings
-    initial_values_string_ += list_of_nominal_E_over_R_rpbmr_coefficients_[i] + " ";
-    lower_bounds_string_ += list_of_min_E_over_R_rpbmr_coefficients_[i] + " ";
-    upper_bounds_string_ += list_of_max_E_over_R_rpbmr_coefficients_[i] + " ";
-    std_deviations_string_ +=
-        boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i] / 3) + " ";
-  }
-
-  name_vec_Beta_rpbmr.resize(optimization_target_.list_of_target_rpbmr_reactions().size());
-  for (int i = 0; i < optimization_target_.list_of_target_rpbmr_reactions().size(); i++) {
-    name_vec_Beta_rpbmr[i] =
-        "'Beta_RPBMR_" + std::to_string(optimization_target_.list_of_target_rpbmr_reactions()[i]) + "'";
-    param_name_string_ += name_vec_Beta_rpbmr[i] + " ";
-
-    // filling up the strings
-    initial_values_string_ += list_of_nominal_Beta_rpbmr_coefficients_[i] + " ";
-    lower_bounds_string_ += list_of_min_Beta_rpbmr_coefficients_[i] + " ";
-    upper_bounds_string_ += list_of_max_Beta_rpbmr_coefficients_[i] + " ";
-    std_deviations_string_ +=
-        boost::lexical_cast<std::string>(optimization_target_.list_of_uncertainty_factors_rpbmr()[i] / 3) + " ";
+    if (optimization_target_.list_of_max_abs_RORD().size() > 0) {
+      upper_bounds_string_ += boost::lexical_cast<std::string>(optimization_target_.list_of_max_abs_RORD()[i]) + " ";
+    } else {
+      OptiSMOKE::FatalErrorMessage("No relative changes implementes for RORD!");
+    }
   }
 }
 
 void InputManager::ReadExperimentalDataFiles() {
-  // In principle this is useless
+  // In principle this is useless cause we don't need to read it here
+  // did beacause its easy
   data_manager_.ReadExperimentalData(path_experimental_data_files_);
 
   dataset_names_    = data_manager_.dataset_names();

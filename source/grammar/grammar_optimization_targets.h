@@ -141,6 +141,32 @@ class grammar_optimization_targets : public OpenSMOKE::OpenSMOKE_DictionaryGramm
         AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfTarget_BathGases_RPBMR", OpenSMOKE::VECTOR_STRING,
                                                           "TODO", false, "none", "@ListOfTarget_RPBMR_Reactions",
                                                           "none"));
+        // FORD
+        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOf_reactions_FORD", OpenSMOKE::VECTOR_INT,
+                                                          "TODO", false, "none", "none",
+                                                          "none"));
+        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOf_species_FORD", OpenSMOKE::VECTOR_STRING,
+                                                          "TODO", false, "none", "none",
+                                                          "none"));
+        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMaxAbs_FORD", OpenSMOKE::VECTOR_DOUBLE,
+                                                          "TODO", false, "none", "none",
+                                                          "none"));
+        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMinAbs_FORD", OpenSMOKE::VECTOR_DOUBLE,
+                                                          "TODO", false, "none", "none",
+                                                          "none"));
+        // RORD
+        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOf_reactions_RORD", OpenSMOKE::VECTOR_INT,
+                                                          "TODO", false, "none", "none",
+                                                          "none"));
+        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOf_species_RORD", OpenSMOKE::VECTOR_STRING,
+                                                          "TODO", false, "none", "none",
+                                                          "none"));
+        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMaxAbs_RORD", OpenSMOKE::VECTOR_DOUBLE,
+                                                          "TODO", false, "none", "none",
+                                                          "none"));
+        AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfMinAbs_RORD", OpenSMOKE::VECTOR_DOUBLE,
+                                                          "TODO", false, "none", "none",
+                                                          "none"));
 
         AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord(
             "@ReactionsClassesDefinitions", OpenSMOKE::SINGLE_PATH,

@@ -10,7 +10,7 @@
 |                                                                         |
 |            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
 |                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|					  Timoteo Dinelli <timoteo.dinelli@polimi.it> |
+|					            Timoteo Dinelli <timoteo.dinelli@polimi.it>         |
 |-------------------------------------------------------------------------|
 |   License                                                               |
 |                                                                         |
@@ -42,8 +42,7 @@ class options_dakota {
 
   ~options_dakota(){};
 
-  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
-                           std::string dictionary_name);
+  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, std::string dictionary_name);
 
   // Public access elements
   const std::string& method() const { return method_; };
@@ -64,9 +63,7 @@ class options_dakota {
 
   const std::string& max_iterations() const { return max_iterations_; };
 
-  const std::string& max_function_evaluations() const {
-    return max_function_evaluations_;
-  };
+  const std::string& max_function_evaluations() const { return max_function_evaluations_; };
 
   const std::string& convergence_tolerance() const { return convergence_tolerance_; };
 
@@ -74,9 +71,7 @@ class options_dakota {
 
   const std::string& seed() const { return seed_; };
 
-  const std::vector<std::string>& diverse_dakota_input() const {
-    return diverse_dakota_input_;
-  };
+  const std::vector<std::string>& diverse_dakota_input() const { return diverse_dakota_input_; };
 
   const std::string& division() const { return division_; };
 

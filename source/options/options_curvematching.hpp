@@ -32,36 +32,33 @@
 |                                                                         |
 \*-----------------------------------------------------------------------*/
 
-namespace OptiSMOKE
-{
-    options_curvematching::options_curvematching(){
-        use_bootstrap_ = false;
-        number_of_bootstrap_ = 0;
-    }
-    
-    options_curvematching::~options_curvematching() {}
+namespace OptiSMOKE {
+options_curvematching::options_curvematching() {
+  use_bootstrap_       = false;
+  number_of_bootstrap_ = 0;
+}
 
-    void options_curvematching::SetupFromDictionary
-                                (OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, 
-                                std::string dictionary_name) 
-    {
-        dictionary_manager(dictionary_name).SetGrammar(grammar_curve_matching_);
+options_curvematching::~options_curvematching() {}
 
-        if (dictionary_manager(dictionary_name).CheckOption("@NumberOfBootstrapVariations"))
-			dictionary_manager(dictionary_name).ReadInt("@NumberOfBootstrapVariations", number_of_bootstrap_);
+void options_curvematching::SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
+                                                std::string dictionary_name) {
+  dictionary_manager(dictionary_name).SetGrammar(grammar_curve_matching_);
 
-        if (dictionary_manager(dictionary_name).CheckOption("@UseBootStrap"))
-			dictionary_manager(dictionary_name).ReadBool("@UseBootStrap", use_bootstrap_);
+  if (dictionary_manager(dictionary_name).CheckOption("@NumberOfBootstrapVariations"))
+    dictionary_manager(dictionary_name).ReadInt("@NumberOfBootstrapVariations", number_of_bootstrap_);
 
-        CheckCurveMatchingOptions();
-    }
-    
-    void options_curvematching::CheckCurveMatchingOptions(){
-        if(use_bootstrap_){
-            if(number_of_bootstrap_ < 2)
-                OptiSMOKE::FatalErrorMessage("Use bootstrap true implies that the number of bootstrap variations is greter than one!");
-        }
-    }
+  if (dictionary_manager(dictionary_name).CheckOption("@UseBootStrap"))
+    dictionary_manager(dictionary_name).ReadBool("@UseBootStrap", use_bootstrap_);
 
+  CheckCurveMatchingOptions();
+}
 
-} // namespace OptiSMOKE
+void options_curvematching::CheckCurveMatchingOptions() {
+  if (use_bootstrap_) {
+    if (number_of_bootstrap_ < 2)
+      OptiSMOKE::FatalErrorMessage(
+          "Use bootstrap true implies that the number of bootstrap variations is greter than one!");
+  }
+}
+
+}  // namespace OptiSMOKE

@@ -42,8 +42,7 @@ class options_curvematching {
 
   ~options_curvematching();
 
-  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
-                           std::string dictionary_name);
+  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, std::string dictionary_name);
 
   const int& number_of_bootstrap() const { return number_of_bootstrap_; };
 

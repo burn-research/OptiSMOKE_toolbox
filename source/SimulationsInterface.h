@@ -22,8 +22,7 @@ class SimulationsInterface {
   void PrepareASCIIFile(std::ofstream &fOutput, const fs::path output_file_ascii,
                         const std::vector<std::string> &names);
 
-  void PrintASCIIFile(std::ofstream &fOutput, const int eval_nr,
-                      const std::vector<double> &b, const double fn_val);
+  void PrintASCIIFile(std::ofstream &fOutput, const int eval_nr, const std::vector<double> &b, const double fn_val);
 
  private:
   const OptiSMOKE::InputManager &data_;
@@ -53,9 +52,8 @@ class SimulationsInterface {
 
   std::vector<std::vector<std::vector<double>>> simulations_results_;
 
-  std::vector<double> T_span = {300,  400,  500,  600,  700,  800,  900,  1000,
-                                1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800,
-                                1900, 2000, 2100, 2200, 2300, 2400, 2500};
+  std::vector<double> T_span = {300,  400,  500,  600,  700,  800,  900,  1000, 1100, 1200, 1300, 1400,
+                                1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400, 2500};
 
   void ChangeDirectParamaters(std::string type, int index, double parameter);
 
@@ -65,8 +63,10 @@ class SimulationsInterface {
 
   void ChangePLOGReactions(std::string type, unsigned int index, double parameter);
 
-  void ChangeRPBRMReactions(std::string type, unsigned int index, double parameter,
-                            unsigned int index_coll);
+  void ChangeRPBRMReactions(std::string type, unsigned int index, double parameter, unsigned int index_coll);
+
+  void ChangeReactionOrder(const std::string &type, const int reaction_index, const std::string &species_name,
+                                 const double parameter) ;
 };
 }  // namespace OptiSMOKE
 

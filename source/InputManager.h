@@ -8,9 +8,9 @@
 |          | |                                                            |
 |          |_|                                                            |
 |                                                                         |
-|            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
+|            Authors: Magnus Fürst     <magnus.furst@ulb.ac.be>           |
 |                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|					  Timoteo Dinelli <timoteo.dinelli@polimi.it> |
+|					            Timoteo Dinelli  <timoteo.dinelli@polimi.it>        |
 |-------------------------------------------------------------------------|
 |   License                                                               |
 |                                                                         |
@@ -288,6 +288,12 @@ class InputManager {
   std::vector<std::vector<std::vector<double>>> expdata_x_;
   std::vector<std::vector<std::vector<double>>> expdata_y_;
   std::vector<std::vector<std::vector<double>>> uncertainty_;
+
+  std::vector<std::string> list_of_initial_ford_;
+  std::vector<std::string> list_of_initial_rord_;
+
+  std::vector<std::string> name_vec_ford;
+  std::vector<std::string> name_vec_rord;
 };
 }  // namespace OptiSMOKE
 

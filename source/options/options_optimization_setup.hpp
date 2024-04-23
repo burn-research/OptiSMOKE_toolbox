@@ -32,41 +32,37 @@
 |                                                                         |
 \*-----------------------------------------------------------------------*/
 
-namespace OptiSMOKE
-{
-    options_optimization_setup::options_optimization_setup()
-    {
-        penalty_function_ = true;
-        iReactionClasses_ = false;
-    }
-    
-    options_optimization_setup::~options_optimization_setup(){}
+namespace OptiSMOKE {
+options_optimization_setup::options_optimization_setup() {
+  penalty_function_ = true;
+  iReactionClasses_ = false;
+}
 
-    void options_optimization_setup::SetupFromDictionary
-                (OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
-                std::string dictionary_name)
-    {
-        dictionary_manager(dictionary_name).SetGrammar(optimization_setup_grammar_);
-        
-        if (dictionary_manager(dictionary_name).CheckOption("@ParametersBoundaries"))
-			dictionary_manager(dictionary_name).ReadString("@ParametersBoundaries", parameter_boundaries_);
+options_optimization_setup::~options_optimization_setup() {}
 
-        if (dictionary_manager(dictionary_name).CheckOption("@SigmaExpDistribution"))
-			dictionary_manager(dictionary_name).ReadInt("@SigmaExpDistribution", sigma_exp_ditribution_);
+void options_optimization_setup::SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
+                                                     std::string dictionary_name) {
+  dictionary_manager(dictionary_name).SetGrammar(optimization_setup_grammar_);
 
-        if (dictionary_manager(dictionary_name).CheckOption("@AcceptedSigmaInKDistribution"))
-			dictionary_manager(dictionary_name).ReadInt("@AcceptedSigmaInKDistribution", sigma_k_distribution_);
+  if (dictionary_manager(dictionary_name).CheckOption("@ParametersBoundaries"))
+    dictionary_manager(dictionary_name).ReadString("@ParametersBoundaries", parameter_boundaries_);
 
-        if (dictionary_manager(dictionary_name).CheckOption("@Parameters_Distribution"))
-			dictionary_manager(dictionary_name).ReadString("@Parameters_Distribution", parameter_distribution_);
+  if (dictionary_manager(dictionary_name).CheckOption("@SigmaExpDistribution"))
+    dictionary_manager(dictionary_name).ReadInt("@SigmaExpDistribution", sigma_exp_ditribution_);
 
-        if (dictionary_manager(dictionary_name).CheckOption("@PenaltyFunction"))
-			dictionary_manager(dictionary_name).ReadBool("@PenaltyFunction", penalty_function_);
+  if (dictionary_manager(dictionary_name).CheckOption("@AcceptedSigmaInKDistribution"))
+    dictionary_manager(dictionary_name).ReadInt("@AcceptedSigmaInKDistribution", sigma_k_distribution_);
 
-        if (dictionary_manager(dictionary_name).CheckOption("@ObjectiveFunctionType"))
-			dictionary_manager(dictionary_name).ReadString("@ObjectiveFunctionType", objective_function_type_);
+  if (dictionary_manager(dictionary_name).CheckOption("@Parameters_Distribution"))
+    dictionary_manager(dictionary_name).ReadString("@Parameters_Distribution", parameter_distribution_);
 
-        if (dictionary_manager(dictionary_name).CheckOption("@ReactionsClasses"))
-			dictionary_manager(dictionary_name).ReadBool("@ReactionsClasses", iReactionClasses_);
-    }
-} // namespace OptiSMOKE
+  if (dictionary_manager(dictionary_name).CheckOption("@PenaltyFunction"))
+    dictionary_manager(dictionary_name).ReadBool("@PenaltyFunction", penalty_function_);
+
+  if (dictionary_manager(dictionary_name).CheckOption("@ObjectiveFunctionType"))
+    dictionary_manager(dictionary_name).ReadString("@ObjectiveFunctionType", objective_function_type_);
+
+  if (dictionary_manager(dictionary_name).CheckOption("@ReactionsClasses"))
+    dictionary_manager(dictionary_name).ReadBool("@ReactionsClasses", iReactionClasses_);
+}
+}  // namespace OptiSMOKE

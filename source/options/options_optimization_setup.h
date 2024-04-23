@@ -42,17 +42,14 @@ class options_optimization_setup {
 
   ~options_optimization_setup();
 
-  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
-                           std::string dictionary_name);
+  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, std::string dictionary_name);
 
   const std::string& parameter_boundaries() const { return parameter_boundaries_; };
   const int& sigma_exp_ditribution() const { return sigma_exp_ditribution_; };
   const int& sigma_k_distribution() const { return sigma_k_distribution_; };
   const std::string& parameter_distribution() const { return parameter_distribution_; };
   const bool& penalty_function() const { return penalty_function_; };
-  const std::string& objective_function_type() const {
-    return objective_function_type_;
-  };
+  const std::string& objective_function_type() const { return objective_function_type_; };
   const bool& iReactionClasses() const { return iReactionClasses_; };
 
  private:

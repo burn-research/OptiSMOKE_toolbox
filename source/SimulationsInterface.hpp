@@ -382,13 +382,13 @@ void SimulationsInterface::run() {
     if (solver == "PremixedLaminarFlame1D") {
       for (unsigned int j = 0; j < data_.input_paths()[i].size(); j++) {
         std::cout << "   * Input: " << data_.input_paths()[i][j] << std::endl;
-        std::cout.setstate(std::ios_base::failbit);  // Disable video output
+        // std::cout.setstate(std::ios_base::failbit);  // Disable video output
         premixed1D[i - n_batch - n_pfr - n_psr][j].Setup(data_.input_paths()[i][j], thermo, transport, kinetics);
         // std::cout << "Ciao" << std::endl;
         premixed1D[i - n_batch - n_pfr - n_psr][j].Solve();
-        std::cout.clear();  // Re-enable video output
+        // std::cout.clear();  // Re-enable video output
         if (qoi == "LFS") {
-            simulations_results_[i][0][j] = premixed1D[i][j].LFS();
+          simulations_results_[i][0][j] = premixed1D[i][j].LFS();
         } else {
           OptiSMOKE::FatalErrorMessage("Unknown QoI: " + qoi);
         }
@@ -507,7 +507,8 @@ bool SimulationsInterface::CheckKineticConstasts() {
       double Beta_falloff_inf_j     = data_.kineticsMapXML()->Beta_falloff_inf(pos_FallOff_Reaction);
       double E_over_R_falloff_inf_j = data_.kineticsMapXML()->E_over_R_falloff_inf(pos_FallOff_Reaction);
 
-      k_check_inf[i] = A_falloff_inf_j * std::pow(T_span[i], Beta_falloff_inf_j) * std::exp((-1 * E_over_R_falloff_inf_j) / T_span[i]);
+      k_check_inf[i] = A_falloff_inf_j * std::pow(T_span[i], Beta_falloff_inf_j) *
+                       std::exp((-1 * E_over_R_falloff_inf_j) / T_span[i]);
 
       if ((k_check_inf[i] <= k_lower_inf[j][i]) || (k_check_inf[i] >= k_upper_inf[j][i])) {
         std::cout << "    * Violation for reaction: ";
@@ -649,12 +650,30 @@ void SimulationsInterface::SubstituteKineticParameters(const std::vector<double>
       count += 1;
     }
   }
+
+  // FORD
+  if (data_.optimization_target().list_of_ford().size() != 0) {
+    for (unsigned int i = 0; i < data_.optimization_target().list_of_ford().size(); i++) {
+      ChangeReactionOrder("FORD", data_.optimization_target().list_of_ford()[i],
+                          data_.optimization_target().list_of_species_ford()[i], c_vars[count]);
+      count += 1;
+    }
+  }
+
+  // RORD
+  if (data_.optimization_target().list_of_rord().size() != 0) {
+    for (unsigned int i = 0; i < data_.optimization_target().list_of_rord().size(); i++) {
+      ChangeReactionOrder("RORD", data_.optimization_target().list_of_rord()[i],
+                          data_.optimization_target().list_of_species_rord()[i], c_vars[count]);
+      count += 1;
+    }
+  }
 }
 
 void SimulationsInterface::ChangeDirectParamaters(std::string type, int index, double parameter) {
-  if (type == "lnA") data_.kineticsMapXML_->Set_A(index - 1, std::exp(parameter));
-  if (type == "Beta") data_.kineticsMapXML_->Set_Beta(index - 1, parameter);
-  if (type == "E_over_R") data_.kineticsMapXML_->Set_E_over_R(index - 1, parameter);
+  if (type == "lnA") { data_.kineticsMapXML_->Set_A(index - 1, std::exp(parameter)); }
+  if (type == "Beta") { data_.kineticsMapXML_->Set_Beta(index - 1, parameter); }
+  if (type == "E_over_R") { data_.kineticsMapXML_->Set_E_over_R(index - 1, parameter); }
 }
 
 void SimulationsInterface::ChangeFallOffParamaters(std::string type, int index, double parameter) {
@@ -663,9 +682,9 @@ void SimulationsInterface::ChangeFallOffParamaters(std::string type, int index, 
       std::find(indices_of_falloff_reactions.begin(), indices_of_falloff_reactions.end(), index) -
       indices_of_falloff_reactions.begin();
 
-  if (type == "lnA") data_.kineticsMapXML_->Set_A_falloff_inf(pos_FallOff_Reaction, std::exp(parameter));
-  if (type == "Beta") data_.kineticsMapXML_->Set_Beta_falloff_inf(pos_FallOff_Reaction, parameter);
-  if (type == "E_over_R") data_.kineticsMapXML_->Set_E_over_R_falloff_inf(pos_FallOff_Reaction, parameter);
+  if (type == "lnA") { data_.kineticsMapXML_->Set_A_falloff_inf(pos_FallOff_Reaction, std::exp(parameter)); }
+  if (type == "Beta") { data_.kineticsMapXML_->Set_Beta_falloff_inf(pos_FallOff_Reaction, parameter); }
+  if (type == "E_over_R") { data_.kineticsMapXML_->Set_E_over_R_falloff_inf(pos_FallOff_Reaction, parameter); }
 }
 
 void SimulationsInterface::ChangeThirdBodyEfficiencies(unsigned int i, std::string name, double parameter) {
@@ -676,6 +695,12 @@ void SimulationsInterface::ChangeThirdBodyEfficiencies(unsigned int i, std::stri
   // Finding position of the third body species to be changed
   // Changing the value of the thirdbody species
   data_.kineticsMapXML_->Set_ThirdBody(i - 1, iSpecies - 1, parameter);
+}
+
+void SimulationsInterface::ChangeReactionOrder(const std::string &type, const int reaction_index,
+                                               const std::string &species_name, const double parameter) {
+  int iSpecies = data_.thermodynamicsMapXML_->IndexOfSpecies(species_name);
+  data_.kineticsMapXML_->SetReactionOrder(type, reaction_index - 1, iSpecies - 1, parameter);
 }
 
 void SimulationsInterface::ChangePLOGReactions(std::string type, unsigned int index, double parameter) {
@@ -718,7 +743,7 @@ void SimulationsInterface::ChangeRPBRMReactions(std::string type, unsigned int i
   //     std::find(data_.nominalkineticsMapXML()->IndicesOfRPBMR().begin(),
   //               data_.nominalkineticsMapXML()->IndicesOfRPBMR().end(), index) -
   //     data_.nominalkineticsMapXML()->IndicesOfRPBMR().begin();
-  //
+
   // std::vector<unsigned int> coll_idx =
   //     data_.nominalkineticsMapXML_->rpbrm_reactions(pos_rpbrm_reaction).i_colliders();
   // int iSpecies =
@@ -753,7 +778,7 @@ void SimulationsInterface::ChangeRPBRMReactions(std::string type, unsigned int i
   //     std::cout << "New A: " << std::exp(new_lnA_) << std::endl;
   //   }
   // }
-  //
+
   // if (type == "Beta") {
   //   for (int k = 0; k < data_.kineticsMapXML_->rpbrm_reactions(pos_rpbrm_reaction)
   //                           .kappaMu_PLOG(pos_rpbrm_coll)
@@ -770,7 +795,7 @@ void SimulationsInterface::ChangeRPBRMReactions(std::string type, unsigned int i
   //         .Set_Beta(k, 0, new_Beta_);
   //   }
   // }
-  //
+
   // if (type == "E_over_R") {
   //   for (int k = 0; k < data_.kineticsMapXML_->rpbrm_reactions(pos_rpbrm_reaction)
   //                           .kappaMu_PLOG(pos_rpbrm_coll)
@@ -795,8 +820,9 @@ void SimulationsInterface::PrepareASCIIFile(std::ofstream &fOutput, const fs::pa
 
   unsigned int counter = 1;
   OpenSMOKE::PrintTagOnASCIILabel(40, fOutput, "Eval-number", counter);
-  for (unsigned int i = 0; i < names.size(); i++)
+  for (unsigned int i = 0; i < names.size(); i++) {
     OpenSMOKE::PrintTagOnASCIILabel(40, fOutput, names[i], counter);
+  }
 
   OpenSMOKE::PrintTagOnASCIILabel(40, fOutput, "Obj-Function", counter);
 
@@ -808,8 +834,9 @@ void SimulationsInterface::PrintASCIIFile(std::ofstream &fOutput, const int eval
   fOutput.setf(std::ios::scientific);
   fOutput << std::setw(40) << std::left << eval_nr;
 
-  for (unsigned int i = 0; i < b.size(); i++)
+  for (unsigned int i = 0; i < b.size(); i++) {
     fOutput << std::setw(40) << std::left << b[i];
+  }
 
   fOutput << std::setw(40) << std::left << fn_val;
   fOutput << std::endl;

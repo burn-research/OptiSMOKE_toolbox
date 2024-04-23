@@ -87,6 +87,7 @@ const double UNFEASIBLE_BIG_NUMBER = 1.e16;
 #include <ParamResponsePair.hpp>
 #include <DirectApplicInterface.hpp>
 
+// NLopt++
 #include <nlopt.hpp>
 
 // Curve Matching

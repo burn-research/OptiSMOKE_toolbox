@@ -35,6 +35,7 @@
 #ifndef OPTIONS_OPTIMIZATION_TARGET_H
 #define OPTIONS_OPTIMIZATION_TARGET_H
 
+#include <vector>
 namespace OptiSMOKE {
 class options_optimization_target {
  public:
@@ -42,17 +43,12 @@ class options_optimization_target {
 
   ~options_optimization_target();
 
-  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager &dictionary_manager,
-                           std::string dictionary_name);
+  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager &dictionary_manager, std::string dictionary_name);
 
   const int &number_of_batch_reactor() const { return numberOfBatchReactor_; };
   const int &number_of_plug_flow_reactor() const { return numberOfPlugFlowReactor_; };
-  const int &number_of_perfectly_stirred_reactor() const {
-    return numberOfPerfectlyStirredReactor_;
-  };
-  const int &number_of_premixed_laminar_flame() const {
-    return numberOfPremixedLaminarFlame_;
-  };
+  const int &number_of_perfectly_stirred_reactor() const { return numberOfPerfectlyStirredReactor_; };
+  const int &number_of_premixed_laminar_flame() const { return numberOfPremixedLaminarFlame_; };
   const int &number_of_counter_flow_flame() const { return numberOfCounterFlowFlame_; };
   const int &number_of_parameters() const { return numberOfParameters_; };
   const int &numberOfKTExperiments() const { return numberOfKTExperiments_; };
@@ -60,23 +56,13 @@ class options_optimization_target {
 
   const std::vector<int> &list_of_target_lnA() const { return list_of_target_lnA_; };
   const std::vector<int> &list_of_target_Beta() const { return list_of_target_Beta_; };
-  const std::vector<int> &list_of_target_E_over_R() const {
-    return list_of_target_E_over_R_;
-  };
+  const std::vector<int> &list_of_target_E_over_R() const { return list_of_target_E_over_R_; };
 
-  const std::vector<int> &list_of_target_lnA_inf() const {
-    return list_of_target_lnA_inf_;
-  };
-  const std::vector<int> &list_of_target_Beta_inf() const {
-    return list_of_target_Beta_inf_;
-  };
-  const std::vector<int> &list_of_target_E_over_R_inf() const {
-    return list_of_target_E_over_R_inf_;
-  };
+  const std::vector<int> &list_of_target_lnA_inf() const { return list_of_target_lnA_inf_; };
+  const std::vector<int> &list_of_target_Beta_inf() const { return list_of_target_Beta_inf_; };
+  const std::vector<int> &list_of_target_E_over_R_inf() const { return list_of_target_E_over_R_inf_; };
 
-  const std::vector<int> &list_of_target_thirdbody_reactions() const {
-    return list_of_target_thirdbody_reactions_;
-  };
+  const std::vector<int> &list_of_target_thirdbody_reactions() const { return list_of_target_thirdbody_reactions_; };
   const std::vector<std::string> &list_of_target_thirdbody_species() const {
     return list_of_target_thirdbody_species_;
   };
@@ -88,87 +74,53 @@ class options_optimization_target {
     return list_of_uncertainty_factors_classic_plog_;
   };
 
-  const std::vector<int> &list_of_target_uncertainty_factors() const {
-    return list_of_target_uncertainty_factors_;
-  };
-  const std::vector<double> &list_of_uncertainty_factors() const {
-    return list_of_uncertainty_factors_;
-  };
+  const std::vector<int> &list_of_target_uncertainty_factors() const { return list_of_target_uncertainty_factors_; };
+  const std::vector<double> &list_of_uncertainty_factors() const { return list_of_uncertainty_factors_; };
 
   const std::vector<int> &list_of_target_uncertainty_factors_inf() const {
     return list_of_target_uncertainty_factors_inf_;
   };
-  const std::vector<double> &list_of_uncertainty_factors_inf() const {
-    return list_of_uncertainty_factors_inf_;
-  };
+  const std::vector<double> &list_of_uncertainty_factors_inf() const { return list_of_uncertainty_factors_inf_; };
 
-  const std::vector<double> &list_of_min_rel_lnA() const {
-    return list_of_min_rel_lnA_;
-  };
-  const std::vector<double> &list_of_max_rel_lnA() const {
-    return list_of_max_rel_lnA_;
-  };
+  const std::vector<double> &list_of_min_rel_lnA() const { return list_of_min_rel_lnA_; };
+  const std::vector<double> &list_of_max_rel_lnA() const { return list_of_max_rel_lnA_; };
 
-  const std::vector<double> &list_of_min_rel_Beta() const {
-    return list_of_min_rel_Beta_;
-  };
-  const std::vector<double> &list_of_max_rel_Beta() const {
-    return list_of_max_rel_Beta_;
-  };
+  const std::vector<double> &list_of_min_rel_Beta() const { return list_of_min_rel_Beta_; };
+  const std::vector<double> &list_of_max_rel_Beta() const { return list_of_max_rel_Beta_; };
 
-  const std::vector<double> &list_of_min_rel_E_over_R() const {
-    return list_of_min_rel_E_over_R_;
-  };
-  const std::vector<double> &list_of_max_rel_E_over_R() const {
-    return list_of_max_rel_E_over_R_;
-  };
+  const std::vector<double> &list_of_min_rel_E_over_R() const { return list_of_min_rel_E_over_R_; };
+  const std::vector<double> &list_of_max_rel_E_over_R() const { return list_of_max_rel_E_over_R_; };
 
-  const std::vector<double> &list_of_min_rel_lnA_inf() const {
-    return list_of_min_rel_lnA_inf_;
-  };
-  const std::vector<double> &list_of_max_rel_lnA_inf() const {
-    return list_of_max_rel_lnA_inf_;
-  };
+  const std::vector<double> &list_of_min_rel_lnA_inf() const { return list_of_min_rel_lnA_inf_; };
+  const std::vector<double> &list_of_max_rel_lnA_inf() const { return list_of_max_rel_lnA_inf_; };
 
-  const std::vector<double> &list_of_min_rel_Beta_inf() const {
-    return list_of_min_rel_Beta_inf_;
-  };
-  const std::vector<double> &list_of_max_rel_Beta_inf() const {
-    return list_of_max_rel_Beta_inf_;
-  };
+  const std::vector<double> &list_of_min_rel_Beta_inf() const { return list_of_min_rel_Beta_inf_; };
+  const std::vector<double> &list_of_max_rel_Beta_inf() const { return list_of_max_rel_Beta_inf_; };
 
-  const std::vector<double> &list_of_min_rel_E_over_R_inf() const {
-    return list_of_min_rel_E_over_R_inf_;
-  };
-  const std::vector<double> &list_of_max_rel_E_over_R_inf() const {
-    return list_of_max_rel_E_over_R_inf_;
-  };
+  const std::vector<double> &list_of_min_rel_E_over_R_inf() const { return list_of_min_rel_E_over_R_inf_; };
+  const std::vector<double> &list_of_max_rel_E_over_R_inf() const { return list_of_max_rel_E_over_R_inf_; };
 
-  const std::vector<double> &list_of_min_rel_thirdbody_eff() const {
-    return list_of_min_rel_thirdbody_eff_;
-  };
-  const std::vector<double> &list_of_max_rel_thirdbody_eff() const {
-    return list_of_max_rel_thirdbody_eff_;
-  };
+  const std::vector<double> &list_of_min_rel_thirdbody_eff() const { return list_of_min_rel_thirdbody_eff_; };
+  const std::vector<double> &list_of_max_rel_thirdbody_eff() const { return list_of_max_rel_thirdbody_eff_; };
 
-  const std::vector<std::string> &list_of_min_abs_thirdbody_eff() const {
-    return list_of_min_abs_thirdbody_eff_;
-  };
-  const std::vector<std::string> &list_of_max_abs_thirdbody_eff() const {
-    return list_of_max_abs_thirdbody_eff_;
-  };
+  const std::vector<std::string> &list_of_min_abs_thirdbody_eff() const { return list_of_min_abs_thirdbody_eff_; };
+  const std::vector<std::string> &list_of_max_abs_thirdbody_eff() const { return list_of_max_abs_thirdbody_eff_; };
 
-  const std::vector<int> &list_of_target_rpbmr_reactions() const {
-    return list_of_target_rpbmr_reactions_;
-  };
+  const std::vector<int> &list_of_target_rpbmr_reactions() const { return list_of_target_rpbmr_reactions_; };
 
-  const std::vector<double> &list_of_uncertainty_factors_rpbmr() const {
-    return list_of_uncertainty_factors_rpbmr_;
-  };
+  const std::vector<double> &list_of_uncertainty_factors_rpbmr() const { return list_of_uncertainty_factors_rpbmr_; };
 
-  const std::vector<std::string> &list_of_target_rpbmr_bathgases() const {
-    return list_of_target_rpbmr_bathgases_;
-  }
+  const std::vector<std::string> &list_of_target_rpbmr_bathgases() const { return list_of_target_rpbmr_bathgases_; }
+
+  const std::vector<int> &list_of_ford() const { return list_of_ford_; };
+  const std::vector<std::string> &list_of_species_ford() const { return list_of_species_ford_; };
+  const std::vector<double> &list_of_max_abs_FORD() const { return list_of_max_abs_FORD_; };
+  const std::vector<double> &list_of_min_abs_FORD() const { return list_of_min_abs_FORD_; };
+
+  const std::vector<int> &list_of_rord() const { return list_of_rord_; };
+  const std::vector<std::string> &list_of_species_rord() const { return list_of_species_rord_; };
+  const std::vector<double> &list_of_max_abs_RORD() const { return list_of_max_abs_RORD_; };
+  const std::vector<double> &list_of_min_abs_RORD() const { return list_of_min_abs_RORD_; };
 
  private:
   grammar_optimization_targets optimization_target_grammar_;
@@ -251,6 +203,18 @@ class options_optimization_target {
 
   std::vector<std::string> list_of_min_abs_thirdbody_eff_;
   std::vector<std::string> list_of_max_abs_thirdbody_eff_;
+
+  // FORD
+  std::vector<int> list_of_ford_;
+  std::vector<std::string> list_of_species_ford_;
+  std::vector<double> list_of_max_abs_FORD_;
+  std::vector<double> list_of_min_abs_FORD_;
+
+  // RORD
+  std::vector<int> list_of_rord_;
+  std::vector<std::string> list_of_species_rord_;
+  std::vector<double> list_of_max_abs_RORD_;
+  std::vector<double> list_of_min_abs_RORD_;
 };
 }  // namespace OptiSMOKE
 

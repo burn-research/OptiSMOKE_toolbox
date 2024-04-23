@@ -43,8 +43,7 @@ class options_kinetics {
   options_kinetics();
   ~options_kinetics();
 
-  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
-                           std::string dictionary_name);
+  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, std::string dictionary_name);
 
   // Access function
 
@@ -52,7 +51,7 @@ class options_kinetics {
   const fs::path& chemkin_thermodynamics() const { return chemkin_thermodynamics_; };
   const fs::path& chemkin_transport() const { return chemkin_transport_; };
   const fs::path& chemkin_output() const { return chemkin_output_; };
-  const bool& iTransport() const {return iTransport_;};
+  const bool& iTransport() const { return iTransport_; };
 
  private:
   OpenSMOKE::Grammar_RapidKineticMechanism kinetics_grammar_;

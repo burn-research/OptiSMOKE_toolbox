@@ -1,9 +1,9 @@
+#include "1d_flames/premixed/PremixedLaminarFlame1D.h"
 namespace OptiSMOKE {
 void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
                                    OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML,
                                    OpenSMOKE::TransportPropertiesMap_CHEMKIN* transportMapXML,
                                    OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML) {
-
   // Pointers
   thermodynamicsMapXML_ = thermodynamicsMapXML;
   kineticsMapXML_       = kineticsMapXML;
@@ -51,7 +51,7 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
       P_Pa.resize(list_of_strings.size());
       inlet_omega.resize(list_of_strings.size());
       equivalence_ratios.resize(list_of_strings.size());
-      for (unsigned int i = 0; i < list_of_strings.size(); i++){
+      for (unsigned int i = 0; i < list_of_strings.size(); i++) {
         GetGasStatusFromDictionary(dictionaries(list_of_strings[i]), *thermodynamicsMapXML, inlet_T[i], P_Pa[i],
                                    inlet_omega[i]);
       }
@@ -723,11 +723,10 @@ void PremixedLaminarFlame1D::Solve() {
       // time_t timerEnd;
       //
       // time(&timerStart);
-      std::cout << "Eccoci" << std::endl;
       fs::path output_folder_root = "/dev/null";
       flame_premixed->SetOutputFolder(output_folder_root);
       flame_premixed->SolveFlameSpeedFromScratch(*dae_parameters, *nls_parameters, *false_transient_parameters);
-      LFS_ = flame_premixed->flame_speed()*100.;
+      LFS_ = flame_premixed->flame_speed() * 100.;
       // time(&timerEnd);
       //
       // std::cout << "Total time: " << difftime(timerEnd, timerStart) << " s" <<
@@ -744,5 +743,42 @@ void PremixedLaminarFlame1D::Solve() {
              OpenSMOKE::OpenSMOKE_PremixedLaminarFlame1D::SOLVER_TYPE_BURNERSTABILIZED) {
     flame_premixed->SolveBurnerStabilizedFromScratch(*dae_parameters, *nls_parameters, *false_transient_parameters);
   }
+
+  // CleanMemory();
 }
+
+// void PremixedLaminarFlame1D::CleanMemory() {
+//   delete grid;
+//   grid = NULL;
+//
+//   delete flame_premixed;
+//   flame_premixed = NULL;
+//
+//   delete flammability_limits;
+//   flammability_limits = NULL;
+//
+//   delete on_the_fly_post_processing;
+//   on_the_fly_post_processing = NULL;
+//
+//   delete mutlib;
+//   mutlib = NULL;
+//
+//   delete sensitivity_options;
+//   sensitivity_options = NULL;
+//
+//   delete polimi_soot;
+//   polimi_soot = NULL;
+//
+//   delete hmom;
+//   hmom = NULL;
+//
+//   delete dae_parameters;
+//   dae_parameters = NULL;
+//
+//   delete nls_parameters;
+//   nls_parameters = NULL;
+//
+//   delete false_transient_parameters;
+//   false_transient_parameters = NULL;
+// }
 }  // namespace OptiSMOKE

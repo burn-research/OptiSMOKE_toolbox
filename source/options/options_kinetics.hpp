@@ -32,31 +32,26 @@
 |                                                                         |
 \*-----------------------------------------------------------------------*/
 
-namespace OptiSMOKE{
+namespace OptiSMOKE {
 
-    options_kinetics::options_kinetics(){
-      iTransport_ = false;
-    }
-    
-    options_kinetics::~options_kinetics(){}
+options_kinetics::options_kinetics() { iTransport_ = false; }
 
-    void options_kinetics::SetupFromDictionary
-        (OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, 
-        std::string dictionary_name)
-    {
-        dictionary_manager(dictionary_name).SetGrammar(kinetics_grammar_);
+options_kinetics::~options_kinetics() {}
 
-        //Compulsory options
-        dictionary_manager(dictionary_name).ReadPath("@Kinetics", chemkin_kinetics_);
-        dictionary_manager(dictionary_name).ReadPath("@Thermodynamics", chemkin_thermodynamics_);
+void options_kinetics::SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
+                                           std::string dictionary_name) {
+  dictionary_manager(dictionary_name).SetGrammar(kinetics_grammar_);
 
-        if(dictionary_manager(dictionary_name).CheckOption("@Transport"))
-        {
-            iTransport_ = true;
-            dictionary_manager(dictionary_name).ReadPath("@Transport", chemkin_transport_);
-        }
+  // Compulsory options
+  dictionary_manager(dictionary_name).ReadPath("@Kinetics", chemkin_kinetics_);
+  dictionary_manager(dictionary_name).ReadPath("@Thermodynamics", chemkin_thermodynamics_);
 
-        dictionary_manager(dictionary_name).ReadPath("@Output", chemkin_output_);
-    }
+  if (dictionary_manager(dictionary_name).CheckOption("@Transport")) {
+    iTransport_ = true;
+    dictionary_manager(dictionary_name).ReadPath("@Transport", chemkin_transport_);
+  }
 
+  dictionary_manager(dictionary_name).ReadPath("@Output", chemkin_output_);
 }
+
+}  // namespace OptiSMOKE
