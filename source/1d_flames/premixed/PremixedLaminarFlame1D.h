@@ -63,8 +63,6 @@ class PremixedLaminarFlame1D {
   OpenSMOKE::OpenSMOKEVectorDouble outlet_omega;
 
   double LFS_;  // cm/s
-
-  // void CleanMemory();
 };
 }  // namespace OptiSMOKE
 

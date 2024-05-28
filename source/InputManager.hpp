@@ -582,8 +582,8 @@ void InputManager::ComputeBoundaries() {
       list_of_nominal_E_over_R_double[i] =
           nominalkineticsMapXML_->E_over_R(optimization_target_.list_of_target_uncertainty_factors()[i] - 1);
 
-      list_of_min_abs_lnA_double[i] = list_of_nominal_lnA_double[i] +
-                                      std::log(std::pow(10, -optimization_target_.list_of_uncertainty_factors()[i]));
+      list_of_min_abs_lnA_double[i] =
+        list_of_nominal_lnA_double[i] + std::log(std::pow(10, -optimization_target_.list_of_uncertainty_factors()[i]));
       list_of_max_abs_lnA_double[i] =
           list_of_nominal_lnA_double[i] + std::log(std::pow(10, optimization_target_.list_of_uncertainty_factors()[i]));
 
@@ -677,6 +677,7 @@ void InputManager::ComputeBoundaries() {
       E_over_R_2_inf[i] =
           list_of_nominal_E_over_R_inf_double[i] +
           std::log(std::pow(10, optimization_target_.list_of_target_uncertainty_factors_inf()[i])) * T_low;
+
       list_of_min_abs_E_over_R_inf_double[i] = std::min(E_over_R_1_inf[i], E_over_R_2_inf[i]);
       list_of_max_abs_E_over_R_inf_double[i] = std::max(E_over_R_1_inf[i], E_over_R_2_inf[i]);
       if (std::find(optimization_target_.list_of_target_E_over_R_inf().begin(),

@@ -699,7 +699,7 @@ void SimulationsInterface::ChangeThirdBodyEfficiencies(unsigned int i, std::stri
 void SimulationsInterface::ChangeReactionOrder(const std::string &type, const int reaction_index,
                                                const std::string &species_name, const double parameter) {
   int iSpecies = data_.thermodynamicsMapXML_->IndexOfSpecies(species_name);
-  data_.kineticsMapXML_->SetReactionOrder(type, reaction_index - 1, iSpecies - 1, parameter);
+  /*data_.kineticsMapXML_->SetReactionOrder(type, reaction_index - 1, iSpecies - 1, parameter);*/
 }
 
 void SimulationsInterface::ChangePLOGReactions(std::string type, unsigned int index, double parameter) {
