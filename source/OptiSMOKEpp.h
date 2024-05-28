@@ -51,20 +51,16 @@ using std::vector;
 #include <maps/KineticsMap_CHEMKIN.h>
 
 // Typedefs
-typedef OpenSMOKE::Species<OpenSMOKE::ThermoPolicy_CHEMKIN,
-                           OpenSMOKE::TransportPolicy_CHEMKIN>
-    SpeciesCHEMKIN;
+typedef OpenSMOKE::Species<OpenSMOKE::ThermoPolicy_CHEMKIN, OpenSMOKE::TransportPolicy_CHEMKIN> SpeciesCHEMKIN;
 
-typedef OpenSMOKE::PreProcessorSpecies<
-    OpenSMOKE::PreProcessorSpeciesPolicy_CHEMKIN_WithoutTransport<SpeciesCHEMKIN> >
+typedef OpenSMOKE::PreProcessorSpecies<OpenSMOKE::PreProcessorSpeciesPolicy_CHEMKIN_WithoutTransport<SpeciesCHEMKIN>>
     PreProcessorSpecies_CHEMKIN_WithoutTransport;
 
 typedef OpenSMOKE::PreProcessorKinetics<
-    OpenSMOKE::PreProcessorKineticsPolicy_CHEMKIN<OpenSMOKE::ReactionPolicy_CHEMKIN> >
+    OpenSMOKE::PreProcessorKineticsPolicy_CHEMKIN<OpenSMOKE::ReactionPolicy_CHEMKIN>>
     PreProcessorKinetics_CHEMKIN;
 
-typedef OpenSMOKE::ThermoReader<
-    OpenSMOKE::ThermoReaderPolicy_CHEMKIN<OpenSMOKE::ThermoPolicy_CHEMKIN> >
+typedef OpenSMOKE::ThermoReader<OpenSMOKE::ThermoReaderPolicy_CHEMKIN<OpenSMOKE::ThermoPolicy_CHEMKIN>>
     ThermoReader_CHEMKIN;
 
 // Boost Library
@@ -121,8 +117,7 @@ extern "C" void fpinit_ASL();
 // Run a Dakota LibraryEnvironment, mode 1: parsing an input file
 void run_dakota_parse(const char *plugin_input_file, bool echo_dakota_string);
 
-void opensmoke_interface_plugin(
-    Dakota::LibraryEnvironment &env);  //,const char* plugin_input_file);
+void opensmoke_interface_plugin(Dakota::LibraryEnvironment &env);  //,const char* plugin_input_file);
 
 OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
 OptiSMOKE::InputManager input(dictionaries);

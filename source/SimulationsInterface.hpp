@@ -382,10 +382,10 @@ void SimulationsInterface::run() {
     if (solver == "PremixedLaminarFlame1D") {
       for (unsigned int j = 0; j < data_.input_paths()[i].size(); j++) {
         std::cout << "   * Input: " << data_.input_paths()[i][j] << std::endl;
-        // std::cout.setstate(std::ios_base::failbit);  // Disable video output
+        std::cout.setstate(std::ios_base::failbit);  // Disable video output
         premixed1D[i - n_batch - n_pfr - n_psr][j].Setup(data_.input_paths()[i][j], thermo, transport, kinetics);
         premixed1D[i - n_batch - n_pfr - n_psr][j].Solve();
-        // std::cout.clear();  // Re-enable video output
+        std::cout.clear();  // Re-enable video output
         if (qoi == "LFS") {
           simulations_results_[i][0][j] = premixed1D[i][j].LFS();
         } else {
@@ -699,7 +699,8 @@ void SimulationsInterface::ChangeThirdBodyEfficiencies(unsigned int i, std::stri
 void SimulationsInterface::ChangeReactionOrder(const std::string &type, const int reaction_index,
                                                const std::string &species_name, const double parameter) {
   int iSpecies = data_.thermodynamicsMapXML_->IndexOfSpecies(species_name);
-  /*data_.kineticsMapXML_->SetReactionOrder(type, reaction_index - 1, iSpecies - 1, parameter);*/
+  /*std::cout << "Species: " << species_name << ", index: " << iSpecies << std::endl;*/
+  data_.kineticsMapXML_->SetReactionOrder(type, reaction_index - 1, iSpecies - 1, parameter);
 }
 
 void SimulationsInterface::ChangePLOGReactions(std::string type, unsigned int index, double parameter) {

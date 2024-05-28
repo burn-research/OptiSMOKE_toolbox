@@ -4,13 +4,10 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
                                    OpenSMOKE::TransportPropertiesMap_CHEMKIN* transportMapXML,
                                    OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML) {
 
-  std::cout << "Ciao sono in setup 1" << std::endl;
   // Pointers
   thermodynamicsMapXML_ = thermodynamicsMapXML;
   kineticsMapXML_       = kineticsMapXML;
   transportMapXML_      = transportMapXML;
-
-  std::cout << "Ciao sono in setup 2" << std::endl;
 
   // Defines the grammar rules
   OptiSMOKE::Grammar_PremixedLaminarFlame grammar_laminarflame;
@@ -139,7 +136,6 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
     }
   }
 
-  std::cout << "Ciao sono in setup 3" << std::endl;
   Eigen::VectorXd w;
   // Adaptive grid
   // OpenSMOKE::Grid1D* grid;
@@ -151,10 +147,8 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
     grid = new OpenSMOKE::Grid1D(dictionaries(name_of_adaptive_grid_subdictionary), w);
   }
 
-  std::cout << "Ciao sono in setup 4" << std::endl;
   flame_premixed =
       new OpenSMOKE::OpenSMOKE_PremixedLaminarFlame1D(*thermodynamicsMapXML, *kineticsMapXML, *transportMapXML, *grid);
-  std::cout << "Ciao sono in setup 5" << std::endl;
 
   // Output folder
   if (dictionaries(main_dictionary_name_).CheckOption("@Output") == true) {
@@ -493,7 +487,6 @@ void PremixedLaminarFlame1D::Setup(const std::string input_file_name_,
     }
 
     if (flame_premixed->solver_type() == OpenSMOKE::OpenSMOKE_PremixedLaminarFlame1D::SOLVER_TYPE_FLAMESPEED) {
-      std::cout << "Siamo in backup" << std::endl;
       fs::path path_backup;
       dictionaries(main_dictionary_name_).ReadPath("@Backup", path_backup);
 
@@ -728,7 +721,6 @@ void PremixedLaminarFlame1D::Solve() {
       // time_t timerEnd;
       //
       // time(&timerStart);
-      std::cout << "Eccoci" << std::endl;
       fs::path output_folder_root = "/dev/null";
       flame_premixed->SetOutputFolder(output_folder_root);
       flame_premixed->SolveFlameSpeedFromScratch(*dae_parameters, *nls_parameters, *false_transient_parameters);
