@@ -653,8 +653,16 @@ void SimulationsInterface::SubstituteKineticParameters(const std::vector<double>
   // FORD
   if (data_.optimization_target().list_of_ford().size() != 0) {
     for (unsigned int i = 0; i < data_.optimization_target().list_of_ford().size(); i++) {
+      std::string name = data_.optimization_target().list_of_species_ford()[i];
+      int iSpecies = data_.thermodynamicsMapXML_->IndexOfSpecies(name) - 1;
+
+      std::vector<unsigned int> species_stoichmap =
+          data_.kineticsMapXML_->stoichiometry().non_elementary_reactions_species_indices_direct(
+              data_.optimization_target().list_of_ford()[i]-1);
+      unsigned int pos_inFORD_matix_ = std::find(species_stoichmap.begin(), species_stoichmap.end(), iSpecies) - species_stoichmap.begin();
+
       ChangeReactionOrder("FORD", data_.optimization_target().list_of_ford()[i],
-                          data_.optimization_target().list_of_species_ford()[i], c_vars[count]);
+                          pos_inFORD_matix_, c_vars[count]);
       count += 1;
     }
   }
@@ -662,9 +670,10 @@ void SimulationsInterface::SubstituteKineticParameters(const std::vector<double>
   // RORD
   if (data_.optimization_target().list_of_rord().size() != 0) {
     for (unsigned int i = 0; i < data_.optimization_target().list_of_rord().size(); i++) {
-      ChangeReactionOrder("RORD", data_.optimization_target().list_of_rord()[i],
-                          data_.optimization_target().list_of_species_rord()[i], c_vars[count]);
-      count += 1;
+      // TODO AS for FORD
+      // ChangeReactionOrder("RORD", data_.optimization_target().list_of_rord()[i],
+      //                     data_.optimization_target().list_of_species_rord()[i], c_vars[count]);
+      // count += 1;
     }
   }
 }
@@ -697,10 +706,8 @@ void SimulationsInterface::ChangeThirdBodyEfficiencies(unsigned int i, std::stri
 }
 
 void SimulationsInterface::ChangeReactionOrder(const std::string &type, const int reaction_index,
-                                               const std::string &species_name, const double parameter) {
-  int iSpecies = data_.thermodynamicsMapXML_->IndexOfSpecies(species_name);
-  /*std::cout << "Species: " << species_name << ", index: " << iSpecies << std::endl;*/
-  data_.kineticsMapXML_->SetReactionOrder(type, reaction_index - 1, iSpecies - 1, parameter);
+                                               const unsigned int &species_idx, const double parameter) {
+  data_.kineticsMapXML_->SetReactionOrder(type, reaction_index - 1, species_idx, parameter);
 }
 
 void SimulationsInterface::ChangePLOGReactions(std::string type, unsigned int index, double parameter) {

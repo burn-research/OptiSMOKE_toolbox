@@ -65,7 +65,7 @@ class SimulationsInterface {
 
   void ChangeRPBRMReactions(std::string type, unsigned int index, double parameter, unsigned int index_coll);
 
-  void ChangeReactionOrder(const std::string &type, const int reaction_index, const std::string &species_name,
+  void ChangeReactionOrder(const std::string &type, const int reaction_index, const unsigned int& species_idx,
                                  const double parameter) ;
 };
 }  // namespace OptiSMOKE
