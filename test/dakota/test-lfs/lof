@@ -1,0 +1,387 @@
+-----------------------------------------------------------------------------
+
+           ____            _  ______ __  __  ____  _  ________              
+          / __ \       _  (_)/  ___ |  \/  |/ __ \| |/ /  ____|             
+         | |  | |_ __ | |_ _ | (___ | \  / | |  | | ' /| |__    _     _     
+         | |  | | '_ \|  _| |\___  \| |\/| | |  | |  < |  __| _| |_ _| |_   
+         | |__| | |_) | |_| |____)  | |  | | |__| | . \| |___|_   _|_   _|  
+          \____/| .__/\___|_|______/|_|  |_|\____/|_|\_\______||_|   |_|    
+                | |                                                         
+                |_|                                                         
+
+
+           Department of Chemistry, Materials and Chemical Engineering        
+                              Politecnico di Milano                           
+                         http://www.opensmoke.polimi.it/                      
+                      http://creckmodeling.chem.polimi.it/                    
+
+                                  OptiSMOKE++
+                              Version: 3.0.0-beta
+                  Authors: M. Furst, A. Bertolino, T. Dinelli
+                   Compilation date: Mar 29 2024 at 01:54:16
+
+-----------------------------------------------------------------------------
+
+                                  WARNING                                    
+   This version of OpenSMOKE++ Suite can be used for educational purposes    
+              only and cannot be distributed to third parties.               
+       The software is and remains the sole property of Alberto Cuoci.       
+      Whenever the OpenSMOKE++ Suite is used to produce any publication,     
+       a detailed reference to the OpenSMOKE++ code should be reported       
+                            (see User's Guide).                              
+    Use for commercial purposes is not permitted. For any commercial issue   
+         please contact Alberto Cuoci (email: alberto.cuoci@polimi.it)       
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+
+                            LIMITED WARRANTY                                 
+     This software is provided "as is" and without warranties as to        
+  performance of merchantability or any other warranties whether expressed   
+    or implied. Because of the various hardware and software environments    
+   into which this library may be installed, no warranty of fitness for a    
+   particular purpose is offered. The user must assume the entire risk of    
+                          using  the library.                                
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+ * Reading kinetic file... 
+ * Check if Abstraction Reaction module is available... 
+ * Reading thermodynamic file... 
+ * Analyzing thermodynamic file... 
+     number of species available: 53
+ * Reading transport file... 
+ * Fitting transport properties from 300K to 3600K in 10 points...
+    - Viscosity...
+    - Thermal conductivity...
+    - Mass diffusion coefficients...
+    - Thermal diffusion ratios...
+ * Transport properties fitted in: 0.01 s
+ * Looking for duplicate reactions... 
+ * Reactions correctly imported!
+ * Writing the interpreted kinetic file in XML format...
+ * Reading thermodynamic coefficients of species from XML file...
+ * Reading kinetic parameters of reactions...
+ * Reading kinetic parameters of third body reactions...
+ * Reading kinetic parameters of pressure-dependent reactions...
+ * Reading kinetic parameters of additional reactions...
+ * Building stoichiometry...
+   non-zero stoichiometric coefficients: 15 /28 (53.5714%)
+ * Building reaction orders...
+   non-zero reaction-order coefficients: 11 /28 (39.2857%)
+ * Non elementary direct reactions:  2
+ * Non elementary reverse reactions: 0
+
+----------------------------------------------------------------------------
+ Kinetic Mechanism Summary
+----------------------------------------------------------------------------
+ Total number of species:        7
+ Total number of reactions:      4
+   Reversible reactions:         2 (50%)
+    * by thermodynamics:         2 (100%)
+    * by Arrhenius' law:         0 (0%)
+   Pressure dependent reactions: 0 (0%)
+    * fall-off reactions:        0 (0%)
+      ** lindemann form:         0 (0%)
+      ** troe form:              0 (0%)
+      ** sri form:               0 (0%)
+    * cabr reactions:            0 (0%)
+   Chebyshev reactions:          0 (0%)
+   Pressure-Log reactions:       0 (0%)
+   Ext-Pressure-Log reactions:   0 (0%)
+   Ext-Falloff reactions:        0 (0%)
+   Red-Pressure-Based reactions: 0 (0%)
+   Fit1 reactions:               0 (0%)
+   Janev-Langer reactions:       0 (0%)
+   Landau-Teller reactions:      0 (0%)
+ Negative frequency factors:     0 (0%)
+
+----------------------------------------------------------------------------
+ Reversible reactions (by thermodynamics)    2
+----------------------------------------------------------------------------
+ Reactions without change of moles:        1 (50%)
+ Reactions with change of moles (+1):      0 (0%)
+ Reactions with change of moles (-1):      0 (0%)
+ Reactions with change of moles (other):   1 (50%)
+
+Dakota version 6.17 released Nov. 15 2022.
+Repository revision a32262a0e (2022-11-09) built Mar 25 2023 13:46:53.
+Running serial Dakota executable in serial mode.
+Start time: Sat Mar 30 22:41:21 2024
+
+-----------------------
+Begin DAKOTA input file
+(from string)
+-----------------------
+ environment,
+  tabular_data
+   tabular_data_file 'Output/tabular_data.dat'
+ method,
+  coliny_ea
+   max_iterations = 1000
+   max_function_evaluations = 10000
+   convergence_tolerance = 1e-8
+   solution_target = 1e-6
+   seed = 1000
+   population_size = 100
+   fitness_type linear_rank
+   mutation_type offset_normal
+   mutation_rate 0.5
+   crossover_type uniform
+   crossover_rate 0.65
+   replacement_type chc=50
+ variables,
+  continuous_design = 9
+   descriptors 'lnA_R1' 'lnA_R2' 'lnA_R3' 'lnA_R4' 'Beta_R3' 'E_over_R_R1' 'E_over_R_R2' 'E_over_R_R3' 'E_over_R_R4' 
+   initial_point 26.80947430424321 19.519293032620475 36.455508786288874 21.734866748624892 -1 15098.138459251622 15098.138459251622 20130.85127900216 10065.42563950108 
+   lower_bounds 25.658181757746188 18.368000486123453 35.304216239791849 20.58357420212787 -1.1471479775169446 14752.750695302515 14752.750695302515 19785.463515053052 9720.0378755519723 
+   upper_bounds 27.960766850740232 20.670585579117496 37.606801332785899 22.886159295121914 -0.85285202248305525 15443.52622320073 15443.52622320073 20476.239042951267 10410.813403450187 
+ interface,
+  direct
+  analysis_driver = 'opensmoke_plugin'
+ responses,
+  num_objective_functions = 1
+  no_gradients
+  no_hessians
+---------------------
+End DAKOTA input file
+---------------------
+
+Using provided Dakota input string
+Writing new restart file 'dakota.rst'.
+
+Seed (user-specified) = 1000
+Library mode 1: run_dakota_parse()
+
+>>>>> Executing environment.
+
+>>>>> Running coliny_ea iterator.
+
+---------------------
+Begin Evaluation    1
+---------------------
+Parameters for evaluation 1:
+                      2.6809474304e+01 lnA_R1
+                      1.9519293033e+01 lnA_R2
+                      3.6455508786e+01 lnA_R3
+                      2.1734866749e+01 lnA_R4
+                     -1.0000000000e+00 Beta_R3
+                      1.5098138459e+04 E_over_R_R1
+                      1.5098138459e+04 E_over_R_R2
+                      2.0130851279e+04 E_over_R_R3
+                      1.0065425640e+04 E_over_R_R4
+
+Direct interface: invoking opensmoke_plugin 
+ * Running: ds_data/wang_exp_dataset_1.json
+   * Input: cases/Flames_1_T_300_P_1.00_PHI_0.70/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_0.80/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_0.90/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.00/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.10/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.20/input.dic
+ * Computing objective function...
+   * The Curve Matching score of CIAO is: 0.8308
+ * Time to compute the Curve Matching using 1 bootstrap variations: 0.0100
+ * The final Curve Matching score is 0.8308
+
+Active response data for evaluation 1:
+Active set vector = { 1 }
+                     1.6920851004e-01  obj_fn
+
+
+
+---------------------
+Begin Evaluation 2   
+---------------------
+Parameters for evaluation 2:
+                     2.5676202639e+01  lnA_R1
+                     1.9606303448e+01  lnA_R2
+                     3.6698022103e+01  lnA_R3
+                     2.2080558278e+01  lnA_R4
+                     -9.2135311056e-01 Beta_R3
+                     1.5415333137e+04  E_over_R_R1
+                     1.4783570484e+04  E_over_R_R2
+                     2.0382788766e+04  E_over_R_R3
+                     9.9247877738e+03  E_over_R_R4
+
+Direct interface: invoking opensmoke_plugin 
+ * Violation for reaction: 1
+
+Active response data for evaluation 2:
+Active set vector = { 1 }
+                     1.0000000000e+00  obj_fn
+
+
+
+---------------------
+Begin Evaluation 3   
+---------------------
+Parameters for evaluation 3:
+                     2.7253633622e+01  lnA_R1
+                     1.9524076630e+01  lnA_R2
+                     3.6262948357e+01  lnA_R3
+                     2.2806365770e+01  lnA_R4
+                     -9.7877816345e-01 Beta_R3
+                     1.5071636887e+04  E_over_R_R1
+                     1.5236427116e+04  E_over_R_R2
+                     1.9888654380e+04  E_over_R_R3
+                     1.0202327824e+04  E_over_R_R4
+
+Direct interface: invoking opensmoke_plugin 
+ * Running: ds_data/wang_exp_dataset_1.json
+   * Input: cases/Flames_1_T_300_P_1.00_PHI_0.70/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_0.80/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_0.90/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.00/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.10/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.20/input.dic
+ * Computing objective function...
+   * The Curve Matching score of CIAO is: 0.7159
+ * Time to compute the Curve Matching using 1 bootstrap variations: 0.0000
+ * The final Curve Matching score is 0.7159
+
+Active response data for evaluation 3:
+Active set vector = { 1 }
+                     2.8409558072e-01  obj_fn
+
+
+
+---------------------
+Begin Evaluation 4   
+---------------------
+Parameters for evaluation 4:
+                     2.6615252990e+01  lnA_R1
+                     2.0307324041e+01  lnA_R2
+                     3.6423213782e+01  lnA_R3
+                     2.2362810165e+01  lnA_R4
+                     -8.5972593524e-01 Beta_R3
+                     1.5054270571e+04  E_over_R_R1
+                     1.4868034574e+04  E_over_R_R2
+                     2.0427040342e+04  E_over_R_R3
+                     1.0386560798e+04  E_over_R_R4
+
+Direct interface: invoking opensmoke_plugin 
+ * Running: ds_data/wang_exp_dataset_1.json
+   * Input: cases/Flames_1_T_300_P_1.00_PHI_0.70/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_0.80/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_0.90/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.00/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.10/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.20/input.dic
+ * Computing objective function...
+   * The Curve Matching score of CIAO is: 0.7415
+ * Time to compute the Curve Matching using 1 bootstrap variations: 0.0000
+ * The final Curve Matching score is 0.7415
+
+Active response data for evaluation 4:
+Active set vector = { 1 }
+                     2.5850448268e-01  obj_fn
+
+
+
+---------------------
+Begin Evaluation 5   
+---------------------
+Parameters for evaluation 5:
+                     2.7774170648e+01  lnA_R1
+                     2.0669104674e+01  lnA_R2
+                     3.5743076167e+01  lnA_R3
+                     2.1322313705e+01  lnA_R4
+                     -1.0888656991e+00 Beta_R3
+                     1.5065667633e+04  E_over_R_R1
+                     1.5073625397e+04  E_over_R_R2
+                     1.9842027383e+04  E_over_R_R3
+                     9.8818355542e+03  E_over_R_R4
+
+Direct interface: invoking opensmoke_plugin 
+ * Running: ds_data/wang_exp_dataset_1.json
+   * Input: cases/Flames_1_T_300_P_1.00_PHI_0.70/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_0.80/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_0.90/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.00/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.10/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.20/input.dic
+ * Computing objective function...
+   * The Curve Matching score of CIAO is: 0.7017
+ * Time to compute the Curve Matching using 1 bootstrap variations: 0.0000
+ * The final Curve Matching score is 0.7017
+
+Active response data for evaluation 5:
+Active set vector = { 1 }
+                     2.9826188911e-01  obj_fn
+
+
+
+---------------------
+Begin Evaluation 6   
+---------------------
+Parameters for evaluation 6:
+                     2.7128538656e+01  lnA_R1
+                     1.9313179319e+01  lnA_R2
+                     3.5390299613e+01  lnA_R3
+                     2.1363392366e+01  lnA_R4
+                     -1.1357041026e+00 Beta_R3
+                     1.5132874945e+04  E_over_R_R1
+                     1.5208939390e+04  E_over_R_R2
+                     2.0031265614e+04  E_over_R_R3
+                     1.0078256625e+04  E_over_R_R4
+
+Direct interface: invoking opensmoke_plugin 
+ * Violation for reaction: 3
+
+Active response data for evaluation 6:
+Active set vector = { 1 }
+                     1.0000000000e+00  obj_fn
+
+
+
+---------------------
+Begin Evaluation 7   
+---------------------
+Parameters for evaluation 7:
+                     2.7237485611e+01  lnA_R1
+                     1.9829492924e+01  lnA_R2
+                     3.6932439956e+01  lnA_R3
+                     2.2218333090e+01  lnA_R4
+                     -1.0260729585e+00 Beta_R3
+                     1.5094531144e+04  E_over_R_R1
+                     1.5258236053e+04  E_over_R_R2
+                     2.0320423348e+04  E_over_R_R3
+                     1.0346460965e+04  E_over_R_R4
+
+Direct interface: invoking opensmoke_plugin 
+ * Running: ds_data/wang_exp_dataset_1.json
+   * Input: cases/Flames_1_T_300_P_1.00_PHI_0.70/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_0.80/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_0.90/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.00/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.10/input.dic
+   * Input:    cases/Flames_1_T_300_P_1.00_PHI_1.20/input.dic
+ * Computing objective function...
+   * The Curve Matching score of CIAO is: 0.7789
+ * Time to compute the Curve Matching using 1 bootstrap variations: 0.0000
+ * The final Curve Matching score is 0.7789
+
+Active response data for evaluation 7:
+Active set vector = { 1 }
+                     2.2105916537e-01  obj_fn
+
+
+
+---------------------
+Begin Evaluation 8   
+---------------------
+Parameters for evaluation 8:
+                     2.6268319158e+01  lnA_R1
+                     1.9535872602e+01  lnA_R2
+                     3.6495534651e+01  lnA_R3
+                     2.2094729837e+01  lnA_R4
+                     -1.0859045055e+00 Beta_R3
+                     1.5142574355e+04  E_over_R_R1
+                     1.5203890899e+04  E_over_R_R2
+                     2.0146666408e+04  E_over_R_R3
+                     9.9217192149e+03  E_over_R_R4
+
+Direct interface: invoking opensmoke_plugin 
+ * Running: ds_data/wang_exp_dataset_1.json
+   * Input: cases/Flames_1_T_300_P_1.00_PHI_0.70/input.dic
