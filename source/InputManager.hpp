@@ -49,8 +49,6 @@ InputManager::InputManager(OpenSMOKE::OpenSMOKE_DictionaryManager &dictionary) :
 InputManager::~InputManager() {}
 
 void InputManager::SetInputOptions(int argc, char *argv[]) {
-  // Input Options
-  {
     po::options_description desc("Allowed options");
     desc.add_options()("help", "Help Message")("input", po::value<std::string>(),
                                                "Input File Path (default: \"input.dic\")");
@@ -62,7 +60,6 @@ void InputManager::SetInputOptions(int argc, char *argv[]) {
     if (vm.count("help")) { std::cout << desc << std::endl; }
 
     if (vm.count("input")) { input_file_name_ = vm["input"].as<std::string>(); }
-  }
 }
 
 void InputManager::ReadDictionary() {
