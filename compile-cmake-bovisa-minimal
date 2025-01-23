@@ -1,12 +1,12 @@
+# -D Dakota_DIR:PATH=/home/chimica2/tdinelli/NumericalLibraries/dakota/dakota-6.21.0-gcc-9.2.0/lib/cmake/Dakota \
 cmake \
-    -D OpenSMOKEpp_ROOT:PATH=/home/chimica2/tdinelli/GitHub/OpenSMOKEpp \ 
-    -D OpenSMOKEppSolvers_ROOT:PATH=/home/chimica2/tdinelli/GitHub/OpenSMOKEppSolvers \
+    -D OpenSMOKEpp_ROOT:PATH=/home/chimica2/tdinelli/Documents/GitHub/OpenSMOKEpp \
+    -D OpenSMOKEppSolvers_ROOT:PATH=/home/chimica2/tdinelli/Documents/GitHub/OpenSMOKEppSolvers \
     -D Boost_ROOT:PATH=/software/chimica2/libraries/boost/boost-1.83.0-gcc-9.2.0 \
     -D Eigen3_ROOT:PATH=/software/chimica2/libraries/eigen/eigen-3.4.0 \
-    -D NLopt_DIR:PATH=/home/chimica2/tdinelli/NumericalLibraries/nlopt/nlopt-2.7.1-gcc-9.2/lib64/cmake/nlopt \
-    -D Dakota_DIR:PATH=/home/chimica2/tdinelli/NumericalLibraries/dakota/dakota-6.19.0-gcc-9.2.0/lib/cmake/Dakota \
     -D CEQ_ROOT:PATH=/software/chimica2/libraries/ceq \
     -D BLAS_ROOT:PATH=/home/chimica2/tdinelli/NumericalLibraries/openblas/openblas-0.3.26-gcc-9.2.0 \
+    -D Dakota_DIR:PATH=/home/chimica2/tdinelli/NumericalLibraries/dakota/dakota-6.19.0-gcc-9.2.0/lib/cmake/Dakota \
     -D OPTISMOKE_USE_CEQ=1 \
     -D OPTISMOKE_USE_OPENBLAS=1 \
     ..
