@@ -360,17 +360,16 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
       reaction_data.precision(4);
 
 
-      std::vector<double> reactant_lambda_ = kineticsMapXML_->stoichiometry().non_elementary_reactions_orders_direct(k);
-      std::vector<unsigned int> reactant_lambda_indices_ =
-          preprocessor_kinetics_->reactions()[k].reactant_lambda_indices();
+      // std::vector<double> reactant_lambda_ = kineticsMapXML_->stoichiometry().non_elementary_reactions_orders_direct(k);
+      // std::vector<unsigned int> reactant_lambda_indices_ = preprocessor_kinetics_->reactions()[k].reactant_lambda_indices();
 
-      for (unsigned int l = 0; l < reactant_lambda_.size(); l++) {
-        reaction_data << " FORD /  ";
-        int index = reactant_lambda_indices_[l];
-        reaction_data << species_list_[index] << "  ";
-        reaction_data << std::showpoint << std::fixed << reactant_lambda_[l];
-        reaction_data << "/" << std::endl;
-      }
+      // for (unsigned int l = 0; l < reactant_lambda_.size(); l++) {
+      //   reaction_data << " FORD /  ";
+      //   int index = reactant_lambda_indices_[l];
+      //   reaction_data << species_list_[index] << "  ";
+      //   reaction_data << std::showpoint << std::fixed << reactant_lambda_[l];
+      //   reaction_data << "/" << std::endl;
+      // }
     }
     fChemKin_ << reaction_data.str();
     fChemKin_ << std::endl;

@@ -33,6 +33,7 @@
 \*-----------------------------------------------------------------------*/
 
 #include "utilities/OptiSMOKEFunctions.h"
+
 namespace OptiSMOKE {
 
 InputManager::InputManager(OpenSMOKE::OpenSMOKE_DictionaryManager &dictionary) : dictionary_(dictionary) {
@@ -123,9 +124,8 @@ void InputManager::ReadMainDictionary() {
     dictionary_(main_dictionary_).ReadDictionary("@DakotaOptions", dakota_dictionary_);
     dakota_options_.SetupFromDictionary(dictionary_, dakota_dictionary_);
   } else if (optimization_library_ == "nlopt") {
-    // NLOPT options
-    dictionary_(main_dictionary_).ReadDictionary("@NLOPTOptions", nlopt_dictionary_);
-    nlopt_options_.SetupFromDictionary(dictionary_, nlopt_dictionary_);
+    // dictionary_(main_dictionary_).ReadDictionary("@NLOPTOptions", nlopt_dictionary_);
+    // nlopt_options_.SetupFromDictionary(dictionary_, nlopt_dictionary_);
   } else OptiSMOKE::FatalErrorMessage("Unknown optimization library. Available are: dakota | nlopt");
 
   if (dictionary_(main_dictionary_).CheckOption("@CurveMatchingOptions")) {

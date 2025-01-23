@@ -10,7 +10,7 @@
 |                                                                         |
 |            Authors: Magnus Fürst     <magnus.furst@ulb.ac.be>           |
 |                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|					            Timoteo Dinelli  <timoteo.dinelli@polimi.it>        |
+|                     Timoteo Dinelli  <timoteo.dinelli@polimi.it>        |
 |-------------------------------------------------------------------------|
 |   License                                                               |
 |                                                                         |
@@ -63,7 +63,7 @@ class InputManager {
 
   const OptiSMOKE::options_dakota &dakota_options() const { return dakota_options_; };
 
-  const OptiSMOKE::options_nlopt &nlopt_options() const { return nlopt_options_; };
+  // const OptiSMOKE::options_nlopt &nlopt_options() const { return nlopt_options_; };
 
   const bool &iXml() const { return iXml_; };
 
@@ -152,7 +152,7 @@ class InputManager {
   OptiSMOKE::options_optimization_setup optimization_setup_;
   OptiSMOKE::options_curvematching curvematching_options_;
   OptiSMOKE::options_dakota dakota_options_;
-  OptiSMOKE::options_nlopt nlopt_options_;
+  // OptiSMOKE::options_nlopt nlopt_options_;
 
   // Reading data from json files
   OptiSMOKE::DataManager data_manager_;
@@ -163,7 +163,7 @@ class InputManager {
   std::string optimization_setup_dictionary_;
   std::string curvematching_dictionary_;
   std::string dakota_dictionary_;
-  std::string nlopt_dictionary_;
+  // std::string nlopt_dictionary_;
 
   // Variables of main dictionaries
   std::string input_file_name_;

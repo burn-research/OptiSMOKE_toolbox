@@ -54,39 +54,38 @@ int main(int argc, char *argv[]) {
 
     return 0;
   } else if (input.optimization_library() == "nlopt") {
-    violated_uncertainty        = false;
-    numberOfGradientEvaluations = 0;
-    numberOfFunctionEvaluations = 0;
+    // violated_uncertainty        = false;
+    // numberOfGradientEvaluations = 0;
+    // numberOfFunctionEvaluations = 0;
 
-    sim_iface_ = new SimulationsInterface(input);
-    opti_kinetics_ =
-        new OptimizedKinetics(input, input.thermodynamicsMapXML_, input.kineticsMapXML_);
+    // sim_iface_ = new SimulationsInterface(input);
+    // opti_kinetics_ = new OptimizedKinetics(input, input.thermodynamicsMapXML_, input.kineticsMapXML_);
 
-    sim_iface_->Setup();
-    opti_kinetics_->SetChemkinName(input.output_folder() /
-                                   input.optimized_kinetics_folder() /
-                                   "OptimalMechanism.CKI");
+    // sim_iface_->Setup();
+    // opti_kinetics_->SetChemkinName(input.output_folder() /
+    //                                input.optimized_kinetics_folder() /
+    //                                "OptimalMechanism.CKI");
 
-    input.SetUpNLOPT();
+    // input.SetUpNLOPT();
 
-    nlopt::algorithm algo =
-        static_cast<nlopt::algorithm>(input.nlopt_options().algo_int());
-    nlopt::opt opt(algo, input.optimization_target().number_of_parameters());
+    // nlopt::algorithm algo =
+    //     static_cast<nlopt::algorithm>(input.nlopt_options().algo_int());
+    // nlopt::opt opt(algo, input.optimization_target().number_of_parameters());
 
-    opt.set_lower_bounds(input.lb());
-    opt.set_upper_bounds(input.ub());
-    opt.set_min_objective(NLOptFunction, NULL);
-    opt.set_maxeval(input.nlopt_options().max_function_evaluations());
-    opt.set_ftol_abs(1e-8);
-    opt.set_ftol_rel(1e-6);
+    // opt.set_lower_bounds(input.lb());
+    // opt.set_upper_bounds(input.ub());
+    // opt.set_min_objective(NLOptFunction, NULL);
+    // opt.set_maxeval(input.nlopt_options().max_function_evaluations());
+    // opt.set_ftol_abs(1e-8);
+    // opt.set_ftol_rel(1e-6);
 
-    vector<double> initial_values = input.initial_values();
-    double minf;
-    try {
-      nlopt::result result = opt.optimize(initial_values, minf);
-    } catch (std::exception &e) {
-      std::cout << "nlopt failed: " << e.what() << std::endl;
-    }
+    // vector<double> initial_values = input.initial_values();
+    // double minf;
+    // try {
+    //   nlopt::result result = opt.optimize(initial_values, minf);
+    // } catch (std::exception &e) {
+    //   std::cout << "nlopt failed: " << e.what() << std::endl;
+    // }
   } else if (input.optimization_library() == "optimlib") {
     FatalErrorMessage("OptimLIB not yet interfaced!");
   } else {
@@ -142,55 +141,55 @@ void opensmoke_interface_plugin(Dakota::LibraryEnvironment &env) {
   }
 }
 
-double NLOptFunction(const vector<double> &x, vector<double> &grad, void *my_func_data) {
-  std::cout << "-------------------------------------------------------" << std::endl;
-  std::cout << " Begin evaluation " << numberOfFunctionEvaluations + 1 << std::endl;
-  std::cout << "-------------------------------------------------------" << std::endl;
-
-  for (unsigned int i = 0; i < x.size(); i++) {
-    std::cout << "\t" << std::scientific << std::setw(35) << std::left
-              << input.param_str()[i] << std::scientific << std::setw(35) << std::left
-              << std::setprecision(5) << x[i] << std::endl;
-  }
-
-  const double f = OptFunction(x, numberOfFunctionEvaluations);
-  if (!grad.empty()) {
-    // FOR THE MOMENT NO GRADIENT METHODS
-    numberOfGradientEvaluations++;
-  }
-
-  numberOfFunctionEvaluations++;
-  return f;
-}
-
-double OptFunction(const vector<double> &b, unsigned int eval_nr) {
-  double fn_val;
-  sim_iface_->SubstituteKineticParameters(b);
-  if (input.optimization_setup().penalty_function()) {
-    violated_uncertainty = sim_iface_->CheckKineticConstasts();
-  }
-
-  if (violated_uncertainty) {
-    if (input.optimization_setup().objective_function_type() == "CurveMatching") {
-      fn_val = 1;
-    } else {
-      fn_val = 10000000;
-    }
-  } else {
-    sim_iface_->run();
-    fn_val = sim_iface_->ComputeObjectiveFunction();
-
-    if (eval_nr == 0) {
-      prev_fn_val = fn_val;
-      sim_iface_->PrepareASCIIFile(fOut, input.parametric_file_name(),
-                                   input.param_str());
-    }
-    if (prev_fn_val > fn_val) {
-      prev_fn_val = fn_val;
-      opti_kinetics_->WriteOptimizedMechanism();
-      std::cout << " * Wrote optimized mechanism" << std::endl;
-    }
-  }
-  sim_iface_->PrintASCIIFile(fOut, eval_nr, b, fn_val);
-  return fn_val;
-}
+// double NLOptFunction(const vector<double> &x, vector<double> &grad, void *my_func_data) {
+//   std::cout << "-------------------------------------------------------" << std::endl;
+//   std::cout << " Begin evaluation " << numberOfFunctionEvaluations + 1 << std::endl;
+//   std::cout << "-------------------------------------------------------" << std::endl;
+// 
+//   for (unsigned int i = 0; i < x.size(); i++) {
+//     std::cout << "\t" << std::scientific << std::setw(35) << std::left
+//               << input.param_str()[i] << std::scientific << std::setw(35) << std::left
+//               << std::setprecision(5) << x[i] << std::endl;
+//   }
+// 
+//   const double f = OptFunction(x, numberOfFunctionEvaluations);
+//   if (!grad.empty()) {
+//     // FOR THE MOMENT NO GRADIENT METHODS
+//     numberOfGradientEvaluations++;
+//   }
+// 
+//   numberOfFunctionEvaluations++;
+//   return f;
+// }
+// 
+// double OptFunction(const vector<double> &b, unsigned int eval_nr) {
+//   double fn_val;
+//   sim_iface_->SubstituteKineticParameters(b);
+//   if (input.optimization_setup().penalty_function()) {
+//     violated_uncertainty = sim_iface_->CheckKineticConstasts();
+//   }
+// 
+//   if (violated_uncertainty) {
+//     if (input.optimization_setup().objective_function_type() == "CurveMatching") {
+//       fn_val = 1;
+//     } else {
+//       fn_val = 10000000;
+//     }
+//   } else {
+//     sim_iface_->run();
+//     fn_val = sim_iface_->ComputeObjectiveFunction();
+// 
+//     if (eval_nr == 0) {
+//       prev_fn_val = fn_val;
+//       sim_iface_->PrepareASCIIFile(fOut, input.parametric_file_name(),
+//                                    input.param_str());
+//     }
+//     if (prev_fn_val > fn_val) {
+//       prev_fn_val = fn_val;
+//       opti_kinetics_->WriteOptimizedMechanism();
+//       std::cout << " * Wrote optimized mechanism" << std::endl;
+//     }
+//   }
+//   sim_iface_->PrintASCIIFile(fOut, eval_nr, b, fn_val);
+//   return fn_val;
+// }
