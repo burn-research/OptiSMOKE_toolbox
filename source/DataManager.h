@@ -16,8 +16,8 @@
 
 #include <vector>
 #include <string>
-using std::vector;
 using std::string;
+using std::vector;
 
 #include <boost/foreach.hpp>
 #include <boost/json.hpp>
@@ -33,33 +33,33 @@ class DataManager {
 
   ~DataManager();
 
-  void ReadExperimentalData(vector<string> &experimental_data_files);
+  void ReadExperimentalData(vector<string>& experimental_data_files);
 
-  const vector<string> &dataset_names() const { return dataset_names_; };
+  const vector<string>& dataset_names() const { return dataset_names_; };
 
-  const vector<string> &solver_name() const { return solver_name_; };
+  const vector<string>& solver_name() const { return solver_name_; };
 
-  const vector<string> &QoI() const { return QoI_; };
+  const vector<string>& QoI() const { return QoI_; };
 
-  const vector<string> &QoI_target() const { return QoI_target_; };
+  const vector<string>& QoI_target() const { return QoI_target_; };
 
-  const vector<bool> &multiple_input() const { return multiple_input_; };
+  const vector<bool>& multiple_input() const { return multiple_input_; };
 
-  const vector<vector<string>> &input_paths() const { return input_paths_; };
+  const vector<vector<string>>& input_paths() const { return input_paths_; };
 
-  const vector<vector<string>> &ordinates_label() const { return ordinates_label_; };
+  const vector<vector<string>>& ordinates_label() const { return ordinates_label_; };
 
-  const vector<vector<string>> &abscissae_label() const { return abscissae_label_; };
+  const vector<vector<string>>& abscissae_label() const { return abscissae_label_; };
 
-  const vector<vector<string>> &uncertainty_kind() const { return uncertainty_kind_; };
+  const vector<vector<string>>& uncertainty_kind() const { return uncertainty_kind_; };
 
-  const vector<vector<vector<double>>> &expdata_x() const { return expdata_x_; };
+  const vector<vector<vector<double>>>& expdata_x() const { return expdata_x_; };
 
-  const vector<vector<vector<double>>> &expdata_y() const { return expdata_y_; };
+  const vector<vector<vector<double>>>& expdata_y() const { return expdata_y_; };
 
-  const vector<vector<vector<double>>> &uncertainty() const { return uncertainty_; };
+  const vector<vector<vector<double>>>& uncertainty() const { return uncertainty_; };
 
-  const vector<string> &reactor_mode() const { return reactor_mode_; };
+  const vector<string>& reactor_mode() const { return reactor_mode_; };
 
  private:
   vector<string> dataset_names_;

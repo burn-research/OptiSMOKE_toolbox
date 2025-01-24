@@ -39,29 +39,25 @@
 #include "dictionary/OpenSMOKE_DictionaryGrammar.h"
 #include "dictionary/OpenSMOKE_DictionaryKeyWord.h"
 
-namespace OptiSMOKE
-{
-	class grammar_curve_matching : public OpenSMOKE::OpenSMOKE_DictionaryGrammar
-	{
-	protected:
+namespace OptiSMOKE {
+class grammar_curve_matching : public OpenSMOKE::OpenSMOKE_DictionaryGrammar {
+ protected:
+  virtual void DefineRules() {
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@NumberOfBootstrapVariations",
+                                                      OpenSMOKE::SINGLE_INT,
+                                                      "Number of Bootstraps variations",
+                                                      false,
+                                                      "none",
+                                                      "none",
+                                                      "none"));
 
-		virtual void DefineRules()
-		{
-    
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@NumberOfBootstrapVariations",
-		        OpenSMOKE::SINGLE_INT,
-	            "Number of Bootstraps variations",
-                false,
-                "none",
-                "none",
-                "none"));
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord(
+        "@UseBootStrap",
+        OpenSMOKE::SINGLE_BOOL,
+        "Use Bootstrap technique in Curve Matching Index calculations (default: false)",
+        false));
+  }
+};
+}  // namespace OptiSMOKE
 
-            AddKeyWord( OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@UseBootStrap",
-                OpenSMOKE::SINGLE_BOOL,
-                "Use Bootstrap technique in Curve Matching Index calculations (default: false)",
-                false) );
-		}
-	};
-}
-
-#endif // GRAMMAR_CURVEMATCHINGOPTIONS_H
+#endif  // GRAMMAR_CURVEMATCHINGOPTIONS_H

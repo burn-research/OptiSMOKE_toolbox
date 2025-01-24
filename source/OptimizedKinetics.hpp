@@ -1,7 +1,7 @@
 namespace OptiSMOKE {
-OptimizedKinetics::OptimizedKinetics(const OptiSMOKE::InputManager &data,
-                                     const OpenSMOKE::ThermodynamicsMap_CHEMKIN *thermodynamicsMapXML,
-                                     OpenSMOKE::KineticsMap_CHEMKIN *kineticsMapXML)
+OptimizedKinetics::OptimizedKinetics(const OptiSMOKE::InputManager& data,
+                                     const OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML,
+                                     OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML)
     : data_(data), thermodynamicsMapXML_(thermodynamicsMapXML), kineticsMapXML_(kineticsMapXML) {
   isChemkinNameSet_ = false;
   MemoryAllocation();
@@ -23,9 +23,11 @@ void OptimizedKinetics::MemoryAllocation() {
 }
 
 void OptimizedKinetics::WriteOptimizedMechanism() {
-  if (isChemkinNameSet_ == false) OptiSMOKE::FatalErrorMessage("Error: chemkin path was not set for reduced kinetics");
+  if (isChemkinNameSet_ == false)
+    OptiSMOKE::FatalErrorMessage("Error: chemkin path was not set for reduced kinetics");
 
-  if (!fs::exists(chemkin_path_.parent_path())) fs::create_directories(chemkin_path_.parent_path());
+  if (!fs::exists(chemkin_path_.parent_path()))
+    fs::create_directories(chemkin_path_.parent_path());
 
   // Log file (Setup)
   boost::filesystem::path file_ascii_log_ = chemkin_path_.parent_path() / "log";
@@ -37,7 +39,7 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
   std::cout.setstate(std::ios_base::failbit);  // Disable video output
 
   // Preprocessing kinetic file
-  ThermoReader_CHEMKIN *thermoreader;
+  ThermoReader_CHEMKIN* thermoreader;
 
   // Reading thermodynamic database
   thermoreader = new OpenSMOKE::ThermoReader<OpenSMOKE::ThermoReaderPolicy_CHEMKIN<OpenSMOKE::ThermoPolicy_CHEMKIN>>;
@@ -48,7 +50,7 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
   preprocessor_kinetics_->ReadFromASCIIFile(data_.kinetics_data().chemkin_kinetics().string());
 
   // Preprocessing the thermodynamics
-  PreProcessorSpecies_CHEMKIN_WithoutTransport *preprocessor_species_without_transport;
+  PreProcessorSpecies_CHEMKIN_WithoutTransport* preprocessor_species_without_transport;
   preprocessor_species_without_transport =
       new PreProcessorSpecies_CHEMKIN_WithoutTransport(*thermoreader, *preprocessor_kinetics_, flog);
   CheckForFatalError(preprocessor_species_without_transport->Setup());
@@ -76,12 +78,14 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
   fChemKin_ << "SPECIES" << std::endl;
   for (int i = 0; i < species_list_.size(); i++) {
     fChemKin_ << std::setw(25) << std::left << species_list_[i];
-    if ((i + 1) % 5 == 0 && i + 1 != species_list_.size()) { fChemKin_ << std::endl; }
+    if ((i + 1) % 5 == 0 && i + 1 != species_list_.size()) {
+      fChemKin_ << std::endl;
+    }
   }
   fChemKin_ << std::endl << "END" << std::endl << std::endl;
 
   fChemKin_ << std::endl << "REACTIONS" << std::endl << std::endl;
-  std::vector<unsigned int> indices_of_classic_plog      = kineticsMapXML_->IndicesOfPLOGReactions();
+  std::vector<unsigned int> indices_of_classic_plog = kineticsMapXML_->IndicesOfPLOGReactions();
   std::vector<unsigned int> indices_of_falloff_reactions = kineticsMapXML_->IndicesOfFalloffReactions();
 
   for (unsigned int k = 0; k < NR_; k++) {
@@ -97,13 +101,13 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
     // Set precision to the stringstream
     reaction_data.precision(6);
     // if the reaction tag is not one of these special formats
-    if (preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_LINDEMANN_FALLOFF &&
-        preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_LINDEMANN_CABR &&
-        preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_TROE_FALLOFF &&
-        preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_TROE_CABR &&
-        preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_SRI_FALLOFF &&
-        preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_SRI_CABR &&
-        preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_EXTENDEDFALLOFF) {
+    if (preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_LINDEMANN_FALLOFF
+        && preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_LINDEMANN_CABR
+        && preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_TROE_FALLOFF
+        && preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_TROE_CABR
+        && preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_SRI_FALLOFF
+        && preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_SRI_CABR
+        && preprocessor_kinetics_->reactions()[k].Tag() != PhysicalConstants::REACTION_EXTENDEDFALLOFF) {
       // Print normal reaction! or even dummy values for PLOG!
       reaction_data << std::setw(55) << std::left << reaction_string << " " << std::scientific
                     << kineticsMapXML_->A(k) / preprocessor_kinetics_->reactions()[k].A_conversion();
@@ -114,14 +118,15 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
       reaction_data << std::setw(17) << std::right << kineticsMapXML_->E_over_R(k) * PhysicalConstants::R_cal_mol
                     << std::endl;
       // If the reaction is duplicate
-      if (preprocessor_kinetics_->reactions()[k].IsDuplicate() == true) reaction_data << " DUPLICATE" << std::endl;
+      if (preprocessor_kinetics_->reactions()[k].IsDuplicate() == true)
+        reaction_data << " DUPLICATE" << std::endl;
 
       if (preprocessor_kinetics_->reactions()[k].IsExplicitlyReversible() == true) {
         reaction_data << " REV /  ";
         reaction_data.precision(4);
         reaction_data << std::scientific
-                      << preprocessor_kinetics_->reactions()[k].A_reversible() /
-                             preprocessor_kinetics_->reactions()[k].Arev_conversion()
+                      << preprocessor_kinetics_->reactions()[k].A_reversible()
+                             / preprocessor_kinetics_->reactions()[k].Arev_conversion()
                       << "  ";
         reaction_data.precision(3);
         reaction_data << std::fixed << preprocessor_kinetics_->reactions()[k].Beta_reversible() << "  ";
@@ -131,14 +136,14 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
       }
       // If it is PLOG
       if (preprocessor_kinetics_->reactions()[k].IsPressureLog() == true) {
-        int pos_classic_plog_reaction =
-            std::find(indices_of_classic_plog.begin(), indices_of_classic_plog.end(), k + 1) -
-            indices_of_classic_plog.begin();
+        int pos_classic_plog_reaction = std::find(indices_of_classic_plog.begin(), indices_of_classic_plog.end(), k + 1)
+                                        - indices_of_classic_plog.begin();
         reaction_data.unsetf(std::ios_base::floatfield);
         reaction_data.precision(6);
 
         for (unsigned int l = 0; l < preprocessor_kinetics_->reactions()[k].plog_coefficients().size() - 2; l++) {
-          if (l % 4 == 0) reaction_data << " PLOG /  ";
+          if (l % 4 == 0)
+            reaction_data << " PLOG /  ";
 
           reaction_data
               << std::showpoint << std::setw(16) << std::scientific << std::left
@@ -154,7 +159,8 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
         reaction_data.unsetf(std::ios_base::floatfield);
         reaction_data.precision(6);
         for (unsigned int l = 0; l < preprocessor_kinetics_->reactions()[k].janev_langer_coefficients().size(); l++) {
-          if (l % 5 == 0) reaction_data << " JAN /  ";
+          if (l % 5 == 0)
+            reaction_data << " JAN /  ";
 
           reaction_data << std::showpoint << preprocessor_kinetics_->reactions()[k].janev_langer_coefficients()[l]
                         << " ";
@@ -172,14 +178,15 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
           reaction_data << std::showpoint << std::fixed << std::left << kineticsMapXML_->ThirdBody(k, third_body_index)
                         << "/ ";
         }
-        if (preprocessor_kinetics_->reactions()[k].third_body_efficiencies().size() != 0) reaction_data << std::endl;
+        if (preprocessor_kinetics_->reactions()[k].third_body_efficiencies().size() != 0)
+          reaction_data << std::endl;
       }
 
       if (preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_CHEBYSHEV) {
         reaction_data.unsetf(std::ios_base::floatfield);
 
-        if (preprocessor_kinetics_->reactions()[k].chebyshev_temperature_limits()[0] != 300 ||
-            preprocessor_kinetics_->reactions()[k].chebyshev_temperature_limits()[1] != 2500) {
+        if (preprocessor_kinetics_->reactions()[k].chebyshev_temperature_limits()[0] != 300
+            || preprocessor_kinetics_->reactions()[k].chebyshev_temperature_limits()[1] != 2500) {
           reaction_data << " TCHEB/ ";
           reaction_data.precision(1);
           reaction_data << std::showpoint << std::fixed
@@ -188,8 +195,8 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
           reaction_data << " /" << std::endl;
         }
 
-        if (preprocessor_kinetics_->reactions()[k].chebyshev_pressure_limits()[0] != 0.001 ||
-            preprocessor_kinetics_->reactions()[k].chebyshev_pressure_limits()[1] != 100) {
+        if (preprocessor_kinetics_->reactions()[k].chebyshev_pressure_limits()[0] != 0.001
+            || preprocessor_kinetics_->reactions()[k].chebyshev_pressure_limits()[1] != 100) {
           reaction_data << " PCHEB/ ";
           reaction_data.precision(4);
           reaction_data << std::showpoint << std::fixed << std::left
@@ -199,13 +206,14 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
         }
 
         unsigned int chebyshev_size =
-            boost::lexical_cast<unsigned int>(preprocessor_kinetics_->reactions()[k].chebyshev_coefficients()[0]) *
-            boost::lexical_cast<unsigned int>(preprocessor_kinetics_->reactions()[k].chebyshev_coefficients()[1]);
+            boost::lexical_cast<unsigned int>(preprocessor_kinetics_->reactions()[k].chebyshev_coefficients()[0])
+            * boost::lexical_cast<unsigned int>(preprocessor_kinetics_->reactions()[k].chebyshev_coefficients()[1]);
 
         reaction_data.unsetf(std::ios_base::floatfield);
         reaction_data.precision(6);
         for (unsigned int l = 0; l < chebyshev_size + 2; l++) {
-          if (l % 6 == 0) reaction_data << " CHEB/ ";
+          if (l % 6 == 0)
+            reaction_data << " CHEB/ ";
 
           if (l < 2)
             reaction_data << std::noshowpoint << preprocessor_kinetics_->reactions()[k].chebyshev_coefficients()[l]
@@ -214,9 +222,11 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
             reaction_data << std::showpoint << preprocessor_kinetics_->reactions()[k].chebyshev_coefficients()[l]
                           << " ";
 
-          if ((l + 1) % 6 == 0) reaction_data << " /" << std::endl;
+          if ((l + 1) % 6 == 0)
+            reaction_data << " /" << std::endl;
 
-          if (l == chebyshev_size + 1 && (l + 1) % 6 != 0) reaction_data << " /" << std::endl;
+          if (l == chebyshev_size + 1 && (l + 1) % 6 != 0)
+            reaction_data << " /" << std::endl;
         }
       }
     } else if (preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_EXTENDEDFALLOFF) {
@@ -236,7 +246,7 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
       extendedFallOff.WriteCHEMKINOnASCIIFile(reaction_data);
 
       // Add third body efficiencies
-      bool iThirdBody_                             = false;
+      bool iThirdBody_ = false;
       std::vector<double> third_body_efficiencies_ = preprocessor_kinetics_->reactions()[k].third_body_efficiencies();
       for (unsigned int j = 0; j < third_body_efficiencies_.size(); j++) {
         int third_body_index = preprocessor_kinetics_->reactions()[k].third_body_indices()[j];
@@ -246,14 +256,15 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
         iThirdBody_ = true;
       }
 
-      if (iThirdBody_ == true) reaction_data << std::endl;
+      if (iThirdBody_ == true)
+        reaction_data << std::endl;
     } else {
       int pos_FallOff_Reaction =
-          std::find(indices_of_falloff_reactions.begin(), indices_of_falloff_reactions.end(), k + 1) -
-          indices_of_falloff_reactions.begin();
+          std::find(indices_of_falloff_reactions.begin(), indices_of_falloff_reactions.end(), k + 1)
+          - indices_of_falloff_reactions.begin();
       reaction_data << std::setw(55) << std::left << reaction_string << " " << std::scientific
-                    << kineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction) /
-                           preprocessor_kinetics_->reactions()[k].A_inf_conversion();
+                    << kineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction)
+                           / preprocessor_kinetics_->reactions()[k].A_inf_conversion();
       reaction_data.precision(6);
       reaction_data.width(12);
       reaction_data << std::fixed << std::right << kineticsMapXML_->Beta_falloff_inf(pos_FallOff_Reaction);
@@ -263,14 +274,15 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
                     << kineticsMapXML_->E_over_R_falloff_inf(pos_FallOff_Reaction) * PhysicalConstants::R_cal_mol
                     << std::endl;
 
-      if (preprocessor_kinetics_->reactions()[k].IsDuplicate() == true) reaction_data << " DUPLICATE" << std::endl;
+      if (preprocessor_kinetics_->reactions()[k].IsDuplicate() == true)
+        reaction_data << " DUPLICATE" << std::endl;
 
       if (preprocessor_kinetics_->reactions()[k].IsExplicitlyReversible() == true) {
         reaction_data << " REV /  ";
         reaction_data.precision(4);
         reaction_data << std::scientific
-                      << preprocessor_kinetics_->reactions()[k].A_reversible() /
-                             preprocessor_kinetics_->reactions()[k].Arev_conversion()
+                      << preprocessor_kinetics_->reactions()[k].A_reversible()
+                             / preprocessor_kinetics_->reactions()[k].Arev_conversion()
                       << "  ";
         reaction_data.precision(3);
         reaction_data << std::fixed << preprocessor_kinetics_->reactions()[k].Beta_reversible() << "  ";
@@ -279,13 +291,13 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
         reaction_data << "  /" << std::endl;
       }
 
-      if (preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_TROE_FALLOFF ||
-          preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_LINDEMANN_FALLOFF ||
-          preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_SRI_FALLOFF) {
+      if (preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_TROE_FALLOFF
+          || preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_LINDEMANN_FALLOFF
+          || preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_SRI_FALLOFF) {
         reaction_data << " LOW/";
-      } else if (preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_TROE_CABR ||
-                 preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_LINDEMANN_CABR ||
-                 preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_SRI_CABR) {
+      } else if (preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_TROE_CABR
+                 || preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_LINDEMANN_CABR
+                 || preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_SRI_CABR) {
         reaction_data << " HIGH/";
       }
 
@@ -303,8 +315,8 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
                     << " /" << std::endl;
 
       // prints out the TROE parameters for the blending function F
-      if (preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_TROE_FALLOFF ||
-          preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_TROE_CABR) {
+      if (preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_TROE_FALLOFF
+          || preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_TROE_CABR) {
         reaction_data << "TROE/";
         reaction_data.width(11);
         reaction_data.unsetf(std::ios_base::floatfield);
@@ -315,8 +327,8 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
         reaction_data << "/" << std::endl;
       }
 
-      if (preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_SRI_FALLOFF ||
-          preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_SRI_CABR) {
+      if (preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_SRI_FALLOFF
+          || preprocessor_kinetics_->reactions()[k].Tag() == PhysicalConstants::REACTION_SRI_CABR) {
         reaction_data << "SRI/ ";
         for (unsigned int j = 0; j < preprocessor_kinetics_->reactions()[k].sri().size(); j++) {
           reaction_data.precision(4);
@@ -325,7 +337,7 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
         reaction_data << "/" << std::endl;
       }
 
-      bool iThirdBody_                             = false;
+      bool iThirdBody_ = false;
       std::vector<double> third_body_efficiencies_ = preprocessor_kinetics_->reactions()[k].third_body_efficiencies();
       for (unsigned int j = 0; j < third_body_efficiencies_.size(); j++) {
         int third_body_index = preprocessor_kinetics_->reactions()[k].third_body_indices()[j];
@@ -334,7 +346,8 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
         reaction_data << std::fixed << std::showpoint << kineticsMapXML_->ThirdBody(k, third_body_index) << "/  ";
         iThirdBody_ = true;
       }
-      if (iThirdBody_ == true) reaction_data << std::endl;
+      if (iThirdBody_ == true)
+        reaction_data << std::endl;
     }
     if (preprocessor_kinetics_->reactions()[k].IsFit1()) {
       reaction_data.unsetf(std::ios_base::floatfield);
@@ -360,8 +373,9 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
       reaction_data.precision(4);
 
 
-      // std::vector<double> reactant_lambda_ = kineticsMapXML_->stoichiometry().non_elementary_reactions_orders_direct(k);
-      // std::vector<unsigned int> reactant_lambda_indices_ = preprocessor_kinetics_->reactions()[k].reactant_lambda_indices();
+      // std::vector<double> reactant_lambda_ =
+      // kineticsMapXML_->stoichiometry().non_elementary_reactions_orders_direct(k); std::vector<unsigned int>
+      // reactant_lambda_indices_ = preprocessor_kinetics_->reactions()[k].reactant_lambda_indices();
 
       // for (unsigned int l = 0; l < reactant_lambda_.size(); l++) {
       //   reaction_data << " FORD /  ";
@@ -383,8 +397,8 @@ void OptimizedKinetics::WriteOptimizedMechanism() {
   preprocessor_kinetics_ = NULL;
 }
 
-void OptimizedKinetics::SetChemkinName(const fs::path &path) {
-  chemkin_path_     = path;
+void OptimizedKinetics::SetChemkinName(const fs::path& path) {
+  chemkin_path_ = path;
   isChemkinNameSet_ = true;
 }
 }  // namespace OptiSMOKE

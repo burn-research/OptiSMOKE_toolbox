@@ -8,7 +8,6 @@ class OptimizedKinetics {
   OptimizedKinetics(const OptiSMOKE::InputManager& data,
                     const OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML,
                     OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML);
-
   ~OptimizedKinetics();
 
   void SetChemkinName(const fs::path& path);

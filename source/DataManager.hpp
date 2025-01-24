@@ -16,7 +16,7 @@ DataManager::DataManager() {}
 
 DataManager::~DataManager() {}
 
-void DataManager::ReadExperimentalData(vector<string> &experimental_data_files) {
+void DataManager::ReadExperimentalData(vector<string>& experimental_data_files) {
   input_paths_.resize(experimental_data_files.size());
   ordinates_label_.resize(experimental_data_files.size());
   abscissae_label_.resize(experimental_data_files.size());
@@ -44,7 +44,7 @@ void DataManager::ReadExperimentalData(vector<string> &experimental_data_files) 
         reactor_mode_.push_back("");
       }
 
-      BOOST_FOREACH (ptree::value_type &node, ptree.get_child("OS_Input_File")) {
+      BOOST_FOREACH (ptree::value_type& node, ptree.get_child("OS_Input_File")) {
         assert(node.first.empty());
         input_paths_[i].push_back(node.second.get_value<string>());
       }
@@ -57,27 +57,25 @@ void DataManager::ReadExperimentalData(vector<string> &experimental_data_files) 
       uncertainty_[i].resize(ptree.get_child("data").size());
 
       unsigned int count = 0;
-      BOOST_FOREACH (ptree::value_type &node, ptree.get_child("data")) {
+      BOOST_FOREACH (ptree::value_type& node, ptree.get_child("data")) {
         assert(node.first.empty());
         abscissae_label_[i][count] = node.second.get<string>("abscissae_label");
         ordinates_label_[i][count] = node.second.get<string>("ordinates_label");
 
-        BOOST_FOREACH (ptree::value_type &node2, node.second.get_child("abscissae")) {
+        BOOST_FOREACH (ptree::value_type& node2, node.second.get_child("abscissae")) {
           assert(node2.first.empty());
           expdata_x_[i][count].push_back(node2.second.get_value<double>());
         }
 
-        BOOST_FOREACH (ptree::value_type &node2, node.second.get_child("ordinates")) {
+        BOOST_FOREACH (ptree::value_type& node2, node.second.get_child("ordinates")) {
           assert(node2.first.empty());
           expdata_y_[i][count].push_back(node2.second.get_value<double>());
         }
 
-        boost::optional<string> uncertainty_node =
-            node.second.get_optional<string>("uncertainty_kind");
+        boost::optional<string> uncertainty_node = node.second.get_optional<string>("uncertainty_kind");
         if (uncertainty_node) {
           uncertainty_kind_[i][count] = node.second.get<string>("uncertainty_kind");
-          BOOST_FOREACH (ptree::value_type &node2,
-                         node.second.get_child("uncertainty")) {
+          BOOST_FOREACH (ptree::value_type& node2, node.second.get_child("uncertainty")) {
             assert(node2.first.empty());
             uncertainty_[i][count].push_back(node2.second.get_value<double>());
           }
@@ -96,14 +94,14 @@ void DataManager::ReadExperimentalData(vector<string> &experimental_data_files) 
     }
 
     OrderData();
-  } catch (const std::exception &e) { OptiSMOKE::FatalErrorMessage(e.what()); }
+  } catch (const std::exception& e) {
+    OptiSMOKE::FatalErrorMessage(e.what());
+  }
 }
 
 void DataManager::OrderData() {
-  /// TODO: This is a very bad function and it needs a major improvement
-  /// But since at the moment I don't have any time lessgo with it the problem
-  /// arises from the entire class itself by the way
-  // Number of experimental data files
+  // TODO: This is a very bad function and it needs a major improvement But since at the moment I don't have any time
+  // lessgo with it the problem arises from the entire class itself by the way Number of experimental data files
   unsigned int num = input_paths_.size();
 
   // tmp variables
@@ -146,9 +144,7 @@ void DataManager::OrderData() {
       error_str.append(dataset_names_[i]);
       error_str.append(", available are:\n\t\t\t\t");
       error_str.append(
-          "Batchreactor | PlugFlowreactor | PerfectlyStirredReactor | "
-          "PremixedLaminarFlame1D | "
-          "CounterFlowFlame1D");
+          "Batchreactor | PlugFlowreactor | PerfectlyStirredReactor | PremixedLaminarFlame1D | CounterFlowFlame1D");
       OptiSMOKE::FatalErrorMessage(error_str);
     }
   }
@@ -248,19 +244,19 @@ void DataManager::OrderData() {
     }
   }
 
-  dataset_names_    = dataset_names_tmp;
-  reactor_mode_     = reactor_mode_tmp;
-  solver_name_      = solver_name_tmp;
-  QoI_              = QoI_tmp;
-  QoI_target_       = QoI_target_tmp;
-  multiple_input_   = multiple_input_tmp;
-  input_paths_      = input_paths_tmp;
-  abscissae_label_  = abscissae_label_tmp;
-  ordinates_label_  = ordinates_label_tmp;
+  dataset_names_ = dataset_names_tmp;
+  reactor_mode_ = reactor_mode_tmp;
+  solver_name_ = solver_name_tmp;
+  QoI_ = QoI_tmp;
+  QoI_target_ = QoI_target_tmp;
+  multiple_input_ = multiple_input_tmp;
+  input_paths_ = input_paths_tmp;
+  abscissae_label_ = abscissae_label_tmp;
+  ordinates_label_ = ordinates_label_tmp;
   uncertainty_kind_ = uncertainty_kind_tmp;
-  expdata_x_        = expdata_x_tmp;
-  expdata_y_        = expdata_y_tmp;
-  uncertainty_      = uncertainty_tmp;
+  expdata_x_ = expdata_x_tmp;
+  expdata_y_ = expdata_y_tmp;
+  uncertainty_ = uncertainty_tmp;
 }
 
 void DataManager::ComputeStandardDeviations() {

@@ -10,7 +10,7 @@
 |                                                                         |
 |            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
 |                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|					  Timoteo Dinelli <timoteo.dinelli@polimi.it>	      |
+|                     Timoteo Dinelli <timoteo.dinelli@polimi.it>	        |
 |-------------------------------------------------------------------------|
 |   License                                                               |
 |                                                                         |
@@ -42,4 +42,4 @@
 #include "grammar_curvematching.h"
 #include "grammar_nlopt.h"
 
-#endif // OPTISMOKE_GRAMMAR_H
+#endif  // OPTISMOKE_GRAMMAR_H

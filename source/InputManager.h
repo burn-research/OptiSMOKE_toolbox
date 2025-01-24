@@ -38,11 +38,11 @@
 namespace OptiSMOKE {
 class InputManager {
  public:
-  InputManager(OpenSMOKE::OpenSMOKE_DictionaryManager &dictionary);
+  InputManager(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary);
 
   ~InputManager();
 
-  void SetInputOptions(int argc, char *argv[]);
+  void SetInputOptions(int argc, char* argv[]);
 
   void ReadDictionary();
 
@@ -53,95 +53,95 @@ class InputManager {
   void SetUpNLOPT();
 
   // Public access variables
-  const OptiSMOKE::options_kinetics &kinetics_data() const { return kinetics_data_; };
+  const OptiSMOKE::options_kinetics& kinetics_data() const { return kinetics_data_; };
 
-  const OptiSMOKE::options_optimization_target &optimization_target() const { return optimization_target_; };
+  const OptiSMOKE::options_optimization_target& optimization_target() const { return optimization_target_; };
 
-  const OptiSMOKE::options_optimization_setup &optimization_setup() const { return optimization_setup_; };
+  const OptiSMOKE::options_optimization_setup& optimization_setup() const { return optimization_setup_; };
 
-  const OptiSMOKE::options_curvematching &curvematching_options() const { return curvematching_options_; };
+  const OptiSMOKE::options_curvematching& curvematching_options() const { return curvematching_options_; };
 
-  const OptiSMOKE::options_dakota &dakota_options() const { return dakota_options_; };
+  const OptiSMOKE::options_dakota& dakota_options() const { return dakota_options_; };
 
   // const OptiSMOKE::options_nlopt &nlopt_options() const { return nlopt_options_; };
 
-  const bool &iXml() const { return iXml_; };
+  const bool& iXml() const { return iXml_; };
 
-  const std::string &input_file_name() const { return input_file_name_; };
+  const std::string& input_file_name() const { return input_file_name_; };
 
-  const std::string &main_dictionary() const { return main_dictionary_; };
+  const std::string& main_dictionary() const { return main_dictionary_; };
 
-  const std::string &optimization_library() const { return optimization_library_; };
+  const std::string& optimization_library() const { return optimization_library_; };
 
-  const fs::path &output_folder() const { return output_folder_; };
+  const fs::path& output_folder() const { return output_folder_; };
 
-  const fs::path &kinetics_folder() const { return kinetics_folder_; };
+  const fs::path& kinetics_folder() const { return kinetics_folder_; };
 
-  const fs::path &optimized_kinetics_folder() const { return optimized_kinetics_folder_; };
+  const fs::path& optimized_kinetics_folder() const { return optimized_kinetics_folder_; };
 
-  const std::vector<std::string> &path_experimental_data_files() const { return path_experimental_data_files_; };
+  const std::vector<std::string>& path_experimental_data_files() const { return path_experimental_data_files_; };
 
-  const std::string &dakota_input_string() const { return dakota_input_string_; };
+  const std::string& dakota_input_string() const { return dakota_input_string_; };
 
-  const bool &iTransport() const { return iTransport_; };
+  const bool& iTransport() const { return iTransport_; };
 
   // Da checcare
-  const OpenSMOKE::ThermodynamicsMap_CHEMKIN *thermodynamicsMapXML() const { return thermodynamicsMapXML_; };
+  const OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML() const { return thermodynamicsMapXML_; };
 
-  const OpenSMOKE::ThermodynamicsMap_CHEMKIN *nominalthermodynamicsMapXML() const {
+  const OpenSMOKE::ThermodynamicsMap_CHEMKIN* nominalthermodynamicsMapXML() const {
     return nominalthermodynamicsMapXML_;
   };
 
-  const OpenSMOKE::KineticsMap_CHEMKIN *kineticsMapXML() const { return kineticsMapXML_; };
+  const OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML() const { return kineticsMapXML_; };
 
-  const OpenSMOKE::KineticsMap_CHEMKIN *nominalkineticsMapXML() const { return nominalkineticsMapXML_; };
+  const OpenSMOKE::KineticsMap_CHEMKIN* nominalkineticsMapXML() const { return nominalkineticsMapXML_; };
 
-  const OpenSMOKE::TransportPropertiesMap_CHEMKIN *transportMapXML() const { return transportMapXML_; };
+  const OpenSMOKE::TransportPropertiesMap_CHEMKIN* transportMapXML() const { return transportMapXML_; };
 
-  const OpenSMOKE::TransportPropertiesMap_CHEMKIN *nominaltransportMapXML() const { return nominaltransportMapXML_; };
+  const OpenSMOKE::TransportPropertiesMap_CHEMKIN* nominaltransportMapXML() const { return nominaltransportMapXML_; };
 
-  const std::vector<std::vector<std::string>> &input_paths() const { return input_paths_; };
+  const std::vector<std::vector<std::string>>& input_paths() const { return input_paths_; };
 
-  const std::vector<std::string> &QoI() const { return QoI_; };
+  const std::vector<std::string>& QoI() const { return QoI_; };
 
-  const std::vector<std::string> &QoI_target() const { return QoI_target_; };
+  const std::vector<std::string>& QoI_target() const { return QoI_target_; };
 
-  const std::vector<std::string> &reactor_mode() const { return reactor_mode_; };
+  const std::vector<std::string>& reactor_mode() const { return reactor_mode_; };
 
-  const std::vector<std::vector<std::vector<double>>> &expdata_x() const { return expdata_x_; };
+  const std::vector<std::vector<std::vector<double>>>& expdata_x() const { return expdata_x_; };
 
-  const std::vector<std::vector<std::vector<double>>> &expdata_y() const { return expdata_y_; };
+  const std::vector<std::vector<std::vector<double>>>& expdata_y() const { return expdata_y_; };
 
-  const std::vector<std::vector<std::vector<double>>> &uncertainty() const { return uncertainty_; };
+  const std::vector<std::vector<std::vector<double>>>& uncertainty() const { return uncertainty_; };
 
-  const std::vector<std::string> &dataset_names() const { return dataset_names_; };
+  const std::vector<std::string>& dataset_names() const { return dataset_names_; };
 
-  const std::vector<std::string> &solver_name() const { return solver_name_; };
+  const std::vector<std::string>& solver_name() const { return solver_name_; };
 
-  const std::vector<std::vector<std::string>> &ordinates_label() const { return ordinates_label_; };
+  const std::vector<std::vector<std::string>>& ordinates_label() const { return ordinates_label_; };
 
-  const std::vector<std::string> &param_str() const { return param_str_; };
+  const std::vector<std::string>& param_str() const { return param_str_; };
 
-  const std::vector<double> &initial_values() const { return initial_values_; };
+  const std::vector<double>& initial_values() const { return initial_values_; };
 
-  const std::vector<double> &lb() const { return lb_; };
+  const std::vector<double>& lb() const { return lb_; };
 
-  const std::vector<double> &ub() const { return ub_; };
+  const std::vector<double>& ub() const { return ub_; };
 
-  const fs::path &parametric_file_name() const { return parametric_file_name_; };
+  const fs::path& parametric_file_name() const { return parametric_file_name_; };
 
   // Standard Map
-  OpenSMOKE::ThermodynamicsMap_CHEMKIN *thermodynamicsMapXML_;
-  OpenSMOKE::KineticsMap_CHEMKIN *kineticsMapXML_;
-  OpenSMOKE::TransportPropertiesMap_CHEMKIN *transportMapXML_;
+  OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML_;
+  OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML_;
+  OpenSMOKE::TransportPropertiesMap_CHEMKIN* transportMapXML_;
 
   // Nominal Map
-  OpenSMOKE::ThermodynamicsMap_CHEMKIN *nominalthermodynamicsMapXML_;
-  OpenSMOKE::KineticsMap_CHEMKIN *nominalkineticsMapXML_;
-  OpenSMOKE::TransportPropertiesMap_CHEMKIN *nominaltransportMapXML_;
+  OpenSMOKE::ThermodynamicsMap_CHEMKIN* nominalthermodynamicsMapXML_;
+  OpenSMOKE::KineticsMap_CHEMKIN* nominalkineticsMapXML_;
+  OpenSMOKE::TransportPropertiesMap_CHEMKIN* nominaltransportMapXML_;
 
  private:
-  OpenSMOKE::OpenSMOKE_DictionaryManager &dictionary_;
+  OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_;
 
   // Grammar Allocation
   OptiSMOKE::grammar_optismoke main_grammar_;

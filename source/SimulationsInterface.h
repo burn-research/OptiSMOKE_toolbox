@@ -5,7 +5,7 @@ namespace OptiSMOKE {
 
 class SimulationsInterface {
  public:
-  SimulationsInterface(const OptiSMOKE::InputManager &data);
+  SimulationsInterface(const OptiSMOKE::InputManager& data);
 
   ~SimulationsInterface();
 
@@ -17,20 +17,21 @@ class SimulationsInterface {
 
   bool CheckKineticConstasts();
 
-  void SubstituteKineticParameters(const std::vector<double> &c_vars);
+  void SubstituteKineticParameters(const std::vector<double>& c_vars);
 
-  void PrepareASCIIFile(std::ofstream &fOutput, const fs::path output_file_ascii,
-                        const std::vector<std::string> &names);
+  void PrepareASCIIFile(std::ofstream& fOutput,
+                        const fs::path output_file_ascii,
+                        const std::vector<std::string>& names);
 
-  void PrintASCIIFile(std::ofstream &fOutput, const int eval_nr, const std::vector<double> &b, const double fn_val);
+  void PrintASCIIFile(std::ofstream& fOutput, const int eval_nr, const std::vector<double>& b, const double fn_val);
 
  private:
-  const OptiSMOKE::InputManager &data_;
+  const OptiSMOKE::InputManager& data_;
 
-  std::vector<OptiSMOKE::BatchReactor *> batch_reactors;
-  std::vector<OptiSMOKE::PlugFlowReactor *> plugflow_reactors;
-  std::vector<OptiSMOKE::PerfectlyStirredReactor *> perfectlystirred_reactors;
-  std::vector<OptiSMOKE::PremixedLaminarFlame1D *> premixed1D;
+  std::vector<OptiSMOKE::BatchReactor*> batch_reactors;
+  std::vector<OptiSMOKE::PlugFlowReactor*> plugflow_reactors;
+  std::vector<OptiSMOKE::PerfectlyStirredReactor*> perfectlystirred_reactors;
+  std::vector<OptiSMOKE::PremixedLaminarFlame1D*> premixed1D;
 
   unsigned int n_batch;
   unsigned int n_pfr;
@@ -65,8 +66,10 @@ class SimulationsInterface {
 
   void ChangeRPBRMReactions(std::string type, unsigned int index, double parameter, unsigned int index_coll);
 
-  void ChangeReactionOrder(const std::string &type, const int reaction_index, const unsigned int& species_idx,
-                                 const double parameter) ;
+  void ChangeReactionOrder(const std::string& type,
+                           const int reaction_index,
+                           const unsigned int& species_idx,
+                           const double parameter);
 };
 }  // namespace OptiSMOKE
 

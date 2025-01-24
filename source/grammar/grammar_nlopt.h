@@ -39,63 +39,57 @@
 #include "dictionary/OpenSMOKE_DictionaryGrammar.h"
 #include "dictionary/OpenSMOKE_DictionaryKeyWord.h"
 
-namespace OptiSMOKE
-{
-	class grammar_nlopt : public OpenSMOKE::OpenSMOKE_DictionaryGrammar
-	{
-	protected:
+namespace OptiSMOKE {
+class grammar_nlopt : public OpenSMOKE::OpenSMOKE_DictionaryGrammar {
+ protected:
+  virtual void DefineRules() {
+    AddKeyWord(
+        OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Algorithm", OpenSMOKE::SINGLE_STRING, "NLOPT++ algorithm", true));
 
-		virtual void DefineRules()
-		{
-    
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Algorithm",
-		        OpenSMOKE::SINGLE_STRING,
-	            "NLOPT++ algorithm",
-                true));
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Variant",
+                                                      OpenSMOKE::SINGLE_STRING,
+                                                      "NLOPT++ algorithm variant",
+                                                      true));
 
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Variant",
-				OpenSMOKE::SINGLE_STRING,
-	            "NLOPT++ algorithm variant",
-                true));
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@CentralGradient",
+                                                      OpenSMOKE::SINGLE_STRING,
+                                                      "Enable gradient calculations with centered difference",
+                                                      false));
 
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@CentralGradient",
-				OpenSMOKE::SINGLE_STRING,
-	            "Enable gradient calculations with centered difference",
-                false));
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@MaxIterations",
+                                                      OpenSMOKE::SINGLE_INT,
+                                                      "Maximum number of iterations",
+                                                      false));
 
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@MaxIterations",
-                OpenSMOKE::SINGLE_INT,
-                "Maximum number of iterations",
-                false));
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@MaxFunctionEvaluations",
+                                                      OpenSMOKE::SINGLE_INT,
+                                                      "Maximum number of function evaluations",
+                                                      false));
 
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@MaxFunctionEvaluations",
-                OpenSMOKE::SINGLE_INT,
-                "Maximum number of function evaluations",
-                false));
-		    
-			AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ConvergenceTolerance",
-                OpenSMOKE::SINGLE_DOUBLE,
-                "Convergence tolerance",
-                false));
-	
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@SolutionTarget",
-                OpenSMOKE::SINGLE_DOUBLE,
-                "Solution target for the objective function",
-                false));
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ConvergenceTolerance",
+                                                      OpenSMOKE::SINGLE_DOUBLE,
+                                                      "Convergence tolerance",
+                                                      false));
 
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@LocalAlgorithm",
-                OpenSMOKE::SINGLE_STRING,
-                "Set a specific local optimizer for the methods that requires one",
-                false));
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@SolutionTarget",
+                                                      OpenSMOKE::SINGLE_DOUBLE,
+                                                      "Solution target for the objective function",
+                                                      false));
 
-            AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@LocalAlgorithmVariant",
-                OpenSMOKE::SINGLE_STRING,
-                "NLOPT++ algorithm variant",
-                false,
-                "none",
-                "@LocalAlgorithm",
-                "none"));
-		}
-	};
-}
-#endif // GRAMMAR_NLOPT_H
+    AddKeyWord(
+        OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@LocalAlgorithm",
+                                               OpenSMOKE::SINGLE_STRING,
+                                               "Set a specific local optimizer for the methods that requires one",
+                                               false));
+
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@LocalAlgorithmVariant",
+                                                      OpenSMOKE::SINGLE_STRING,
+                                                      "NLOPT++ algorithm variant",
+                                                      false,
+                                                      "none",
+                                                      "@LocalAlgorithm",
+                                                      "none"));
+  }
+};
+}  // namespace OptiSMOKE
+#endif  // GRAMMAR_NLOPT_H
