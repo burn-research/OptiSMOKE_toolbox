@@ -43,15 +43,19 @@ find_package(
              chrono
              serialization)
 
+# -----------------------------------------------------------------------------
 # Eigen3
 find_package(Eigen3)
 
+# -----------------------------------------------------------------------------
 # OpenSMOKE++
 find_package(OpenSMOKEpp REQUIRED)
 
+# -----------------------------------------------------------------------------
 # OpenSMOKESolvers
 find_package(OpenSMOKEppSolvers REQUIRED)
 
+# -----------------------------------------------------------------------------
 # Dakota
 find_package(
   Dakota REQUIRED
@@ -102,28 +106,32 @@ find_package(
              psuade
              amplsolver)
 
+# -----------------------------------------------------------------------------
 # NLopt TODO: find_package(NLopt REQUIRED)
 
 # -----------------------------------------------------------------------------
 # Linear Algebra Acceleration (Recommended)
 # -----------------------------------------------------------------------------
-# Intel MKL
-if(OPTISMOKE_USE_MKL)
-
-endif()
+# TODO: Add MKL
 
 # OpenBLAS
 if(OPTISMOKE_USE_OPENBLAS)
-
+  # For OpenBLAS we are not using the cmake standard defined find blas stuff because it doesnt
+  # provide correctly the include directory so in order to do that we are using the one
+  # automatically generated when building from source the OpenBLAS library usually located in
+  # ".../lib/cmake/openblas" Handled in this way because we need to link against the static version
+  find_package(OpenBLAS REQUIRED)
+  message(STATUS "Found OpenBLAS --> version ${OpenBLAS_VERSION}")
 endif()
 
 # --------------------------------------------------------------------
 # Targets to compile
 # --------------------------------------------------------------------
-
 add_executable(OptiSMOKEpp ${PROJECT_SOURCE_DIR}/OptiSMOKEpp.cpp)
 
-target_include_directories(OptiSMOKEpp PUBLIC ${PROJECT_SOURCE_DIR})
+target_include_directories(
+  OptiSMOKEpp PUBLIC ${PROJECT_SOURCE_DIR} ${OPENSMOKE_INCLUDE_DIR} ${OpenBLAS_INCLUDE_DIRS}
+                     ${OPENSMOKEPPSOLVERS_INCLUDE_DIR})
 
 target_link_libraries(
   OptiSMOKEpp
@@ -135,7 +143,8 @@ target_link_libraries(
          Boost::regex
          Boost::timer
          Boost::chrono
-         ${Dakota_LIBRARIES})
+         ${Dakota_LIBRARIES}
+         ${OpenBLAS_INCLUDE_DIRS}/../lib/libopenblas.a)
 
 target_compile_definitions(
   OptiSMOKEpp
