@@ -18,97 +18,123 @@
 |                                                                                   |
 |             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
 |                 Department of Chemistry, Materials and Chemical Engineering       |
-|                 Politecnico di Milano                                             |
-|                 P.zza Leonardo da Vinci 32, 20133 Milano                          |
+|                 Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano   |
 |                                                                                   |
 |             [2] BRITE Research Group <https://brite-research.be>                  |
 |                 Brussels Institute for Thermal-fluid systems and clean Energy     |
-|                 Avenue F.D. Rooseveltlaan 50                                      |
-|                 Bruxelles 1050 Brussel                                            |
+|                 Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel              |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
-#pragma once
-
-#include <vector>
-#include <string>
-using std::string;
-using std::vector;
-
-#include <boost/foreach.hpp>
-#include <boost/json.hpp>
-#include <boost/optional.hpp>
-#include <boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
 
 namespace OptiSMOKE {
+OptionsDakota::OptionsDakota() {
+  method_ = "coliny_ea";
+  population_size_ = "50";
+  fitness_type_ = "merit_function";
+  mutation_type_ = "offset_normal";
+  mutation_rate_ = "1.0";
+  crossover_type_ = "two_point";
+  crossover_rate_ = "0.0";
+  replacement_type_ = "chc = 10";
 
-class DataManager {
- public:
-  DataManager();
+  division_ = "major_dimension";
+  max_boxsize_limit_ = "0.0";
+  min_boxsize_limit_ = "1.0e-4";
 
-  ~DataManager();
+  dakota_gradient_ = false;
+  diverse_input_ = false;
 
-  void ReadExperimentalData(vector<string>& experimental_data_files);
+  tabular_data_file_ = "tabular_data.dat";
 
-  const vector<string>& dataset_names() const { return dataset_names_; };
+  echo_dakota_string_ = false;
+}
 
-  const vector<string>& solver_name() const { return solver_name_; };
+void OptionsDakota::SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager,
+                                        std::string dictionary_name) {
+  dictionary_manager(dictionary_name).SetGrammar(grammar_);
 
-  const vector<string>& QoI() const { return QoI_; };
+  if (dictionary_manager(dictionary_name).CheckOption("@TabularDataFile")) {
+    dictionary_manager(dictionary_name).ReadString("@TabularDataFile", tabular_data_file_);
+  }
 
-  const vector<string>& QoI_target() const { return QoI_target_; };
+  if (dictionary_manager(dictionary_name).CheckOption("@Method")) {
+    dictionary_manager(dictionary_name).ReadString("@Method", method_);
+  }
 
-  const vector<bool>& multiple_input() const { return multiple_input_; };
+  if (dictionary_manager(dictionary_name).CheckOption("@MaxIterations")) {
+    dictionary_manager(dictionary_name).ReadString("@MaxIterations", max_iterations_);
+  }
 
-  const vector<vector<string>>& input_paths() const { return input_paths_; };
+  if (dictionary_manager(dictionary_name).CheckOption("@MaxFunctionEvaluations")) {
+    dictionary_manager(dictionary_name).ReadString("@MaxFunctionEvaluations", max_function_evaluations_);
+  }
 
-  const vector<vector<string>>& ordinates_label() const { return ordinates_label_; };
+  if (dictionary_manager(dictionary_name).CheckOption("@ConvergenceTolerance")) {
+    dictionary_manager(dictionary_name).ReadString("@ConvergenceTolerance", convergence_tolerance_);
+  }
 
-  const vector<vector<string>>& abscissae_label() const { return abscissae_label_; };
+  if (dictionary_manager(dictionary_name).CheckOption("@SolutionTarget")) {
+    dictionary_manager(dictionary_name).ReadString("@SolutionTarget", solution_target_);
+  }
 
-  const vector<vector<string>>& uncertainty_kind() const { return uncertainty_kind_; };
+  if (dictionary_manager(dictionary_name).CheckOption("@Seed")) {
+    dictionary_manager(dictionary_name).ReadString("@Seed", seed_);
+  }
 
-  const vector<vector<vector<double>>>& expdata_x() const { return expdata_x_; };
+  if (dictionary_manager(dictionary_name).CheckOption("@PopulationSize")) {
+    dictionary_manager(dictionary_name).ReadString("@PopulationSize", population_size_);
+  }
 
-  const vector<vector<vector<double>>>& expdata_y() const { return expdata_y_; };
+  if (dictionary_manager(dictionary_name).CheckOption("@FitnessType")) {
+    dictionary_manager(dictionary_name).ReadString("@FitnessType", fitness_type_);
+  }
 
-  const vector<vector<vector<double>>>& uncertainty() const { return uncertainty_; };
+  if (dictionary_manager(dictionary_name).CheckOption("@MutationType")) {
+    dictionary_manager(dictionary_name).ReadString("@MutationType", mutation_type_);
+  }
 
-  const vector<string>& reactor_mode() const { return reactor_mode_; };
+  if (dictionary_manager(dictionary_name).CheckOption("@MutationRate")) {
+    dictionary_manager(dictionary_name).ReadString("@MutationRate", mutation_rate_);
+  }
 
- private:
-  vector<string> dataset_names_;
-  vector<string> solver_name_;
-  vector<string> QoI_;
-  vector<string> QoI_target_;
-  vector<bool> multiple_input_;
-  vector<string> reactor_mode_;
+  if (dictionary_manager(dictionary_name).CheckOption("@CrossoverType")) {
+    dictionary_manager(dictionary_name).ReadString("@CrossoverType", crossover_type_);
+  }
 
-  vector<vector<string>> input_paths_;
+  if (dictionary_manager(dictionary_name).CheckOption("@CrossoverRate")) {
+    dictionary_manager(dictionary_name).ReadString("@CrossoverRate", crossover_rate_);
+  }
 
-  // This blocks here has to go three dimensions
-  // since a datasets file can have multiple series
-  // dimension one: number of files
-  // dimension two: number of datasets whithin each file
-  // dimension three: number point in each datasets
-  vector<vector<string>> ordinates_label_;
-  vector<vector<string>> abscissae_label_;
-  vector<vector<string>> uncertainty_kind_;
-  vector<vector<vector<double>>> expdata_x_;
-  vector<vector<vector<double>>> expdata_y_;
-  vector<vector<vector<double>>> uncertainty_;
-  vector<vector<vector<double>>> standard_deviations_;
+  if (dictionary_manager(dictionary_name).CheckOption("@ReplacementType")) {
+    dictionary_manager(dictionary_name).ReadString("@ReplacementType", replacement_type_);
+  }
 
-  void OrderData();
+  if (dictionary_manager(dictionary_name).CheckOption("@Division")) {
+    dictionary_manager(dictionary_name).ReadString("@Division", division_);
+  }
 
-  // Default sigma for standard deviation if it is not present
-  // inside the file.
-  const double default_sigma = 2;
-  void ComputeStandardDeviations();
-};
+  if (dictionary_manager(dictionary_name).CheckOption("@MaxBoxsizeLimit")) {
+    dictionary_manager(dictionary_name).ReadString("@MaxBoxsizeLimit", max_boxsize_limit_);
+  }
+
+  if (dictionary_manager(dictionary_name).CheckOption("@MinBoxsizeLimit")) {
+    dictionary_manager(dictionary_name).ReadString("@MinBoxsizeLimit", min_boxsize_limit_);
+  }
+
+  if (dictionary_manager(dictionary_name).CheckOption("@DiverseInput")) {
+    diverse_input_ = true;
+    dictionary_manager(dictionary_name).ReadOption("@DiverseInput", diverse_dakota_input_);
+  }
+
+  if (dictionary_manager(dictionary_name).CheckOption("@Gradient")) {
+    dictionary_manager(dictionary_name).ReadBool("@Gradient", dakota_gradient_);
+  }
+
+  if (dictionary_manager(dictionary_name).CheckOption("@EchoDakotaInput")) {
+    dictionary_manager(dictionary_name).ReadBool("@EchoDakotaInput", echo_dakota_string_);
+  }
+}
 }  // namespace OptiSMOKE
-
-#include "DataManager.hpp"
 /* ------------------------------------------------------------------------------- *\
 |                                                                                   |
 |   MIT License                                                                     |

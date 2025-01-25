@@ -12,11 +12,19 @@
 |  information at the end of this file.                                             |
 | --------------------------------------------------------------------------------- |
 |                                                                                   |
-|           Author: Timoteo Dinelli <timoteo.dinelli@polimi.it>                     |
-|              CRECK Modeling Group <http://creckmodeling.chem.polimi.it>           |
-|              Department of Chemistry, Materials and Chemical Engineering          |
-|              Politecnico di Milano                                                |
-|              P.zza Leonardo da Vinci 32, 20133 Milano                             |
+|           Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                   |
+|                    Andrea Bertolino <andrea.bertolino@ulb.be>                     |
+|                    Magnus Fürst     <magnus.furst@ulb.ac.be>                      |
+|                                                                                   |
+|             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
+|                 Department of Chemistry, Materials and Chemical Engineering       |
+|                 Politecnico di Milano                                             |
+|                 P.zza Leonardo da Vinci 32, 20133 Milano                          |
+|                                                                                   |
+|             [2] BRITE Research Group <https://brite-research.be>                  |
+|                 Brussels Institute for Thermal-fluid systems and clean Energy     |
+|                 Avenue F.D. Rooseveltlaan 50                                      |
+|                 Bruxelles 1050 Brussel                                            |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
 #include "OptiSMOKEpp.h"
@@ -25,21 +33,16 @@ using namespace OptiSMOKE;
 
 int main(int argc, char* argv[]) {
 #ifdef HAVE_AMPL
-  // Switch to 53-bit rounding if appropriate, to eliminate some
-  // cross-platform differences.
+  // Switch to 53-bit rounding if appropriate, to eliminate some cross-platform differences.
   fpinit_ASL();
 #endif
-
-  // whether running in parallel
   bool parallel = Dakota::MPIManager::detect_parallel_launch(argc, argv);
-
-  // Define MPI_DEBUG in dakota_global_defs.cpp to cause a hold here
   Dakota::mpi_debug_hold();
-
 #ifdef DAKOTA_HAVE_MPI
-  if (parallel)
-    MPI_Init(&argc, &argv);  // initialize MPI
-#endif                       // DAKOTA_HAVE_MPI
+  if (parallel) {
+    MPI_Init(&argc, &argv);
+  }
+#endif
 
   const char* dakota_input_string = NULL;
 
@@ -104,6 +107,7 @@ int main(int argc, char* argv[]) {
   //   } else {
   //     FatalErrorMessage("Available libraries for the optimization are: DAKOTA | NLopt");
   //   }
+  return 0;
 }
 
 // void run_dakota_parse(const char* dakota_input_string, bool echo_dakota_string) {
@@ -208,7 +212,7 @@ int main(int argc, char* argv[]) {
 |                                                                                   |
 |   MIT License                                                                     |
 |                                                                                   |
-|   Copyright (c) 2025 Timoteo Dinelli                                              |
+|   Copyright (c) 2025 Timoteo Dinelli, Andrea Bertolino, Magnus Fürst              |
 |                                                                                   |
 |   Permission is hereby granted, free of charge, to any person obtaining a copy    |
 |   of this software and associated documentation files (the "Software"), to deal   |

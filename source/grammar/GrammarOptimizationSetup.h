@@ -18,97 +18,70 @@
 |                                                                                   |
 |             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
 |                 Department of Chemistry, Materials and Chemical Engineering       |
-|                 Politecnico di Milano                                             |
-|                 P.zza Leonardo da Vinci 32, 20133 Milano                          |
+|                 Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano   |
 |                                                                                   |
 |             [2] BRITE Research Group <https://brite-research.be>                  |
 |                 Brussels Institute for Thermal-fluid systems and clean Energy     |
-|                 Avenue F.D. Rooseveltlaan 50                                      |
-|                 Bruxelles 1050 Brussel                                            |
+|                 Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel              |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
 #pragma once
 
-#include <vector>
-#include <string>
-using std::string;
-using std::vector;
-
-#include <boost/foreach.hpp>
-#include <boost/json.hpp>
-#include <boost/optional.hpp>
-#include <boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
-
 namespace OptiSMOKE {
+class GrammarOptimizationSetup : public OpenSMOKE::OpenSMOKE_DictionaryGrammar {
+ protected:
+  virtual void DefineRules() {
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@SigmaExpDistribution",
+                                                      OpenSMOKE::SINGLE_INT,
+                                                      "How many sigma is the relative error",
+                                                      false,
+                                                      "none",
+                                                      "none",
+                                                      "none"));
 
-class DataManager {
- public:
-  DataManager();
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@AcceptedSigmaInKDistribution",
+                                                      OpenSMOKE::SINGLE_INT,
+                                                      "How many sigma we assume to accept in our k distribution",
+                                                      false,
+                                                      "none",
+                                                      "none",
+                                                      "none"));
 
-  ~DataManager();
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@Parameters_Distribution",
+                                                      OpenSMOKE::SINGLE_STRING,
+                                                      "Specifies the parameters distribution: Uniform or Normal",
+                                                      true,
+                                                      "none",
+                                                      "none",
+                                                      "none"));
 
-  void ReadExperimentalData(vector<string>& experimental_data_files);
+    AddKeyWord(
+        OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@PenaltyFunction",
+                                               OpenSMOKE::SINGLE_BOOL,
+                                               "Use penalty function for checking the rate parameters (default: true)",
+                                               false));
 
-  const vector<string>& dataset_names() const { return dataset_names_; };
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ObjectiveFunctionType",
+                                                      OpenSMOKE::SINGLE_STRING,
+                                                      "Specify how the objective function is calculated.",
+                                                      false));
 
-  const vector<string>& solver_name() const { return solver_name_; };
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ParametersBoundaries",
+                                                      OpenSMOKE::SINGLE_STRING,
+                                                      "Specify the method to compute the parameters boundaries",
+                                                      false));
 
-  const vector<string>& QoI() const { return QoI_; };
-
-  const vector<string>& QoI_target() const { return QoI_target_; };
-
-  const vector<bool>& multiple_input() const { return multiple_input_; };
-
-  const vector<vector<string>>& input_paths() const { return input_paths_; };
-
-  const vector<vector<string>>& ordinates_label() const { return ordinates_label_; };
-
-  const vector<vector<string>>& abscissae_label() const { return abscissae_label_; };
-
-  const vector<vector<string>>& uncertainty_kind() const { return uncertainty_kind_; };
-
-  const vector<vector<vector<double>>>& expdata_x() const { return expdata_x_; };
-
-  const vector<vector<vector<double>>>& expdata_y() const { return expdata_y_; };
-
-  const vector<vector<vector<double>>>& uncertainty() const { return uncertainty_; };
-
-  const vector<string>& reactor_mode() const { return reactor_mode_; };
-
- private:
-  vector<string> dataset_names_;
-  vector<string> solver_name_;
-  vector<string> QoI_;
-  vector<string> QoI_target_;
-  vector<bool> multiple_input_;
-  vector<string> reactor_mode_;
-
-  vector<vector<string>> input_paths_;
-
-  // This blocks here has to go three dimensions
-  // since a datasets file can have multiple series
-  // dimension one: number of files
-  // dimension two: number of datasets whithin each file
-  // dimension three: number point in each datasets
-  vector<vector<string>> ordinates_label_;
-  vector<vector<string>> abscissae_label_;
-  vector<vector<string>> uncertainty_kind_;
-  vector<vector<vector<double>>> expdata_x_;
-  vector<vector<vector<double>>> expdata_y_;
-  vector<vector<vector<double>>> uncertainty_;
-  vector<vector<vector<double>>> standard_deviations_;
-
-  void OrderData();
-
-  // Default sigma for standard deviation if it is not present
-  // inside the file.
-  const double default_sigma = 2;
-  void ComputeStandardDeviations();
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ReactionsClasses",
+                                                      OpenSMOKE::SINGLE_BOOL,
+                                                      "Enable the optimisation by reaction classes",
+                                                      false,
+                                                      "none",
+                                                      "none",
+                                                      "none"));
+  }
 };
 }  // namespace OptiSMOKE
 
-#include "DataManager.hpp"
 /* ------------------------------------------------------------------------------- *\
 |                                                                                   |
 |   MIT License                                                                     |

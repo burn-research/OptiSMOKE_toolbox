@@ -12,11 +12,19 @@
 |  information at the end of this file.                                             |
 | --------------------------------------------------------------------------------- |
 |                                                                                   |
-|           Author: Timoteo Dinelli <timoteo.dinelli@polimi.it>                     |
-|              CRECK Modeling Group <http://creckmodeling.chem.polimi.it>           |
-|              Department of Chemistry, Materials and Chemical Engineering          |
-|              Politecnico di Milano                                                |
-|              P.zza Leonardo da Vinci 32, 20133 Milano                             |
+|           Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                   |
+|                    Andrea Bertolino <andrea.bertolino@ulb.be>                     |
+|                    Magnus Fürst     <magnus.furst@ulb.ac.be>                      |
+|                                                                                   |
+|             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
+|                 Department of Chemistry, Materials and Chemical Engineering       |
+|                 Politecnico di Milano                                             |
+|                 P.zza Leonardo da Vinci 32, 20133 Milano                          |
+|                                                                                   |
+|             [2] BRITE Research Group <https://brite-research.be>                  |
+|                 Brussels Institute for Thermal-fluid systems and clean Energy     |
+|                 Avenue F.D. Rooseveltlaan 50                                      |
+|                 Bruxelles 1050 Brussel                                            |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
 #pragma once
@@ -91,6 +99,11 @@ extern "C" void fpinit_ASL();
 #include <maps/TransportPropertiesMap_CHEMKIN.h>
 #include <maps/KineticsMap_CHEMKIN.h>
 // ==================================================
+// OpenSMOKE Dictionaries stuff
+#include <dictionary/OpenSMOKE_DictionaryManager.h>
+#include <dictionary/OpenSMOKE_DictionaryGrammar.h>
+#include <dictionary/OpenSMOKE_DictionaryKeyWord.h>
+// ==================================================
 // Typedefs
 typedef OpenSMOKE::Species<OpenSMOKE::ThermoPolicy_CHEMKIN, OpenSMOKE::TransportPolicy_CHEMKIN> SpeciesCHEMKIN;
 typedef OpenSMOKE::PreProcessorSpecies<OpenSMOKE::PreProcessorSpeciesPolicy_CHEMKIN_WithoutTransport<SpeciesCHEMKIN>>
@@ -105,8 +118,8 @@ typedef OpenSMOKE::ThermoReader<OpenSMOKE::ThermoReaderPolicy_CHEMKIN<OpenSMOKE:
 // Internal Headers
 // ==================================================
 #include "utilities/OptiSMOKEUtilities"
-#include "grammar/grammar.h"
-#include "options/options.h"
+#include "grammar/Grammar.h"
+#include "options/Options.h"
 // #include "ideal_reactors/ideal_reactors.h"
 // #include "1d_flames/1d_flames.h"
 #include "DataManager.h"
@@ -135,7 +148,7 @@ typedef OpenSMOKE::ThermoReader<OpenSMOKE::ThermoReaderPolicy_CHEMKIN<OpenSMOKE:
 |                                                                                   |
 |   MIT License                                                                     |
 |                                                                                   |
-|   Copyright (c) 2025 Timoteo Dinelli                                              |
+|   Copyright (c) 2025 Timoteo Dinelli, Andrea Bertolino, Magnus Fürst              |
 |                                                                                   |
 |   Permission is hereby granted, free of charge, to any person obtaining a copy    |
 |   of this software and associated documentation files (the "Software"), to deal   |

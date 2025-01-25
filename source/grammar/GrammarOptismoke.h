@@ -18,97 +18,87 @@
 |                                                                                   |
 |             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
 |                 Department of Chemistry, Materials and Chemical Engineering       |
-|                 Politecnico di Milano                                             |
-|                 P.zza Leonardo da Vinci 32, 20133 Milano                          |
+|                 Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano   |
 |                                                                                   |
 |             [2] BRITE Research Group <https://brite-research.be>                  |
 |                 Brussels Institute for Thermal-fluid systems and clean Energy     |
-|                 Avenue F.D. Rooseveltlaan 50                                      |
-|                 Bruxelles 1050 Brussel                                            |
+|                 Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel              |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
 #pragma once
 
-#include <vector>
-#include <string>
-using std::string;
-using std::vector;
-
-#include <boost/foreach.hpp>
-#include <boost/json.hpp>
-#include <boost/optional.hpp>
-#include <boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
-
 namespace OptiSMOKE {
+class GrammarOptismoke : public OpenSMOKE::OpenSMOKE_DictionaryGrammar {
+ protected:
+  virtual void DefineRules() {
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@DakotaOptions",
+                                                      OpenSMOKE::SINGLE_DICTIONARY,
+                                                      "Name of the dictionary with options for Dakota",
+                                                      false,
+                                                      "none",
+                                                      "@OptimizationLibrary",
+                                                      "@NLOPTOptions"));
 
-class DataManager {
- public:
-  DataManager();
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@NLOPTOptions",
+                                                      OpenSMOKE::SINGLE_DICTIONARY,
+                                                      "Name of the dictionary with options for NLOPT",
+                                                      false,
+                                                      "none",
+                                                      "@OptimizationLibrary",
+                                                      "@DakotaOptions"));
 
-  ~DataManager();
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord(
+        "@CurveMatchingOptions",
+        OpenSMOKE::SINGLE_DICTIONARY,
+        "Name of the dictionary with options for setting Curve Matching as the objective function",
+        false));
 
-  void ReadExperimentalData(vector<string>& experimental_data_files);
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OptimizationSetup",
+                                                      OpenSMOKE::SINGLE_DICTIONARY,
+                                                      "Name of the dictionary to set the options for the optimization",
+                                                      true));
 
-  const vector<string>& dataset_names() const { return dataset_names_; };
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OptimizationTarget",
+                                                      OpenSMOKE::SINGLE_DICTIONARY,
+                                                      "Name of the dictionary to set the targets for the optimization",
+                                                      true));
 
-  const vector<string>& solver_name() const { return solver_name_; };
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@KineticsFolder",
+                                                      OpenSMOKE::SINGLE_PATH,
+                                                      "Name of the folder containing the kinetic scheme (XML Version)",
+                                                      true,
+                                                      "@KineticsPreProcessor",
+                                                      "none",
+                                                      "none"));
 
-  const vector<string>& QoI() const { return QoI_; };
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord(
+        "@KineticsPreProcessor",
+        OpenSMOKE::SINGLE_DICTIONARY,
+        "Name of the dictionary containing the list of kinetic files to be interpreted",
+        true,
+        "@KineticsFolder",
+        "none",
+        "none"));
 
-  const vector<string>& QoI_target() const { return QoI_target_; };
+    AddKeyWord(
+        OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OutputFolder",
+                                               OpenSMOKE::SINGLE_PATH,
+                                               "Name of the folder where to write all the output file of the program",
+                                               true));
 
-  const vector<bool>& multiple_input() const { return multiple_input_; };
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfExperimentalDataFiles",
+                                                      OpenSMOKE::VECTOR_STRING,
+                                                      "List of Experimental data files",
+                                                      true));
 
-  const vector<vector<string>>& input_paths() const { return input_paths_; };
-
-  const vector<vector<string>>& ordinates_label() const { return ordinates_label_; };
-
-  const vector<vector<string>>& abscissae_label() const { return abscissae_label_; };
-
-  const vector<vector<string>>& uncertainty_kind() const { return uncertainty_kind_; };
-
-  const vector<vector<vector<double>>>& expdata_x() const { return expdata_x_; };
-
-  const vector<vector<vector<double>>>& expdata_y() const { return expdata_y_; };
-
-  const vector<vector<vector<double>>>& uncertainty() const { return uncertainty_; };
-
-  const vector<string>& reactor_mode() const { return reactor_mode_; };
-
- private:
-  vector<string> dataset_names_;
-  vector<string> solver_name_;
-  vector<string> QoI_;
-  vector<string> QoI_target_;
-  vector<bool> multiple_input_;
-  vector<string> reactor_mode_;
-
-  vector<vector<string>> input_paths_;
-
-  // This blocks here has to go three dimensions
-  // since a datasets file can have multiple series
-  // dimension one: number of files
-  // dimension two: number of datasets whithin each file
-  // dimension three: number point in each datasets
-  vector<vector<string>> ordinates_label_;
-  vector<vector<string>> abscissae_label_;
-  vector<vector<string>> uncertainty_kind_;
-  vector<vector<vector<double>>> expdata_x_;
-  vector<vector<vector<double>>> expdata_y_;
-  vector<vector<vector<double>>> uncertainty_;
-  vector<vector<vector<double>>> standard_deviations_;
-
-  void OrderData();
-
-  // Default sigma for standard deviation if it is not present
-  // inside the file.
-  const double default_sigma = 2;
-  void ComputeStandardDeviations();
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OptimizationLibrary",
+                                                      OpenSMOKE::SINGLE_STRING,
+                                                      "Name of the library containing the optimization routines",
+                                                      true));
+  }
 };
 }  // namespace OptiSMOKE
 
-#include "DataManager.hpp"
 /* ------------------------------------------------------------------------------- *\
 |                                                                                   |
 |   MIT License                                                                     |

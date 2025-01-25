@@ -64,10 +64,8 @@ void SimulationsInterface::Setup() {
   //               Reactions constraints                   //
   //-------------------------------------------------------//
 
-  // Create constraints for reactions
-  // Initializes vector of uncertainty factors for Direct reactions
-  // Compute max and min reaction rates according to temperature dependent
-  // or constant uncertainty factors for direct reactions
+  // Create constraints for reactions Initializes vector of uncertainty factors for Direct reactions Compute max and min
+  // reaction rates according to temperature dependent or constant uncertainty factors for direct reactions
   std::vector<double> f_factors = data_.optimization_target().list_of_uncertainty_factors();
 
   // Computing boundaries for all the reactions
@@ -137,13 +135,12 @@ void SimulationsInterface::Setup() {
     }
   }
 
-  // Compute max and min reaction rates according to temperature dependent
-  // or constant uncertainty factors for PLOG reactions
+  // Compute max and min reaction rates according to temperature dependent or constant uncertainty factors for PLOG
+  // reactions
   std::vector<std::vector<std::vector<double>>> k_classic_plog;
   std::vector<unsigned int> indices_of_classic_plog = data_.nominalkineticsMapXML()->IndicesOfPLOGReactions();
   int rows_cp = data_.optimization_target().list_of_uncertainty_factors_classic_plog().size();
-  // resize first dimensions according to the number of classic plog we are interested in
-  // for optimisation
+  // resize first dimensions according to the number of classic plog we are interested in for optimisation
   k_classic_plog.resize(rows_cp);
   k_upper_classic_plog.resize(rows_cp);
   k_lower_classic_plog.resize(rows_cp);
@@ -302,11 +299,9 @@ void SimulationsInterface::run() {
   OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermo = data_.thermodynamicsMapXML_;
   OpenSMOKE::TransportPropertiesMap_CHEMKIN* transport = data_.transportMapXML_;
 
-  // Loop over all datasets
-  // Here data_.path_experimental_data_files().size() this is
-  // misleading however keep in mind that only the size matters
-  // Takes into consideration to setup the solvers into the constructor and here just
-  // solve them This will avoid to re-read the input file each time
+  // Loop over all datasets Here data_.path_experimental_data_files().size() this is misleading however keep in mind
+  // that only the size matters Takes into consideration to setup the solvers into the constructor and here just solve
+  // them This will avoid to re-read the input file each time
   unsigned int offset = 0;
   for (unsigned int i = 0; i < data_.path_experimental_data_files().size(); i++) {
     std::cout << " * Running: " << data_.path_experimental_data_files()[i] << std::endl;
@@ -477,16 +472,14 @@ double SimulationsInterface::ComputeObjectiveFunction() {
 }
 
 bool SimulationsInterface::CheckKineticConstasts() {
-  // OptiSMOKE mantainer of the future in order to make things more effcient consider
-  // to not substituting kinetics and then creating constraints and then checking
-  // just check and substitute or not
-  // std::cout << " * Kinetic constants check..." << std::endl;
+  // OptiSMOKE mantainer of the future in order to make things more effcient consider to not substituting kinetics and
+  // then creating constraints and then checking just check and substitute or not std::cout << " * Kinetic constants
+  // check..." << std::endl;
   for (int j = 0; j < data_.optimization_target().list_of_target_uncertainty_factors().size(); j++) {
     std::vector<double> k_check;
     k_check.resize(T_span.size());
     for (int i = 0; i < T_span.size(); i++) {
-      // Calculating the k value for the new set of kinetic parameters for a temperature
-      // span of 300-3000 K
+      // Calculating the k value for the new set of kinetic parameters for a temperature span of 300-3000 K
       unsigned int reaction_index = data_.optimization_target().list_of_target_uncertainty_factors()[j] - 1;
       double A_j = data_.kineticsMapXML()->A(reaction_index);
       double Beta_j = data_.kineticsMapXML()->Beta(reaction_index);
@@ -494,9 +487,8 @@ bool SimulationsInterface::CheckKineticConstasts() {
 
       k_check[i] = A_j * std::pow(T_span[i], Beta_j) * std::exp((-1 * E_over_R_j) / T_span[i]);
 
-      // If at one temperature the k value is either below the lower bound or above the
-      // upper bound, forcefully set the objective function value to 1e7 and print out
-      // for which reaction the violation occured
+      // If at one temperature the k value is either below the lower bound or above the upper bound, forcefully set the
+      // objective function value to 1e7 and print out for which reaction the violation occured
       if ((k_check[i] <= k_lower[j][i]) || (k_check[i] >= k_upper[j][i])) {
         std::cout << " * Violation for reaction: ";
         std::cout << reaction_index + 1 << std::endl;

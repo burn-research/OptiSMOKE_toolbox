@@ -18,97 +18,99 @@
 |                                                                                   |
 |             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
 |                 Department of Chemistry, Materials and Chemical Engineering       |
-|                 Politecnico di Milano                                             |
-|                 P.zza Leonardo da Vinci 32, 20133 Milano                          |
+|                 Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano   |
 |                                                                                   |
 |             [2] BRITE Research Group <https://brite-research.be>                  |
 |                 Brussels Institute for Thermal-fluid systems and clean Energy     |
-|                 Avenue F.D. Rooseveltlaan 50                                      |
-|                 Bruxelles 1050 Brussel                                            |
+|                 Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel              |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
 #pragma once
 
-#include <vector>
-#include <string>
-using std::string;
-using std::vector;
-
-#include <boost/foreach.hpp>
-#include <boost/json.hpp>
-#include <boost/optional.hpp>
-#include <boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
-
 namespace OptiSMOKE {
-
-class DataManager {
+class OptionsDakota {
  public:
-  DataManager();
+  OptionsDakota();
 
-  ~DataManager();
+  ~OptionsDakota() {};
 
-  void ReadExperimentalData(vector<string>& experimental_data_files);
+  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, std::string dictionary_name);
 
-  const vector<string>& dataset_names() const { return dataset_names_; };
-
-  const vector<string>& solver_name() const { return solver_name_; };
-
-  const vector<string>& QoI() const { return QoI_; };
-
-  const vector<string>& QoI_target() const { return QoI_target_; };
-
-  const vector<bool>& multiple_input() const { return multiple_input_; };
-
-  const vector<vector<string>>& input_paths() const { return input_paths_; };
-
-  const vector<vector<string>>& ordinates_label() const { return ordinates_label_; };
-
-  const vector<vector<string>>& abscissae_label() const { return abscissae_label_; };
-
-  const vector<vector<string>>& uncertainty_kind() const { return uncertainty_kind_; };
-
-  const vector<vector<vector<double>>>& expdata_x() const { return expdata_x_; };
-
-  const vector<vector<vector<double>>>& expdata_y() const { return expdata_y_; };
-
-  const vector<vector<vector<double>>>& uncertainty() const { return uncertainty_; };
-
-  const vector<string>& reactor_mode() const { return reactor_mode_; };
+  // const std::string& method() const { return method_; };
+  //
+  // const std::string& population_size() const { return population_size_; };
+  //
+  // const std::string& fitness_type() const { return fitness_type_; };
+  //
+  // const std::string& mutation_type() const { return mutation_type_; };
+  //
+  // const std::string& mutation_rate() const { return mutation_rate_; };
+  //
+  // const std::string& crossover_type() const { return crossover_type_; };
+  //
+  // const std::string& crossover_rate() const { return crossover_rate_; };
+  //
+  // const std::string& replacement_type() const { return replacement_type_; };
+  //
+  // const std::string& max_iterations() const { return max_iterations_; };
+  //
+  // const std::string& max_function_evaluations() const { return max_function_evaluations_; };
+  //
+  // const std::string& convergence_tolerance() const { return convergence_tolerance_; };
+  //
+  // const std::string& solution_target() const { return solution_target_; };
+  //
+  // const std::string& seed() const { return seed_; };
+  //
+  // const std::vector<std::string>& diverse_dakota_input() const { return diverse_dakota_input_; };
+  //
+  // const std::string& division() const { return division_; };
+  //
+  // const std::string& max_boxsize_limit() const { return max_boxsize_limit_; };
+  //
+  // const std::string& min_boxsize_limit() const { return min_boxsize_limit_; };
+  //
+  // const bool& dakota_gradient() const { return dakota_gradient_; };
+  //
+  // const bool& diverse_input() const { return diverse_input_; };
+  //
+  // const std::string& tabular_data_file() const { return tabular_data_file_; };
+  //
+  // const bool& echo_dakota_string() const { return echo_dakota_string_; };
 
  private:
-  vector<string> dataset_names_;
-  vector<string> solver_name_;
-  vector<string> QoI_;
-  vector<string> QoI_target_;
-  vector<bool> multiple_input_;
-  vector<string> reactor_mode_;
+  GrammarDakota grammar_;
 
-  vector<vector<string>> input_paths_;
+  std::vector<std::string> diverse_dakota_input_;
+  bool diverse_input_;
+  bool echo_dakota_string_;
+  std::string tabular_data_file_;
+  std::string method_;
+  bool dakota_gradient_;
 
-  // This blocks here has to go three dimensions
-  // since a datasets file can have multiple series
-  // dimension one: number of files
-  // dimension two: number of datasets whithin each file
-  // dimension three: number point in each datasets
-  vector<vector<string>> ordinates_label_;
-  vector<vector<string>> abscissae_label_;
-  vector<vector<string>> uncertainty_kind_;
-  vector<vector<vector<double>>> expdata_x_;
-  vector<vector<vector<double>>> expdata_y_;
-  vector<vector<vector<double>>> uncertainty_;
-  vector<vector<vector<double>>> standard_deviations_;
+  // ==================================================
+  // Values for coliny_evolutionary
+  std::string population_size_;
+  std::string fitness_type_;
+  std::string mutation_type_;
+  std::string mutation_rate_;
+  std::string crossover_type_;
+  std::string crossover_rate_;
+  std::string replacement_type_;
+  std::string max_iterations_;
+  std::string max_function_evaluations_;
+  std::string convergence_tolerance_;
+  std::string solution_target_;
+  std::string seed_;
 
-  void OrderData();
-
-  // Default sigma for standard deviation if it is not present
-  // inside the file.
-  const double default_sigma = 2;
-  void ComputeStandardDeviations();
+  // ==================================================
+  // Values for coliny_direct
+  std::string division_;
+  std::string max_boxsize_limit_;
+  std::string min_boxsize_limit_;
 };
-}  // namespace OptiSMOKE
 
-#include "DataManager.hpp"
+#include "OptionsDakota.hpp"
 /* ------------------------------------------------------------------------------- *\
 |                                                                                   |
 |   MIT License                                                                     |

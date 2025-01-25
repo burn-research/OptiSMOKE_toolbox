@@ -1,45 +1,61 @@
-/*-----------------------------------------------------------------------*\
-|     ____            _  ______ __  __  ____  _  ________                 |
-|    / __ \       _  (_)/  ___ |  \/  |/ __ \| |/ /  ____|                |
-|   | |  | |_ __ | |_ _|  (___ | \  / | |  | | ' /| |__    _     _        |
-|   | |  | | '_ \|  _| |\___  \| |\/| | |  | |  < |  __| _| |_ _| |_      |
-|   | |__| | |_) | |_| |____)  | |  | | |__| | . \| |___|_   _|_   _|     |
-|    \____/| .__/\___|_|______/|_|  |_|\____/|_|\_\______||_|   |_|       |
-|          | |                                                            |
-|          |_|                                                            |
-|                                                                         |
-|            Authors: Magnus Fürst <magnus.furst@ulb.ac.be>               |
-|                     Andrea Bertolino <andrea.bertolino@ulb.be>          |
-|                     Timoteo Dinelli <timoteo.dinelli@polimi.it>	        |
-|-------------------------------------------------------------------------|
-|   License                                                               |
-|                                                                         |
-|   This file is part of OptiSMOKE.                                       |
-|   Copyright (C) 2020 by Magnus Fürst and Andrea Bertolino               |
-|                                                                         |
-|   OptiSMOKE is free software: you can redistribute it and/or modify     |
-|   it under the terms of the GNU General Public License as published by  |
-|   the Free Software Foundation, either version 3 of the License, or     |
-|   (at your option) any later version.                                   |
-|                                                                         |
-|   OptiSMOKE is distributed in the hope that it will be useful,          |
-|   but WITHOUT ANY WARRANTY; without even the implied warranty of        |
-|   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         |
-|   GNU General Public License for more details.                          |
-|                                                                         |
-|   You should have received a copy of the GNU General Public License     |
-|   along with OptiSMOKE. If not, see <http://www.gnu.org/licenses/>.     |
-|                                                                         |
-\*-----------------------------------------------------------------------*/
+/* ------------------------------------------------------------------------------- *\
+|                                                                                   |
+|             ____        __  _ _____ __  _______  __ __ ______                     |
+|            / __ \____  / /_(_) ___//  |/  / __ \/ //_// ____/___  ____            |
+|           / / / / __ \/ __/ /\__ \/ /|_/ / / / / ,<  / __/ / __ \/ __ \           |
+|          / /_/ / /_/ / /_/ /___/ / /  / / /_/ / /| |/ /___/ /_/ / /_/ /           |
+|          \____/ .___/\__/_//____/_/  /_/\____/_/ |_/_____/ .___/ .___/            |
+|              /_/                                        /_/   /_/                 |
+|                                                                                   |
+| --------------------------------------------------------------------------------- |
+|  Please refer to the copyright statement and license                              |
+|  information at the end of this file.                                             |
+| --------------------------------------------------------------------------------- |
+|                                                                                   |
+|           Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                   |
+|                    Andrea Bertolino <andrea.bertolino@ulb.be>                     |
+|                    Magnus Fürst     <magnus.furst@ulb.ac.be>                      |
+|                                                                                   |
+|             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
+|                 Department of Chemistry, Materials and Chemical Engineering       |
+|                 Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano   |
+|                                                                                   |
+|             [2] BRITE Research Group <https://brite-research.be>                  |
+|                 Brussels Institute for Thermal-fluid systems and clean Energy     |
+|                 Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel              |
+|                                                                                   |
+\* ------------------------------------------------------------------------------- */
+#pragma once
 
-#ifndef OPTISMOKE_GRAMMAR_H
-#define OPTISMOKE_GRAMMAR_H
+#include "GrammarOptismoke.h"
+#include "GrammarDakota.h"
+#include "GrammarOptimizationSetup.h"
+#include "GrammarOptimizationTargets.h"
+#include "GrammarCurveMatching.h"
+#include "GrammarNlopt.h"
 
-#include "grammar_optismoke.h"
-#include "grammar_dakota.h"
-#include "grammar_optimization_setup.h"
-#include "grammar_optimization_targets.h"
-#include "grammar_curvematching.h"
-#include "grammar_nlopt.h"
-
-#endif  // OPTISMOKE_GRAMMAR_H
+/* ------------------------------------------------------------------------------- *\
+|                                                                                   |
+|   MIT License                                                                     |
+|                                                                                   |
+|   Copyright (c) 2025 Timoteo Dinelli, Andrea Bertolino, Magnus Fürst              |
+|                                                                                   |
+|   Permission is hereby granted, free of charge, to any person obtaining a copy    |
+|   of this software and associated documentation files (the "Software"), to deal   |
+|   in the Software without restriction, including without limitation the rights    |
+|   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell       |
+|   copies of the Software, and to permit persons to whom the Software is           |
+|   furnished to do so, subject to the following conditions:                        |
+|                                                                                   |
+|   The above copyright notice and this permission notice shall be included in all  |
+|   copies or substantial portions of the Software.                                 |
+|                                                                                   |
+|   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR      |
+|   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,        |
+|   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE     |
+|   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER          |
+|   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,   |
+|   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE   |
+|   SOFTWARE.                                                                       |
+|                                                                                   |
+\* ------------------------------------------------------------------------------- */

@@ -18,97 +18,45 @@
 |                                                                                   |
 |             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
 |                 Department of Chemistry, Materials and Chemical Engineering       |
-|                 Politecnico di Milano                                             |
-|                 P.zza Leonardo da Vinci 32, 20133 Milano                          |
+|                 Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano   |
 |                                                                                   |
 |             [2] BRITE Research Group <https://brite-research.be>                  |
 |                 Brussels Institute for Thermal-fluid systems and clean Energy     |
-|                 Avenue F.D. Rooseveltlaan 50                                      |
-|                 Bruxelles 1050 Brussel                                            |
+|                 Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel              |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
 #pragma once
 
-#include <vector>
-#include <string>
-using std::string;
-using std::vector;
-
-#include <boost/foreach.hpp>
-#include <boost/json.hpp>
-#include <boost/optional.hpp>
-#include <boost/property_tree/json_parser.hpp>
-using namespace boost::property_tree;
-
 namespace OptiSMOKE {
-
-class DataManager {
+class OptionsOptimizationSetup {
  public:
-  DataManager();
+  OptionsOptimizationSetup();
 
-  ~DataManager();
+  ~OptionsOptimizationSetup();
 
-  void ReadExperimentalData(vector<string>& experimental_data_files);
+  void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, std::string dictionary_name);
 
-  const vector<string>& dataset_names() const { return dataset_names_; };
-
-  const vector<string>& solver_name() const { return solver_name_; };
-
-  const vector<string>& QoI() const { return QoI_; };
-
-  const vector<string>& QoI_target() const { return QoI_target_; };
-
-  const vector<bool>& multiple_input() const { return multiple_input_; };
-
-  const vector<vector<string>>& input_paths() const { return input_paths_; };
-
-  const vector<vector<string>>& ordinates_label() const { return ordinates_label_; };
-
-  const vector<vector<string>>& abscissae_label() const { return abscissae_label_; };
-
-  const vector<vector<string>>& uncertainty_kind() const { return uncertainty_kind_; };
-
-  const vector<vector<vector<double>>>& expdata_x() const { return expdata_x_; };
-
-  const vector<vector<vector<double>>>& expdata_y() const { return expdata_y_; };
-
-  const vector<vector<vector<double>>>& uncertainty() const { return uncertainty_; };
-
-  const vector<string>& reactor_mode() const { return reactor_mode_; };
+  const std::string& parameter_boundaries() const { return parameter_boundaries_; };
+  const int& sigma_exp_ditribution() const { return sigma_exp_ditribution_; };
+  const int& sigma_k_distribution() const { return sigma_k_distribution_; };
+  const std::string& parameter_distribution() const { return parameter_distribution_; };
+  const bool& penalty_function() const { return penalty_function_; };
+  const std::string& objective_function_type() const { return objective_function_type_; };
+  const bool& iReactionClasses() const { return iReactionClasses_; };
 
  private:
-  vector<string> dataset_names_;
-  vector<string> solver_name_;
-  vector<string> QoI_;
-  vector<string> QoI_target_;
-  vector<bool> multiple_input_;
-  vector<string> reactor_mode_;
-
-  vector<vector<string>> input_paths_;
-
-  // This blocks here has to go three dimensions
-  // since a datasets file can have multiple series
-  // dimension one: number of files
-  // dimension two: number of datasets whithin each file
-  // dimension three: number point in each datasets
-  vector<vector<string>> ordinates_label_;
-  vector<vector<string>> abscissae_label_;
-  vector<vector<string>> uncertainty_kind_;
-  vector<vector<vector<double>>> expdata_x_;
-  vector<vector<vector<double>>> expdata_y_;
-  vector<vector<vector<double>>> uncertainty_;
-  vector<vector<vector<double>>> standard_deviations_;
-
-  void OrderData();
-
-  // Default sigma for standard deviation if it is not present
-  // inside the file.
-  const double default_sigma = 2;
-  void ComputeStandardDeviations();
+  GrammarOptimizationSetup grammar_;
+  std::string parameter_boundaries_;
+  int sigma_exp_ditribution_;
+  int sigma_k_distribution_;
+  std::string parameter_distribution_;
+  bool penalty_function_;
+  std::string objective_function_type_;
+  bool iReactionClasses_;
 };
 }  // namespace OptiSMOKE
 
-#include "DataManager.hpp"
+#include "OptionsOptimizationSetup.hpp"
 /* ------------------------------------------------------------------------------- *\
 |                                                                                   |
 |   MIT License                                                                     |

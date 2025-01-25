@@ -1,6 +1,4 @@
-#ifndef SIMULATIONS_INTERFACE_H
-#define SIMULATIONS_INTERFACE_H
-
+#pragma once
 namespace OptiSMOKE {
 
 class SimulationsInterface {
@@ -74,4 +72,3 @@ class SimulationsInterface {
 }  // namespace OptiSMOKE
 
 #include "SimulationsInterface.hpp"
-#endif  // SIMULATIONS_INTERFACE_H
