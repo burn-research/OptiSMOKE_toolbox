@@ -41,6 +41,7 @@ find_package(
              regex
              timer
              chrono
+             json
              serialization)
 
 # -----------------------------------------------------------------------------

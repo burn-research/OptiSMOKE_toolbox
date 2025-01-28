@@ -31,7 +31,7 @@
 #include "OptionsOptimizationTargets.h"
 #include "OptionsOptimizationSetup.h"
 #include "OptionsCurveMatching.h"
-#include "OptionsDakota.h"
+// #include "OptionsDakota.h"
 // #include "options_nlopt.h"
 /* ------------------------------------------------------------------------------- *\
 |                                                                                   |

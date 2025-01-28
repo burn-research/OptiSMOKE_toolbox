@@ -36,15 +36,14 @@ class OptionsOptimizationTargets {
 
   void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, std::string dictionary_name);
 
-  const size_t& NumberOfBatchReactors() const { return numberOfBatchReactor_; };
-  const size_t& NumberOfPlugFlowReactors() const { return numberOfPlugFlowReactor_; };
-  const size_t& NumberOfPerfectlyStirredReactors() const { return numberOfPerfectlyStirredReactor_; };
-  const size_t& NumberOfPremixedFlames() const { return numberOfPremixedLaminarFlame_; };
-  const size_t& NumberOfCounterFlowFlames() const { return numberOfCounterFlowFlame_; };
-  const size_t& NumberOfKTExperiments() const { return number_of_KT_experiments_; };
-  const size_t& NumberOfKTPExperiments() const { return number_of_KTP_experiments_; };
-
-  const size_t& NumberOfParameters() const { return numberOfParameters_; };
+  // const size_t& NumberOfBatchReactors() const { return numberOfBatchReactor_; };
+  // const size_t& NumberOfPlugFlowReactors() const { return numberOfPlugFlowReactor_; };
+  // const size_t& NumberOfPerfectlyStirredReactors() const { return numberOfPerfectlyStirredReactor_; };
+  // const size_t& NumberOfPremixedFlames() const { return numberOfPremixedLaminarFlame_; };
+  // const size_t& NumberOfCounterFlowFlames() const { return numberOfCounterFlowFlame_; };
+  // const size_t& NumberOfKTExperiments() const { return number_of_KT_experiments_; };
+  // const size_t& NumberOfKTPExperiments() const { return number_of_KTP_experiments_; };
+  // const size_t& NumberOfParameters() const { return numberOfParameters_; };
 
   const std::vector<int>& list_of_target_lnA() const { return list_of_target_lnA_; };
   const std::vector<int>& list_of_target_Beta() const { return list_of_target_Beta_; };

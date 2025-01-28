@@ -60,105 +60,108 @@ void InputManager::SetInputOptions(int argc, char* argv[]) {
 void InputManager::ReadDictionary() {
   dictionary_.ReadDictionariesFromFile(input_file_name_);
   dictionary_(main_dictionary_).SetGrammar(main_grammar_);
+
   dictionary_(main_dictionary_).ReadPath("@OutputFolder", output_folder_);
   if (!fs::exists(output_folder_)) {
     fs::create_directories(output_folder_);
   }
 
-  bool iXml = false;
-  bool iTransport = false;
-  OptiSMOKE::OptionsKinetics kinetics_data_;
-  if (dictionary_(main_dictionary_).CheckOption("@KineticsFolder")) {
-    iXml = true;
-    dictionary_(main_dictionary_).ReadPath("@KineticsFolder", kinetics_folder_);
-    if (!fs::exists(kinetics_folder_)) {
-      OptiSMOKE::FatalErrorMessage("The @KineticsFolder path does not exists!");
-    }
-    OpenSMOKE::CheckKineticsFolder(kinetics_folder_);
-  } else if (dictionary_(main_dictionary_).CheckOption("@KineticsPreProcessor")) {
-    std::string preprocessor_dictionary;
-    dictionary_(main_dictionary_).ReadDictionary("@KineticsPreProcessor", preprocessor_dictionary);
-    kinetics_data_.SetupFromDictionary(dictionary_, preprocessor_dictionary);
-    // TODO there is a bug I had not time to investigate further the following lines are a workaround
-    if (kinetics_data_.iTransport() == true) {
-      iTransport = true;
-    }
-  } else {
-    OptiSMOKE::FatalErrorMessage(
-        "Please provide the kinetic mechanism through one of the following keywords: @KineticsFolder | "
-        "@KineticsPreProcessor");
-  }
+  // bool iXml = false;
+  // bool iTransport = false;
+  // OptiSMOKE::OptionsKinetics kinetics_data_;
+  // if (dictionary_(main_dictionary_).CheckOption("@KineticsFolder")) {
+  //   iXml = true;
+  //   dictionary_(main_dictionary_).ReadPath("@KineticsFolder", kinetics_folder_);
+  //   if (!fs::exists(kinetics_folder_)) {
+  //     OptiSMOKE::FatalErrorMessage("The @KineticsFolder path does not exists!");
+  //   }
+  //   OpenSMOKE::CheckKineticsFolder(kinetics_folder_);
+  // } else if (dictionary_(main_dictionary_).CheckOption("@KineticsPreProcessor")) {
+  //   std::string preprocessor_dictionary;
+  //   dictionary_(main_dictionary_).ReadDictionary("@KineticsPreProcessor", preprocessor_dictionary);
+  //   kinetics_data_.SetupFromDictionary(dictionary_, preprocessor_dictionary);
+  //   // TODO there is a bug I had not time to investigate further the following lines are a workaround
+  //   if (kinetics_data_.iTransport() == true) {
+  //     iTransport = true;
+  //   }
+  // } else {
+  //   OptiSMOKE::FatalErrorMessage(
+  //       "Please provide the kinetic mechanism through one of the following keywords: @KineticsFolder | "
+  //       "@KineticsPreProcessor");
+  // }
 
   dictionary_(main_dictionary_).ReadOption("@ListOfExperimentalDataFiles", path_experimental_data_files_);
   dictionary_(main_dictionary_).ReadString("@OptimizationLibrary", optimization_library_);
 
   if (optimization_library_ == "dakota") {
-    std::string dakota_dictionary;
-    dictionary_(main_dictionary_).ReadDictionary("@DakotaOptions", dakota_dictionary);
-    dakota_options_.SetupFromDictionary(dictionary_, dakota_dictionary);
+    // std::string dakota_dictionary;
+    // OptiSMOKE::options_dakota dakota_options_;
+    // dictionary_(main_dictionary_).ReadDictionary("@DakotaOptions", dakota_dictionary);
+    // dakota_options_.SetupFromDictionary(dictionary_, dakota_dictionary);
   } else if (optimization_library_ == "nlopt") {
     // dictionary_(main_dictionary_).ReadDictionary("@NLOPTOptions", nlopt_dictionary_);
     // nlopt_options_.SetupFromDictionary(dictionary_, nlopt_dictionary_);
   } else {
-    OptiSMOKE::FatalErrorMessage("Unknown optimization library. Available are: dakota | nlopt");
+    OptiSMOKE::FatalErrorMessage("Unknown optimization library. Available are: DAKOTA | NLopt");
   }
 
   if (dictionary_(main_dictionary_).CheckOption("@CurveMatchingOptions")) {
     std::string curvematching_dictionary;
+    OptiSMOKE::OptionsCurveMatching curvematching_options;
     dictionary_(main_dictionary_).ReadDictionary("@CurveMatchingOptions", curvematching_dictionary);
-    curvematching_options_.SetupFromDictionary(dictionary_, curvematching_dictionary);
+    curvematching_options.SetupFromDictionary(dictionary_, curvematching_dictionary);
   }
 
-  {
-    std::string optimization_setup_dictionary;
-    dictionary_(main_dictionary_).ReadDictionary("@OptimizationSetup", optimization_setup_dictionary);
-    optimization_setup_.SetupFromDictionary(dictionary_, optimization_setup_dictionary);
+  std::string optimization_setup_dictionary;
+  OptiSMOKE::OptionsOptimizationSetup optimization_setup;
+  dictionary_(main_dictionary_).ReadDictionary("@OptimizationSetup", optimization_setup_dictionary);
+  optimization_setup.SetupFromDictionary(dictionary_, optimization_setup_dictionary);
 
-    std::string optimization_target_dictionary;
-    dictionary_(main_dictionary_).ReadDictionary("@OptimizationTarget", optimization_target_dictionary);
-    optimization_target_.SetupFromDictionary(dictionary_, optimization_target_dictionary);
-  }
+  std::string optimization_target_dictionary;
+  OptiSMOKE::OptionsOptimizationTargets optimization_targets;
+  dictionary_(main_dictionary_).ReadDictionary("@OptimizationTarget", optimization_target_dictionary);
+  optimization_targets.SetupFromDictionary(dictionary_, optimization_target_dictionary);
 
 
-  if (!iXml) {
-    if (!iTransport) {
-      OpenSMOKE::RapidKineticMechanismWithoutTransport(output_folder_ / kinetics_data_.chemkin_output(),
-                                                       kinetics_data_.chemkin_thermodynamics(),
-                                                       kinetics_data_.chemkin_kinetics());
-    } else {
-      OpenSMOKE::RapidKineticMechanismWithTransport(output_folder_ / kinetics_data_.chemkin_output(),
-                                                    kinetics_data_.chemkin_transport(),
-                                                    kinetics_data_.chemkin_thermodynamics(),
-                                                    kinetics_data_.chemkin_kinetics());
-    }
-  }
-
-  fs::path path_kinetics_output;
-  if (!iXml) {  // To be interpreted on-the-fly
-    path_kinetics_output = output_folder_ / kinetics_data_.chemkin_output();
-  } else {  // Mechanism already provided in XML format
-    path_kinetics_output = kinetics_folder_;
-  }
-
-  std::cout.setstate(std::ios_base::failbit);  // Disable video output
-  boost::property_tree::ptree ptree;
-  boost::property_tree::read_xml((path_kinetics_output / "kinetics.xml").string(), ptree);
-
-  thermodynamicsMapXML_ = new OpenSMOKE::ThermodynamicsMap_CHEMKIN(ptree);
-  kineticsMapXML_ = new OpenSMOKE::KineticsMap_CHEMKIN(*thermodynamicsMapXML_, ptree);
-  if (iTransport) {
-    transportMapXML_ = new OpenSMOKE::TransportPropertiesMap_CHEMKIN(ptree);
-  }
-
-  boost::property_tree::ptree nominal_ptree;
-  boost::property_tree::read_xml((path_kinetics_output / "kinetics.xml").string(), nominal_ptree);
-
-  nominalthermodynamicsMapXML_ = new OpenSMOKE::ThermodynamicsMap_CHEMKIN(nominal_ptree);
-  nominalkineticsMapXML_ = new OpenSMOKE::KineticsMap_CHEMKIN(*nominalthermodynamicsMapXML_, nominal_ptree);
-  if (iTransport) {
-    nominaltransportMapXML_ = new OpenSMOKE::TransportPropertiesMap_CHEMKIN(nominal_ptree);
-  }
-  std::cout.clear();  // Re-enable video output
+  // if (!iXml) {
+  //   if (!iTransport) {
+  //     OpenSMOKE::RapidKineticMechanismWithoutTransport(output_folder_ / kinetics_data_.chemkin_output(),
+  //                                                      kinetics_data_.chemkin_thermodynamics(),
+  //                                                      kinetics_data_.chemkin_kinetics());
+  //   } else {
+  //     OpenSMOKE::RapidKineticMechanismWithTransport(output_folder_ / kinetics_data_.chemkin_output(),
+  //                                                   kinetics_data_.chemkin_transport(),
+  //                                                   kinetics_data_.chemkin_thermodynamics(),
+  //                                                   kinetics_data_.chemkin_kinetics());
+  //   }
+  // }
+  //
+  // fs::path path_kinetics_output;
+  // if (!iXml) {  // To be interpreted on-the-fly
+  //   path_kinetics_output = output_folder_ / kinetics_data_.chemkin_output();
+  // } else {  // Mechanism already provided in XML format
+  //   path_kinetics_output = kinetics_folder_;
+  // }
+  //
+  // std::cout.setstate(std::ios_base::failbit);  // Disable video output
+  // boost::property_tree::ptree ptree;
+  // boost::property_tree::read_xml((path_kinetics_output / "kinetics.xml").string(), ptree);
+  //
+  // thermodynamicsMapXML_ = new OpenSMOKE::ThermodynamicsMap_CHEMKIN(ptree);
+  // kineticsMapXML_ = new OpenSMOKE::KineticsMap_CHEMKIN(*thermodynamicsMapXML_, ptree);
+  // if (iTransport) {
+  //   transportMapXML_ = new OpenSMOKE::TransportPropertiesMap_CHEMKIN(ptree);
+  // }
+  //
+  // boost::property_tree::ptree nominal_ptree;
+  // boost::property_tree::read_xml((path_kinetics_output / "kinetics.xml").string(), nominal_ptree);
+  //
+  // nominalthermodynamicsMapXML_ = new OpenSMOKE::ThermodynamicsMap_CHEMKIN(nominal_ptree);
+  // nominalkineticsMapXML_ = new OpenSMOKE::KineticsMap_CHEMKIN(*nominalthermodynamicsMapXML_, nominal_ptree);
+  // if (iTransport) {
+  //   nominaltransportMapXML_ = new OpenSMOKE::TransportPropertiesMap_CHEMKIN(nominal_ptree);
+  // }
+  // std::cout.clear();  // Re-enable video output
 }
 
 // void InputManager::DakotaInputString() {

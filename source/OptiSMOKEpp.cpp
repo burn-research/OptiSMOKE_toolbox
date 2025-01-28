@@ -12,22 +12,20 @@
 |  information at the end of this file.                                             |
 | --------------------------------------------------------------------------------- |
 |                                                                                   |
-|           Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                   |
-|                    Andrea Bertolino <andrea.bertolino@ulb.be>                     |
-|                    Magnus Fürst     <magnus.furst@ulb.ac.be>                      |
+|        Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                      |
+|                 Andrea Bertolino <andrea.bertolino@ulb.be>                        |
+|                 Magnus Fürst     <magnus.furst@ulb.ac.be>                         |
 |                                                                                   |
-|             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
-|                 Department of Chemistry, Materials and Chemical Engineering       |
-|                 Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano   |
+|          [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>             |
+|              Department of Chemistry, Materials and Chemical Engineering          |
+|              Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano      |
 |                                                                                   |
-|             [2] BRITE Research Group <https://brite-research.be>                  |
-|                 Brussels Institute for Thermal-fluid systems and clean Energy     |
-|                 Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel              |
+|          [2] BRITE Research Group <https://brite-research.be>                     |
+|              Brussels Institute for Thermal-fluid systems and clean Energy        |
+|              Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                 |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
 #include "OptiSMOKEpp.h"
-
-using namespace OptiSMOKE;
 
 int main(int argc, char* argv[]) {
 #ifdef HAVE_AMPL
@@ -44,67 +42,65 @@ int main(int argc, char* argv[]) {
 
   const char* dakota_input_string = NULL;
 
-  OptiSMOKE_logo("OptiSMOKE++", "T. Dinelli");
+  OptiSMOKE::OptiSMOKE_logo("T. Dinelli, A. Bertolino, M. Fürst");
 
   OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
-  OptiSMOKE::InputManager input(dictionaries);
-  input.SetInputOptions(argc, argv);
 
+  OptiSMOKE::InputManager input(dictionaries);
+  // input.SetInputOptions(argc, argv);
   // input.ReadDictionary();
   // input.ReadExperimentalDataFiles();
 
-  //   if (input.optimization_library() == "dakota") {
-  //     input.DakotaInputString();
-  //     dakota_input_string = input.dakota_input_string().c_str();
-  //     run_dakota_parse(dakota_input_string, input.dakota_options().echo_dakota_string());
-  //
-  //     // Note: Dakota objects created in above function calls need to go
-  //     // out of scope prior to MPI_Finalize so that MPI code in
-  //     // destructors works properly in library mode.
-  // #ifdef DAKOTA_HAVE_MPI
-  //     if (parallel)
-  //       MPI_Finalize();  // finalize MPI
-  // #endif                 // DAKOTA_HAVE_MPI
-  //
-  //     return 0;
-  //   } else if (input.optimization_library() == "nlopt") {
-  //     // violated_uncertainty        = false;
-  //     // numberOfGradientEvaluations = 0;
-  //     // numberOfFunctionEvaluations = 0;
-  //
-  //     // sim_iface_ = new SimulationsInterface(input);
-  //     // opti_kinetics_ = new OptimizedKinetics(input, input.thermodynamicsMapXML_, input.kineticsMapXML_);
-  //
-  //     // sim_iface_->Setup();
-  //     // opti_kinetics_->SetChemkinName(input.output_folder() /
-  //     //                                input.optimized_kinetics_folder() /
-  //     //                                "OptimalMechanism.CKI");
-  //
-  //     // input.SetUpNLOPT();
-  //
-  //     // nlopt::algorithm algo =
-  //     //     static_cast<nlopt::algorithm>(input.nlopt_options().algo_int());
-  //     // nlopt::opt opt(algo, input.optimization_target().number_of_parameters());
-  //
-  //     // opt.set_lower_bounds(input.lb());
-  //     // opt.set_upper_bounds(input.ub());
-  //     // opt.set_min_objective(NLOptFunction, NULL);
-  //     // opt.set_maxeval(input.nlopt_options().max_function_evaluations());
-  //     // opt.set_ftol_abs(1e-8);
-  //     // opt.set_ftol_rel(1e-6);
-  //
-  //     // vector<double> initial_values = input.initial_values();
-  //     // double minf;
-  //     // try {
-  //     //   nlopt::result result = opt.optimize(initial_values, minf);
-  //     // } catch (std::exception &e) {
-  //     //   std::cout << "nlopt failed: " << e.what() << std::endl;
-  //     // }
-  //   } else if (input.optimization_library() == "optimlib") {
-  //     FatalErrorMessage("OptimLIB not yet interfaced!");
-  //   } else {
-  //     FatalErrorMessage("Available libraries for the optimization are: DAKOTA | NLopt");
-  //   }
+  if (input.optimization_library() == "dakota") {
+    //     input.DakotaInputString();
+    //     dakota_input_string = input.dakota_input_string().c_str();
+    //     run_dakota_parse(dakota_input_string, input.dakota_options().echo_dakota_string());
+    //
+    //     // Note: Dakota objects created in above function calls need to go
+    //     // out of scope prior to MPI_Finalize so that MPI code in
+    //     // destructors works properly in library mode.
+    // #ifdef DAKOTA_HAVE_MPI
+    //     if (parallel)
+    //       MPI_Finalize();  // finalize MPI
+    // #endif                 // DAKOTA_HAVE_MPI
+    //
+    //     return 0;
+  } else if (input.optimization_library() == "nlopt") {
+    //     // violated_uncertainty        = false;
+    //     // numberOfGradientEvaluations = 0;
+    //     // numberOfFunctionEvaluations = 0;
+    //
+    //     // sim_iface_ = new SimulationsInterface(input);
+    //     // opti_kinetics_ = new OptimizedKinetics(input, input.thermodynamicsMapXML_, input.kineticsMapXML_);
+    //
+    //     // sim_iface_->Setup();
+    //     // opti_kinetics_->SetChemkinName(input.output_folder() /
+    //     //                                input.optimized_kinetics_folder() /
+    //     //                                "OptimalMechanism.CKI");
+    //
+    //     // input.SetUpNLOPT();
+    //
+    //     // nlopt::algorithm algo =
+    //     //     static_cast<nlopt::algorithm>(input.nlopt_options().algo_int());
+    //     // nlopt::opt opt(algo, input.optimization_target().number_of_parameters());
+    //
+    //     // opt.set_lower_bounds(input.lb());
+    //     // opt.set_upper_bounds(input.ub());
+    //     // opt.set_min_objective(NLOptFunction, NULL);
+    //     // opt.set_maxeval(input.nlopt_options().max_function_evaluations());
+    //     // opt.set_ftol_abs(1e-8);
+    //     // opt.set_ftol_rel(1e-6);
+    //
+    //     // vector<double> initial_values = input.initial_values();
+    //     // double minf;
+    //     // try {
+    //     //   nlopt::result result = opt.optimize(initial_values, minf);
+    //     // } catch (std::exception &e) {
+    //     //   std::cout << "nlopt failed: " << e.what() << std::endl;
+    //     // }
+  } else {
+    OptiSMOKE::FatalErrorMessage("Available libraries for the optimization are: DAKOTA | NLopt");
+  }
   return 0;
 }
 

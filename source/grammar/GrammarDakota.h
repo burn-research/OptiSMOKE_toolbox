@@ -27,10 +27,6 @@
 \* ------------------------------------------------------------------------------- */
 #pragma once
 
-#include <dictionary/OpenSMOKE_DictionaryGrammar.h>
-#include <dictionary/OpenSMOKE_DictionaryKeyWord.h>
-#include <dictionary/OpenSMOKE_DictionaryManager.h>
-
 namespace OptiSMOKE {
 class GrammarDakota : public OpenSMOKE::OpenSMOKE_DictionaryGrammar {
  protected:

@@ -16,7 +16,7 @@ int FatalErrorMessage(const std::string errorMessage) {
   return OPTISMOKE_FATAL_ERROR_EXIT;
 }
 
-void OptiSMOKE_logo(const std::string application_name, const std::string author_name) {
+void OptiSMOKE_logo(const std::string author_name) {
   std::string current_time = __TIME__;
   std::string current_date = __DATE__;
   std::string author_complete = "Authors: " + author_name;
@@ -24,62 +24,56 @@ void OptiSMOKE_logo(const std::string application_name, const std::string author
   std::string version = "Version: ";
   version += __OPTISMOKE_VERSION__;
 
+  /* ------------------------------------------------------------------------------- *\
+  |                                                                                   |
+  |             ____        __  _ _____ __  _______  __ __ ______                     |
+  |            / __ \____  / /_(_) ___//  |/  / __ \/ //_// ____/___  ____            |
+  |           / / / / __ \/ __/ /\__ \/ /|_/ / / / / ,<  / __/ / __ \/ __ \           |
+  |          / /_/ / /_/ / /_/ /___/ / /  / / /_/ / /| |/ /___/ /_/ / /_/ /           |
+  |          \____/ .___/\__/_//____/_/  /_/\____/_/ |_/_____/ .___/ .___/            |
+  |              /_/                                        /_/   /_/                 |
+  |                                                                                   |
+  | --------------------------------------------------------------------------------- |
+  |  Please refer to the copyright statement and license                              |
+  |  information at the end of this file.                                             |
+  | --------------------------------------------------------------------------------- |
+  |                                                                                   |
+  |        Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                      |
+  |                 Andrea Bertolino <andrea.bertolino@ulb.be>                        |
+  |                 Magnus Fürst     <magnus.furst@ulb.ac.be>                         |
+  |                                                                                   |
+  |          [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>             |
+  |              Department of Chemistry, Materials and Chemical Engineering          |
+  |              Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano      |
+  |                                                                                   |
+  |          [2] BRITE Research Group <https://brite-research.be>                     |
+  |              Brussels Institute for Thermal-fluid systems and clean Energy        |
+  |              Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                 |
+  |                                                                                   |
+  \* ------------------------------------------------------------------------------- */
+  
   std::cout << "-----------------------------------------------------------------------------" << std::endl;
   std::cout << std::endl;
-  std::cout << "           ____            _  ______ __  __  ____  _  ________              " << std::endl;
-  std::cout << "          / __ \\       _  (_)/  ___ |  \\/  |/ __ \\| |/ /  ____|             " << std::endl;
-  std::cout << "         | |  | |_ __ | |_ _ | (___ | \\  / | |  | | ' /| |__    _     _     " << std::endl;
-  std::cout << "         | |  | | '_ \\|  _| |\\___  \\| |\\/| | |  | |  < |  __| _| |_ _| |_   " << std::endl;
-  std::cout << "         | |__| | |_) | |_| |____)  | |  | | |__| | . \\| |___|_   _|_   _|  " << std::endl;
-  std::cout << "          \\____/| .__/\\___|_|______/|_|  |_|\\____/|_|\\_\\______||_|   |_|    " << std::endl;
-  std::cout << "                | |                                                         " << std::endl;
-  std::cout << "                |_|                                                         " << std::endl;
+  std::cout << "          ____        __  _ _____ __  _______  __ __ ______                     " << std::endl;
+  std::cout << "         / __ \\____  / /_(_) ___//  |/  / __ \\/ //_// ____/___  ____            " << std::endl;
+  std::cout << "        / / / / __ \\/ __/ /\\__ \\/ /|_/ / / / / ,<  / __/ / __ \\/ __ \\           " << std::endl;
+  std::cout << "       / /_/ / /_/ / /_/ /___/ / /  / / /_/ / /| |/ /___/ /_/ / /_/ /           " << std::endl;
+  std::cout << "       \\____/ .___/\\__/_//____/_/  /_/\\____/_/ |_/_____/ .___/ .___/            " << std::endl;
+  std::cout << "           /_/                                        /_/   /_/                 " << std::endl;
   std::cout << std::endl;
   std::cout << std::endl;
-  std::cout << "           Department of Chemistry, Materials and Chemical Engineering        " << std::endl;
-  std::cout << "                              Politecnico di Milano                           " << std::endl;
-  std::cout << "                         http://www.opensmoke.polimi.it/                      " << std::endl;
-  std::cout << "                      http://creckmodeling.chem.polimi.it/                    " << std::endl;
+  std::cout << "       [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>             " << std::endl;
+  std::cout << "           Department of Chemistry, Materials and Chemical Engineering          " << std::endl;
+  std::cout << "           Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano      " << std::endl;
+  std::cout << "                                                                                " << std::endl;
+  std::cout << "       [2] BRITE Research Group <https://brite-research.be>                     " << std::endl;
+  std::cout << "           Brussels Institute for Thermal-fluid systems and clean Energy        " << std::endl;
+  std::cout << "           Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                 " << std::endl;
   std::cout << std::endl;
-  for (unsigned int i = 1; i <= 39 - (unsigned int)(application_name.size()) / 2; i++)
-    std::cout << " ";
-  std::cout << application_name << std::endl;
-  for (unsigned int i = 1; i <= 39 - (unsigned int)(version.size()) / 2; i++)
-    std::cout << " ";
-  std::cout << version << std::endl;
-  for (unsigned int i = 1; i <= 39 - (unsigned int)(author_complete.size()) / 2; i++)
-    std::cout << " ";
-  std::cout << author_complete << std::endl;
-  for (unsigned int i = 1; i <= 39 - (unsigned int)(compilation_time.size()) / 2; i++)
-    std::cout << " ";
-  std::cout << compilation_time << std::endl;
+  std::cout << "        " << version << std::endl;
+  std::cout << "        " << author_complete << std::endl;
+  std::cout << "        " << compilation_time << std::endl;
   std::cout << std::endl;
-
-  std::cout << "-----------------------------------------------------------------------------" << std::endl;
-  std::cout << "" << std::endl;
-  std::cout << "                                  WARNING                                    " << std::endl;
-  std::cout << "   This version of OpenSMOKE++ Suite can be used for educational purposes    " << std::endl;
-  std::cout << "              only and cannot be distributed to third parties.               " << std::endl;
-  std::cout << "       The software is and remains the sole property of Alberto Cuoci.       " << std::endl;
-  std::cout << "      Whenever the OpenSMOKE++ Suite is used to produce any publication,     " << std::endl;
-  std::cout << "       a detailed reference to the OpenSMOKE++ code should be reported       " << std::endl;
-  std::cout << "                            (see User's Guide).                              " << std::endl;
-  std::cout << "    Use for commercial purposes is not permitted. For any commercial issue   " << std::endl;
-  std::cout << "         please contact Alberto Cuoci (email: alberto.cuoci@polimi.it)       " << std::endl;
-  std::cout << "-----------------------------------------------------------------------------" << std::endl;
-  std::cout << "" << std::endl;
-
-  std::cout << "-----------------------------------------------------------------------------" << std::endl;
-  std::cout << "" << std::endl;
-  std::cout << "                            LIMITED WARRANTY                                 " << std::endl;
-  std::cout << "     This software is provided \"as is\" and without warranties as to        " << std::endl;
-  std::cout << "  performance of merchantability or any other warranties whether expressed   " << std::endl;
-  std::cout << "    or implied. Because of the various hardware and software environments    " << std::endl;
-  std::cout << "   into which this library may be installed, no warranty of fitness for a    " << std::endl;
-  std::cout << "   particular purpose is offered. The user must assume the entire risk of    " << std::endl;
-  std::cout << "                          using  the library.                                " << std::endl;
-  std::cout << "-----------------------------------------------------------------------------" << std::endl;
-  std::cout << "" << std::endl;
   std::cout << "-----------------------------------------------------------------------------" << std::endl;
 }
 }  // namespace OptiSMOKE

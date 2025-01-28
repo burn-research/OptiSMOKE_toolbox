@@ -42,20 +42,22 @@ class InputManager {
 
   void DakotaInputString();
 
-  // ==================================================
-  // Standard Map
-  OpenSMOKE::ThermodynamicsMap_CHEMKIN* thermodynamicsMapXML_;
-  OpenSMOKE::KineticsMap_CHEMKIN* kineticsMapXML_;
-  OpenSMOKE::TransportPropertiesMap_CHEMKIN* transportMapXML_;
-
-  // ==================================================
-  // Nominal Map
-  OpenSMOKE::ThermodynamicsMap_CHEMKIN* nominalthermodynamicsMapXML_;
-  OpenSMOKE::KineticsMap_CHEMKIN* nominalkineticsMapXML_;
-  OpenSMOKE::TransportPropertiesMap_CHEMKIN* nominaltransportMapXML_;
+  const std::string& optimization_library() const { return optimization_library_; };
 
  private:
   OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_;
+
+  // ==================================================
+  // Standard Map
+  std::shared_ptr<OpenSMOKE::ThermodynamicsMap_CHEMKIN> tmd_map_;
+  std::shared_ptr<OpenSMOKE::KineticsMap_CHEMKIN> kin_map_;
+  std::shared_ptr<OpenSMOKE::TransportPropertiesMap_CHEMKIN> tran_map_;
+
+  // ==================================================
+  // Nominal Map
+  std::shared_ptr<OpenSMOKE::ThermodynamicsMap_CHEMKIN> nominal_tmd_map_;
+  std::shared_ptr<OpenSMOKE::KineticsMap_CHEMKIN> nominal_kin_map_;
+  std::shared_ptr<OpenSMOKE::TransportPropertiesMap_CHEMKIN> nominal_tran_map_;
 
   // ==================================================
   // Variables of main dictionaries
@@ -67,14 +69,7 @@ class InputManager {
 
   // ==================================================
   // Grammar Allocation
-  OptiSMOKE::grammar_optismoke main_grammar_;
-
-  // ==================================================
-  // Options
-  // OptiSMOKE::options_optimization_target optimization_target_;
-  // OptiSMOKE::options_optimization_setup optimization_setup_;
-  // OptiSMOKE::options_curvematching curvematching_options_;
-  // OptiSMOKE::options_dakota dakota_options_;
+  OptiSMOKE::GrammarOptismoke main_grammar_;
 
   // ==================================================
   // Reading data from json files
@@ -82,7 +77,6 @@ class InputManager {
 
   std::string optimization_library_;
   std::vector<std::string> path_experimental_data_files_;
-  std::string dakota_input_string_;
 };
 }  // namespace OptiSMOKE
 
