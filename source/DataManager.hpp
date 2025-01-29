@@ -27,11 +27,11 @@
 
 namespace OptiSMOKE {
 
-DataManager::DataManager(const fs::path& file_path) : filename_(file_path) {}
+DataManager::DataManager(const std::string file_path) : filename_(file_path) {}
 
 bool DataManager::LoadFile() {
   try {
-    boost::property_tree::read_json(filename_.c_str(), root_);
+    boost::property_tree::read_json(filename_, root_);
     return true;
   } catch (const boost::property_tree::json_parser_error& e) {
     std::cerr << "Error reading JSON file: " << e.what() << std::endl;
@@ -39,7 +39,7 @@ bool DataManager::LoadFile() {
   }
 }
 
-bool DataManager::ParseSimulationInfo() {
+bool DataManager::ParseSimulationInformations() {
   try {
     auto& sim_tree = root_.get_child("simulation_info");
     sim_info_.solver = sim_tree.get<std::string>("solver");
@@ -106,7 +106,7 @@ bool DataManager::ParseBasicInformations() {
   }
 }
 
-void DataManager::PrintSimulationInfo() const {
+void DataManager::PrintSimulationInformations() const {
   std::cout << "Simulation Info:\n";
   std::cout << " Solver: " << sim_info_.solver << "\n";
   std::cout << " Reactor Mode: " << sim_info_.reactor_mode << "\n";
@@ -124,15 +124,14 @@ void DataManager::PrintExperimentalData() const {
   std::cout << "Experimental Data Sets (" << exp_data_.size() << " sets):\n";
   for (size_t dataset_idx = 0; dataset_idx < exp_data_.size(); ++dataset_idx) {
     const auto& data_set = exp_data_[dataset_idx];
-    std::cout << "\nData Set " << dataset_idx + 1 << ":\n";
-    std::cout << " Abscissae Label: " << data_set.abscissae_label << "\n";
-    std::cout << " Abscissae Unit: " << data_set.abscissae_unit << "\n";
-    std::cout << " Ordinates Label: " << data_set.ordinates_label << "\n";
-    std::cout << " Ordinates Unit: " << data_set.ordinates_unit << "\n";
-    std::cout << " Data Points:\n";
+    std::cout << "\n Data Set " << dataset_idx + 1 << ":\n";
+    std::cout << "  Abscissae Label: " << data_set.abscissae_label << "\n";
+    std::cout << "  Abscissae Unit: " << data_set.abscissae_unit << "\n";
+    std::cout << "  Ordinates Label: " << data_set.ordinates_label << "\n";
+    std::cout << "  Ordinates Unit: " << data_set.ordinates_unit << "\n";
+    std::cout << "  Data Points:\n";
     for (size_t i = 0; i < data_set.abscissae.size(); ++i) {
-      std::cout << "  " << data_set.abscissae[i] << " " << data_set.abscissae_unit << " -> " << data_set.ordinates[i]
-                << " " << data_set.ordinates_unit << "\n";
+      std::cout << "   " << data_set.abscissae[i] << " " << data_set.ordinates[i] << "\n";
     }
   }
 }

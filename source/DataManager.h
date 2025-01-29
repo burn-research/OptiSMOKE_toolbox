@@ -29,23 +29,28 @@
 namespace OptiSMOKE {
 class DataManager {
  public:
-  DataManager(const fs::path& file_path);
+  DataManager(const std::string file_path);
 
   bool LoadFile();
 
-  bool ParseSimulationInfo();
+  bool ParseSimulationInformations();
 
   bool ParseExperimentalData();
 
   bool ParseBasicInformations();
 
+  // ==================================================
   // Getter methods
+  const std::string& dataset_name() const { return dataset_name_; }
+
   const SimulationInfo& sim_info() const { return sim_info_; }
 
   const std::vector<ExperimentalData>& exp_data() const { return exp_data_; }
 
-  // Debugging methods
-  void PrintSimulationInfo() const;
+  // ==================================================
+  // Debugging methods this is much needed when
+  // working with data and files believe me!
+  void PrintSimulationInformations() const;
 
   void PrintExperimentalData() const;
 
@@ -53,37 +58,37 @@ class DataManager {
 
  private:
   boost::property_tree::ptree root_;
-  fs::path filename_;
+  std::string filename_;
 
   SimulationInfo sim_info_;
-  std::vector<ExperimentalData> exp_data_; // One .json file can contain multiple dataset, think about speciations
+  std::vector<ExperimentalData> exp_data_;  // One .json file can contain multiple dataset, think about speciations
   std::string dataset_name_;
 };
 }  // namespace OptiSMOKE
 
 #include "DataManager.hpp"
-/* ------------------------------------------------------------------------------- *\
-|                                                                                   |
-|   MIT License                                                                     |
-|                                                                                   |
-|   Copyright (c) 2025 Timoteo Dinelli, Andrea Bertolino, Magnus Fürst              |
-|                                                                                   |
-|   Permission is hereby granted, free of charge, to any person obtaining a copy    |
-|   of this software and associated documentation files (the "Software"), to deal   |
-|   in the Software without restriction, including without limitation the rights    |
-|   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell       |
-|   copies of the Software, and to permit persons to whom the Software is           |
-|   furnished to do so, subject to the following conditions:                        |
-|                                                                                   |
-|   The above copyright notice and this permission notice shall be included in all  |
-|   copies or substantial portions of the Software.                                 |
-|                                                                                   |
-|   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR      |
-|   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,        |
-|   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE     |
-|   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER          |
-|   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,   |
-|   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE   |
-|   SOFTWARE.                                                                       |
-|                                                                                   |
-\* ------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------- *\
+|                                                                                       |
+|     MIT License                                                                       |
+|                                                                                       |
+|     Copyright (c) 2025 Timoteo Dinelli, Andrea Bertolino, Magnus Fürst                |
+|                                                                                       |
+|     Permission is hereby granted, free of charge, to any person obtaining a copy      |
+|     of this software and associated documentation files (the "Software"), to deal     |
+|     in the Software without restriction, including without limitation the rights      |
+|     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell         |
+|     copies of the Software, and to permit persons to whom the Software is             |
+|     furnished to do so, subject to the following conditions:                          |
+|                                                                                       |
+|     The above copyright notice and this permission notice shall be included in all    |
+|     copies or substantial portions of the Software.                                   |
+|                                                                                       |
+|     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR        |
+|     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,          |
+|     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE       |
+|     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER            |
+|     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,     |
+|     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE     |
+|     SOFTWARE.                                                                         |
+|                                                                                       |
+\* ----------------------------------------------------------------------------------- */
