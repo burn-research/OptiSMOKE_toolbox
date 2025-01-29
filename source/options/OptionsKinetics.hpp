@@ -12,22 +12,22 @@
 |  information at the end of this file.                                             |
 | --------------------------------------------------------------------------------- |
 |                                                                                   |
-|           Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                   |
-|                    Andrea Bertolino <andrea.bertolino@ulb.be>                     |
-|                    Magnus Fürst     <magnus.furst@ulb.ac.be>                      |
+|        Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                      |
+|                 Andrea Bertolino <andrea.bertolino@ulb.be>                        |
+|                 Magnus Fürst     <magnus.furst@ulb.ac.be>                         |
 |                                                                                   |
-|             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
-|                 Department of Chemistry, Materials and Chemical Engineering       |
-|                 Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano   |
+|          [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>             |
+|              Department of Chemistry, Materials and Chemical Engineering          |
+|              Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano      |
 |                                                                                   |
-|             [2] BRITE Research Group <https://brite-research.be>                  |
-|                 Brussels Institute for Thermal-fluid systems and clean Energy     |
-|                 Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel              |
+|          [2] BRITE Research Group <https://brite-research.be>                     |
+|              Brussels Institute for Thermal-fluid systems and clean Energy        |
+|              Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                 |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
 
 namespace OptiSMOKE {
-OptionsKinetics::OptionsKinetics() { iTransport_ = false; }
+OptionsKinetics::OptionsKinetics() { is_transport_available_ = false; }
 
 OptionsKinetics::~OptionsKinetics() {}
 
@@ -45,7 +45,7 @@ void OptionsKinetics::SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager
   // ==================================================
   // Optional stuff
   if (dictionary_manager(dictionary_name).CheckOption("@Transport")) {
-    iTransport_ = true;
+    is_transport_available_ = true;
     dictionary_manager(dictionary_name).ReadPath("@Transport", chemkin_transport_);
   }
 }

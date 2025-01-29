@@ -127,22 +127,6 @@ typedef OpenSMOKE::ThermoReader<OpenSMOKE::ThermoReaderPolicy_CHEMKIN<OpenSMOKE:
 // #include "SerialDakotaInterface.h"
 // #include "SimulationsInterface.h"
 // #include "curve_matching/curve_matching.h"
-
-// double NLOptFunction(const vector<double>& x, vector<double>& grad, void* my_func_data);
-// double OptFunction(const vector<double>& b, unsigned int fn_val);
-
-// // Run a Dakota LibraryEnvironment, mode 1: parsing an input file
-// void run_dakota_parse(const char* plugin_input_file, bool echo_dakota_string);
-
-// void opensmoke_interface_plugin(Dakota::LibraryEnvironment& env);  //,const char* plugin_input_file);
-
-// OptiSMOKE::SimulationsInterface* sim_iface_;
-// OptiSMOKE::OptimizedKinetics* opti_kinetics_;
-// unsigned int numberOfGradientEvaluations;
-// unsigned int numberOfFunctionEvaluations;
-// bool violated_uncertainty;
-// double prev_fn_val;
-// std::ofstream fOut;
 /* ------------------------------------------------------------------------------- *\
 |                                                                                   |
 |   MIT License                                                                     |

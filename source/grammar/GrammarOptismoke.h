@@ -12,17 +12,17 @@
 |  information at the end of this file.                                             |
 | --------------------------------------------------------------------------------- |
 |                                                                                   |
-|           Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                   |
-|                    Andrea Bertolino <andrea.bertolino@ulb.be>                     |
-|                    Magnus Fürst     <magnus.furst@ulb.ac.be>                      |
+|        Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                      |
+|                 Andrea Bertolino <andrea.bertolino@ulb.be>                        |
+|                 Magnus Fürst     <magnus.furst@ulb.ac.be>                         |
 |                                                                                   |
-|             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
-|                 Department of Chemistry, Materials and Chemical Engineering       |
-|                 Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano   |
+|          [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>             |
+|              Department of Chemistry, Materials and Chemical Engineering          |
+|              Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano      |
 |                                                                                   |
-|             [2] BRITE Research Group <https://brite-research.be>                  |
-|                 Brussels Institute for Thermal-fluid systems and clean Energy     |
-|                 Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel              |
+|          [2] BRITE Research Group <https://brite-research.be>                     |
+|              Brussels Institute for Thermal-fluid systems and clean Energy        |
+|              Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                 |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
 #pragma once
@@ -31,6 +31,7 @@ namespace OptiSMOKE {
 class GrammarOptismoke : public OpenSMOKE::OpenSMOKE_DictionaryGrammar {
  protected:
   virtual void DefineRules() {
+    // clang-format off
     AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@DakotaOptions",
                                                       OpenSMOKE::SINGLE_DICTIONARY,
                                                       "Name of the dictionary with options for Dakota",
@@ -47,11 +48,10 @@ class GrammarOptismoke : public OpenSMOKE::OpenSMOKE_DictionaryGrammar {
                                                       "@OptimizationLibrary",
                                                       "@DakotaOptions"));
 
-    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord(
-        "@CurveMatchingOptions",
-        OpenSMOKE::SINGLE_DICTIONARY,
-        "Name of the dictionary with options for setting Curve Matching as the objective function",
-        false));
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@CurveMatchingOptions",
+                                                      OpenSMOKE::SINGLE_DICTIONARY,
+                                                      "Name of the dictionary with options for setting Curve Matching as the objective function",
+                                                      false));
 
     AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OptimizationSetup",
                                                       OpenSMOKE::SINGLE_DICTIONARY,
@@ -63,30 +63,17 @@ class GrammarOptismoke : public OpenSMOKE::OpenSMOKE_DictionaryGrammar {
                                                       "Name of the dictionary to set the targets for the optimization",
                                                       true));
 
-    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@KineticsFolder",
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@KineticsPreProcessor",
+                                                      OpenSMOKE::SINGLE_DICTIONARY,
+                                                      "Name of the dictionary containing the list of kinetic files to be interpreted",
+                                                      true));
+
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OutputFolder",
                                                       OpenSMOKE::SINGLE_PATH,
-                                                      "Name of the folder containing the kinetic scheme (XML Version)",
-                                                      true,
-                                                      "@KineticsPreProcessor",
-                                                      "none",
-                                                      "none"));
+                                                      "Name of the folder where to write all the output file of the program",
+                                                      true));
 
-    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord(
-        "@KineticsPreProcessor",
-        OpenSMOKE::SINGLE_DICTIONARY,
-        "Name of the dictionary containing the list of kinetic files to be interpreted",
-        true,
-        "@KineticsFolder",
-        "none",
-        "none"));
-
-    AddKeyWord(
-        OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@OutputFolder",
-                                               OpenSMOKE::SINGLE_PATH,
-                                               "Name of the folder where to write all the output file of the program",
-                                               true));
-
-    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfExperimentalDataFiles",
+    AddKeyWord(OpenSMOKE::OpenSMOKE_DictionaryKeyWord("@ListOfDataFiles",
                                                       OpenSMOKE::VECTOR_STRING,
                                                       "List of Experimental data files",
                                                       true));
@@ -95,6 +82,7 @@ class GrammarOptismoke : public OpenSMOKE::OpenSMOKE_DictionaryGrammar {
                                                       OpenSMOKE::SINGLE_STRING,
                                                       "Name of the library containing the optimization routines",
                                                       true));
+    // clang-format on
   }
 };
 }  // namespace OptiSMOKE

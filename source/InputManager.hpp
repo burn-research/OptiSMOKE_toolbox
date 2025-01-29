@@ -40,20 +40,29 @@ InputManager::InputManager(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary) :
 InputManager::~InputManager() {}
 
 void InputManager::SetInputOptions(int argc, char* argv[]) {
-  po::options_description desc("Allowed options");
-  desc.add_options()("help",
-                     "Help Message")("input", po::value<std::string>(), "Input File Path (default: \"input.dic\")");
+  po::options_description desc("Allowed Command Lines options for OptiSMOKE++");
+  // clang-format off
+  desc.add_options()
+    ("help", "Help Message")
+    ("input", po::value<std::string>(), "Name of the file containing the main dictionary (default \"input.dic\")");
+  // clang-format on
 
   po::variables_map vm;
-  po::store(po::parse_command_line(argc, argv, desc), vm);
-  po::notify(vm);
-
-  if (vm.count("help")) {
-    std::cout << desc << std::endl;
-  }
-
-  if (vm.count("input")) {
-    input_file_name_ = vm["input"].as<std::string>();
+  try {
+    po::store(po::parse_command_line(argc, argv, desc), vm);  // can throw
+    if (vm.count("help")) {
+      std::cout << "Basic Command Line Parameters" << std::endl;
+      std::cout << desc << std::endl;
+      exit(OPTISMOKE_SUCCESSFUL_EXIT);
+    }
+    if (vm.count("input")) {
+      input_file_name_ = vm["input"].as<std::string>();
+    }
+    po::notify(vm);  // throws on error, so do after help in case  there are any problems
+  } catch (po::error& e) {
+    std::cerr << "Fatal error: " << e.what() << std::endl << std::endl;
+    std::cerr << desc << std::endl;
+    exit(OPTISMOKE_FATAL_ERROR_EXIT);
   }
 }
 
@@ -66,41 +75,28 @@ void InputManager::ReadDictionary() {
     fs::create_directories(output_folder_);
   }
 
-  // bool iXml = false;
-  // bool iTransport = false;
-  // OptiSMOKE::OptionsKinetics kinetics_data_;
-  // if (dictionary_(main_dictionary_).CheckOption("@KineticsFolder")) {
-  //   iXml = true;
-  //   dictionary_(main_dictionary_).ReadPath("@KineticsFolder", kinetics_folder_);
-  //   if (!fs::exists(kinetics_folder_)) {
-  //     OptiSMOKE::FatalErrorMessage("The @KineticsFolder path does not exists!");
-  //   }
-  //   OpenSMOKE::CheckKineticsFolder(kinetics_folder_);
-  // } else if (dictionary_(main_dictionary_).CheckOption("@KineticsPreProcessor")) {
-  //   std::string preprocessor_dictionary;
-  //   dictionary_(main_dictionary_).ReadDictionary("@KineticsPreProcessor", preprocessor_dictionary);
-  //   kinetics_data_.SetupFromDictionary(dictionary_, preprocessor_dictionary);
-  //   // TODO there is a bug I had not time to investigate further the following lines are a workaround
-  //   if (kinetics_data_.iTransport() == true) {
-  //     iTransport = true;
-  //   }
-  // } else {
-  //   OptiSMOKE::FatalErrorMessage(
-  //       "Please provide the kinetic mechanism through one of the following keywords: @KineticsFolder | "
-  //       "@KineticsPreProcessor");
-  // }
+  OptiSMOKE::OptionsKinetics kinetics;
+  if (dictionary_(main_dictionary_).CheckOption("@KineticsPreProcessor")) {
+    std::string preprocessor_dictionary;
+    dictionary_(main_dictionary_).ReadDictionary("@KineticsPreProcessor", preprocessor_dictionary);
+    kinetics.SetupFromDictionary(dictionary_, preprocessor_dictionary);
+  } else {
+    OptiSMOKE::FatalErrorMessage(
+        "Please provide the kinetic mechanism using the following dictionary: @KineticsPreProcessor");
+  }
 
-  dictionary_(main_dictionary_).ReadOption("@ListOfExperimentalDataFiles", path_experimental_data_files_);
+  dictionary_(main_dictionary_).ReadOption("@ListOfDataFiles", path_experimental_data_files_);
   dictionary_(main_dictionary_).ReadString("@OptimizationLibrary", optimization_library_);
 
   if (optimization_library_ == "dakota") {
-    // std::string dakota_dictionary;
-    // OptiSMOKE::options_dakota dakota_options_;
-    // dictionary_(main_dictionary_).ReadDictionary("@DakotaOptions", dakota_dictionary);
-    // dakota_options_.SetupFromDictionary(dictionary_, dakota_dictionary);
+    std::string dakota_dictionary;
+    OptiSMOKE::OptionsDakota dakota_options;
+    dictionary_(main_dictionary_).ReadDictionary("@DakotaOptions", dakota_dictionary);
+    dakota_options.SetupFromDictionary(dictionary_, dakota_dictionary);
   } else if (optimization_library_ == "nlopt") {
     // dictionary_(main_dictionary_).ReadDictionary("@NLOPTOptions", nlopt_dictionary_);
     // nlopt_options_.SetupFromDictionary(dictionary_, nlopt_dictionary_);
+    OptiSMOKE::FatalErrorMessage("NLopt is still WIP!");
   } else {
     OptiSMOKE::FatalErrorMessage("Unknown optimization library. Available are: DAKOTA | NLopt");
   }
@@ -123,45 +119,35 @@ void InputManager::ReadDictionary() {
   optimization_targets.SetupFromDictionary(dictionary_, optimization_target_dictionary);
 
 
-  // if (!iXml) {
-  //   if (!iTransport) {
-  //     OpenSMOKE::RapidKineticMechanismWithoutTransport(output_folder_ / kinetics_data_.chemkin_output(),
-  //                                                      kinetics_data_.chemkin_thermodynamics(),
-  //                                                      kinetics_data_.chemkin_kinetics());
-  //   } else {
-  //     OpenSMOKE::RapidKineticMechanismWithTransport(output_folder_ / kinetics_data_.chemkin_output(),
-  //                                                   kinetics_data_.chemkin_transport(),
-  //                                                   kinetics_data_.chemkin_thermodynamics(),
-  //                                                   kinetics_data_.chemkin_kinetics());
-  //   }
-  // }
-  //
-  // fs::path path_kinetics_output;
-  // if (!iXml) {  // To be interpreted on-the-fly
-  //   path_kinetics_output = output_folder_ / kinetics_data_.chemkin_output();
-  // } else {  // Mechanism already provided in XML format
-  //   path_kinetics_output = kinetics_folder_;
-  // }
-  //
-  // std::cout.setstate(std::ios_base::failbit);  // Disable video output
-  // boost::property_tree::ptree ptree;
-  // boost::property_tree::read_xml((path_kinetics_output / "kinetics.xml").string(), ptree);
-  //
-  // thermodynamicsMapXML_ = new OpenSMOKE::ThermodynamicsMap_CHEMKIN(ptree);
-  // kineticsMapXML_ = new OpenSMOKE::KineticsMap_CHEMKIN(*thermodynamicsMapXML_, ptree);
-  // if (iTransport) {
-  //   transportMapXML_ = new OpenSMOKE::TransportPropertiesMap_CHEMKIN(ptree);
-  // }
-  //
-  // boost::property_tree::ptree nominal_ptree;
-  // boost::property_tree::read_xml((path_kinetics_output / "kinetics.xml").string(), nominal_ptree);
-  //
-  // nominalthermodynamicsMapXML_ = new OpenSMOKE::ThermodynamicsMap_CHEMKIN(nominal_ptree);
-  // nominalkineticsMapXML_ = new OpenSMOKE::KineticsMap_CHEMKIN(*nominalthermodynamicsMapXML_, nominal_ptree);
-  // if (iTransport) {
-  //   nominaltransportMapXML_ = new OpenSMOKE::TransportPropertiesMap_CHEMKIN(nominal_ptree);
-  // }
-  // std::cout.clear();  // Re-enable video output
+  if (kinetics.is_transport_available() == false) {
+    OpenSMOKE::RapidKineticMechanismWithoutTransport(output_folder_ / kinetics.chemkin_output(),
+                                                     kinetics.chemkin_thermodynamics(),
+                                                     kinetics.chemkin_kinetics());
+  } else {
+    OpenSMOKE::RapidKineticMechanismWithTransport(output_folder_ / kinetics.chemkin_output(),
+                                                  kinetics.chemkin_transport(),
+                                                  kinetics.chemkin_thermodynamics(),
+                                                  kinetics.chemkin_kinetics());
+  }
+
+  fs::path path_kinetics_output = output_folder_ / kinetics.chemkin_output();
+  std::cout.setstate(std::ios_base::failbit);  // Disable video output
+  boost::property_tree::ptree ptree;
+  boost::property_tree::read_xml((path_kinetics_output / "kinetics.xml").string(), ptree);
+  tmd_map_ = std::make_shared<OpenSMOKE::ThermodynamicsMap_CHEMKIN>(ptree);
+  kin_map_ = std::make_shared<OpenSMOKE::KineticsMap_CHEMKIN>(*tmd_map_, ptree);
+  if (kinetics.is_transport_available() == true) {
+    tran_map_ = std::make_shared<OpenSMOKE::TransportPropertiesMap_CHEMKIN>(ptree);
+  }
+
+  boost::property_tree::ptree nominal_ptree;
+  boost::property_tree::read_xml((path_kinetics_output / "kinetics.xml").string(), nominal_ptree);
+  nominal_tmd_map_ = std::make_shared<OpenSMOKE::ThermodynamicsMap_CHEMKIN>(nominal_ptree);
+  nominal_kin_map_ = std::make_shared<OpenSMOKE::KineticsMap_CHEMKIN>(*nominal_tmd_map_, nominal_ptree);
+  if (kinetics.is_transport_available() == true) {
+    nominal_tran_map_ = std::make_shared<OpenSMOKE::TransportPropertiesMap_CHEMKIN>(nominal_ptree);
+  }
+  std::cout.clear();  // Re-enable video output
 }
 
 // void InputManager::DakotaInputString() {
@@ -249,30 +235,30 @@ void InputManager::ReadDictionary() {
 //   // lnA
 //   for (int i = 0; i < optimization_target_.list_of_target_lnA().size(); i++) {
 //     list_of_initial_lnA_.push_back(boost::lexical_cast<std::string>(
-//         std::log(kineticsMapXML_->A(optimization_target_.list_of_target_lnA()[i] - 1))));
+//         std::log(kin_map_->A(optimization_target_.list_of_target_lnA()[i] - 1))));
 //   }
 //
 //   // Beta
 //   for (int i = 0; i < optimization_target_.list_of_target_Beta().size(); i++) {
 //     list_of_initial_Beta_.push_back(
-//         boost::lexical_cast<std::string>(kineticsMapXML_->Beta(optimization_target_.list_of_target_Beta()[i] - 1)));
+//         boost::lexical_cast<std::string>(kin_map_->Beta(optimization_target_.list_of_target_Beta()[i] - 1)));
 //   }
 //
 //   // E_over_R
 //   for (int i = 0; i < optimization_target_.list_of_target_E_over_R().size(); i++) {
 //     list_of_initial_E_over_R.push_back(boost::lexical_cast<std::string>(
-//         kineticsMapXML_->E_over_R(optimization_target_.list_of_target_E_over_R()[i] - 1)));
+//         kin_map_->E_over_R(optimization_target_.list_of_target_E_over_R()[i] - 1)));
 //   }
 //
 //   // lnA_inf
-//   std::vector<unsigned int> indices_of_falloff_reactions = nominalkineticsMapXML_->IndicesOfFalloffReactions();
+//   std::vector<unsigned int> indices_of_falloff_reactions = nominal_kin_map_->IndicesOfFalloffReactions();
 //   for (int i = 0; i < optimization_target_.list_of_target_lnA_inf().size(); i++) {
 //     int pos_FallOff_Reaction = std::find(indices_of_falloff_reactions.begin(),
 //                                          indices_of_falloff_reactions.end(),
 //                                          optimization_target_.list_of_target_lnA_inf()[i])
 //                                - indices_of_falloff_reactions.begin();
 //     list_of_initial_lnA_inf_.push_back(
-//         boost::lexical_cast<std::string>(std::log(kineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction))));
+//         boost::lexical_cast<std::string>(std::log(kin_map_->A_falloff_inf(pos_FallOff_Reaction))));
 //   }
 //
 //   // Beta_inf
@@ -282,7 +268,7 @@ void InputManager::ReadDictionary() {
 //                                          optimization_target_.list_of_target_Beta_inf()[i])
 //                                - indices_of_falloff_reactions.begin();
 //     list_of_initial_Beta_inf_.push_back(
-//         boost::lexical_cast<std::string>(kineticsMapXML_->Beta_falloff_inf(pos_FallOff_Reaction)));
+//         boost::lexical_cast<std::string>(kin_map_->Beta_falloff_inf(pos_FallOff_Reaction)));
 //   }
 //
 //   // E/R inf
@@ -292,31 +278,31 @@ void InputManager::ReadDictionary() {
 //                                          optimization_target_.list_of_target_E_over_R_inf()[i])
 //                                - indices_of_falloff_reactions.begin();
 //     list_of_initial_E_over_R_inf_.push_back(
-//         boost::lexical_cast<std::string>(kineticsMapXML_->E_over_R_falloff_inf(pos_FallOff_Reaction)));
+//         boost::lexical_cast<std::string>(kin_map_->E_over_R_falloff_inf(pos_FallOff_Reaction)));
 //   }
 //
 //   // Third Body Efficiencies
 //   for (int i = 0; i < optimization_target_.list_of_target_thirdbody_reactions().size(); i++) {
-//     int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_thirdbody_species()[i]);
+//     int iSpecies = tmd_map_->IndexOfSpecies(optimization_target_.list_of_target_thirdbody_species()[i]);
 //     list_of_initial_thirdbody_eff_.push_back(boost::lexical_cast<std::string>(
-//         kineticsMapXML_->ThirdBody(optimization_target_.list_of_target_thirdbody_reactions()[i] - 1, iSpecies - 1)));
+//         kin_map_->ThirdBody(optimization_target_.list_of_target_thirdbody_reactions()[i] - 1, iSpecies - 1)));
 //   }
 //
 //   // FORD
 //   for (int i = 0; i < optimization_target_.list_of_ford().size(); i++) {
 //     // These int are 0-based see the minus 1
 //     int iReaction = optimization_target_.list_of_ford()[i] - 1;
-//     int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_species_ford()[i]) - 1;
+//     int iSpecies = tmd_map_->IndexOfSpecies(optimization_target_.list_of_species_ford()[i]) - 1;
 //     list_of_initial_ford_.push_back(boost::lexical_cast<std::string>(
-//         kineticsMapXML_->stoichiometry().reactionorders_matrix_reactants().coeff(iReaction, iSpecies)));
+//         kin_map_->stoichiometry().reactionorders_matrix_reactants().coeff(iReaction, iSpecies)));
 //   }
 //
 //   // RORD
 //   for (int i = 0; i < optimization_target_.list_of_rord().size(); i++) {
 //     int iReaction = optimization_target_.list_of_rord()[i] - 1;
-//     int iSpecies = thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_species_rord()[i]) - 1;
+//     int iSpecies = tmd_map_->IndexOfSpecies(optimization_target_.list_of_species_rord()[i]) - 1;
 //     list_of_initial_rord_.push_back(boost::lexical_cast<std::string>(
-//         kineticsMapXML_->stoichiometry().reactionorders_matrix_products().coeff(iReaction, iSpecies)));
+//         kin_map_->stoichiometry().reactionorders_matrix_products().coeff(iReaction, iSpecies)));
 //   }
 // }
 
@@ -385,11 +371,11 @@ void InputManager::ReadDictionary() {
 //     for (unsigned int i = 0; i < optimization_target_.list_of_target_uncertainty_factors().size(); i++) {
 //       // Nominal values of parameters
 //       list_of_nominal_lnA_double[i] =
-//           std::log(nominalkineticsMapXML_->A(optimization_target_.list_of_target_uncertainty_factors()[i] - 1));
+//           std::log(nominal_kin_map_->A(optimization_target_.list_of_target_uncertainty_factors()[i] - 1));
 //       list_of_nominal_Beta_double[i] =
-//           nominalkineticsMapXML_->Beta(optimization_target_.list_of_target_uncertainty_factors()[i] - 1);
+//           nominal_kin_map_->Beta(optimization_target_.list_of_target_uncertainty_factors()[i] - 1);
 //       list_of_nominal_E_over_R_double[i] =
-//           nominalkineticsMapXML_->E_over_R(optimization_target_.list_of_target_uncertainty_factors()[i] - 1);
+//           nominal_kin_map_->E_over_R(optimization_target_.list_of_target_uncertainty_factors()[i] - 1);
 //
 //       // Min and Max of lnA
 //       list_of_min_abs_lnA_double[i] = list_of_nominal_lnA_double[i]
@@ -458,7 +444,7 @@ void InputManager::ReadDictionary() {
 //       }
 //     }
 //
-//     std::vector<unsigned int> indices_of_falloff_reactions = nominalkineticsMapXML_->IndicesOfFalloffReactions();
+//     std::vector<unsigned int> indices_of_falloff_reactions = nominal_kin_map_->IndicesOfFalloffReactions();
 //
 //     for (unsigned int i = 0; i < optimization_target_.list_of_target_uncertainty_factors_inf().size(); i++) {
 //       int pos_FallOff_Reaction = std::find(indices_of_falloff_reactions.begin(),
@@ -467,9 +453,9 @@ void InputManager::ReadDictionary() {
 //                                  - indices_of_falloff_reactions.begin();
 //
 //       // Nominal values of inf parameters
-//       list_of_nominal_lnA_inf_double[i] = std::log(nominalkineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction));
-//       list_of_nominal_Beta_inf_double[i] = nominalkineticsMapXML_->Beta_falloff_inf(pos_FallOff_Reaction);
-//       list_of_nominal_E_over_R_inf_double[i] = nominalkineticsMapXML_->E_over_R_falloff_inf(pos_FallOff_Reaction);
+//       list_of_nominal_lnA_inf_double[i] = std::log(nominal_kin_map_->A_falloff_inf(pos_FallOff_Reaction));
+//       list_of_nominal_Beta_inf_double[i] = nominal_kin_map_->Beta_falloff_inf(pos_FallOff_Reaction);
+//       list_of_nominal_E_over_R_inf_double[i] = nominal_kin_map_->E_over_R_falloff_inf(pos_FallOff_Reaction);
 //
 //       // Min and Max of lnA_inf
 //       list_of_min_abs_lnA_inf_double[i] =
@@ -544,11 +530,11 @@ void InputManager::ReadDictionary() {
 //   if (optimization_setup_.parameter_boundaries() == "Narrow") {
 //     for (unsigned int i = 0; i < optimization_target_.list_of_target_uncertainty_factors().size(); i++) {
 //       list_of_nominal_lnA_double[i] =
-//           std::log(nominalkineticsMapXML_->A(optimization_target_.list_of_target_uncertainty_factors()[i] - 1));
+//           std::log(nominal_kin_map_->A(optimization_target_.list_of_target_uncertainty_factors()[i] - 1));
 //       list_of_nominal_Beta_double[i] =
-//           nominalkineticsMapXML_->Beta(optimization_target_.list_of_target_uncertainty_factors()[i] - 1);
+//           nominal_kin_map_->Beta(optimization_target_.list_of_target_uncertainty_factors()[i] - 1);
 //       list_of_nominal_E_over_R_double[i] =
-//           nominalkineticsMapXML_->E_over_R(optimization_target_.list_of_target_uncertainty_factors()[i] - 1);
+//           nominal_kin_map_->E_over_R(optimization_target_.list_of_target_uncertainty_factors()[i] - 1);
 //
 //       list_of_min_abs_lnA_double[i] = list_of_nominal_lnA_double[i]
 //                                       + std::log(std::pow(10,
@@ -598,16 +584,16 @@ void InputManager::ReadDictionary() {
 //       }
 //     }
 //
-//     std::vector<unsigned int> indices_of_falloff_reactions = nominalkineticsMapXML_->IndicesOfFalloffReactions();
+//     std::vector<unsigned int> indices_of_falloff_reactions = nominal_kin_map_->IndicesOfFalloffReactions();
 //     for (unsigned int i = 0; i < optimization_target_.list_of_target_uncertainty_factors_inf().size(); i++) {
 //       int pos_FallOff_Reaction = std::find(indices_of_falloff_reactions.begin(),
 //                                            indices_of_falloff_reactions.end(),
 //                                            optimization_target_.list_of_target_uncertainty_factors_inf()[i])
 //                                  - indices_of_falloff_reactions.begin();
 //       // Nominal values of inf parameters
-//       list_of_nominal_lnA_inf_double[i] = std::log(nominalkineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction));
-//       list_of_nominal_Beta_inf_double[i] = nominalkineticsMapXML_->Beta_falloff_inf(pos_FallOff_Reaction);
-//       list_of_nominal_E_over_R_inf_double[i] = nominalkineticsMapXML_->E_over_R_falloff_inf(pos_FallOff_Reaction);
+//       list_of_nominal_lnA_inf_double[i] = std::log(nominal_kin_map_->A_falloff_inf(pos_FallOff_Reaction));
+//       list_of_nominal_Beta_inf_double[i] = nominal_kin_map_->Beta_falloff_inf(pos_FallOff_Reaction);
+//       list_of_nominal_E_over_R_inf_double[i] = nominal_kin_map_->E_over_R_falloff_inf(pos_FallOff_Reaction);
 //
 //       // Min and Max of lnA_inf
 //       list_of_min_abs_lnA_inf_double[i] =
@@ -709,7 +695,7 @@ void InputManager::ReadDictionary() {
 //
 //     if (optimization_target_.list_of_min_rel_lnA().size() > 0) {
 //       lower_bounds_string_ += boost::lexical_cast<std::string>(
-//                                   (std::log(kineticsMapXML_->A(optimization_target_.list_of_target_lnA()[i] - 1)))
+//                                   (std::log(kin_map_->A(optimization_target_.list_of_target_lnA()[i] - 1)))
 //                                   + std::log(optimization_target_.list_of_min_rel_lnA()[i]))
 //                               + " ";
 //     } else {
@@ -721,7 +707,7 @@ void InputManager::ReadDictionary() {
 //
 //     if (optimization_target_.list_of_max_rel_lnA().size() > 0) {
 //       upper_bounds_string_ += boost::lexical_cast<std::string>(
-//                                   (std::log(kineticsMapXML_->A(optimization_target_.list_of_target_lnA()[i] - 1)))
+//                                   (std::log(kin_map_->A(optimization_target_.list_of_target_lnA()[i] - 1)))
 //                                   + std::log(optimization_target_.list_of_max_rel_lnA()[i]))
 //                               + " ";
 //     } else {
@@ -730,7 +716,7 @@ void InputManager::ReadDictionary() {
 //   }
 //
 //   name_vec_lnA_inf.resize(optimization_target_.list_of_target_lnA_inf().size());
-//   std::vector<unsigned int> indices_of_falloff_reactions = nominalkineticsMapXML_->IndicesOfFalloffReactions();
+//   std::vector<unsigned int> indices_of_falloff_reactions = nominal_kin_map_->IndicesOfFalloffReactions();
 //   for (int i = 0; i < optimization_target_.list_of_target_lnA_inf().size(); i++) {
 //     name_vec_lnA_inf[i] = "'lnA_R" + std::to_string(optimization_target_.list_of_target_lnA_inf()[i]) + "_inf'";
 //     param_name_string_ += name_vec_lnA_inf[i] + " ";
@@ -741,7 +727,7 @@ void InputManager::ReadDictionary() {
 //                                            optimization_target_.list_of_target_lnA_inf()[i])
 //                                  - indices_of_falloff_reactions.begin();
 //       lower_bounds_string_ +=
-//           boost::lexical_cast<std::string>((std::log(kineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction)))
+//           boost::lexical_cast<std::string>((std::log(kin_map_->A_falloff_inf(pos_FallOff_Reaction)))
 //                                            + std::log(optimization_target_.list_of_min_rel_lnA_inf()[i]))
 //           + " ";
 //     } else {
@@ -758,7 +744,7 @@ void InputManager::ReadDictionary() {
 //                                            optimization_target_.list_of_target_lnA_inf()[i])
 //                                  - indices_of_falloff_reactions.begin();
 //       upper_bounds_string_ +=
-//           boost::lexical_cast<std::string>((std::log(kineticsMapXML_->A_falloff_inf(pos_FallOff_Reaction)))
+//           boost::lexical_cast<std::string>((std::log(kin_map_->A_falloff_inf(pos_FallOff_Reaction)))
 //                                            + std::log(optimization_target_.list_of_max_rel_lnA_inf()[i]))
 //           + " ";
 //     } else {
@@ -774,7 +760,7 @@ void InputManager::ReadDictionary() {
 //
 //     if (optimization_target_.list_of_min_rel_Beta().size() > 0) {
 //       lower_bounds_string_ +=
-//           boost::lexical_cast<std::string>((kineticsMapXML_->Beta(optimization_target_.list_of_target_Beta()[i] - 1))
+//           boost::lexical_cast<std::string>((kin_map_->Beta(optimization_target_.list_of_target_Beta()[i] - 1))
 //                                            * optimization_target_.list_of_min_rel_Beta()[i])
 //           + " ";
 //     } else {
@@ -786,7 +772,7 @@ void InputManager::ReadDictionary() {
 //
 //     if (optimization_target_.list_of_max_rel_Beta().size() > 0) {
 //       upper_bounds_string_ +=
-//           boost::lexical_cast<std::string>((kineticsMapXML_->Beta(optimization_target_.list_of_target_Beta()[i] - 1))
+//           boost::lexical_cast<std::string>((kin_map_->Beta(optimization_target_.list_of_target_Beta()[i] - 1))
 //                                            * optimization_target_.list_of_max_rel_Beta()[i])
 //           + " ";
 //     } else {
@@ -805,7 +791,7 @@ void InputManager::ReadDictionary() {
 //                                            optimization_target_.list_of_target_Beta_inf()[i])
 //                                  - indices_of_falloff_reactions.begin();
 //       lower_bounds_string_ +=
-//       boost::lexical_cast<std::string>((kineticsMapXML_->Beta_falloff_inf(pos_FallOff_Reaction))
+//       boost::lexical_cast<std::string>((kin_map_->Beta_falloff_inf(pos_FallOff_Reaction))
 //                                                                * optimization_target_.list_of_min_rel_Beta_inf()[i])
 //                               + " ";
 //     } else {
@@ -822,7 +808,7 @@ void InputManager::ReadDictionary() {
 //                                            optimization_target_.list_of_target_Beta_inf()[i])
 //                                  - indices_of_falloff_reactions.begin();
 //       upper_bounds_string_ +=
-//       boost::lexical_cast<std::string>((kineticsMapXML_->Beta_falloff_inf(pos_FallOff_Reaction))
+//       boost::lexical_cast<std::string>((kin_map_->Beta_falloff_inf(pos_FallOff_Reaction))
 //                                                                * optimization_target_.list_of_max_rel_Beta_inf()[i])
 //                               + " ";
 //     } else {
@@ -837,7 +823,7 @@ void InputManager::ReadDictionary() {
 //     initial_values_string_ += list_of_initial_E_over_R[i] + " ";
 //     if (optimization_target_.list_of_min_rel_E_over_R().size() > 0) {
 //       lower_bounds_string_ += boost::lexical_cast<std::string>(
-//                                   (kineticsMapXML_->E_over_R(optimization_target_.list_of_target_E_over_R()[i] - 1))
+//                                   (kin_map_->E_over_R(optimization_target_.list_of_target_E_over_R()[i] - 1))
 //                                   * optimization_target_.list_of_min_rel_E_over_R()[i])
 //                               + " ";
 //     } else {
@@ -850,7 +836,7 @@ void InputManager::ReadDictionary() {
 //
 //     if (optimization_target_.list_of_max_rel_E_over_R().size() > 0) {
 //       upper_bounds_string_ += boost::lexical_cast<std::string>(
-//                                   (kineticsMapXML_->E_over_R(optimization_target_.list_of_target_E_over_R()[i] - 1))
+//                                   (kin_map_->E_over_R(optimization_target_.list_of_target_E_over_R()[i] - 1))
 //                                   * optimization_target_.list_of_max_rel_E_over_R()[i])
 //                               + " ";
 //     } else {
@@ -870,7 +856,7 @@ void InputManager::ReadDictionary() {
 //                                            optimization_target_.list_of_target_E_over_R_inf()[i])
 //                                  - indices_of_falloff_reactions.begin();
 //       lower_bounds_string_ +=
-//           boost::lexical_cast<std::string>((kineticsMapXML_->E_over_R_falloff_inf(pos_FallOff_Reaction))
+//           boost::lexical_cast<std::string>((kin_map_->E_over_R_falloff_inf(pos_FallOff_Reaction))
 //                                            * optimization_target_.list_of_min_rel_E_over_R_inf()[i])
 //           + " ";
 //     } else {
@@ -887,7 +873,7 @@ void InputManager::ReadDictionary() {
 //                                            optimization_target_.list_of_target_E_over_R_inf()[i])
 //                                  - indices_of_falloff_reactions.begin();
 //       upper_bounds_string_ +=
-//           boost::lexical_cast<std::string>((kineticsMapXML_->E_over_R_falloff_inf(pos_FallOff_Reaction))
+//           boost::lexical_cast<std::string>((kin_map_->E_over_R_falloff_inf(pos_FallOff_Reaction))
 //                                            * optimization_target_.list_of_max_rel_E_over_R_inf()[i])
 //           + " ";
 //     } else {
@@ -907,10 +893,10 @@ void InputManager::ReadDictionary() {
 //       lower_bounds_string_ += optimization_target_.list_of_min_abs_thirdbody_eff()[i] + " ";
 //     } else {
 //       int iSpecies =
-//       thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_thirdbody_species()[i]);
+//       tmd_map_->IndexOfSpecies(optimization_target_.list_of_target_thirdbody_species()[i]);
 //       lower_bounds_string_ +=
 //           boost::lexical_cast<std::string>(
-//               (kineticsMapXML_->ThirdBody(optimization_target_.list_of_target_thirdbody_reactions()[i] - 1,
+//               (kin_map_->ThirdBody(optimization_target_.list_of_target_thirdbody_reactions()[i] - 1,
 //                                           iSpecies - 1))
 //               * optimization_target_.list_of_min_rel_thirdbody_eff()[i])
 //           + " ";
@@ -923,10 +909,10 @@ void InputManager::ReadDictionary() {
 //       upper_bounds_string_ += optimization_target_.list_of_max_abs_thirdbody_eff()[i] + " ";
 //     } else {
 //       int iSpecies =
-//       thermodynamicsMapXML_->IndexOfSpecies(optimization_target_.list_of_target_thirdbody_species()[i]);
+//       tmd_map_->IndexOfSpecies(optimization_target_.list_of_target_thirdbody_species()[i]);
 //       upper_bounds_string_ +=
 //           boost::lexical_cast<std::string>(
-//               (kineticsMapXML_->ThirdBody(optimization_target_.list_of_target_thirdbody_reactions()[i] - 1,
+//               (kin_map_->ThirdBody(optimization_target_.list_of_target_thirdbody_reactions()[i] - 1,
 //                                           iSpecies - 1))
 //               * optimization_target_.list_of_max_rel_thirdbody_eff()[i])
 //           + " ";

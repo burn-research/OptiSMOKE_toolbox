@@ -12,17 +12,17 @@
 |  information at the end of this file.                                             |
 | --------------------------------------------------------------------------------- |
 |                                                                                   |
-|           Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                   |
-|                    Andrea Bertolino <andrea.bertolino@ulb.be>                     |
-|                    Magnus Fürst     <magnus.furst@ulb.ac.be>                      |
+|        Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                      |
+|                 Andrea Bertolino <andrea.bertolino@ulb.be>                        |
+|                 Magnus Fürst     <magnus.furst@ulb.ac.be>                         |
 |                                                                                   |
-|             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
-|                 Department of Chemistry, Materials and Chemical Engineering       |
-|                 Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano   |
+|          [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>             |
+|              Department of Chemistry, Materials and Chemical Engineering          |
+|              Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano      |
 |                                                                                   |
-|             [2] BRITE Research Group <https://brite-research.be>                  |
-|                 Brussels Institute for Thermal-fluid systems and clean Energy     |
-|                 Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel              |
+|          [2] BRITE Research Group <https://brite-research.be>                     |
+|              Brussels Institute for Thermal-fluid systems and clean Energy        |
+|              Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                 |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
 #pragma once
@@ -38,13 +38,15 @@ class OptionsKinetics {
 
   void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, std::string dictionary_name);
 
-  // Access function
-
   const fs::path& chemkin_kinetics() const { return chemkin_kinetics_; };
+
   const fs::path& chemkin_thermodynamics() const { return chemkin_thermodynamics_; };
+
   const fs::path& chemkin_transport() const { return chemkin_transport_; };
+
   const fs::path& chemkin_output() const { return chemkin_output_; };
-  const bool& iTransport() const { return iTransport_; };
+
+  const bool& is_transport_available() const { return is_transport_available_; };
 
  private:
   OpenSMOKE::Grammar_RapidKineticMechanism kinetics_grammar_;
@@ -54,7 +56,7 @@ class OptionsKinetics {
   fs::path chemkin_transport_;
   fs::path chemkin_output_;
 
-  bool iTransport_;
+  bool is_transport_available_;
 };
 }  // namespace OptiSMOKE
 

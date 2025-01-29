@@ -12,17 +12,17 @@
 |  information at the end of this file.                                             |
 | --------------------------------------------------------------------------------- |
 |                                                                                   |
-|           Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                   |
-|                    Andrea Bertolino <andrea.bertolino@ulb.be>                     |
-|                    Magnus Fürst     <magnus.furst@ulb.ac.be>                      |
+|        Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                      |
+|                 Andrea Bertolino <andrea.bertolino@ulb.be>                        |
+|                 Magnus Fürst     <magnus.furst@ulb.ac.be>                         |
 |                                                                                   |
-|             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
-|                 Department of Chemistry, Materials and Chemical Engineering       |
-|                 Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano   |
+|          [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>             |
+|              Department of Chemistry, Materials and Chemical Engineering          |
+|              Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano      |
 |                                                                                   |
-|             [2] BRITE Research Group <https://brite-research.be>                  |
-|                 Brussels Institute for Thermal-fluid systems and clean Energy     |
-|                 Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel              |
+|          [2] BRITE Research Group <https://brite-research.be>                     |
+|              Brussels Institute for Thermal-fluid systems and clean Energy        |
+|              Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                 |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
 #pragma once
@@ -36,47 +36,47 @@ class OptionsDakota {
 
   void SetupFromDictionary(OpenSMOKE::OpenSMOKE_DictionaryManager& dictionary_manager, std::string dictionary_name);
 
-  // const std::string& method() const { return method_; };
-  //
-  // const std::string& population_size() const { return population_size_; };
-  //
-  // const std::string& fitness_type() const { return fitness_type_; };
-  //
-  // const std::string& mutation_type() const { return mutation_type_; };
-  //
-  // const std::string& mutation_rate() const { return mutation_rate_; };
-  //
-  // const std::string& crossover_type() const { return crossover_type_; };
-  //
-  // const std::string& crossover_rate() const { return crossover_rate_; };
-  //
-  // const std::string& replacement_type() const { return replacement_type_; };
-  //
-  // const std::string& max_iterations() const { return max_iterations_; };
-  //
-  // const std::string& max_function_evaluations() const { return max_function_evaluations_; };
-  //
-  // const std::string& convergence_tolerance() const { return convergence_tolerance_; };
-  //
-  // const std::string& solution_target() const { return solution_target_; };
-  //
-  // const std::string& seed() const { return seed_; };
-  //
-  // const std::vector<std::string>& diverse_dakota_input() const { return diverse_dakota_input_; };
-  //
-  // const std::string& division() const { return division_; };
-  //
-  // const std::string& max_boxsize_limit() const { return max_boxsize_limit_; };
-  //
-  // const std::string& min_boxsize_limit() const { return min_boxsize_limit_; };
-  //
-  // const bool& dakota_gradient() const { return dakota_gradient_; };
-  //
-  // const bool& diverse_input() const { return diverse_input_; };
-  //
-  // const std::string& tabular_data_file() const { return tabular_data_file_; };
-  //
-  // const bool& echo_dakota_string() const { return echo_dakota_string_; };
+  const std::string& method() const { return method_; };
+
+  const std::string& population_size() const { return population_size_; };
+
+  const std::string& fitness_type() const { return fitness_type_; };
+
+  const std::string& mutation_type() const { return mutation_type_; };
+
+  const std::string& mutation_rate() const { return mutation_rate_; };
+
+  const std::string& crossover_type() const { return crossover_type_; };
+
+  const std::string& crossover_rate() const { return crossover_rate_; };
+
+  const std::string& replacement_type() const { return replacement_type_; };
+
+  const std::string& max_iterations() const { return max_iterations_; };
+
+  const std::string& max_function_evaluations() const { return max_function_evaluations_; };
+
+  const std::string& convergence_tolerance() const { return convergence_tolerance_; };
+
+  const std::string& solution_target() const { return solution_target_; };
+
+  const std::string& seed() const { return seed_; };
+
+  const std::vector<std::string>& diverse_dakota_input() const { return diverse_dakota_input_; };
+
+  const std::string& division() const { return division_; };
+
+  const std::string& max_boxsize_limit() const { return max_boxsize_limit_; };
+
+  const std::string& min_boxsize_limit() const { return min_boxsize_limit_; };
+
+  const bool& dakota_gradient() const { return dakota_gradient_; };
+
+  const bool& diverse_input() const { return diverse_input_; };
+
+  const std::string& tabular_data_file() const { return tabular_data_file_; };
+
+  const bool& echo_dakota_string() const { return echo_dakota_string_; };
 
  private:
   GrammarDakota grammar_;
@@ -109,6 +109,7 @@ class OptionsDakota {
   std::string max_boxsize_limit_;
   std::string min_boxsize_limit_;
 };
+}  // namespace OptiSMOKE
 
 #include "OptionsDakota.hpp"
 /* ------------------------------------------------------------------------------- *\

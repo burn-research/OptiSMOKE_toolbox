@@ -47,8 +47,8 @@ int main(int argc, char* argv[]) {
   OpenSMOKE::OpenSMOKE_DictionaryManager dictionaries;
 
   OptiSMOKE::InputManager input(dictionaries);
-  // input.SetInputOptions(argc, argv);
-  // input.ReadDictionary();
+  input.SetInputOptions(argc, argv);
+  input.ReadDictionary();
   // input.ReadExperimentalDataFiles();
 
   if (input.optimization_library() == "dakota") {

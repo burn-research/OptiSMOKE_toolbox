@@ -24,34 +24,6 @@ void OptiSMOKE_logo(const std::string author_name) {
   std::string version = "Version: ";
   version += __OPTISMOKE_VERSION__;
 
-  /* ------------------------------------------------------------------------------- *\
-  |                                                                                   |
-  |             ____        __  _ _____ __  _______  __ __ ______                     |
-  |            / __ \____  / /_(_) ___//  |/  / __ \/ //_// ____/___  ____            |
-  |           / / / / __ \/ __/ /\__ \/ /|_/ / / / / ,<  / __/ / __ \/ __ \           |
-  |          / /_/ / /_/ / /_/ /___/ / /  / / /_/ / /| |/ /___/ /_/ / /_/ /           |
-  |          \____/ .___/\__/_//____/_/  /_/\____/_/ |_/_____/ .___/ .___/            |
-  |              /_/                                        /_/   /_/                 |
-  |                                                                                   |
-  | --------------------------------------------------------------------------------- |
-  |  Please refer to the copyright statement and license                              |
-  |  information at the end of this file.                                             |
-  | --------------------------------------------------------------------------------- |
-  |                                                                                   |
-  |        Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                      |
-  |                 Andrea Bertolino <andrea.bertolino@ulb.be>                        |
-  |                 Magnus Fürst     <magnus.furst@ulb.ac.be>                         |
-  |                                                                                   |
-  |          [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>             |
-  |              Department of Chemistry, Materials and Chemical Engineering          |
-  |              Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano      |
-  |                                                                                   |
-  |          [2] BRITE Research Group <https://brite-research.be>                     |
-  |              Brussels Institute for Thermal-fluid systems and clean Energy        |
-  |              Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                 |
-  |                                                                                   |
-  \* ------------------------------------------------------------------------------- */
-  
   std::cout << "-----------------------------------------------------------------------------" << std::endl;
   std::cout << std::endl;
   std::cout << "          ____        __  _ _____ __  _______  __ __ ______                     " << std::endl;
@@ -70,9 +42,9 @@ void OptiSMOKE_logo(const std::string author_name) {
   std::cout << "           Brussels Institute for Thermal-fluid systems and clean Energy        " << std::endl;
   std::cout << "           Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                 " << std::endl;
   std::cout << std::endl;
-  std::cout << "        " << version << std::endl;
-  std::cout << "        " << author_complete << std::endl;
-  std::cout << "        " << compilation_time << std::endl;
+  std::cout << "       " << version << std::endl;
+  std::cout << "       " << author_complete << std::endl;
+  std::cout << "       " << compilation_time << std::endl;
   std::cout << std::endl;
   std::cout << "-----------------------------------------------------------------------------" << std::endl;
 }
