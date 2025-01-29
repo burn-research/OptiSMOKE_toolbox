@@ -1,294 +1,161 @@
-/* ------------------------------------------------------------------------------- *\
-|                                                                                   |
-|             ____        __  _ _____ __  _______  __ __ ______                     |
-|            / __ \____  / /_(_) ___//  |/  / __ \/ //_// ____/___  ____            |
-|           / / / / __ \/ __/ /\__ \/ /|_/ / / / / ,<  / __/ / __ \/ __ \           |
-|          / /_/ / /_/ / /_/ /___/ / /  / / /_/ / /| |/ /___/ /_/ / /_/ /           |
-|          \____/ .___/\__/_//____/_/  /_/\____/_/ |_/_____/ .___/ .___/            |
-|              /_/                                        /_/   /_/                 |
-|                                                                                   |
-| --------------------------------------------------------------------------------- |
-|  Please refer to the copyright statement and license                              |
-|  information at the end of this file.                                             |
-| --------------------------------------------------------------------------------- |
-|                                                                                   |
-|           Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                   |
-|                    Andrea Bertolino <andrea.bertolino@ulb.be>                     |
-|                    Magnus Fürst     <magnus.furst@ulb.ac.be>                      |
-|                                                                                   |
-|             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
-|                 Department of Chemistry, Materials and Chemical Engineering       |
-|                 Politecnico di Milano                                             |
-|                 P.zza Leonardo da Vinci 32, 20133 Milano                          |
-|                                                                                   |
-|             [2] BRITE Research Group <https://brite-research.be>                  |
-|                 Brussels Institute for Thermal-fluid systems and clean Energy     |
-|                 Avenue F.D. Rooseveltlaan 50                                      |
-|                 Bruxelles 1050 Brussel                                            |
-|                                                                                   |
-\* ------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------- *\
+|                                                                                       |
+|                 ____        __  _ _____ __  _______  __ __ ______                     |
+|                / __ \____  / /_(_) ___//  |/  / __ \/ //_// ____/___  ____            |
+|               / / / / __ \/ __/ /\__ \/ /|_/ / / / / ,<  / __/ / __ \/ __ \           |
+|              / /_/ / /_/ / /_/ /___/ / /  / / /_/ / /| |/ /___/ /_/ / /_/ /           |
+|              \____/ .___/\__/_//____/_/  /_/\____/_/ |_/_____/ .___/ .___/            |
+|                  /_/                                        /_/   /_/                 |
+|                                                                                       |
+| ------------------------------------------------------------------------------------- |
+|  See license and copyright at the end of this file.                                   |
+| ------------------------------------------------------------------------------------- |
+|                                                                                       |
+|            Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                      |
+|                     Andrea Bertolino <andrea.bertolino@ulb.be>                        |
+|                     Magnus Fürst     <magnus.furst@ulb.ac.be>                         |
+|                                                                                       |
+|            [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>               |
+|                Department of Chemistry, Materials and Chemical Engineering            |
+|                Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano        |
+|                                                                                       |
+|            [2] BRITE Research Group <https://brite-research.be>                       |
+|                Brussels Institute for Thermal-fluid systems and clean Energy          |
+|                Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                   |
+|                                                                                       |
+\* ----------------------------------------------------------------------------------- */
+
 namespace OptiSMOKE {
-DataManager::DataManager() {}
 
-DataManager::~DataManager() {}
+DataManager::DataManager(const fs::path& file_path) : filename_(file_path) {}
 
-void DataManager::ReadExperimentalData(vector<string>& experimental_data_files) {
-  input_paths_.resize(experimental_data_files.size());
-  ordinates_label_.resize(experimental_data_files.size());
-  abscissae_label_.resize(experimental_data_files.size());
-  uncertainty_kind_.resize(experimental_data_files.size());
-
-  expdata_x_.resize(experimental_data_files.size());
-  expdata_y_.resize(experimental_data_files.size());
-  uncertainty_.resize(experimental_data_files.size());
-
+bool DataManager::LoadFile() {
   try {
-    for (unsigned int i = 0; i < input_paths_.size(); i++) {
-      ptree ptree;
-      read_json(experimental_data_files[i].c_str(), ptree);
-
-      dataset_names_.push_back(ptree.get<string>("name"));
-      solver_name_.push_back(ptree.get<string>("solver"));
-      QoI_.push_back(ptree.get<string>("QoI"));
-      QoI_target_.push_back(ptree.get<string>("QoI_target"));
-      multiple_input_.push_back(ptree.get<bool>("multiple_input"));
-
-      boost::optional<string> mode = ptree.get_optional<string>("reactor_mode");
-      if (mode) {
-        reactor_mode_.push_back(ptree.get<string>("reactor_mode"));
-      } else {
-        reactor_mode_.push_back("");
-      }
-
-      BOOST_FOREACH (ptree::value_type& node, ptree.get_child("OS_Input_File")) {
-        assert(node.first.empty());
-        input_paths_[i].push_back(node.second.get_value<string>());
-      }
-
-      abscissae_label_[i].resize(ptree.get_child("data").size());
-      ordinates_label_[i].resize(ptree.get_child("data").size());
-      uncertainty_kind_[i].resize(ptree.get_child("data").size());
-      expdata_x_[i].resize(ptree.get_child("data").size());
-      expdata_y_[i].resize(ptree.get_child("data").size());
-      uncertainty_[i].resize(ptree.get_child("data").size());
-
-      unsigned int count = 0;
-      BOOST_FOREACH (ptree::value_type& node, ptree.get_child("data")) {
-        assert(node.first.empty());
-        abscissae_label_[i][count] = node.second.get<string>("abscissae_label");
-        ordinates_label_[i][count] = node.second.get<string>("ordinates_label");
-
-        BOOST_FOREACH (ptree::value_type& node2, node.second.get_child("abscissae")) {
-          assert(node2.first.empty());
-          expdata_x_[i][count].push_back(node2.second.get_value<double>());
-        }
-
-        BOOST_FOREACH (ptree::value_type& node2, node.second.get_child("ordinates")) {
-          assert(node2.first.empty());
-          expdata_y_[i][count].push_back(node2.second.get_value<double>());
-        }
-
-        boost::optional<string> uncertainty_node = node.second.get_optional<string>("uncertainty_kind");
-        if (uncertainty_node) {
-          uncertainty_kind_[i][count] = node.second.get<string>("uncertainty_kind");
-          BOOST_FOREACH (ptree::value_type& node2, node.second.get_child("uncertainty")) {
-            assert(node2.first.empty());
-            uncertainty_[i][count].push_back(node2.second.get_value<double>());
-          }
-        } else {
-          // TODO: implement the standard deviation
-          // std::cout << "The uncertainty for the datasets ";
-          // std::cout << experimental_data_files[i].c_str();
-          // std::cout << " is not provided!" << std::endl;
-          uncertainty_kind_[i][count] = "relative";
-          for (unsigned int j = 0; j < expdata_y_[i][count].size(); j++) {
-            uncertainty_[i][count].push_back(0);
-          }
-        }
-        count += 1;
-      }
-    }
-
-    OrderData();
-  } catch (const std::exception& e) {
-    OptiSMOKE::FatalErrorMessage(e.what());
+    boost::property_tree::read_json(filename_.c_str(), root_);
+    return true;
+  } catch (const boost::property_tree::json_parser_error& e) {
+    std::cerr << "Error reading JSON file: " << e.what() << std::endl;
+    return false;
   }
 }
 
-void DataManager::OrderData() {
-  // TODO: This is a very bad function and it needs a major improvement But since at the moment I don't have any time
-  // lessgo with it the problem arises from the entire class itself by the way Number of experimental data files
-  unsigned int num = input_paths_.size();
+bool DataManager::ParseSimulationInfo() {
+  try {
+    auto& sim_tree = root_.get_child("simulation_info");
+    sim_info_.solver = sim_tree.get<std::string>("solver");
+    sim_info_.reactor_mode = sim_tree.get<std::string>("reactor_mode");
+    sim_info_.QoI = sim_tree.get<std::string>("QoI");
+    sim_info_.QoI_target = sim_tree.get<std::string>("QoI_target");
+    sim_info_.multiple_input = sim_tree.get<bool>("multiple_input");
+    sim_info_.save_simulations_data = sim_tree.get<bool>("save_simulations_data");
 
-  // tmp variables
-  vector<string> dataset_names_tmp;
-  vector<string> solver_name_tmp;
-  vector<string> reactor_mode_tmp;
-  vector<string> QoI_tmp;
-  vector<string> QoI_target_tmp;
-  vector<bool> multiple_input_tmp;
-  vector<vector<string>> input_paths_tmp;
-
-  vector<vector<string>> ordinates_label_tmp;
-  vector<vector<string>> abscissae_label_tmp;
-  vector<vector<string>> uncertainty_kind_tmp;
-  vector<vector<vector<double>>> expdata_x_tmp;
-  vector<vector<vector<double>>> expdata_y_tmp;
-  vector<vector<vector<double>>> uncertainty_tmp;
-
-  // Save position of the files
-  vector<int> batch;
-  vector<int> pfr;
-  vector<int> psr;
-  vector<int> premixed;
-  vector<int> counterflow;
-
-  for (unsigned int i = 0; i < num; i++) {
-    if (solver_name_[i] == "BatchReactor") {
-      batch.push_back(i);
-    } else if (solver_name_[i] == "PlugFlowReactor") {
-      pfr.push_back(i);
-    } else if (solver_name_[i] == "PerfectlyStirredReactor") {
-      psr.push_back(i);
-    } else if (solver_name_[i] == "PremixedLaminarFlame1D") {
-      premixed.push_back(i);
-    } else if (solver_name_[i] == "CounterFlowFlame1D") {
-      counterflow.push_back(i);
-    } else {
-      string error_str;
-      error_str.append("Invalid solver inside datasets ");
-      error_str.append(dataset_names_[i]);
-      error_str.append(", available are:\n\t\t\t\t");
-      error_str.append(
-          "Batchreactor | PlugFlowreactor | PerfectlyStirredReactor | PremixedLaminarFlame1D | CounterFlowFlame1D");
-      OptiSMOKE::FatalErrorMessage(error_str);
+    for (const auto& item : sim_tree.get_child("OS_Input_File")) {
+      sim_info_.OS_Input_File.push_back(item.second.get_value<std::string>());
     }
+    return true;
+  } catch (const boost::property_tree::ptree_error& e) {
+    std::cerr << "Error parsing simulation info: " << e.what() << std::endl;
+    return false;
   }
-
-  if (batch.size() != 0) {
-    for (unsigned int i = 0; i < batch.size(); i++) {
-      unsigned int pos = batch[i];
-      dataset_names_tmp.push_back(dataset_names_[pos]);
-      solver_name_tmp.push_back(solver_name_[pos]);
-      reactor_mode_tmp.push_back(reactor_mode_[pos]);
-      QoI_tmp.push_back(QoI_[pos]);
-      QoI_target_tmp.push_back(QoI_target_[pos]);
-      multiple_input_tmp.push_back(multiple_input_[pos]);
-      input_paths_tmp.push_back(input_paths_[pos]);
-      abscissae_label_tmp.push_back(abscissae_label_[pos]);
-      ordinates_label_tmp.push_back(ordinates_label_[pos]);
-      uncertainty_kind_tmp.push_back(uncertainty_kind_[pos]);
-      expdata_x_tmp.push_back(expdata_x_[pos]);
-      expdata_y_tmp.push_back(expdata_y_[pos]);
-      uncertainty_tmp.push_back(uncertainty_[pos]);
-    }
-  }
-
-  if (pfr.size() != 0) {
-    for (unsigned int i = 0; i < pfr.size(); i++) {
-      unsigned int pos = pfr[i];
-      dataset_names_tmp.push_back(dataset_names_[pos]);
-      solver_name_tmp.push_back(solver_name_[pos]);
-      reactor_mode_tmp.push_back(reactor_mode_[pos]);
-      QoI_tmp.push_back(QoI_[pos]);
-      QoI_target_tmp.push_back(QoI_target_[pos]);
-      multiple_input_tmp.push_back(multiple_input_[pos]);
-      input_paths_tmp.push_back(input_paths_[pos]);
-      abscissae_label_tmp.push_back(abscissae_label_[pos]);
-      ordinates_label_tmp.push_back(ordinates_label_[pos]);
-      uncertainty_kind_tmp.push_back(uncertainty_kind_[pos]);
-      expdata_x_tmp.push_back(expdata_x_[pos]);
-      expdata_y_tmp.push_back(expdata_y_[pos]);
-      uncertainty_tmp.push_back(uncertainty_[pos]);
-    }
-  }
-
-  if (psr.size() != 0) {
-    for (unsigned int i = 0; i < psr.size(); i++) {
-      unsigned int pos = psr[i];
-      dataset_names_tmp.push_back(dataset_names_[pos]);
-      solver_name_tmp.push_back(solver_name_[pos]);
-      reactor_mode_tmp.push_back(reactor_mode_[pos]);
-      QoI_tmp.push_back(QoI_[pos]);
-      QoI_target_tmp.push_back(QoI_target_[pos]);
-      multiple_input_tmp.push_back(multiple_input_[pos]);
-      input_paths_tmp.push_back(input_paths_[pos]);
-      abscissae_label_tmp.push_back(abscissae_label_[pos]);
-      ordinates_label_tmp.push_back(ordinates_label_[pos]);
-      uncertainty_kind_tmp.push_back(uncertainty_kind_[pos]);
-      expdata_x_tmp.push_back(expdata_x_[pos]);
-      expdata_y_tmp.push_back(expdata_y_[pos]);
-      uncertainty_tmp.push_back(uncertainty_[pos]);
-    }
-  }
-
-  if (premixed.size() != 0) {
-    for (unsigned int i = 0; i < premixed.size(); i++) {
-      unsigned int pos = premixed[i];
-      dataset_names_tmp.push_back(dataset_names_[pos]);
-      solver_name_tmp.push_back(solver_name_[pos]);
-      reactor_mode_tmp.push_back(reactor_mode_[pos]);
-      QoI_tmp.push_back(QoI_[pos]);
-      QoI_target_tmp.push_back(QoI_target_[pos]);
-      multiple_input_tmp.push_back(multiple_input_[pos]);
-      input_paths_tmp.push_back(input_paths_[pos]);
-      abscissae_label_tmp.push_back(abscissae_label_[pos]);
-      ordinates_label_tmp.push_back(ordinates_label_[pos]);
-      uncertainty_kind_tmp.push_back(uncertainty_kind_[pos]);
-      expdata_x_tmp.push_back(expdata_x_[pos]);
-      expdata_y_tmp.push_back(expdata_y_[pos]);
-      uncertainty_tmp.push_back(uncertainty_[pos]);
-    }
-  }
-
-  if (counterflow.size() != 0) {
-    for (unsigned int i = 0; i < counterflow.size(); i++) {
-      unsigned int pos = counterflow[i];
-      dataset_names_tmp.push_back(dataset_names_[pos]);
-      solver_name_tmp.push_back(solver_name_[pos]);
-      reactor_mode_tmp.push_back(reactor_mode_[pos]);
-      QoI_tmp.push_back(QoI_[pos]);
-      QoI_target_tmp.push_back(QoI_target_[pos]);
-      multiple_input_tmp.push_back(multiple_input_[pos]);
-      input_paths_tmp.push_back(input_paths_[pos]);
-      abscissae_label_tmp.push_back(abscissae_label_[pos]);
-      ordinates_label_tmp.push_back(ordinates_label_[pos]);
-      uncertainty_kind_tmp.push_back(uncertainty_kind_[pos]);
-      expdata_x_tmp.push_back(expdata_x_[pos]);
-      expdata_y_tmp.push_back(expdata_y_[pos]);
-      uncertainty_tmp.push_back(uncertainty_[pos]);
-    }
-  }
-
-  dataset_names_ = dataset_names_tmp;
-  reactor_mode_ = reactor_mode_tmp;
-  solver_name_ = solver_name_tmp;
-  QoI_ = QoI_tmp;
-  QoI_target_ = QoI_target_tmp;
-  multiple_input_ = multiple_input_tmp;
-  input_paths_ = input_paths_tmp;
-  abscissae_label_ = abscissae_label_tmp;
-  ordinates_label_ = ordinates_label_tmp;
-  uncertainty_kind_ = uncertainty_kind_tmp;
-  expdata_x_ = expdata_x_tmp;
-  expdata_y_ = expdata_y_tmp;
-  uncertainty_ = uncertainty_tmp;
 }
 
-void DataManager::ComputeStandardDeviations() {
-  // Not yet implemented
-  standard_deviations_.resize(expdata_y_.size());
-  for (unsigned int i = 0; i < expdata_y_.size(); i++) {
-    standard_deviations_[i].resize(expdata_y_[i].size());
-    for (unsigned int j = 0; j < expdata_y_[i].size(); j++) {
-      standard_deviations_[i][j].resize(expdata_y_[i][j].size());
-      for (unsigned int k = 0; k < expdata_y_[i][j].size(); k++) {
-        // standard_deviations_[i][j][k] = uncertainty_[i][j][k] * (expdata_y_[i][j][k])
-        // / Sigma_vector[i];
+bool DataManager::ParseExperimentalData() {
+  try {
+    exp_data_.clear();  // Clear any existing data
+
+    for (const auto& data_entry : root_.get_child("data")) {
+      ExperimentalData data_set;
+      auto& data = data_entry.second;  // Get the data object
+
+      // Parse basic information
+      data_set.abscissae_label = data.get<std::string>("abscissae_label");
+      data_set.abscissae_unit = data.get<std::string>("abscissae_unit");
+      data_set.ordinates_label = data.get<std::string>("ordinates_label");
+      data_set.ordinates_unit = data.get<std::string>("ordinates_unit");
+
+      // Parse arrays
+      for (const auto& item : data.get_child("abscissae")) {
+        data_set.abscissae.push_back(item.second.get_value<double>());
       }
+      for (const auto& item : data.get_child("ordinates")) {
+        data_set.ordinates.push_back(item.second.get_value<double>());
+      }
+
+      // Validate data set
+      if (data_set.abscissae.size() != data_set.ordinates.size()) {
+        std::cerr << "Error: Mismatched array sizes in data set " << exp_data_.size() + 1 << std::endl;
+        return false;
+      }
+
+      exp_data_.push_back(data_set);
+    }
+    return true;
+  } catch (const boost::property_tree::ptree_error& e) {
+    std::cerr << "Error parsing experimental data: " << e.what() << std::endl;
+    return false;
+  }
+}
+
+bool DataManager::ParseBasicInformations() {
+  try {
+    dataset_name_ = root_.get<std::string>("name");
+    return true;
+  } catch (const boost::property_tree::ptree_error& e) {
+    std::cerr << "Error parsing basic info: " << e.what() << std::endl;
+    return false;
+  }
+}
+
+void DataManager::PrintSimulationInfo() const {
+  std::cout << "Simulation Info:\n";
+  std::cout << " Solver: " << sim_info_.solver << "\n";
+  std::cout << " Reactor Mode: " << sim_info_.reactor_mode << "\n";
+  std::cout << " QoI: " << sim_info_.QoI << "\n";
+  std::cout << " QoI Target: " << sim_info_.QoI_target << "\n";
+  std::cout << " Multiple Input: " << (sim_info_.multiple_input ? "true" : "false") << "\n";
+  std::cout << " Save Simulations Data: " << (sim_info_.save_simulations_data ? "true" : "false") << "\n";
+  std::cout << " Input Files:\n";
+  for (const auto& file : sim_info_.OS_Input_File) {
+    std::cout << "  - " << file << "\n";
+  }
+}
+
+void DataManager::PrintExperimentalData() const {
+  std::cout << "Experimental Data Sets (" << exp_data_.size() << " sets):\n";
+  for (size_t dataset_idx = 0; dataset_idx < exp_data_.size(); ++dataset_idx) {
+    const auto& data_set = exp_data_[dataset_idx];
+    std::cout << "\nData Set " << dataset_idx + 1 << ":\n";
+    std::cout << " Abscissae Label: " << data_set.abscissae_label << "\n";
+    std::cout << " Abscissae Unit: " << data_set.abscissae_unit << "\n";
+    std::cout << " Ordinates Label: " << data_set.ordinates_label << "\n";
+    std::cout << " Ordinates Unit: " << data_set.ordinates_unit << "\n";
+    std::cout << " Data Points:\n";
+    for (size_t i = 0; i < data_set.abscissae.size(); ++i) {
+      std::cout << "  " << data_set.abscissae[i] << " " << data_set.abscissae_unit << " -> " << data_set.ordinates[i]
+                << " " << data_set.ordinates_unit << "\n";
     }
   }
 }
+
+void DataManager::PrintDataSet(const size_t index) const {
+  if (index >= exp_data_.size()) {
+    std::cerr << "Error: Invalid data set index\n";
+    return;
+  }
+
+  const auto& data_set = exp_data_[index];
+  std::cout << "Data Set " << index + 1 << ":\n";
+  std::cout << "Abscissae Label: " << data_set.abscissae_label << "\n";
+  std::cout << "Abscissae Unit: " << data_set.abscissae_unit << "\n";
+  std::cout << "Ordinates Label: " << data_set.ordinates_label << "\n";
+  std::cout << "Ordinates Unit: " << data_set.ordinates_unit << "\n";
+  std::cout << "Data Points:\n";
+  for (size_t i = 0; i < data_set.abscissae.size(); ++i) {
+    std::cout << "  " << data_set.abscissae[i] << " " << data_set.abscissae_unit << " -> " << data_set.ordinates[i]
+              << " " << data_set.ordinates_unit << "\n";
+  }
+}
+
 }  // namespace OptiSMOKE
 /* ------------------------------------------------------------------------------- *\
 |                                                                                   |

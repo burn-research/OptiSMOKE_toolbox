@@ -12,19 +12,17 @@
 |  information at the end of this file.                                             |
 | --------------------------------------------------------------------------------- |
 |                                                                                   |
-|           Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                   |
-|                    Andrea Bertolino <andrea.bertolino@ulb.be>                     |
-|                    Magnus Fürst     <magnus.furst@ulb.ac.be>                      |
+|        Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                      |
+|                 Andrea Bertolino <andrea.bertolino@ulb.be>                        |
+|                 Magnus Fürst     <magnus.furst@ulb.ac.be>                         |
 |                                                                                   |
-|             [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>          |
-|                 Department of Chemistry, Materials and Chemical Engineering       |
-|                 Politecnico di Milano                                             |
-|                 P.zza Leonardo da Vinci 32, 20133 Milano                          |
+|          [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>             |
+|              Department of Chemistry, Materials and Chemical Engineering          |
+|              Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano      |
 |                                                                                   |
-|             [2] BRITE Research Group <https://brite-research.be>                  |
-|                 Brussels Institute for Thermal-fluid systems and clean Energy     |
-|                 Avenue F.D. Rooseveltlaan 50                                      |
-|                 Bruxelles 1050 Brussel                                            |
+|          [2] BRITE Research Group <https://brite-research.be>                     |
+|              Brussels Institute for Thermal-fluid systems and clean Energy        |
+|              Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                 |
 |                                                                                   |
 \* ------------------------------------------------------------------------------- */
 

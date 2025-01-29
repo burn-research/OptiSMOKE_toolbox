@@ -26,42 +26,25 @@
 \* ----------------------------------------------------------------------------------- */
 #pragma once
 
-namespace OptiSMOKE {
-class DataManager {
- public:
-  DataManager(const fs::path& file_path);
-
-  bool LoadFile();
-
-  bool ParseSimulationInfo();
-
-  bool ParseExperimentalData();
-
-  bool ParseBasicInformations();
-
-  // Getter methods
-  const SimulationInfo& sim_info() const { return sim_info_; }
-
-  const std::vector<ExperimentalData>& exp_data() const { return exp_data_; }
-
-  // Debugging methods
-  void PrintSimulationInfo() const;
-
-  void PrintExperimentalData() const;
-
-  void PrintDataSet(const size_t index) const;
-
- private:
-  boost::property_tree::ptree root_;
-  fs::path filename_;
-
-  SimulationInfo sim_info_;
-  std::vector<ExperimentalData> exp_data_; // One .json file can contain multiple dataset, think about speciations
-  std::string dataset_name_;
+struct SimulationInfo {
+  std::string solver;
+  std::string reactor_mode;
+  std::string QoI;
+  std::string QoI_target;
+  bool multiple_input;
+  bool save_simulations_data;
+  std::vector<std::string> OS_Input_File;
 };
-}  // namespace OptiSMOKE
 
-#include "DataManager.hpp"
+struct ExperimentalData {
+  std::string abscissae_label;
+  std::string abscissae_unit;
+  std::vector<double> abscissae;
+  std::string ordinates_label;
+  std::string ordinates_unit;
+  std::vector<double> ordinates;
+};
+
 /* ------------------------------------------------------------------------------- *\
 |                                                                                   |
 |   MIT License                                                                     |

@@ -1,30 +1,29 @@
-/* ------------------------------------------------------------------------------- *\
-|                                                                                   |
-|             ____        __  _ _____ __  _______  __ __ ______                     |
-|            / __ \____  / /_(_) ___//  |/  / __ \/ //_// ____/___  ____            |
-|           / / / / __ \/ __/ /\__ \/ /|_/ / / / / ,<  / __/ / __ \/ __ \           |
-|          / /_/ / /_/ / /_/ /___/ / /  / / /_/ / /| |/ /___/ /_/ / /_/ /           |
-|          \____/ .___/\__/_//____/_/  /_/\____/_/ |_/_____/ .___/ .___/            |
-|              /_/                                        /_/   /_/                 |
-|                                                                                   |
-| --------------------------------------------------------------------------------- |
-|  Please refer to the copyright statement and license                              |
-|  information at the end of this file.                                             |
-| --------------------------------------------------------------------------------- |
-|                                                                                   |
-|        Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                      |
-|                 Andrea Bertolino <andrea.bertolino@ulb.be>                        |
-|                 Magnus Fürst     <magnus.furst@ulb.ac.be>                         |
-|                                                                                   |
-|          [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>             |
-|              Department of Chemistry, Materials and Chemical Engineering          |
-|              Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano      |
-|                                                                                   |
-|          [2] BRITE Research Group <https://brite-research.be>                     |
-|              Brussels Institute for Thermal-fluid systems and clean Energy        |
-|              Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                 |
-|                                                                                   |
-\* ------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------- *\
+|                                                                                       |
+|               ____        __  _ _____ __  _______  __ __ ______                       |
+|              / __ \____  / /_(_) ___//  |/  / __ \/ //_// ____/___  ____              |
+|             / / / / __ \/ __/ /\__ \/ /|_/ / / / / ,<  / __/ / __ \/ __ \             |
+|            / /_/ / /_/ / /_/ /___/ / /  / / /_/ / /| |/ /___/ /_/ / /_/ /             |
+|            \____/ .___/\__/_//____/_/  /_/\____/_/ |_/_____/ .___/ .___/              |
+|                /_/                                        /_/   /_/                   |
+|                                                                                       |
+| ------------------------------------------------------------------------------------- |
+|  See license and copyright at the end of this file.                                   |
+| ------------------------------------------------------------------------------------- |
+|                                                                                       |
+|          Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                        |
+|                   Andrea Bertolino <andrea.bertolino@ulb.be>                          |
+|                   Magnus Fürst     <magnus.furst@ulb.ac.be>                           |
+|                                                                                       |
+|          [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>                 |
+|              Department of Chemistry, Materials and Chemical Engineering              |
+|              Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano          |
+|                                                                                       |
+|          [2] BRITE Research Group <https://brite-research.be>                         |
+|              Brussels Institute for Thermal-fluid systems and clean Energy            |
+|              Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                     |
+|                                                                                       |
+\* ----------------------------------------------------------------------------------- */
 #pragma once
 
 #include <string>
@@ -36,12 +35,18 @@
 #include <memory>
 
 // ==================================================
-// Boost Headers
+// Boost Headers and definitions
 // ==================================================
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/foreach.hpp>
+#include <boost/json.hpp>
+#include <boost/optional.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
+namespace pt = boost::property_tree;
 namespace fs = boost::filesystem;
 namespace po = boost::program_options;
 
@@ -116,6 +121,7 @@ typedef OpenSMOKE::ThermoReader<OpenSMOKE::ThermoReaderPolicy_CHEMKIN<OpenSMOKE:
 // ==================================================
 // Internal Headers
 // ==================================================
+#include "DataStructures.h"
 #include "utilities/OptiSMOKEUtilities"
 #include "grammar/Grammar.h"
 #include "options/Options.h"
