@@ -44,6 +44,7 @@ struct ExperimentalDataset {
   std::string ordinates_unit;
   std::vector<double> ordinates;
 };
+
 /* ----------------------------------------------------------------------------------- *\
 |                                                                                       |
 |     MIT License                                                                       |

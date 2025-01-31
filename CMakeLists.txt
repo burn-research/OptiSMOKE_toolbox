@@ -75,7 +75,8 @@ if(OPTISMOKE_USE_OPENBLAS)
   # automatically generated when building from source the OpenBLAS library usually located in
   # ".../lib/cmake/openblas" Handled in this way because we need to link against the static version
   find_package(OpenBLAS REQUIRED)
-  message(STATUS "Found OpenBLAS --> version ${OpenBLAS_VERSION}")
+  message(STATUS "Found OpenBLAS VERSION: ${OpenBLAS_VERSION}")
+  message(STATUS "Found OpenBLAS: ${OpenBLAS_INCLUDE_DIRS}")
 endif()
 
 # --------------------------------------------------------------------
@@ -84,8 +85,8 @@ endif()
 add_executable(OptiSMOKEpp ${PROJECT_SOURCE_DIR}/OptiSMOKEpp.cpp)
 
 target_include_directories(
-  OptiSMOKEpp PUBLIC ${PROJECT_SOURCE_DIR} ${OPENSMOKE_INCLUDE_DIR} ${OpenBLAS_INCLUDE_DIRS}
-                     ${OPENSMOKEPPSOLVERS_INCLUDE_DIR})
+  OptiSMOKEpp PUBLIC ${PROJECT_SOURCE_DIR} ${OPENSMOKE_INCLUDE_DIR}
+                     ${OPENSMOKEPPSOLVERS_INCLUDE_DIR} ${OpenBLAS_INCLUDE_DIRS})
 
 target_link_libraries(
   OptiSMOKEpp
@@ -119,10 +120,10 @@ target_compile_definitions(
 # Installing options
 # --------------------------------------------------------------------
 
-# TODO:Add installation instructions
+# TODO: Add installation instructions
 
 # --------------------------------------------------------------------
 # Testing options
 # --------------------------------------------------------------------
 
-# TODO:Add automatic testing
+# TODO: Add automatic testing

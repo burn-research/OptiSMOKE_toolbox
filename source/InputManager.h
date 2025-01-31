@@ -73,6 +73,7 @@ class InputManager {
   // ==================================================
   // Reading data from json files and allocating basic
   // data structures to run the optimizations
+  std::vector<std::vector<ExperimentalDataset>> data_;
 
   // ==================================================
   std::string optimization_library_;

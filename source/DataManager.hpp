@@ -106,7 +106,7 @@ bool DataManager::ParseExperimentalData() {
     }
     return true;
   } catch (const boost::property_tree::ptree_error& e) {
-    std::cerr << "Parsing Error parsing experimental data (" << filename_ << "): " << e.what() << std::endl;
+    std::cerr << "Error parsing experimental data (" << filename_ << "): " << e.what() << std::endl;
     return false;
   }
 }
@@ -116,7 +116,7 @@ bool DataManager::ParseBasicInformations() {
     dataset_name_ = root_.get<std::string>("name");
     return true;
   } catch (const boost::property_tree::ptree_error& e) {
-    std::cerr << "Parsing Error parsing basic info (" << filename_ << "): " << e.what() << std::endl;
+    std::cerr << "Error parsing basic info (" << filename_ << "): " << e.what() << std::endl;
     return false;
   }
 }
@@ -173,7 +173,7 @@ void DataManager::PrintDataSet(const size_t index) const {
 bool DataManager::ValidateSimulationKeywords() {
   // Validate solver
   if (std::find(valid_solvers_.begin(), valid_solvers_.end(), sim_info_.solver) == valid_solvers_.end()) {
-    std::cerr << "Parsing Error (" << filename_ << "):\nInvalid solver type '" << sim_info_.solver
+    std::cerr << "Error (" << filename_ << "):\nInvalid solver type '" << sim_info_.solver
               << "'.\nValid options are:\n ";
     for (const auto& solver : valid_solvers_) {
       std::cerr << solver << " ";
@@ -185,7 +185,7 @@ bool DataManager::ValidateSimulationKeywords() {
   // Validate reactor mode
   if (std::find(valid_reactor_modes_.begin(), valid_reactor_modes_.end(), sim_info_.reactor_mode)
       == valid_reactor_modes_.end()) {
-    std::cerr << "Parsing Error (" << filename_ << "):\nInvalid reactor mode '" << sim_info_.reactor_mode
+    std::cerr << "Error (" << filename_ << "):\nInvalid reactor mode '" << sim_info_.reactor_mode
               << "'.\nValid options are:\n";
     for (const auto& mode : valid_reactor_modes_) {
       std::cerr << mode << " ";
@@ -196,8 +196,7 @@ bool DataManager::ValidateSimulationKeywords() {
 
   // Validate QoI type
   if (std::find(valid_QoI_types_.begin(), valid_QoI_types_.end(), sim_info_.QoI) == valid_QoI_types_.end()) {
-    std::cerr << "Parsing Error(" << filename_ << "):\nInvalid QoI type '" << sim_info_.QoI
-              << "'.\nValid options are:\n";
+    std::cerr << "Error(" << filename_ << "):\nInvalid QoI type '" << sim_info_.QoI << "'.\nValid options are:\n";
     for (const auto& qoi : valid_QoI_types_) {
       std::cerr << qoi << " ";
     }
@@ -208,7 +207,7 @@ bool DataManager::ValidateSimulationKeywords() {
   // Validate QoI targets
   if (std::find(valid_QoI_targets_.begin(), valid_QoI_targets_.end(), sim_info_.QoI_target)
       == valid_QoI_targets_.end()) {
-    std::cerr << "Parsing Error (" << filename_ << "):\nInvalid QoI targets '" << sim_info_.QoI_target
+    std::cerr << "Error (" << filename_ << "):\nInvalid QoI targets '" << sim_info_.QoI_target
               << "'.\nValid options are:\n";
     for (const auto& qoi_target : valid_QoI_targets_) {
       std::cerr << qoi_target << " ";
@@ -226,7 +225,7 @@ bool DataManager::ValidateExperimentalData() {
 
     // Validate array sizes
     if (dataset.abscissae.size() != dataset.ordinates.size()) {
-      std::cerr << "Parsing Error in dataset " << filename_ << ": Mismatched sizes between abscissae and ordinates"
+      std::cerr << "Error in dataset " << filename_ << ": Mismatched sizes between abscissae and ordinates"
                 << std::endl;
       return false;
     }
@@ -234,8 +233,7 @@ bool DataManager::ValidateExperimentalData() {
     // Validate that abscissae are monotonically increasing
     for (size_t j = 1; j < dataset.abscissae.size(); ++j) {
       if (dataset.abscissae[j] <= dataset.abscissae[j - 1]) {
-        std::cerr << "Parsing Error in dataset " << filename_ << ": Abscissae values must be strictly increasing"
-                  << std::endl;
+        std::cerr << "Error in dataset " << filename_ << ": Abscissae values must be strictly increasing" << std::endl;
         return false;
       }
     }

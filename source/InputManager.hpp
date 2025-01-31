@@ -148,7 +148,10 @@ void InputManager::ReadDictionary() {
 }
 
 void InputManager::ReadExperimentalData() {
-  std::cout << "Parsing experimental data:\n";
+  data_.resize(path_experimental_data_files_.size());
+  size_t index = 0;
+  std::cout << "----------------------------------------------------------------------------\n";
+  std::cout << " * Parsing experimental data...\n";
   for (const auto& path_experimental_data_file : path_experimental_data_files_) {
     DataManager parser(path_experimental_data_file);
     if (!parser.LoadFile()) {
@@ -157,6 +160,11 @@ void InputManager::ReadExperimentalData() {
     if (!parser.ParseBasicInformations() || !parser.ParseSimulationInformations() || !parser.ParseExperimentalData()) {
       exit(OPTISMOKE_FATAL_ERROR_EXIT);
     }
+
+    for (const auto& dataset : parser.exp_data()) {
+      data_[index].push_back(dataset);
+    }
+    ++index;
   }
 }
 
