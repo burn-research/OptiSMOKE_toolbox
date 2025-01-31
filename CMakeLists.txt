@@ -46,7 +46,7 @@ find_package(
 
 # -----------------------------------------------------------------------------
 # Eigen3
-find_package(Eigen3)
+find_package(Eigen3 REQUIRED NO_MODULE)
 
 # -----------------------------------------------------------------------------
 # OpenSMOKE++
@@ -58,54 +58,7 @@ find_package(OpenSMOKEppSolvers REQUIRED)
 
 # -----------------------------------------------------------------------------
 # Dakota
-find_package(
-  Dakota REQUIRED
-  COMPONENTS dakota_surrogates
-             dakota_util
-             dakota_src
-             dakota_src_fortran
-             nidr
-             teuchosremainder
-             teuchosnumerics
-             teuchoscomm
-             teuchosparameterlist
-             teuchosparser
-             teuchoscore
-             pecos_util
-             pecos_src
-             lhs
-             lhs_mods
-             lhs_mod
-             dfftpack
-             sparsegrid
-             surfpack
-             surfpack
-             surfpack_fortran
-             utilib
-             colin
-             interfaces
-             scolib
-             3po
-             pebbl
-             tinyxml
-             approxnn
-             conmin
-             ddace
-             dream
-             fsudace
-             hopspack
-             jega
-             jega_fe
-             moga
-             soga
-             eutils
-             utilities
-             ncsuopt
-             cport
-             nomad
-             optpp
-             psuade
-             amplsolver)
+find_package(Dakota REQUIRED)
 
 # -----------------------------------------------------------------------------
 # NLopt TODO: find_package(NLopt REQUIRED)
@@ -144,6 +97,7 @@ target_link_libraries(
          Boost::regex
          Boost::timer
          Boost::chrono
+         Boost::json
          ${Dakota_LIBRARIES}
          ${OpenBLAS_INCLUDE_DIRS}/../lib/libopenblas.a)
 

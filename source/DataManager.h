@@ -1,27 +1,27 @@
 /* ----------------------------------------------------------------------------------- *\
 |                                                                                       |
-|                 ____        __  _ _____ __  _______  __ __ ______                     |
-|                / __ \____  / /_(_) ___//  |/  / __ \/ //_// ____/___  ____            |
-|               / / / / __ \/ __/ /\__ \/ /|_/ / / / / ,<  / __/ / __ \/ __ \           |
-|              / /_/ / /_/ / /_/ /___/ / /  / / /_/ / /| |/ /___/ /_/ / /_/ /           |
-|              \____/ .___/\__/_//____/_/  /_/\____/_/ |_/_____/ .___/ .___/            |
-|                  /_/                                        /_/   /_/                 |
+|                ____        __  _ _____ __  _______  __ __ ______                      |
+|               / __ \____  / /_(_) ___//  |/  / __ \/ //_// ____/___  ____             |
+|              / / / / __ \/ __/ /\__ \/ /|_/ / / / / ,<  / __/ / __ \/ __ \            |
+|             / /_/ / /_/ / /_/ /___/ / /  / / /_/ / /| |/ /___/ /_/ / /_/ /            |
+|             \____/ .___/\__/_//____/_/  /_/\____/_/ |_/_____/ .___/ .___/             |
+|                 /_/                                        /_/   /_/                  |
 |                                                                                       |
 | ------------------------------------------------------------------------------------- |
 |  See license and copyright at the end of this file.                                   |
 | ------------------------------------------------------------------------------------- |
 |                                                                                       |
-|            Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                      |
-|                     Andrea Bertolino <andrea.bertolino@ulb.be>                        |
-|                     Magnus Fürst     <magnus.furst@ulb.ac.be>                         |
+|           Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                       |
+|                    Andrea Bertolino <andrea.bertolino@ulb.be>                         |
+|                    Magnus Fürst     <magnus.furst@ulb.ac.be>                          |
 |                                                                                       |
-|            [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>               |
-|                Department of Chemistry, Materials and Chemical Engineering            |
-|                Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano        |
+|           [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>                |
+|               Department of Chemistry, Materials and Chemical Engineering             |
+|               Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano         |
 |                                                                                       |
-|            [2] BRITE Research Group <https://brite-research.be>                       |
-|                Brussels Institute for Thermal-fluid systems and clean Energy          |
-|                Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                   |
+|           [2] BRITE Research Group <https://brite-research.be>                        |
+|               Brussels Institute for Thermal-fluid systems and clean Energy           |
+|               Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                    |
 |                                                                                       |
 \* ----------------------------------------------------------------------------------- */
 #pragma once
@@ -45,7 +45,7 @@ class DataManager {
 
   const SimulationInfo& sim_info() const { return sim_info_; }
 
-  const std::vector<ExperimentalData>& exp_data() const { return exp_data_; }
+  const std::vector<ExperimentalDataset>& exp_data() const { return exp_data_; }
 
   // ==================================================
   // Debugging methods this is much needed when
@@ -57,12 +57,21 @@ class DataManager {
   void PrintDataSet(const size_t index) const;
 
  private:
-  boost::property_tree::ptree root_;
+  pt::ptree root_;
   std::string filename_;
 
   SimulationInfo sim_info_;
-  std::vector<ExperimentalData> exp_data_;  // One .json file can contain multiple dataset, think about speciations
+  std::vector<ExperimentalDataset> exp_data_;  // One .json file can contain multiple dataset, think about speciations
   std::string dataset_name_;
+
+  // ==================================================
+  // Validation Logic for the data files
+  std::vector<std::string> valid_solvers_ = {"BatchReactor", "PerfectlyStirredReactor", "PlugFlowReactor"};
+  std::vector<std::string> valid_reactor_modes_ = {"Shock Tube", "None"};
+  std::vector<std::string> valid_QoI_types_ = {"IDT"};
+  std::vector<std::string> valid_QoI_targets_ = {"OH-max-slope", "None"};
+  bool ValidateExperimentalData();
+  bool ValidateSimulationKeywords();
 };
 }  // namespace OptiSMOKE
 

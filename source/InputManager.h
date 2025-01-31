@@ -71,9 +71,10 @@ class InputManager {
   OptiSMOKE::GrammarOptismoke main_grammar_;
 
   // ==================================================
-  // Reading data from json files
-  // OptiSMOKE::DataManager data_manager_;
+  // Reading data from json files and allocating basic
+  // data structures to run the optimizations
 
+  // ==================================================
   std::string optimization_library_;
   std::vector<std::string> path_experimental_data_files_;
 };

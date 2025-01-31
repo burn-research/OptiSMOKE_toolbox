@@ -1,27 +1,27 @@
 /* ----------------------------------------------------------------------------------- *\
 |                                                                                       |
-|                 ____        __  _ _____ __  _______  __ __ ______                     |
-|                / __ \____  / /_(_) ___//  |/  / __ \/ //_// ____/___  ____            |
-|               / / / / __ \/ __/ /\__ \/ /|_/ / / / / ,<  / __/ / __ \/ __ \           |
-|              / /_/ / /_/ / /_/ /___/ / /  / / /_/ / /| |/ /___/ /_/ / /_/ /           |
-|              \____/ .___/\__/_//____/_/  /_/\____/_/ |_/_____/ .___/ .___/            |
-|                  /_/                                        /_/   /_/                 |
+|                ____        __  _ _____ __  _______  __ __ ______                      |
+|               / __ \____  / /_(_) ___//  |/  / __ \/ //_// ____/___  ____             |
+|              / / / / __ \/ __/ /\__ \/ /|_/ / / / / ,<  / __/ / __ \/ __ \            |
+|             / /_/ / /_/ / /_/ /___/ / /  / / /_/ / /| |/ /___/ /_/ / /_/ /            |
+|             \____/ .___/\__/_//____/_/  /_/\____/_/ |_/_____/ .___/ .___/             |
+|                 /_/                                        /_/   /_/                  |
 |                                                                                       |
 | ------------------------------------------------------------------------------------- |
 |  See license and copyright at the end of this file.                                   |
 | ------------------------------------------------------------------------------------- |
 |                                                                                       |
-|            Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                      |
-|                     Andrea Bertolino <andrea.bertolino@ulb.be>                        |
-|                     Magnus Fürst     <magnus.furst@ulb.ac.be>                         |
+|           Authors: Timoteo Dinelli  <timoteo.dinelli@polimi.it>                       |
+|                    Andrea Bertolino <andrea.bertolino@ulb.be>                         |
+|                    Magnus Fürst     <magnus.furst@ulb.ac.be>                          |
 |                                                                                       |
-|            [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>               |
-|                Department of Chemistry, Materials and Chemical Engineering            |
-|                Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano        |
+|           [1] CRECK Modeling Lab <https://www.creckmodeling.polimi.it>                |
+|               Department of Chemistry, Materials and Chemical Engineering             |
+|               Politecnico di Milano, P.zza Leonardo da Vinci 32, 20133 Milano         |
 |                                                                                       |
-|            [2] BRITE Research Group <https://brite-research.be>                       |
-|                Brussels Institute for Thermal-fluid systems and clean Energy          |
-|                Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                   |
+|           [2] BRITE Research Group <https://brite-research.be>                        |
+|               Brussels Institute for Thermal-fluid systems and clean Energy           |
+|               Avenue F.D. Rooseveltlaan 50, Bruxelles 1050 Brussel                    |
 |                                                                                       |
 \* ----------------------------------------------------------------------------------- */
 
@@ -129,16 +129,16 @@ void InputManager::ReadDictionary() {
 
   fs::path path_kinetics_output = output_folder_ / kinetics.chemkin_output();
   std::cout.setstate(std::ios_base::failbit);  // Disable video output
-  boost::property_tree::ptree ptree;
-  boost::property_tree::read_xml((path_kinetics_output / "kinetics.xml").string(), ptree);
+  pt::ptree ptree;
+  pt::read_xml((path_kinetics_output / "kinetics.xml").string(), ptree);
   tmd_map_ = std::make_shared<OpenSMOKE::ThermodynamicsMap_CHEMKIN>(ptree);
   kin_map_ = std::make_shared<OpenSMOKE::KineticsMap_CHEMKIN>(*tmd_map_, ptree);
   if (kinetics.is_transport_available() == true) {
     tran_map_ = std::make_shared<OpenSMOKE::TransportPropertiesMap_CHEMKIN>(ptree);
   }
 
-  boost::property_tree::ptree nominal_ptree;
-  boost::property_tree::read_xml((path_kinetics_output / "kinetics.xml").string(), nominal_ptree);
+  pt::ptree nominal_ptree;
+  pt::read_xml((path_kinetics_output / "kinetics.xml").string(), nominal_ptree);
   nominal_tmd_map_ = std::make_shared<OpenSMOKE::ThermodynamicsMap_CHEMKIN>(nominal_ptree);
   nominal_kin_map_ = std::make_shared<OpenSMOKE::KineticsMap_CHEMKIN>(*nominal_tmd_map_, nominal_ptree);
   if (kinetics.is_transport_available() == true) {
@@ -148,6 +148,7 @@ void InputManager::ReadDictionary() {
 }
 
 void InputManager::ReadExperimentalData() {
+  std::cout << "Parsing experimental data:\n";
   for (const auto& path_experimental_data_file : path_experimental_data_files_) {
     DataManager parser(path_experimental_data_file);
     if (!parser.LoadFile()) {
@@ -156,11 +157,6 @@ void InputManager::ReadExperimentalData() {
     if (!parser.ParseBasicInformations() || !parser.ParseSimulationInformations() || !parser.ParseExperimentalData()) {
       exit(OPTISMOKE_FATAL_ERROR_EXIT);
     }
-
-    // std::cout << "Dataset Name: " << parser.dataset_name() << "\n";
-    // parser.PrintSimulationInformations();
-    // std::cout << "\n";
-    // parser.PrintExperimentalData();
   }
 }
 
